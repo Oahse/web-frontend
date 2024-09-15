@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';  // Import the logo for potential use (if needed)
 import Router from './routes/router';  // Import the Router component that handles the app's routing
 import 'bootstrap/dist/css/bootstrap.min.css';  // Import Bootstrap CSS for styling
 import 'antd/dist/reset.css';  // Import Ant Design CSS for styling (for version 5 or later)

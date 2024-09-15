@@ -5,7 +5,7 @@ import oahselogo from '../assets/oahse-logo.png';
 
 function Explore({ API_URL }) {
   const [isLoading, setIsLoading] = useState(false); // Start with loading true
-
+  setIsLoading(true);
 
   return (
     <div className="explore">
