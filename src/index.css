@@ -1,0 +1,38 @@
+/* src/index.css or any global CSS file */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+:root{
+  --primary-color: #979797; /* Example primary color */
+  --secondary-color: #50555C; /* Example secondary color */
+  --background-color: #1E1E1E;
+
+  --primary-text-color: #ecf0f1; /* Example text color */
+  --alternate-text-color: #000000;
+
+  --modal-background-color: #747474;
+  --icon-background-color:var(--modal-background-color);
+
+  --primary-button-background-color:var(--primary-color);
+  --secondary-button-background-color:var(--modal-background-color);
+  
+}
+#root {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color);
+}

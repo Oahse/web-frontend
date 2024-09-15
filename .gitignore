@@ -1,0 +1,85 @@
+# Dependency directories
+node_modules/
+
+# Build output
+build/
+dist/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Log files
+*.log
+
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE & Editor directories and files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific files
+*.swp
+*.swo
+*.swn
+*.tmp
+
+# React Native
+.expo/
+.expo-shared/
+ios/Pods/
+android/.gradle/
+android/.idea/
+android/app/build/
+*.keystore
+
+# Custom build files
+*.tgz
+*.gzip
+
+# Jest coverage
+coverage/
+
+# Storybook
+storybook-static/
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# Miscellaneous
+*.class
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+*.suo
+*.nib
+*.nib/
+
+# Cache files
+.cache/
+.next/
+*.history
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Yarn
+.yarn-cache/
+.yarn-integrity
+
+# TypeScript
+*.tsbuildinfo
