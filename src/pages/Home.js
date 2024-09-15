@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 
 function Explore({ API_URL }) {
-  const [isLoading, setIsLoading] = useState(false); // Start with loading true
-  setIsLoading(true);
+  //const [isLoading, setIsLoading] = useState(false); // Start with loading true
+  // setIsLoading(true);
+  const isLoading = true;
 
   return (
     <div className="explore">

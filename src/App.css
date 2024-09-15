@@ -46,6 +46,9 @@
 .image-loader .image-one {
   animation: fadeInOut 6s infinite; /* First image fades in and out infinitely */
 }
+.loader-footer {
+  background-color: white !important; /* Ensure white background */
+}
 
 /* Second image position and delayed fade-in and fade-out effect */
 .loader-footer .image-two {
