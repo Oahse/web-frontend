@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/web-frontend/static/css/main.76d00c91.css",
-    "main.js": "/web-frontend/static/js/main.63a528b6.js",
+    "main.js": "/web-frontend/static/js/main.a9fa5e8c.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/oahse-logo.png": "/web-frontend/static/media/oahse-logo.abeea64afabf7d674fef.png",
     "static/media/oahse-icon.png": "/web-frontend/static/media/oahse-icon.c628d4a92daa1c19dd6a.png",
     "index.html": "/web-frontend/index.html",
     "main.76d00c91.css.map": "/web-frontend/static/css/main.76d00c91.css.map",
-    "main.63a528b6.js.map": "/web-frontend/static/js/main.63a528b6.js.map",
+    "main.a9fa5e8c.js.map": "/web-frontend/static/js/main.a9fa5e8c.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.76d00c91.css",
-    "static/js/main.63a528b6.js"
+    "static/js/main.a9fa5e8c.js"
   ]
 }
