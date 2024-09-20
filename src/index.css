@@ -29,10 +29,14 @@ code {
 
   --primary-button-background-color:var(--primary-color);
   --secondary-button-background-color:var(--modal-background-color);
+
+  --white:#F6F6F6;
+
   
 }
 #root {
   width: 100%;
   height: 100%;
+  background-color: var(--background-color);
   
 }

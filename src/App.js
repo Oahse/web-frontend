@@ -10,11 +10,7 @@ function App() {
   const API_URL = 'vv b';
 
   return (
-    <div className='app'>
-      {/* Render the Router component and pass the API_URL as a prop */}
-      {/* The Router component will handle all routing based on the API_URL */}
-      <Router API_URL={API_URL} />
-    </div>
+    <Router API_URL={API_URL} />
   );
 }
 
