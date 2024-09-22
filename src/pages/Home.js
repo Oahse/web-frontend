@@ -1,4 +1,5 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
+import { Container } from 'react-bootstrap';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
@@ -29,8 +30,14 @@ function Explore({ API_URL,Companyname }) {
         });
     }
 
+    setItems(filtered);
+
     setFilteredItems(filtered);
+    console.log(filteredItems)
 };
+  useEffect(()=>{
+    setIsLoading(false);
+  }, [])
    if (isLoading){
     return <ImageLoader
       src={oahseicon}
@@ -44,6 +51,9 @@ function Explore({ API_URL,Companyname }) {
       <span className='d-flex flex-column topbar'>
         <Header Companyname ={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
         <FilterComponent onSearch={filterItems} name={true} date={true} price={true}/>
+        <Container fluid>
+
+        </Container>
       </span>
       
     </div>
