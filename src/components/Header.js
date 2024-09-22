@@ -50,7 +50,7 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                         <span className="navbar-title"> {Companyname}</span>
                     </Navbar.Brand>
                     <div className="d-flex justify-content-between align-items-center" style={{ marginLeft: 'auto' }}>
-                        {!isloggedIn ? (
+                        {isloggedIn ? (
                             <span className="d-flex flex-row align-items-center">
                                 <i className="fa-light fa-message-lines nav-icons"></i>
                                 {isDesktop && <span className='text-dark ms-1'>Messages</span>}
