@@ -66,6 +66,11 @@ const NonAuthRoutes = ({ API_URL }) => [
     element: <User API_URL={API_URL} />,
     title: "user"
   },
+  {
+    path: "/message",
+    element: <User API_URL={API_URL} />,
+    title: "message"
+  },
 ];
 
 export default NonAuthRoutes;
