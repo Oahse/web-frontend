@@ -4,7 +4,7 @@ const { Content, Footer } = Layout;
 
 const ImageLoader = ({ src, alt, src2, alt2 }) => (
   
-  <Layout>
+  <Layout className='bg-transparent'>
     <Content>
         <div className="image-loader">
             <img className="image-one" src={src} alt={alt} width={'120px'} />

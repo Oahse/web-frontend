@@ -4,13 +4,14 @@ import { Form, Input } from 'antd';
 const FormInput = ({ label, name, type = 'text', placeholder, rules }) => {
   return (
     <Form.Item
+      label = {label}
       name={name}
       rules={rules}
     >
       {type === 'password' ? (
-        <Input.Password placeholder={label} />
+        <Input.Password placeholder={placeholder} />
       ) : (
-        <Input placeholder={label} />
+        <Input placeholder={placeholder} />
       )}
     </Form.Item>
   );

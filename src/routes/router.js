@@ -4,7 +4,7 @@ import NotFound from '../components/NotFound';  // Import the NotFound page comp
 import NonAuthRoutes from './nonauthroutes';  // Import non-authenticated routes
 import AuthRoutes from './authroutes';  // Import authenticated routes
 
-const Router = ({ API_URL }) => {
+const Router = ({ API_URL,basename }) => {
   // Generate non-authenticated routes using the API_URL prop
   const nonauthroutes = NonAuthRoutes({ API_URL });
 
@@ -12,7 +12,7 @@ const Router = ({ API_URL }) => {
   const authroutes = AuthRoutes({ API_URL });
 
   return (
-    <BrowserRouter basename="/web-frontend">
+    <BrowserRouter basename={basename}>
       {/* The main routing configuration */}
       <Routes>
         {/* Map and render non-authenticated routes */}

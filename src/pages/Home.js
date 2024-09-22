@@ -1,12 +1,36 @@
-import React from 'react';
+import React,{useState} from 'react';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
+import Header from '../components/Header';
+import FilterComponent from '../components/Filter';
 
-function Explore({ API_URL }) {
-  //const [isLoading, setIsLoading] = useState(false); // Start with loading true
-  // setIsLoading(true);
-  const isLoading = true;
+function Explore({ API_URL,Companyname }) {
+  const { isloggedIn, userDetails } = { isloggedIn: true, userDetails: {} };
+
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const filterItems = ({ itemName, dateRange }) => {
+    let filtered = items;
+
+    if (itemName) {
+        filtered = filtered.filter(item => 
+          item.name.toLowerCase().includes(itemName.toLowerCase())
+        );
+    }
+
+    if (dateRange && dateRange.length === 2) {
+        filtered = filtered.filter(item => {
+            const itemDate = new Date(item.date);
+            return itemDate >= dateRange[0] && itemDate <= dateRange[1];
+        });
+    }
+
+    setFilteredItems(filtered);
+};
    if (isLoading){
     return <ImageLoader
       src={oahseicon}
@@ -17,11 +41,11 @@ function Explore({ API_URL }) {
    }
   return (
     <div className="explore">
-      {/* <p>{API_URL}</p> */}
-      <img
-          src={oahseicon}
-          alt="Oahse Icon"
-        />
+      <span className='d-flex flex-column topbar'>
+        <Header Companyname ={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
+        <FilterComponent onSearch={filterItems} name={true} date={true} price={true}/>
+      </span>
+      
     </div>
   );
 }

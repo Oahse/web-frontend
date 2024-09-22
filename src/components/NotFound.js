@@ -1,10 +1,12 @@
 import React from 'react';
-
+import notfound from '../assets/notfound.jpg'
 function NotFound() {
   return (
-    <div className='notfound'>
-      NotFound
-    </div>
+    <img 
+         className='notfound'
+          src={notfound}
+          alt="not found"
+        />
   );
 }
 

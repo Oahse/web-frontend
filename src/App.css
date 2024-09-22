@@ -24,7 +24,68 @@
     opacity: 0;
   }
 }
+/* Merged styles for regular and outlined input fields */
+.ant-input-outlined,
+.ant-input-outlined:focus,
+.ant-input-outlined-focused, 
+.ant-input-outlined-active,
+.ant-input-outlined:active{
+  height: 45px !important;
+  border: 1px solid transparent !important;
+  background-color: white !important;
+  border-radius: 4px !important;
+  color: var(--primary-color) !important;
+  outline: none !important; /* Remove default blue outline */
+  box-shadow: none !important;
+}
 
+/* Hover state for both regular and outlined inputs and form item controls */
+.ant-input:hover,
+.ant-input-outlined:hover {
+  cursor: pointer !important;
+}
+
+.ant-form-item-control-input-content {
+  display: flex;
+  flex-direction: column; /* Or 'row' depending on your layout */
+  align-items: flex-start; /* Align children to the start */
+}
+
+.ant-checkbox-wrapper {
+  color: var(--primary-color) !important;
+  align-self: flex-start !important; /* Align checkbox to the left inside flex container */
+}
+
+
+
+.ant-checkbox .ant-checkbox-inner{
+  border: 1px solid var(--white) !important;
+  background-color: var(--white) !important;
+  border-radius: 4px !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner{
+  border: 1px solid var(--white) !important;
+  background-color: var(--background-color) !important;
+  border-radius: 4px !important;
+}
+
+.ant-btn{
+  background-color: var(--primary-button-background-color) !important;
+  color: white !important;
+  height: 45px !important;
+  border-radius: 24px !important;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19.36px;
+  text-align: center;
+  padding: 16px, 32px;
+}
+.ant-form-item-label,
+.ant-form-item-label .ant-form-item-required {
+  color: var(--primary-color) !important;
+}
 .image-loader {
   position: absolute;
   top: 50%;
@@ -62,30 +123,31 @@
 
 
 .notfound{
-  color: var(--primary-text-color);
+  background-color: var(--background-color);
+  color: var(--primary-color) !important;
+  width: 100%;
+  height: 100%;
 }
 .explore {
   background-color: var(--white) !important;
   color: var(--primary-color) !important;
-  border: 1px solid var(--white) !important;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: stretch; /* Make children stretch to fill the container */
+
 }
 .signup {
   background-color: var(--background-color);
-  border: 1px solid var(--background-color) !important;
   color: var(--primary-color) !important;
   padding: 24px;
 }
 .title {
-  font-family: 'Inter', sans-serif;
-  font-style: normal;
   font-weight: 600; /* Semi-bold weight */
   font-size: 30px; /* Font size 30px */
   line-height: 36px; /* Line height 36px */
   color: white !important;
 }
 .semititle {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
     font-size: 16px;
     font-weight: 500;
     line-height: 19.36px;
@@ -99,6 +161,10 @@
 a {
   text-decoration: none; /* Removes underline */
   color: white !important;
+}
+
+.text-dark {
+  color: var(--background-color);
 }
 .bigpadding {
   padding: 100px;
@@ -120,41 +186,91 @@ a {
   }
 }
 
-
-
-/* Merged styles for regular and outlined input fields */
-.ant-input-outlined,
-.ant-input-outlined:focus,
-.ant-input-outlined-focused, 
-.ant-input-outlined-active,
-.ant-input-outlined:active{
-  height: 45px !important;
-  border: 1px solid white !important;
-  background-color: white !important;
-  border-radius: 4px !important;
-  color: var(--primary-color) !important;
-  outline: none !important; /* Remove default blue outline */
-  box-shadow: none !important;
+.authheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed; /* Fixes the header at the top */
+  top: 0; /* Aligns it to the top */
+  left: 0;
+  right: 0; /* Makes it full width */
+  padding: 10px 20px; /* Adds padding for spacing */
+  z-index: 999; /* Ensures it stays on top */
 }
 
-/* Hover state for both regular and outlined inputs and form item controls */
-.ant-input:hover,
-.ant-input-outlined:hover {
-  cursor: pointer !important;
+/* Additional styling for responsiveness (optional) */
+@media (max-width: 768px) {
+  .authheader {
+    padding: 8px 16px; /* Adjust padding for smaller screens */
+  }
+}
+.forgot-password-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  background-color: var(--background-color);
+  justify-content: space-between; /* Ensure items are spaced appropriately */
 }
 
-.ant-checkbox-wrapper{
-  color: var(--primary-color) !important;
+.forgot-password-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  padding: 20px;
+  min-height: 'calc(100vh- 30px)';
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important; /* Add box shadow */
 }
-.ant-checkbox .ant-checkbox-inner{
-  border: 1px solid var(--white) !important;
-  background-color: var(--white) !important;
-  border-radius: 4px !important;
-  width: 16px !important;
-  height: 16px !important;
+
+.forgot-password-form {
+  width: 100%;
+  max-width: 400px; /* Limit the form width */
+  margin: 0 auto;
+  margin-top: 70px;
 }
-.ant-checkbox-checked .ant-checkbox-inner{
-  border: 1px solid var(--white) !important;
+
+.forgot-password-submit {
+  
+  margin-top: auto; /* Push the button to the bottom of the form */
+  margin-top: 200px;
+}
+
+@media (max-width: 768px) {
+  .forgot-password-form {
+    width: 100%;
+  }
+}
+
+.bottomnavbar{
+  border-radius: 32px !important;
+  font-size: 16px;
+  font-weight: 600;
+  height: 58px;
+  bottom: 24px;
   background-color: var(--background-color) !important;
-  border-radius: 4px !important;
+  margin-left: 8px;
+  margin-right: 8px;
 }
+
+.nav-icons{
+  color: var(--primary-color);
+  font-size: 24px;
+}
+.topbar{
+  background-color: var(--background-color);
+}
+.searchcontainer{
+  margin-top: 60px;
+}
+.searchbar{
+  border-radius: 50px !important;
+}
+
+.maxprice,
+.minprice {
+  border: 1px solid var(--primary-color) !important;
+  background-color: var(--white) !important;
+}
+
+

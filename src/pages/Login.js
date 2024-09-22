@@ -5,11 +5,13 @@ import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import FormInput from '../components/FormInput';
-import FormCheckBox from '../components/FormCheckBox';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
+import { ReactComponent as FingerprintIcon } from '../assets/icons/fingerprint.svg';
+import { ReactComponent as FaceIdIcon } from '../assets/icons/faceid.svg';
 
-function Signup({ API_URL }) {
+
+function Login({ API_URL }) {
   //const [isLoading, setIsLoading] = useState(false); // Start with loading true
   // setIsLoading(true);
   const isLoading = false;
@@ -27,8 +29,8 @@ function Signup({ API_URL }) {
   return (
     <Card className={`signup ${!isMobile ? 'bigpadding':''}`} style={{textAlign:'center'}}>
             <div className='mb-4' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ marginLeft: 'auto' }} className='title'>Sign Up</span>
-                <Link to='/login' className='semititle' style={{ marginLeft: 'auto' }}>Login</Link>
+                <span style={{ marginLeft: 'auto' }} className='title'>Login</span>
+                <Link to='/signup' className='semititle' style={{ marginLeft: 'auto' }}>Sign Up</Link>
             </div>
             <Form
               name="signup"
@@ -39,12 +41,6 @@ function Signup({ API_URL }) {
               }}
             >
               
-              <FormInput 
-                //label="Name"
-                name="name"
-                placeholder="Name"
-                rules={[{ required: true, message: 'Please enter your name' }]}
-                />
             <FormInput 
                 //label="Email"
                 name="email"
@@ -59,33 +55,30 @@ function Signup({ API_URL }) {
                 placeholder="Password"
                 rules={[{ required: true, message: 'Please enter your password' }]}
                 />
-            <FormInput 
-                //label="Confirm Password"
-                name="confirmPassword"
-                placeholder="ConfirmPassword"
-                dependencies={['password']}
-                hasFeedback
-                rules={[
-                  { required: true, message: 'Please confirm your password' },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue('password') === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(new Error('Passwords do not match'));
-                    },
-                  }),
-                ]}
-                />
-            <div className='minititle mb-4' style={{ textAlign: 'right' }}>
-                <small >Already have an account? </small>
-                <Link to="/login">Login</Link>
+            
+            <div className='minititle mb-4 d-flex flex-column' style={{ textAlign: 'right' }}>
+                
+                <Link to="/forgotpassword"><small >Forgot Password? </small></Link>
+                <Link to="/signup"><small>Sign up</small></Link>
               </div>
-              
-            <FormCheckBox name="newsletter" valuePropName="checked" text={'I would like to receive your newsletter and other promotional information.'} />
+            
+            <div className='minititle mb-4 d-flex flex-column' style={{ textAlign: 'left' }}>
+                <small className='m-2'>
+                  <Link to="/login-fingerprint">Use fingerprint?
+                  <FingerprintIcon style={{ width: '32px', height: '32px', marginLeft:'8px'}} />
+                  </Link> 
+                  
+                  </small>
 
+                <small className='m-2'>
+                  <Link to="/login-face">Use face id?
+                  <FaceIdIcon style={{ width: '26px', height: '26px', marginLeft:'8px'}} />
+                </Link> 
+                </small>
+                  
+              </div>
               <Form.Item>
-                <Button type="primary" htmlType="submit" text='Register' />
+                <Button type="primary" htmlType="submit" text='Login' />
               </Form.Item>
 
               
@@ -94,4 +87,4 @@ function Signup({ API_URL }) {
   );
 }
 
-export default Signup;
+export default Login;

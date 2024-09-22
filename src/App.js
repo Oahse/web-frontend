@@ -10,7 +10,7 @@ function App() {
   const API_URL = 'vv b';
 
   return (
-    <Router API_URL={API_URL} />
+    <Router API_URL={API_URL} basename={"/web-frontend"} />
   );
 }
 
