@@ -56,24 +56,22 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                                 {isDesktop && <span className='text-dark ms-1'>Messages</span>}
                             </span>
                         ) : (
-                            isDesktop && (
-                                <span className="d-flex flex-row align-items-center">
-                                    {renderLinks()}
-                                    <Link to="/messages" className="m-2 icon-container">
-                                        <div className="d-flex align-items-center">
-                                            <i className="fa-light fa-message-lines nav-icons"></i>
-                                            <span className='text-dark ms-1'>Messages</span>
-                                        </div>
-                                    </Link>
-                                </span>
-                            )
+                            <span className="d-flex flex-row align-items-center">
+                                {isDesktop ?renderLinks():null}
+                                <Link to="/messages" className="m-2 icon-container">
+                                    <div className="d-flex align-items-center">
+                                        <i className="fa-light fa-message-lines nav-icons"></i>
+                                        {isDesktop?<span className='text-dark ms-1'>Messages</span>:null}
+                                    </div>
+                                </Link>
+                            </span>
                         )}
                     </div>
                 </Container>
             </Navbar>
 
             {/* Bottom Navbar for mobile and tablet */}
-            {(isMobile || isTablet) && isloggedIn ? <BottomNavbar renderLinks={renderLinks} /> : null}
+            {(isMobile || isTablet) ? <BottomNavbar renderLinks={renderLinks} /> : null}
         </>
     );
 };

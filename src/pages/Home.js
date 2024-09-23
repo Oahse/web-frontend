@@ -8,7 +8,7 @@ import FilterComponent from '../components/Filter';
 import {BottomHorizontalScroller, MiddleHorizontalScroller, TopHorizontalScroller} from '../components/HorizontalScroller';
 
 function Explore({ API_URL,Companyname }) {
-  const { isloggedIn, userDetails } = { isloggedIn: true, userDetails: {} };
+  const { isloggedIn, userDetails } = { isloggedIn: false, userDetails: {} };
 
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
