@@ -29,7 +29,12 @@
 .ant-input-outlined:focus,
 .ant-input-outlined-focused, 
 .ant-input-outlined-active,
-.ant-input-outlined:active{
+.ant-input-outlined:active,
+.ant-picker-outlined,
+.ant-picker-outlined:focus,
+.ant-picker-outlined-focused, 
+.ant-picker-outlined-active,
+.ant-picker-outlined:active{
   height: 45px !important;
   border: 1px solid transparent !important;
   background-color: white !important;
@@ -55,8 +60,6 @@
   color: var(--primary-color) !important;
   align-self: flex-start !important; /* Align checkbox to the left inside flex container */
 }
-
-
 
 .ant-checkbox .ant-checkbox-inner{
   border: 1px solid var(--white) !important;
@@ -274,9 +277,123 @@ a {
 }
 
 .maxprice,
-.minprice {
+.minprice,
+.minprice:focus,
+.maxprice:focus, 
+.maxprice:active,
+.minprice:active,
+.ant-picker-outlined,
+.ant-picker-cell-selected .ant-picker-cell-inner {
   border: 1px solid var(--primary-color) !important;
   background-color: var(--white) !important;
+  color: var(--background-color) !important;
+}
+.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: 1px solid transparent !important;
+}
+.ant-picker-cell-today .ant-picker-cell-inner {
+  border: 1px solid var(--background-color) !important;
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+.ant-picker-now .ant-picker-now-btn {
+  color: var(--background-color) !important;
+}
+.body-container{
+  background-color: var(--alt-background-color);
+  padding: 0px;
+  margin: 0px;
+  margin-bottom: 90px;
+}
+.tophorizontal-scroller {
+  overflow-x: auto; /* Allow horizontal scrolling */
+  white-space: nowrap; /* Prevent line breaks */
+  width: 100%; /* Full width */
+  height: 40px; /* Set height */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
 }
 
+/* Hide scrollbar on mobile and tablet */
+.tophorizontal-scroller::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.topscrollable-content {
+  display: flex; /* Ensure items are in a row */
+  align-items: center; /* Center items vertically */
+  width: 100%;
+}
+
+.topscrollitem {
+  display: inline-flex; /* Use inline-flex to center text */
+  padding: 4px 8px; /* Add horizontal padding for better spacing */
+  margin-inline-end: 4px; /* Space between items */
+  background: var(--primary-color); /* Example background */
+  border: 1px solid var(--background-color); /* Example border */
+  color: var(--primary-text-color);
+  border-radius: 4px;
+  white-space: nowrap; /* Prevent line breaks within items */
+  text-align: center; /* Center text horizontally */
+  font-weight: 500;
+  min-width: 80px; /* Set a minimum width to ensure consistent sizing */
+  flex-shrink: 0; /* Prevent items from shrinking */
+}
+
+.middlehorizontal-scroller {
+  overflow-x: auto; /* Allow horizontal scrolling */
+  white-space: nowrap; /* Prevent line breaks */
+  width: 100%; /* Full width */
+  height: auto; /* Set height */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  margin: 0px;
+}
+
+/* Hide scrollbar on mobile and tablet */
+.middlehorizontal-scroller::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.middlescrollable-content {
+  display: flex; /* Ensure items are in a row */
+  align-items: center; /* Center items vertically */
+  width: 100%;
+}
+
+
+.bottomhorizontal-scroller {
+  overflow-x: auto; /* Allow horizontal scrolling */
+  white-space: nowrap; /* Prevent line breaks */
+  width: 100%; /* Full width */
+  height: auto; /* Set height */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  margin: 0px;
+}
+
+/* Hide scrollbar on mobile and tablet */
+.bottomhorizontal-scroller::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.bottomscrollable-content {
+  display: flex; /* Ensure items are in a row */
+  align-items: center; /* Center items vertically */
+  width: 100%;
+}
+
+.ant-card{
+  border-radius: 4px !important;
+}
+.ant-card-body{
+  padding: 8px !important;
+}
+.price{
+  color: var(--warning);
+  font-weight: 700;
+}
 

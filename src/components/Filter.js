@@ -2,17 +2,20 @@ import React, { useState } from 'react';
 import { Input, Space, DatePicker, Drawer } from 'antd';
 import dayjs from 'dayjs';
 
-const FilterComponent = ({ onSearch, name, price, date }) => {
+const FilterComponent = ({ onSearch, name }) => {
     const [itemName, setItemName] = useState('');
     const [startDate, setStartDate] = useState(dayjs('2000-01-01'));
     const [endDate, setEndDate] = useState(dayjs(Date.now()));
     const [dateRange, setDateRange] = useState([startDate, endDate]);
-    const [minPrice, setMinPrice] = useState(0.00);
+    const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(1000000);
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [image, setImage] = useState(null);
     const [drawerStartDate, setDrawerStartDate] = useState(startDate);
     const [drawerEndDate, setDrawerEndDate] = useState(endDate);
+
+    const MAX_PRICE = 9999999999999999; // Max price limit
+    const MIN_PRICE = 0; // Min price limit
 
     const handleOpenDrawer = () => setDrawerVisible(true);
     const handleCloseDrawer = () => setDrawerVisible(false);
@@ -22,32 +25,25 @@ const FilterComponent = ({ onSearch, name, price, date }) => {
         onSearch && onSearch({ itemName: e.target.value, dateRange, minPrice, maxPrice });
     };
 
-    const formatPrice = (price) => {
-        if (price >= 1e12) {
-            return `${(price / 1e12).toFixed(2)}t`;
-        } else if (price >= 1e9) {
-            return `${(price / 1e9).toFixed(2)}b`;
-        } else if (price >= 1e6) {
-            return `${(price / 1e6).toFixed(2)}m`;
-        } else if (price >= 1e3) {
-            return `${(price / 1e3).toFixed(2)}k`;
-        } else {
-            return `${price}`;
+    const handleMinPriceChange = (e) => {
+        const value = parseFloat(e.target.value) || 0;
+        
+        if (value >= MIN_PRICE) {
+            setMinPrice(value);
+            onSearch && onSearch({ itemName, dateRange, minPrice: value, maxPrice });
         }
     };
 
-    const handleMinPriceChange = (e) => {
-        const value = e.target.value;
-        setMinPrice(value);
-        onSearch && onSearch({ itemName, dateRange, minPrice: value, maxPrice });
-    };
-
     const handleMaxPriceChange = (e) => {
-        const value = e.target.value;
-        setMaxPrice(value);
-        onSearch && onSearch({ itemName, dateRange, minPrice, maxPrice: value });
+        const value = parseFloat(e.target.value) || 0; // Get the input value as a number
+    
+        if (value <= MAX_PRICE) {
+            setMaxPrice(value);
+            onSearch && onSearch({ itemName, dateRange, minPrice, maxPrice : value });
+        }
     };
-
+    
+    
     const handleCapture = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -61,7 +57,7 @@ const FilterComponent = ({ onSearch, name, price, date }) => {
 
     return (
         <div className='searchcontainer mb-1'>
-            <div style={{ display: 'flex', alignItems: 'center', padding:'2px', margin:'2px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '2px', margin: '2px' }}>
                 {name && (
                     <Input
                         placeholder="Search Products"
@@ -77,9 +73,9 @@ const FilterComponent = ({ onSearch, name, price, date }) => {
                 <input
                     type="file"
                     accept="image/*"
-                    capture="environment" // This allows using the camera
+                    capture="environment"
                     onChange={handleCapture}
-                    style={{ display: 'none' }} // Hide the input
+                    style={{ display: 'none' }}
                     id="cameraInput"
                 />
                 
@@ -122,19 +118,19 @@ const FilterComponent = ({ onSearch, name, price, date }) => {
                     />
                     <span>Min Price</span>
                     <Input
+                        type='number'
                         className='minprice'
-                        prefix="$"
                         placeholder="Min Price"
-                        value={minPrice !== null ? formatPrice(minPrice) : ''}
+                        value={minPrice}
                         onChange={handleMinPriceChange}
                         style={{ width: '100%' }}
                     />
                     <span>Max Price</span>
                     <Input
+                        type='number'
                         className='maxprice'
-                        prefix="$"
                         placeholder="Max Price"
-                        value={maxPrice !== null ? formatPrice(maxPrice) : ''}
+                        value={maxPrice}
                         onChange={handleMaxPriceChange}
                         style={{ width: '100%' }}
                     />

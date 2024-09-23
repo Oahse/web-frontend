@@ -20,9 +20,10 @@ code {
   --primary-color: #979797; /* Example primary color */
   --secondary-color: #50555C; /* Example secondary color */
   --background-color: #1E1E1E;
+  --alt-background-color: #f1f1f1;
 
   --primary-text-color: #ecf0f1; /* Example text color */
-  --alternate-text-color: #000000;
+  --alternate-text-color: #1E1E1E;
 
   --modal-background-color: #747474;
   --icon-background-color:var(--modal-background-color);
@@ -31,6 +32,8 @@ code {
   --secondary-button-background-color:var(--modal-background-color);
 
   --white:#F6F6F6;
+  --warning: #FBA70D;
+
 
   
 }
