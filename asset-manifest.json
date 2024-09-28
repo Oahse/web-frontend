@@ -1,20 +1,24 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.701f3858.css",
-    "main.js": "/web-frontend/static/js/main.54f24930.js",
+    "main.css": "/web-frontend/static/css/main.6c481627.css",
+    "main.js": "/web-frontend/static/js/main.080c818d.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
+    "static/media/localhost_3000_O-sell(iPhone 6_7_8 Plus).png": "/web-frontend/static/media/localhost_3000_O-sell(iPhone 6_7_8 Plus).f5019a1cd39123dbbac8.png",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
+    "static/media/CIPAC_cover_photo.jpg": "/web-frontend/static/media/CIPAC_cover_photo.c9896af6b416cad75641.jpg",
     "static/media/oahse-logo.png": "/web-frontend/static/media/oahse-logo.abeea64afabf7d674fef.png",
     "static/media/oahse-icon.png": "/web-frontend/static/media/oahse-icon.c628d4a92daa1c19dd6a.png",
+    "static/media/Meta-Logo2.png": "/web-frontend/static/media/Meta-Logo2.eb144047c0408842d2cd.png",
+    "static/media/chevron-logo.png": "/web-frontend/static/media/chevron-logo.efdbf915d03685c1dfc6.png",
     "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
     "index.html": "/web-frontend/index.html",
     "static/media/faceid.svg": "/web-frontend/static/media/faceid.6a5f2dd80c788b25da03f9dd5c9a8867.svg",
-    "main.701f3858.css.map": "/web-frontend/static/css/main.701f3858.css.map",
-    "main.54f24930.js.map": "/web-frontend/static/js/main.54f24930.js.map",
+    "main.6c481627.css.map": "/web-frontend/static/css/main.6c481627.css.map",
+    "main.080c818d.js.map": "/web-frontend/static/js/main.080c818d.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.701f3858.css",
-    "static/js/main.54f24930.js"
+    "static/css/main.6c481627.css",
+    "static/js/main.080c818d.js"
   ]
 }
