@@ -16,8 +16,8 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
 
     const renderLinks = () => {
         const links = [
-            { name: 'Explore', url: '/', icon: <i className="fa-light fa-compass nav-icons"></i> },
-            { name: 'MarketPlace', url: '/marketplace', icon: <i className="fa-light fa-grid-2 nav-icons"></i> },
+            { name: 'Home', url: '/home', icon: <i className="fa-light fa-house nav-icons"></i> },
+            { name: 'MarketPlace', url: '/', icon: <i className="fa-light fa-grid-2 nav-icons"></i> },
             { name: 'Map', url: '/map', icon: <i className="fa-light fa-location-crosshairs nav-icons"></i> },
             { name: 'Cart', url: '/cart', icon: <i className="fa-light fa-cart-shopping nav-icons"></i> },
             { name: 'User', url: '/user', icon: <i className="fa-light fa-user nav-icons"></i> },

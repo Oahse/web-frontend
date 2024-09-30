@@ -1,340 +1,309 @@
 import React,{useState, useEffect} from 'react';
-import { Container } from 'react-bootstrap';
+import { Row, Col, Container, Card} from 'react-bootstrap';
+import { Link } from 'react-router-dom'; 
+import CIPAC_cover_photo from '../assets/CIPAC_cover_photo.jpg';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Button from '../components/Button';
+import metalogo from '../assets/Meta-Logo2.png';
+import abblogo from '../assets/ABB-LOGO.png';
+import ericsson from '../assets/ericsson-logo.jpg';
+import chevron from '../assets/chevron-logo.png' ;
+import AppScreen from '../assets/localhost_3000_O-sell(iPhone 6_7_8 Plus).png';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import Header from '../components/Header';
-import FilterComponent from '../components/Filter';
-import {BottomHorizontalScroller, MiddleHorizontalScroller, TopHorizontalScroller} from '../components/HorizontalScroller';
-
-function Explore({ API_URL,Companyname }) {
-  const { isloggedIn, userDetails } = { isloggedIn: false, userDetails: {} };
-
-  const [items, setItems] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const engineeringCategories = [
-      { name: 'Electronics', url: '/electronics' },
-      { name: 'Power Systems', url: '/power-systems' },
-      { name: 'Software Engineering', url: '/software' },
-      { name: 'Mechanical Engineering', url: '/mechanical' },
-      { name: 'Civil Engineering', url: '/civil' },
-      { name: 'Aerospace Engineering', url: '/aerospace' },
-      { name: 'Chemical Engineering', url: '/chemical' },
-      { name: 'Environmental Engineering', url: '/environmental' },
-      { name: 'Robotics', url: '/robotics' },
-      { name: 'Materials Science', url: '/materials' },
-  ];
-  // Example usage in trending items
-  const trending = [
-    {
-        url: '/item1',
-        name: 'Wireless Headphones',
-        description: 'This is a great item for music lovers.',
-        rating: 4.8,
-        price: 29.99,
-        currency: 'GBP',
-        image: 'https://images.unsplash.com/photo-1721332155567-55d1b12aa271?q=80&&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-        url: '/item2',
-        name: 'Smartphone',
-        description: 'This is another great item with top features.',
-        rating: 4.0,
-        price: 19.99,
-        currency: 'EUR',
-        image: 'https://images.unsplash.com/photo-1720048171230-c60d162f93a0?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-        url: '/item3',
-        name: 'Smartwatch',
-        description: 'An amazing gadget that you need!',
-        rating: 4.5,
-        price: 39.99,
-        currency: 'USD',
-        image: 'https://images.unsplash.com/photo-1503328427499-d92d1ac3d174?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-        url: '/item4',
-        name: 'Laptop',
-        description: 'Top-notch quality and performance for professionals.',
-        rating: 3.8,
-        price: 49.99,
-        currency: 'JPY',
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-        url: '/item5',
-        name: 'Bluetooth Speaker',
-        description: 'A must-have for tech lovers and music enthusiasts.',
-        rating: 4.2,
-        price: 24.99,
-        currency: 'AUD',
-        image: 'https://images.unsplash.com/photo-1618275648002-9758fc97dbf5?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-];
-const newarrivals = [
-  {
-      url: '/item1',
-      name: 'Electric Kettle',
-      description: 'Boil water quickly and efficiently with this stylish kettle.',
-      rating: 4.8,
-      price: 49.99,
-      currency: 'GBP',
-      image: 'https://images.unsplash.com/photo-1647619124290-10fb9273b4b5?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'Breville',
-          logo: 'https://www.breville.com/content/dam/breville-brands/favicon.ico'
-      }
-  },
-  {
-      url: '/item2',
-      name: 'Yoga Mat',
-      description: 'Durable and eco-friendly yoga mat for all types of workouts.',
-      rating: 4.6,
-      price: 29.99,
-      currency: 'EUR',
-      image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'Manduka',
-          logo: 'https://www.logolynx.com/images/logolynx/c8/c8126407ec5e60c90d0b9ee1569ef619.jpeg'
-      }
-  },
-  {
-      url: '/item3',
-      name: 'Bluetooth Tracker',
-      description: 'Never lose your belongings again with this handy tracker.',
-      rating: 4.3,
-      price: 19.99,
-      currency: 'USD',
-      image: 'https://images.unsplash.com/photo-1640631826644-ff6a6337a7ff?q=80&w=2373&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'Tile',
-          logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.hQs5sj-USb-1xszopZiDnwHaH6%26pid%3DApi&f=1&ipt=0261ac7da3441f7cff3af3e2556b4e42d6da2fbede909d95a563df7af2272f31&ipo=images'
-      }
-  },
-  {
-      url: '/item4',
-      name: 'Portable Blender',
-      description: 'Make smoothies on the go with this compact, powerful blender.',
-      rating: 4.7,
-      price: 39.99,
-      currency: 'JPY',
-      image: 'https://plus.unsplash.com/premium_photo-1690291494818-068ed0f63c42?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'NutriBullet',
-          logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.vNO3MU__60R1SvgKF8FrnQHaHa%26pid%3DApi&f=1&ipt=a926cde097ff84ba327dec8377e2fc1b1b97a7c4780344259d9b08e961fb84c8&ipo=images'
-      }
-  },
-  {
-      url: '/item5',
-      name: 'Fitness Tracker',
-      description: 'Track your workouts and health metrics with this advanced device.',
-      rating: 4.5,
-      price: 59.99,
-      currency: 'AUD',
-      image: 'https://images.unsplash.com/photo-1557935728-e6d1eaabe558?q=80&w=2673&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'Fitbit',
-          logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.5O8cwFpEP_cSYQAnAxUkWwHaEK%26pid%3DApi&f=1&ipt=20b6b4771a9f9ee37d11218e856b466b2a4b14c4969b918fdf378e166d46169a&ipo=images'
-      }
-  },
-];
-const categories = [
-  {
-    category: {
-      name: 'Refurbished',
-      url: '/refurbished',
-    },
-    divisions: [
-      {
-        name: 'Laptops',
-        url: '/refurbished/laptops',
-        image: 'https://media.istockphoto.com/id/2164619317/photo/midsection-of-businessman-using-phone-and-laptop-at-table.jpg?s=612x612&w=0&k=20&c=VlgeUCBaItMsOOBSQwKElq01IEObMB8JNINSzkS1fY8=',
-      },
-      {
-        name: 'Phones',
-        url: '/refurbished/phones',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIF.XhmD0rcgcUbmKnkYlAe4ZQ%26pid%3DApi&f=1&ipt=f68126d1fa832e1a4490fa67d0a4826996b63dba4616a628919548b7682c1c60&ipo=images',
-      },
-      {
-        name: 'Tablets',
-        url: '/refurbished/tablets',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.obfx9Gj6WsmH8qbNbhDP7QAAAA%26pid%3DApi&f=1&ipt=b95099e84b6b71d2a2f11c9502fd0216f73e57143d2cfcf0c26b3b1d8795292c&ipo=images',
-      },
-      {
-        name: 'Accessories',
-        url: '/refurbished/accessories',
-        image: 'https://img.kwcdn.com/product/fancy/c89a93ac-aa96-4940-afd1-de782e331375.jpg?imageView2/2/w/650/q/50/format/webp',
-      },
-    ],
-  },
-  {
-    category: {
-      name: 'Phones and Accessories',
-      url: '/phones-accessories',
-    },
-    divisions: [
-      {
-        name: 'Smartphones',
-        url: '/phones/smartphones',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.0Z3MedIftNbB8nRj2KI75gHaF8%26pid%3DApi&f=1&ipt=a8d0eb1b2068e2f13b12aa3ea1c686b07cd6095b211cb12de82d094e6d6e6cfc&ipo=images',
-      },
-      {
-        name: 'Cases',
-        url: '/phones/cases',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Tv4AhD07x7Rmi5Uu1ZWsbAHaHa%26pid%3DApi&f=1&ipt=22eae5549ce967338384153c724bb58acdba5931e1e184db41637f9c9b03192b&ipo=images',
-      },
-      {
-        name: 'Chargers',
-        url: '/phones/chargers',
-        image: 'https://www.electricpoint.com/media/webp_image/catalog/product/cache/2744a43aec172f111f8d70aa521a60e0/h/y/hydra-cubus-5.webp',
-      },
-      {
-        name: 'Headphones',
-        url: '/phones/headphones',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.KzpHi9G0gGOUvCIgxqXzNgHaHa%26pid%3DApi&f=1&ipt=c39ef047dff6dfe9d4b56d125116fb4234142b387f6029d5dbae14aad3cdf888&ipo=images',
-      },
-    ],
-  },
-  {
-    category: {
-      name: 'Factories',
-      url: '/factories',
-    },
-    divisions: [
-      {
-        name: 'Machinery',
-        url: '/factories/machinery',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.Niyuwg7TgCemKrPfSR5TqgHaD5%26pid%3DApi&f=1&ipt=04653a62b2349f664e765841bf963d257dc8852b6439df0f86334cf1714e0447&ipo=images',
-      },
-      {
-        name: 'Tools',
-        url: '/factories/tools',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.UHA3881NUTboly-Y6tdK5wHaEU%26pid%3DApi&f=1&ipt=525cf0545da7a4aa32389c76545150063017f04640196e5300649ffdd7414156&ipo=images',
-      },
-      {
-        name: 'Equipment',
-        url: '/factories/equipment',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.9f3ATJdlC8d76Iu-ahzHIQHaE8%26pid%3DApi&f=1&ipt=e39086472d22c70c78f29d8a49ebc232eef3a0a0b78991e85ecb1cd8bc49fe71&ipo=images',
-      },
-      {
-        name: 'Supplies',
-        url: '/factories/supplies',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.8N1IggxVOTchIAA-n45uFAHaE8%26pid%3DApi&f=1&ipt=73804b7547c0c274f6657770de5286fd27e6176c1795ef7ec1e941cc118126a2&ipo=images',
-      },
-    ],
-  },
-  {
-    category: {
-      name: 'Household',
-      url: '/household',
-    },
-    divisions: [
-      {
-        name: 'Furniture',
-        url: '/household/furniture',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.TwLq-50ZjEYXwuEwuuQW9QAAAA%26pid%3DApi&f=1&ipt=12fe7d56f690c2cf7142a52dcdd2413b37aa36364812e0e33509bffcb243e323&ipo=images',
-      },
-      {
-        name: 'Appliances',
-        url: '/household/appliances',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.SFX6BEcaKGCXiDrcEsCwqgHaFj%26pid%3DApi&f=1&ipt=feaeb9e39679a3d746cc1741c56a89eccdd77cf45bc5f4808f2dcd7d7982fe4b&ipo=images',
-      },
-      {
-        name: 'Decor',
-        url: '/household/decor',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.GzQ43SIcNP0lR1_lQA39_gAAAA%26pid%3DApi&f=1&ipt=00d8c1239ec7daa8e84522f345be1311c745dfe4b8f7b2147f530e4b914d6b82&ipo=images',
-      },
-      {
-        name: 'Cleaning Supplies',
-        url: '/household/cleaning-supplies',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.07tZs3eknI20YhpIanjdzQHaEV%26pid%3DApi&f=1&ipt=416615bd5b4f4d29a47ba8a067eed8c68fe8ab358c5178ccd3040a7cd80fa365&ipo=images',
-      },
-    ],
-  },
-  {
-    category: {
-      name: 'Vehicles',
-      url: '/vehicles',
-    },
-    divisions: [
-      {
-        name: 'Cars',
-        url: '/vehicles/cars',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.FyuYs5rfN3m_q3g1sVN4ZgHaHa%26pid%3DApi&f=1&ipt=f1f5d225b7a956fa2fef1eaa989d34d20e4461eb3bdfb75b8e45ca70a6baec29&ipo=images',
-      },
-      {
-        name: 'Bikes',
-        url: '/vehicles/bikes',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.QrESk1E3KSAmGx0UKPGSwwHaFj%26pid%3DApi&f=1&ipt=153a2ed02bcf426e50dbe2d6bcd9dea6545d24e2543b6ded7d58b5ed6ee56ec3&ipo=images',
-      },
-      {
-        name: 'Parts',
-        url: '/vehicles/parts',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.r8A6ooQV0OTwKFx-1UDVeAHaD0%26pid%3DApi&f=1&ipt=66c90892140dd3ba77e04cb348efa795db708600b88d9f201ff987052f4c5157&ipo=images',
-      },
-      {
-        name: 'Accessories',
-        url: '/vehicles/accessories',
-        image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.JXFyocEhMFUpG8ZH_duPYgHaF2%26pid%3DApi&f=1&ipt=1198fb452efaa793366fa0ec4715d87a2c63f2a3177a344c13f97dce83e38e2f&ipo=images',
-      },
-    ],
-  },
-];
 
 
+function Home ({ API_URL,Companyname }) {
+    const { isloggedIn, userDetails } = { isloggedIn: false, userDetails: {} };
+    const [isLoading, setIsLoading] = useState(false);
+    useEffect(()=>{
+        setIsLoading(false);
+    }, [])
+    if (isLoading){
+        return <ImageLoader
+            src={oahseicon}
+            alt='oahse'
+            src2 ={oahselogo}
+            alt2='oahse'
+        />
+     }
+    return (
+        <div className='service'>
+            <Header Companyname ={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
 
-  const filterItems = ({ itemName, dateRange }) => {
-    let filtered = items;
+            <div className='showcase-pic' >
+              <Container >
+                <Row className='showcase' style={{ alignItems: 'center', justifyContent: 'center'}}>
+                    <Col className='' lg={8} md={12} sm={12}>
+                        <h3>Your Engineering Services <br/>
+                            Made Easier,
+                            Made Better
+                        </h3>
+                        <br/>
+                        <p>
+                            At the Comfort of your space,  get in-touch with  <br/>
+                            professional engineers in seconds, <br/>
+                            Get easier access to tradespersons around you in minutes  <br/>
+                            for your on-time delivery of services; <br/>
+                            and skip the traffic to get your technical supplies delivered  <br/>
+                            to you at your door-step <br/>
+                        </p>
+                    </Col>
+                    <Col className='' lg={8} md={12} sm={24}>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <a href='www.google.com'>
+                                <Button type='button' htmlType='button' className='rounded-2 py-1 m-1 ' text={<span><i className="fa-brands fa-google-play"></i>Google Play</span>} />
+                            </a>
+                                <span className='m-2'></span>
+                            <a href='www.apple.com'>
+                                <Button type='button' htmlType='button' className='rounded-2 py-1 m-1 ' text={<span><i className="fa-brands fa-app-store"></i>App Store</span>} />
+                            </a>
+                        </div>
+                    </Col>
+                </Row>
 
-    if (itemName) {
-        filtered = filtered.filter(item => 
-          item.name.toLowerCase().includes(itemName.toLowerCase())
-        );
-    }
+              </Container>
+            </div>
 
-    if (dateRange && dateRange.length === 2) {
-        filtered = filtered.filter(item => {
-            const itemDate = new Date(item.date);
-            return itemDate >= dateRange[0] && itemDate <= dateRange[1];
-        });
-    }
+            <Container>
 
-    setItems(filtered);
+                <Row className='py-3 ' style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Row className='my-2'>
+                        <Col className='text-center'><h1>Our Services</h1></Col>
+                    </Row>
 
-    setFilteredItems(filtered);
-    console.log(filteredItems)
-};
-  useEffect(()=>{
-    setIsLoading(false);
-  }, [])
-   if (isLoading){
-    return <ImageLoader
-      src={oahseicon}
-      alt='oahse'
-      src2 ={oahselogo}
-      alt2='oahse'
-    />
-   }
-  return (
-    <div className="explore">
-      <span className='d-flex flex-column topbar'>
-        <Header Companyname ={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
-        <FilterComponent onSearch={filterItems} name={true} date={true} price={true}/>
-      </span>
-      <Container fluid className='body-container'>
-        <TopHorizontalScroller items={engineeringCategories} />
-        <MiddleHorizontalScroller title={'Trending'} items={trending} toCurrency={"USD"} />
-        <MiddleHorizontalScroller title={'New Arrivals'} items={newarrivals} toCurrency={"USD"} />
-        {/* <MiddleHorizontalScroller title={'Categories'} items={categories} /> */}
-        <BottomHorizontalScroller title={'Categories'} categories={categories} />
+                    <Row >
+                        <Col className='mb-3 d-flex justify-content-center align-items-center'>
+                            <Card style={{ width: '18rem', height: '320px', margin:'8px' }} >
+                                <Card.Body>
+                                    <Card.Title>Engineering Services</Card.Title>
+                                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                                    <Card.Text>
+                                        Work with top 
+                                        professional and
+                                        experienced engineers
+                                        in handling your engineering
+                                        projects ranging from 
+                                        consultation and design
+                                        to supervision to 
+                                        completion with standard
+                                        quality.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
 
-      </Container>
-      
-    </div>
-  );
+                        <Col className='mb-3 d-flex justify-content-center align-items-center' >
+                            <Card style={{ width: '18rem', height: '320px',margin:'8px' }}>
+                                <Card.Body>
+                                    <Card.Title>Supply/Delivery</Card.Title>
+                                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                                    <Card.Text>
+                                        Order your materials from
+                                        our online store and 
+                                        experience and on-time
+                                        supply/ delivery of your 
+                                        quality materials. 
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+
+                        <Col className='mb-3 d-flex justify-content-center align-items-center'>
+                            <Card style={{ width: '18rem', height: '320px',margin:'8px'}}>
+                                <Card.Body>
+                                    <Card.Title>Maintainence Services</Card.Title>
+                                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                                    <Card.Text>
+                                        Find and Request for 
+                                        services from highly skilled 
+                                        and experienced 
+                                        tradespersons and 
+                                        technicians around you. 
+                                        Get them at the comfort 
+                                        of your home and experience 
+                                        service at its best.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+
+                </Row>
+
+                <Row className='py-3 text-center' style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Col className='text-center py-3 mb-3' lg={12} md={12} sm={12}>
+                        <h1>Our Clients</h1>
+                    </Col>
+
+
+                    <Col className='mb-3'>
+                        <img src={metalogo} alt='meta logo'/>
+                    </Col>
+
+                    <Col className='mb-3'>
+                        <img src={abblogo} alt='meta logo' />
+                    </Col>
+
+                    <Col className='mb-3'>
+                        <img src={ericsson} alt='meta logo' />
+                    </Col>
+
+                    <Col className='mb-3'>
+                        <img src={chevron} alt='meta logo' />
+                    </Col>
+
+                   
+
+                </Row>
+
+                <Row className='mb-5'style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Col className='py-3 text-center' lg={12} md={12} sm={12}>
+                        <h1>Earn with us </h1>
+                    </Col>
+
+                    <Col className='text-center' lg={6}  sm={12}>
+                        <div className='p-3'>
+                            <img src='https://images.pexels.com/photos/8961146/pexels-photo-8961146.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='engineer' width='100%'/> 
+                        </div>
+                       
+                    </Col>
+
+                    <Col className='py-3'> 
+                        <h2 className='mb-3'>Become an Engineering Consultant</h2>
+                        <p>
+                            Work with experienced engineers in handling your projects 
+                            ranging from consultation and design to supervision to completion with standard quality.
+                        </p>
+
+                        <p>
+                        Drive for as long and as often as you like. Weekdays; weekends; evenings — fit driving around your lifestyle.
+                        </p>
+
+                        <p>
+                            Order your materials from our online store and experience 
+                            and on-time supply/ delivery of your quality materials.
+                        </p>
+
+                        <a href='/fsfsfsf'>
+                            <Button type='button' htmlType='button' className='rounded-2 py-1 m-1 ' text={<span><i className="fa-light fa-helmet-safety"></i> Learn More</span>} />
+                        </a>
+                    </Col>
+                </Row>
+
+                <Row style={{backgroundColor: 'grey', color: 'whitesmoke',display: 'flex', justifyContent: 'center' }} className='rounded-2 text-center'>
+                    <Col className='py-3 text-center' lg={12} md={12} sm={12}>
+                        <h2>What do you need? Let's supply it</h2>
+                    </Col>
+
+                    <Col>
+                        <a href='/sdsdd'>
+                            <img src='https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='product' width='100%'/>
+                           
+                        </a>
+                        <p>Cables</p>
+                    </Col>
+
+                    <Col>
+                        <a href='/sdsdd'>
+                            <img src='https://images.pexels.com/photos/159108/light-lamp-electricity-power-159108.jpeg' alt='product' width='100%'/>
+                            <p>Lightings</p>
+                        </a>
+                    </Col>
+
+                    <Col>
+                        <a href='/sdsdd'>
+                            <img src='https://images.pexels.com/photos/60049/torx-bits-metal-iron-60049.jpeg?auto=compress&cs=tinysrgb&w=600' alt='product' width='100%'/>
+                            <p>Tools and Fittings</p>
+                        </a>
+                    </Col>
+
+                    <Col>
+                        <a href='/sdsdd'>
+                            <img src='https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='product' width='100%'/>
+                            <p>Power and Back-up</p>
+                        </a>
+                    </Col>
+
+                    <Col>
+                        <a href='/sdsdd'>
+                            <img src='https://images.pexels.com/photos/2842460/pexels-photo-2842460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='product' width='100%'/>
+                            <p>Engineering Accessories</p>
+                        </a >
+                    </Col>
+                </Row>
+
+                <Row className='py-3' style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Col className='py-3' lg={12} md={12} sm={12}>
+                        <Row>
+                            <Col>
+                                <Link><h5>News and Updates</h5></Link>
+                            </Col>
+
+                            <Col className='text-end'>
+                                <Link><h5>View all </h5></Link>
+                            </Col>
+                        </Row>
+                       
+                    </Col>
+                        
+                    <Col>
+                         <div>
+                            <img src={CIPAC_cover_photo} alt='news' width='100%'/>
+                        </div>
+                        <h5>Oahse Engineering Fest 2024</h5>
+                        <p>
+                            Order your materials from our online store 
+                            and experience and on-time supply/ delivery of your quality materials.
+                        </p>
+                    </Col>
+                       
+                    <Col>
+                         <div>
+                            <img src={CIPAC_cover_photo} alt='news' width='100%'/>
+                        </div>
+                        <h5>Oahse Engineering Training Programs and Certification </h5>
+                        <p>
+                            Order your materials from our online store 
+                            and experience and on-time supply/ delivery of your quality materials.
+                        </p>
+                    </Col>
+                       
+                    <Col>
+                        <div>
+                            <img src={CIPAC_cover_photo} alt='news' width='100%'/>
+                        </div>
+                        <h5>Oahse Project 2025</h5>
+                        <p>
+                            Order your materials from our online store 
+                            and experience and on-time supply/ delivery of your quality materials.
+                        </p>
+                    </Col>
+                </Row>
+
+                <Row className='text-center rounded-2 py-3 mb-3 mx-3'style={{backgroundColor: 'black', color: 'white',display: 'flex', justifyContent: 'center' }}>
+                    <Col className='py-3'>
+                        <img src={AppScreen} alt='App' width='200px'/>
+                    </Col>
+                    <Col className='py-5'>
+                        <h3>It is easier on our App</h3>
+                        <p>Available for Android and iOS devices</p>
+                        <a href='/'>
+                            <Button type='button'htmlType='button' className='m-1 ' text={<span><i className='fa-brands fa-app-store'></i> Download the App</span>} />
+                        </a>
+                        <a href='/'>
+                            <Button type='button' htmlType='button' className='m-1 ' text={<span><i className='fa-brands fa-google-play'></i> Download the App</span>} />
+                        </a>
+                    </Col>
+
+                </Row>
+
+            </Container>
+
+            <Footer className='footer'/>
+        </div>
+    );
 }
-
-export default Explore;
+export default Home;

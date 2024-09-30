@@ -1,19 +1,25 @@
 import React from 'react';
 import { Avatar, Card, Col, Row, Typography } from 'antd';
 import { Link } from 'react-router-dom';
+
 import { CurrencyConverter } from '../utils/helper';
 
 const { Title } = Typography;
 
-const TopHorizontalScroller = ({ items }) => {
+const TopHorizontalScroller = ({ items,onSearch }) => {
+
+    const handleCategoryChange = (e) => {
+        onSearch && onSearch({ itemName:null, dateRange:null, minPrice:null, maxPrice:null, selectedCategory : e.target.id });
+    };
+    
     return (
         <div className='me-1 ms-1'>
             <div className="tophorizontal-scroller">
                 <div className="topscrollable-content" style={{ paddingRight: '20px' }}>
-                    {items.map((item, index) => (
-                        <Link to={item.url} className="topscrollitem" key={index}>
+                    {items?.map((item, index) => (
+                        <span id={item.id} className="topscrollitem" onClick={handleCategoryChange} key={index}>
                             {item.name}
-                        </Link>
+                        </span>
                     ))}
                 </div>
             </div>
@@ -111,4 +117,5 @@ const BottomHorizontalScroller = ({ title,categories }) => {
         </div>
     );
 };
-export { TopHorizontalScroller, MiddleHorizontalScroller, BottomHorizontalScroller };
+
+export { TopHorizontalScroller, MiddleHorizontalScroller, BottomHorizontalScroller};

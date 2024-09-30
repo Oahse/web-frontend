@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
 import { Input, Space, DatePicker, Drawer } from 'antd';
 import dayjs from 'dayjs';
+import DropDown from './DropDown';
 
-const FilterComponent = ({ onSearch, name }) => {
+const FilterComponent = ({ onSearch,onChangeDrawer, name, categoryoptions, minprice, maxprice, drawervisible,iscategoryLoading }) => {
+    const MAX_PRICE = 9999999999999999; // Max price limit
+    const MIN_PRICE = 0; // Min price limit
     const [itemName, setItemName] = useState('');
     const [startDate, setStartDate] = useState(dayjs('2000-01-01'));
     const [endDate, setEndDate] = useState(dayjs(Date.now()));
     const [dateRange, setDateRange] = useState([startDate, endDate]);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(1000000);
-    const [drawerVisible, setDrawerVisible] = useState(false);
+    const [minPrice, setMinPrice] = useState(minprice || MIN_PRICE);
+    const [maxPrice, setMaxPrice] = useState(maxprice || MAX_PRICE);
+    const [drawerVisible, setDrawerVisible] = useState(drawervisible);
     const [image, setImage] = useState(null);
     const [drawerStartDate, setDrawerStartDate] = useState(startDate);
     const [drawerEndDate, setDrawerEndDate] = useState(endDate);
+    const [selectedCategory, setSelectedCategory] = useState(categoryoptions.length > 0 ? categoryoptions[0].id : '');
 
-    const MAX_PRICE = 9999999999999999; // Max price limit
-    const MIN_PRICE = 0; // Min price limit
-
-    const handleOpenDrawer = () => setDrawerVisible(true);
-    const handleCloseDrawer = () => setDrawerVisible(false);
+    const handleOpenDrawer = () => {
+        setDrawerVisible(true);
+        onChangeDrawer(true);
+    };
+    const handleCloseDrawer = () => {
+        setDrawerVisible(false);
+        onChangeDrawer(false);
+    };
 
     const handleItemNameChange = (e) => {
         setItemName(e.target.value);
-        onSearch && onSearch({ itemName: e.target.value, dateRange, minPrice, maxPrice });
+        onSearch && onSearch({ itemName: e.target.value, dateRange, minPrice, maxPrice, selectedCategory });
     };
 
     const handleMinPriceChange = (e) => {
@@ -30,7 +37,7 @@ const FilterComponent = ({ onSearch, name }) => {
         
         if (value >= MIN_PRICE) {
             setMinPrice(value);
-            onSearch && onSearch({ itemName, dateRange, minPrice: value, maxPrice });
+            onSearch && onSearch({ itemName, dateRange, minPrice: value, maxPrice, selectedCategory });
         }
     };
 
@@ -39,8 +46,13 @@ const FilterComponent = ({ onSearch, name }) => {
     
         if (value <= MAX_PRICE) {
             setMaxPrice(value);
-            onSearch && onSearch({ itemName, dateRange, minPrice, maxPrice : value });
+            onSearch && onSearch({ itemName, dateRange, minPrice, maxPrice : value, selectedCategory });
         }
+    };
+
+    const handleCategoryChange = (e) => {
+        setSelectedCategory(e);
+        onSearch && onSearch({ itemName, dateRange, minPrice, maxPrice, selectedCategory : e.value });
     };
     
     
@@ -134,6 +146,8 @@ const FilterComponent = ({ onSearch, name }) => {
                         onChange={handleMaxPriceChange}
                         style={{ width: '100%' }}
                     />
+                    <span>Category</span>
+                    <DropDown options={categoryoptions} iscategoryLoading={iscategoryLoading}  onChange={handleCategoryChange} style={{ width: '100%' }}/>
                 </Space>
             </Drawer>
         </div>

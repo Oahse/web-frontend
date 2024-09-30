@@ -34,7 +34,15 @@
 .ant-picker-outlined:focus,
 .ant-picker-outlined-focused, 
 .ant-picker-outlined-active,
-.ant-picker-outlined:active{
+.ant-picker-outlined:active,
+.ant-select-outlined,
+.ant-select-outlined:focus,
+.ant-select-focused,
+.ant-select-outlined-focused, 
+.ant-select-outlined-active,
+.ant-select-active,
+.ant-select-outlined:active,
+.ant-select-selector  {
   height: 45px !important;
   border: 1px solid transparent !important;
   background-color: white !important;
@@ -46,8 +54,34 @@
 
 /* Hover state for both regular and outlined inputs and form item controls */
 .ant-input:hover,
-.ant-input-outlined:hover {
+.ant-input-outlined:hover,
+.ant-select:hover,
+.ant-select-outlined:hover {
   cursor: pointer !important;
+}
+.ant-pagination-item{
+  border: 1px solid var(--background-color) !important;
+  background-color: var(--alt-background-color) !important;
+  border-radius: 4px !important;
+  color: var(--background-color) !important;
+  outline: none !important; /* Remove default blue outline */
+  box-shadow: none !important;
+}
+
+.ant-pagination-next:hover,
+.ant-pagination-previous:hover,
+.ant-pagination-item-link:hover {
+  border-radius: 4px !important;
+}
+
+.ant-pagination-item-ellipsis {
+  color: var(--background-color) !important; /* Change color of ellipsis to match background */
+}
+.ant-pagination-item-active{
+  background-color: var(--primary-color) !important;
+}
+.ant-pagination-item a{
+  color: var(--background-color) !important;
 }
 
 .ant-form-item-control-input-content {
@@ -283,7 +317,9 @@ a {
 .maxprice:active,
 .minprice:active,
 .ant-picker-outlined,
-.ant-picker-cell-selected .ant-picker-cell-inner {
+.ant-picker-cell-selected .ant-picker-cell-inner,
+
+.ant-select-selector {
   border: 1px solid var(--primary-color) !important;
   background-color: var(--white) !important;
   color: var(--background-color) !important;
@@ -339,6 +375,7 @@ a {
   font-weight: 500;
   min-width: 80px; /* Set a minimum width to ensure consistent sizing */
   flex-shrink: 0; /* Prevent items from shrinking */
+  cursor: pointer;
 }
 
 .middlehorizontal-scroller {
@@ -385,6 +422,28 @@ a {
   align-items: center; /* Center items vertically */
   width: 100%;
 }
+.middlevertical-scroller {
+  overflow-y: auto; /* Allow horizontal scrolling */
+  white-space: nowrap; /* Prevent line breaks */
+  width: 100%; /* Full width */
+  height: auto; /* Set height */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  margin: 0px;
+  flex-direction: column;
+}
+
+/* Hide scrollbar on mobile and tablet */
+.middlevertical-scroller::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.middleverticalscrollable-content {
+  display: flex; /* Ensure items are in a row */
+  align-items: center; /* Center items vertically */
+  width: 100%;
+}
 
 .ant-card{
   border-radius: 4px !important;
@@ -395,5 +454,202 @@ a {
 .price{
   color: var(--warning);
   font-weight: 700;
+}
+
+/* home.css */
+
+.mini-navbar{
+  margin-top: 60px;
+}
+
+.swiper {
+  width: 100%;
+  height: 200px;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: var(--white);
+  
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(40%);
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px; /* Adjust the gap as needed */
+}
+
+.grid-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px; /* Optional: Add border-radius for rounded corners */
+}
+.horizontal-scroller {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 8px;
+  margin: 8px;
+  background-color: var(--white);
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+}
+.horizontal-scroller::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+.scroll-content {
+  display: inline-block;
+}
+
+.-scroll-item {
+  display: inline-block;
+  min-width: 140px;
+  max-width: 140px;
+  height: 200px;
+  background-color: var(--white);
+  color: var(--background-color);
+  margin-right: 10px;
+  text-align: center;
+  line-height: 100px;
+  border-radius: 4px;
+  
+}
+.-scroll-item img {
+  width: 130px;
+  height:94px;
+}
+.-scroll-item-one {
+  display: inline-block;
+  height: 200px;
+  background-color: var(--white);
+  color: var(--background-color);
+  margin-right: 10px;
+  text-align: center;
+  line-height: 100px;
+  border-radius: 4px;
+}
+.-scroll-item-one img {
+  width: 300px;
+  height:200px;
+}
+.option-content {
+  display: inline-block;
+  padding: 0;
+}
+
+.-option-item {
+  display: inline-block;
+  min-width: 140px;
+  max-width: 140px;
+  height: 0px;
+  color: var(--background-color);
+  margin-right: 10px;
+  text-align: center;
+  border-radius: 4px;
+  
+}
+
+.showcase{
+      
+      /* Set a specific height */
+      height: 70vh;
+
+      padding: 80px 0;
+    
+      /* Create the parallax scrolling effect */
+      /* background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+   */
+      color: var(--white);
+}
+
+.showcase-pic{
+    background: url('./assets/CIPAC_cover_photo.jpg');
+    max-height: 70vh;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.showcase h1,
+.showcase h1{
+    font-size: 2.5rem;
+    line-height: 50px;
+    margin-bottom: 30px;
+    
+}
+
+.showcase p
+.showcase small{
+    font-size: 1.2em;
+    line-height: 30px;
+    margin-bottom: 30px;
+}
+
+/* footer.css */
+
+footer{
+  background: var(--background-color);
+  color: var(--white);
+}
+
+.footer-listitem{
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  justify-self: left;
+}
+.footer-listitem:hover{
+  color: var(--primary-text-color);
+}
+.footer-listitem:active{
+  color: var(--primary-text-color);
+}
+
+.store-list-item {
+  padding: 8px;
+  margin: 0px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.store-list-item a{
+  text-decoration: none;
+  color: var(--white);
+  padding: 16px;
+  font-weight: bold;
+  width: '100%';
+  border:1px solid var(--white);
+  border-radius: 8px;
+}
+.store-list-item a:hover{
+  border-color: var(--primary-text-color);
+}
+.store-list-item a img{
+  margin-bottom: 8px;
+  margin-right: 4px;
+  width:40px;
+}
+.bottom{
+  text-decoration: none;
+  color: var(--primary-text-color);
+  margin-right: 8px;
 }
 
