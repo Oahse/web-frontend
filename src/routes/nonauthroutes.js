@@ -10,6 +10,9 @@ import Map from '../pages/Map'; // Import your Map component
 import Cart from '../pages/Cart'; // Import your Cart component
 import User from '../pages/User'; // Import your User component
 import Categories from '../pages/Categories';
+import PaymentConfirmation from '../pages/PaymentConfirmation';
+import OrderResult from '../pages/OrderResultPage';
+import TrackingOrder from '../pages/OrderTracking';
 
 
 const NonAuthRoutes = ({ API_URL,Companyname }) => [
@@ -69,7 +72,27 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     title: "cart"
   },
   {
+    path: "/payment/confirmation",
+    element: <PaymentConfirmation API_URL={API_URL} Companyname={Companyname}/>,
+    title: "payment"
+  },
+  {
+    path: "/payment/confirmation/orderresult",
+    element: <OrderResult API_URL={API_URL} Companyname={Companyname}/>,
+    title: "orderresult"
+  },
+  {
+    path: "/payment/order/:id",
+    element: <TrackingOrder API_URL={API_URL} Companyname={Companyname}/>,
+    title: "trackingorder"
+  },
+  {
     path: "/user",
+    element: <User API_URL={API_URL} Companyname={Companyname}/>,
+    title: "user"
+  },
+  {
+    path: "/user/orders/:id",
     element: <User API_URL={API_URL} Companyname={Companyname}/>,
     title: "user"
   },

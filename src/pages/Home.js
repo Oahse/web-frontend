@@ -291,7 +291,7 @@ function Home ({ API_URL,Companyname }) {
                         <h3>It is easier on our App</h3>
                         <p>Available for Android and iOS devices</p>
                         <a href='/'>
-                            <Button type='button'htmlType='button' className='m-1 ' text={<span><i className='fa-brands fa-app-store'></i> Download the App</span>} />
+                            <Button type='button' htmlType='button' className='m-1 ' text={<span><i className='fa-brands fa-app-store'></i> Download the App</span>} />
                         </a>
                         <a href='/'>
                             <Button type='button' htmlType='button' className='m-1 ' text={<span><i className='fa-brands fa-google-play'></i> Download the App</span>} />

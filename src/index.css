@@ -33,8 +33,10 @@ code {
 
   --white:#F6F6F6;
   --warning: #FBA70D;
+  --focus-color:var(--background-color);
 
-
+  --border-radius:2px;
+  --btn-radius: 2px;
   
 }
 #root {

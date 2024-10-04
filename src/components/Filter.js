@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Input, Space, DatePicker, Drawer } from 'antd';
 import dayjs from 'dayjs';
 import DropDown from './DropDown';
+import InputNumber from './InputNumber';
 
 const FilterComponent = ({ onSearch,onChangeDrawer, name, categoryoptions, minprice, maxprice, drawervisible,iscategoryLoading }) => {
     const MAX_PRICE = 9999999999999999; // Max price limit
@@ -16,7 +17,7 @@ const FilterComponent = ({ onSearch,onChangeDrawer, name, categoryoptions, minpr
     const [image, setImage] = useState(null);
     const [drawerStartDate, setDrawerStartDate] = useState(startDate);
     const [drawerEndDate, setDrawerEndDate] = useState(endDate);
-    const [selectedCategory, setSelectedCategory] = useState(categoryoptions.length > 0 ? categoryoptions[0].id : '');
+    const [selectedCategory, setSelectedCategory] = useState(categoryoptions?.length > 0 ? categoryoptions[0]?.id : '');
 
     const handleOpenDrawer = () => {
         setDrawerVisible(true);
@@ -129,23 +130,12 @@ const FilterComponent = ({ onSearch,onChangeDrawer, name, categoryoptions, minpr
                         }}
                     />
                     <span>Min Price</span>
-                    <Input
-                        type='number'
-                        className='minprice'
-                        placeholder="Min Price"
-                        value={minPrice}
-                        onChange={handleMinPriceChange}
-                        style={{ width: '100%' }}
-                    />
+                    <InputNumber min={minPrice} max={maxPrice} placeholder="Min Price" value={minPrice} onChange={handleMinPriceChange }
+                        style={{ width: '100%' }}  />
                     <span>Max Price</span>
-                    <Input
-                        type='number'
-                        className='maxprice'
-                        placeholder="Max Price"
-                        value={maxPrice}
-                        onChange={handleMaxPriceChange}
-                        style={{ width: '100%' }}
-                    />
+
+                    <InputNumber min={minPrice} max={maxPrice} placeholder="Max Price" value={maxPrice} onChange={handleMaxPriceChange}
+                        style={{ width: '100%' }}  />
                     <span>Category</span>
                     <DropDown options={categoryoptions} iscategoryLoading={iscategoryLoading}  onChange={handleCategoryChange} style={{ width: '100%' }}/>
                 </Space>

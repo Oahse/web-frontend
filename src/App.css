@@ -46,7 +46,7 @@
   height: 45px !important;
   border: 1px solid transparent !important;
   background-color: white !important;
-  border-radius: 4px !important;
+  border-radius: var(--border-radius) !important;
   color: var(--primary-color) !important;
   outline: none !important; /* Remove default blue outline */
   box-shadow: none !important;
@@ -62,7 +62,7 @@
 .ant-pagination-item{
   border: 1px solid var(--background-color) !important;
   background-color: var(--alt-background-color) !important;
-  border-radius: 4px !important;
+  border-radius: var(--border-radius)  !important;
   color: var(--background-color) !important;
   outline: none !important; /* Remove default blue outline */
   box-shadow: none !important;
@@ -71,7 +71,7 @@
 .ant-pagination-next:hover,
 .ant-pagination-previous:hover,
 .ant-pagination-item-link:hover {
-  border-radius: 4px !important;
+  border-radius: var(--border-radius) !important;
 }
 
 .ant-pagination-item-ellipsis {
@@ -89,40 +89,108 @@
   flex-direction: column; /* Or 'row' depending on your layout */
   align-items: flex-start; /* Align children to the start */
 }
+/* Style for checked radio button */
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+  border: 1px solid var(--secondary-color) !important;
+  background-color: var(--secondary-color) !important;
+  width: 16px !important;
+  height: 16px !important;
+}
 
-.ant-checkbox-wrapper {
+/* Hover effect on checked radio button */
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner:hover {
+  border: 1px solid var(--secondary-color) !important;
+}
+
+/* Unchecked radio button state */
+.ant-radio-inner {
+  border: 1px solid var(--alt-background-color) !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Hover effect on unchecked radio button */
+.ant-radio:hover .ant-radio-inner {
+  border-color: var(--secondary-color) !important;
+}
+
+/* Focus state of radio button (both checked and unchecked) */
+.ant-radio-input:focus + .ant-radio-inner {
+  box-shadow: 0 0 0 2px rgba(var(--secondary-color), 0.2) !important; /* Adding slight shadow for focus state */
+}
+.ant-checkbox-wrapper{
   color: var(--primary-color) !important;
   align-self: flex-start !important; /* Align checkbox to the left inside flex container */
 }
 
-.ant-checkbox .ant-checkbox-inner{
-  border: 1px solid var(--white) !important;
-  background-color: var(--white) !important;
-  border-radius: 4px !important;
+/* Style for checked checkbox */
+.ant-checkbox-checked .ant-checkbox-inner {
+  border: 1px solid var(--secondary-color) !important;
+  background-color: var(--background-color) !important;
+  border-radius: var(--border-radius)  !important;
   width: 16px !important;
   height: 16px !important;
 }
-.ant-checkbox-checked .ant-checkbox-inner{
-  border: 1px solid var(--white) !important;
-  background-color: var(--background-color) !important;
-  border-radius: 4px !important;
+
+/* Hover effect on checked checkbox */
+.ant-checkbox-checked .ant-checkbox-inner:hover {
+  border: 1px solid var(--background-color) !important;
+}
+
+/* Unchecked checkbox state */
+.ant-checkbox-inner {
+  border: 1px solid var(--alt-background-color) !important;
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: var(--border-radius)  !important;
+}
+
+/* Hover effect on unchecked checkbox */
+.ant-checkbox:hover .ant-checkbox-inner {
+  border-color: var(--secondary-color) !important;
+}
+
+/* Focus state of checkbox (both checked and unchecked) */
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  box-shadow: 0 0 0 2px rgba(var(--secondary-color), 0.2) !important; /* Slight shadow for focus state */
+}
+
+/* Indeterminate state of checkbox */
+.ant-checkbox-indeterminate .ant-checkbox-inner {
+  border: 1px solid var(--secondary-color) !important;
+  background-color: var(--secondary-color) !important;
+}
+
+/* Indeterminate hover effect */
+.ant-checkbox-indeterminate:hover .ant-checkbox-inner {
+  border-color: var(--secondary-color) !important;
 }
 
 .ant-btn{
   background-color: var(--primary-button-background-color) !important;
+  border-color: var(--primary-button-background-color) !important;
   color: white !important;
   height: 45px !important;
-  border-radius: 24px !important;
+  border-radius: var(--btn-radius) !important;
   font-size: 16px;
   font-weight: 600;
   line-height: 19.36px;
   text-align: center;
   padding: 16px, 32px;
 }
+
 .ant-form-item-label,
 .ant-form-item-label .ant-form-item-required {
   color: var(--primary-color) !important;
 }
+.ant-modal-content{
+  border-radius: var(--border-radius) !important;
+}
+
+.ant-timeline-item-head{
+  border-color: var(--secondary-color) !important;
+}
+
 .image-loader {
   position: absolute;
   top: 50%;
@@ -157,7 +225,10 @@
   animation: fadeInOutDelayed 6s 3s infinite; /* Second image fades in and out infinitely with a 3s delay */
 }
 
-
+.gradient-bg{
+  background-image: linear-gradient(to bottom right, var(--white), var(--primary-color), var(--background-color));
+  /* color: whitesmoke; */
+}
 
 .notfound{
   background-color: var(--background-color);
@@ -306,19 +377,13 @@ a {
 .searchcontainer{
   margin-top: 60px;
 }
-.searchbar{
-  border-radius: 50px !important;
-}
 
-.maxprice,
-.minprice,
-.minprice:focus,
-.maxprice:focus, 
-.maxprice:active,
-.minprice:active,
+
+.number,
+.number:focus,
+.number:active,
 .ant-picker-outlined,
 .ant-picker-cell-selected .ant-picker-cell-inner,
-
 .ant-select-selector {
   border: 1px solid var(--primary-color) !important;
   background-color: var(--white) !important;
@@ -369,7 +434,7 @@ a {
   background: var(--primary-color); /* Example background */
   border: 1px solid var(--background-color); /* Example border */
   color: var(--primary-text-color);
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   white-space: nowrap; /* Prevent line breaks within items */
   text-align: center; /* Center text horizontally */
   font-weight: 500;
@@ -446,7 +511,7 @@ a {
 }
 
 .ant-card{
-  border-radius: 4px !important;
+  border-radius: var(--border-radius) !important;
 }
 .ant-card-body{
   padding: 8px !important;
@@ -496,7 +561,7 @@ a {
 .grid-image {
   width: 100%;
   height: auto;
-  border-radius: 4px; /* Optional: Add border-radius for rounded corners */
+  border-radius: var(--border-radius); /* Optional: Add border-radius for rounded corners */
 }
 .horizontal-scroller {
   overflow-x: auto;
@@ -526,7 +591,7 @@ a {
   margin-right: 10px;
   text-align: center;
   line-height: 100px;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   
 }
 .-scroll-item img {
@@ -541,7 +606,7 @@ a {
   margin-right: 10px;
   text-align: center;
   line-height: 100px;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
 }
 .-scroll-item-one img {
   width: 300px;
@@ -560,7 +625,7 @@ a {
   color: var(--background-color);
   margin-right: 10px;
   text-align: center;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   
 }
 
@@ -637,7 +702,7 @@ footer{
   font-weight: bold;
   width: '100%';
   border:1px solid var(--white);
-  border-radius: 8px;
+  border-radius: var(--border-radius);
 }
 .store-list-item a:hover{
   border-color: var(--primary-text-color);
