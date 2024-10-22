@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom'; // useLocation to detect U
 import Logo from '../assets/oahse-logo.png';
 import BottomNavbar from './BottomNavBar';
 import { isDesktop, isMobile, isTablet } from 'react-device-detect';
+import Button from './Button';
 
 const Header = ({ Companyname, isloggedIn, userDetails }) => {
     const location = useLocation(); // Get the current location (URL)
@@ -57,13 +58,40 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                             </span>
                         ) : (
                             <span className="d-flex flex-row align-items-center">
-                                {isDesktop ?renderLinks():null}
-                                <Link to="/messages" className="m-2 icon-container">
-                                    <div className="d-flex align-items-center">
-                                        <i className="fa-light fa-message-lines nav-icons"></i>
-                                        {isDesktop?<span className='text-dark ms-1'>Messages</span>:null}
-                                    </div>
-                                </Link>
+                                {activeLink === '/home'?
+                                    <>
+                                        <Link 
+                                            to='/contactus' 
+                                            className="m-2 icon-container"
+                                        >
+                                            <div className="d-flex align-items-center">
+                                                {isDesktop ? <span className='text-dark fw-bold mr-1'>support</span>:
+                                                    <i className={`fa-light fa-headset nav-icons m-1 ${activeLink === '/contactus' ? 'text-white fw-bold' : ''}`}></i>}
+                                            </div>
+                                        </Link>
+                                        
+                                        <Link 
+                                            to='/' 
+                                            className="m-2 icon-container"
+                                        >
+                                            <Button type='button' htmlType='button' className='' text={<span>Start for free<i className="fa-light fa-chevron-right m-2"></i></span>} />
+                                        </Link>
+                                        <i className="fa-light fa-bars nav-icons mr-2" style={{cursor:'pointer'}}></i>
+                                    </>
+                                :
+                                isDesktop ?
+                                    <>
+                                        {renderLinks()}
+                                        <Link to="/messages" className="m-2 icon-container">
+                                            <div className="d-flex align-items-center">
+                                                <i className="fa-light fa-message-lines nav-icons"></i>
+                                                {isDesktop?<span className='text-dark ms-1'>Messages</span>:null}
+                                            </div>
+                                        </Link>
+                                    </>:
+                                    null
+                                    }
+                                
                             </span>
                         )}
                     </div>

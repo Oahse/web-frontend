@@ -176,8 +176,27 @@
   font-weight: 600;
   line-height: 19.36px;
   text-align: center;
-  padding: 16px, 32px;
+  padding: 16px 32px;
 }
+.outline-btn{
+  background-color: white !important;
+  border-color: var(--primary-button-background-color) !important;
+  color: var(--alternate-text-color) !important;
+  height: 45px !important;
+  border-radius: var(--btn-radius) !important;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19.36px;
+  text-align: center;
+  padding: 16px 32px; /* Corrected padding */
+  transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out; /* Add transition effect */
+}
+
+.outline-btn:hover {
+  box-shadow: 0 0 20px #1E1E1E, 0 0 30px rgba(0, 123, 255, 0.6); /* Shockwave effect */
+  transform: scale(1.05); /* Slight scaling on hover */
+}
+
 
 .ant-form-item-label,
 .ant-form-item-label .ant-form-item-required {
@@ -276,7 +295,10 @@ a {
 }
 
 .text-dark {
-  color: var(--background-color);
+  color: var(--background-color) !important;
+}
+.text-light {
+  color:var(--primary-color) !important;
 }
 .bigpadding {
   padding: 100px;
@@ -510,11 +532,16 @@ a {
   width: 100%;
 }
 
-.ant-card{
+.ant-card,
+.card{
   border-radius: var(--border-radius) !important;
 }
-.ant-card-body{
+.ant-card-body,
+.card-body{
   padding: 8px !important;
+}
+.card-text{
+  text-align: justify !important;
 }
 .price{
   color: var(--warning);
@@ -717,4 +744,31 @@ footer{
   color: var(--primary-text-color);
   margin-right: 8px;
 }
+.fadeup-dark-bg {
+  background: linear-gradient(to top, black, white); /* Gradient from black at the bottom to white at the top */
+  height: 100vh; /* Full-screen height for example */
+  width: 100%; /* Full width */
+}
+
+/* partners swiper */
+
+.myPartners {
+  width: 100%;
+  height: 150px;
+}
+
+.myPartners-swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: transparent;
+  width: 150px;
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.5px solid var(--background-color);
+  border-radius: var(--border-radius);
+}
+
+
 

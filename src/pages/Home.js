@@ -5,19 +5,53 @@ import CIPAC_cover_photo from '../assets/CIPAC_cover_photo.jpg';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
-import metalogo from '../assets/Meta-Logo2.png';
-import abblogo from '../assets/ABB-LOGO.png';
-import ericsson from '../assets/ericsson-logo.jpg';
-import chevron from '../assets/chevron-logo.png' ;
 import AppScreen from '../assets/localhost_3000_O-sell(iPhone 6_7_8 Plus).png';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
+import EngineeringCarousel from '../components/EngineeringCarousel';
 
 
 function Home ({ API_URL,Companyname }) {
     const { isloggedIn, userDetails } = { isloggedIn: false, userDetails: {} };
     const [isLoading, setIsLoading] = useState(false);
+    const companies = [
+        { name: "General Electric", logo: "https://upload.wikimedia.org/wikipedia/commons/0/05/General_Electric_Logo.svg" },
+        { name: "Bechtel", logo: "https://upload.wikimedia.org/wikipedia/commons/4/43/Bechtel_logo.svg" },
+        { name: "BP", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d7/BP_logo.svg" },
+        { name: "Shell", logo: "https://upload.wikimedia.org/wikipedia/commons/5/54/Shell_logo.svg" },
+        { name: "Siemens", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/Siemens_logo.svg" },
+        { name: "Texas Instruments", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Texas_Instruments_logo.svg" },
+        { name: "Honeywell", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Honeywell_logo.svg" },
+        { name: "Lockheed Martin", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Lockheed_Martin_logo.svg" },
+        { name: "Raytheon", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Raytheon_Company_logo.svg" },
+
+        { name: "General Electric", logo: "https://upload.wikimedia.org/wikipedia/en/0/05/General_Electric_Logo.svg" },
+        { name: "Bechtel", logo: "https://upload.wikimedia.org/wikipedia/en/4/43/Bechtel_logo.svg" },
+        { name: "BP", logo: "https://upload.wikimedia.org/wikipedia/en/d/d7/BP_logo.svg" },
+        { name: "Shell", logo: "https://upload.wikimedia.org/wikipedia/commons/5/54/Shell_logo.svg" },
+        { name: "Siemens", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/Siemens_logo.svg" },
+        { name: "Texas Instruments", logo: "https://upload.wikimedia.org/wikipedia/en/4/4e/Texas_Instruments_logo.svg" },
+        { name: "Honeywell", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Honeywell_logo.svg" },
+        { name: "Lockheed Martin", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Lockheed_Martin_logo.svg" },
+        { name: "Raytheon", logo: "https://upload.wikimedia.org/wikipedia/en/d/d7/Raytheon_Company_logo.svg" },
+        { name: "Bechtel", logo: "https://upload.wikimedia.org/wikipedia/en/4/43/Bechtel_logo.svg" },
+        { name: "BP", logo: "https://upload.wikimedia.org/wikipedia/en/d/d7/BP_logo.svg" },
+        { name: "Shell", logo: "https://upload.wikimedia.org/wikipedia/commons/5/54/Shell_logo.svg" },
+        { name: "Siemens", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/Siemens_logo.svg" },
+        { name: "Texas Instruments", logo: "https://upload.wikimedia.org/wikipedia/en/4/4e/Texas_Instruments_logo.svg" },
+        { name: "Honeywell", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Honeywell_logo.svg" },
+        { name: "Lockheed Martin", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Lockheed_Martin_logo.svg" },
+        { name: "Raytheon", logo: "https://upload.wikimedia.org/wikipedia/en/d/d7/Raytheon_Company_logo.svg" },
+        { name: "Bechtel", logo: "https://upload.wikimedia.org/wikipedia/en/4/43/Bechtel_logo.svg" },
+        { name: "BP", logo: "https://upload.wikimedia.org/wikipedia/en/d/d7/BP_logo.svg" },
+        { name: "Shell", logo: "https://upload.wikimedia.org/wikipedia/commons/5/54/Shell_logo.svg" },
+        { name: "Siemens", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/Siemens_logo.svg" },
+        { name: "Texas Instruments", logo: "https://upload.wikimedia.org/wikipedia/en/4/4e/Texas_Instruments_logo.svg" },
+        { name: "Honeywell", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Honeywell_logo.svg" },
+        { name: "Lockheed Martin", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Lockheed_Martin_logo.svg" },
+        { name: "Raytheon", logo: "https://upload.wikimedia.org/wikipedia/en/d/d7/Raytheon_Company_logo.svg" },
+    ];
     useEffect(()=>{
         setIsLoading(false);
     }, [])
@@ -33,8 +67,7 @@ function Home ({ API_URL,Companyname }) {
         <div className='service'>
             <Header Companyname ={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
 
-            <div className='showcase-pic' >
-              <Container >
+            <Container  className='showcase-pic' >
                 <Row className='showcase' style={{ alignItems: 'center', justifyContent: 'center'}}>
                     <Col className='' lg={8} md={12} sm={12}>
                         <h3>Your Engineering Services <br/>
@@ -63,102 +96,101 @@ function Home ({ API_URL,Companyname }) {
                         </div>
                     </Col>
                 </Row>
-
-              </Container>
-            </div>
+            </Container >
 
             <Container>
-
                 <Row className='py-3 ' style={{ display: 'flex', justifyContent: 'center' }}>
                     <Row className='my-2'>
-                        <Col className='text-center'><h1>Our Services</h1></Col>
+                        <Col className='text-center'><h1><span>Our</span><span className='text-light'> Services</span></h1></Col>
                     </Row>
 
                     <Row >
                         <Col className='mb-3 d-flex justify-content-center align-items-center'>
-                            <Card style={{ width: '18rem', height: '320px', margin:'8px' }} >
+                            <Card style={{ width: '18rem', height: '300px', margin:'8px' }} >
                                 <Card.Body>
-                                    <Card.Title>Engineering Services</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                                    <Card.Text>
-                                        Work with top 
-                                        professional and
-                                        experienced engineers
-                                        in handling your engineering
-                                        projects ranging from 
-                                        consultation and design
-                                        to supervision to 
-                                        completion with standard
-                                        quality.
+                                    <Card.Title className='fw-bold'>Engineering Network</Card.Title>
+                                    {/* <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle> */}
+                                    <Card.Text className='mt-4'>
+                                        Connect with top professionals  
+                                        and experienced engineers.  
+                                        Expand your network effortlessly.  
+                                        Gain insights from industry experts.  
+                                        Take your career to the next level.
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
                         </Col>
 
                         <Col className='mb-3 d-flex justify-content-center align-items-center' >
-                            <Card style={{ width: '18rem', height: '320px',margin:'8px' }}>
+                            <Card style={{ width: '18rem', height: '300px',margin:'8px' }}>
                                 <Card.Body>
-                                    <Card.Title>Supply/Delivery</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                                    <Card.Text>
-                                        Order your materials from
-                                        our online store and 
-                                        experience and on-time
-                                        supply/ delivery of your 
-                                        quality materials. 
+                                    <Card.Title className='fw-bold'>Procurement</Card.Title>
+                                    {/* <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle> */}
+                                    <Card.Text className='mt-4'>
+                                        Navigate the space of streamlined procurement,  
+                                        simplifying the purchase of engineering products.  
+                                        Optimize your workflows for greater efficiency.  
+                                        Reduce time spent on sourcing and approvals.  
+                                        Cut through complex requirements with ease.  
+                                        Experience faster decision-making processes.  
+                                        Achieve smoother product acquisitions today.
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
                         </Col>
 
                         <Col className='mb-3 d-flex justify-content-center align-items-center'>
-                            <Card style={{ width: '18rem', height: '320px',margin:'8px'}}>
+                            <Card style={{ width: '18rem', height: '300px',margin:'8px'}}>
                                 <Card.Body>
-                                    <Card.Title>Maintainence Services</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                                    <Card.Text>
-                                        Find and Request for 
-                                        services from highly skilled 
-                                        and experienced 
-                                        tradespersons and 
-                                        technicians around you. 
-                                        Get them at the comfort 
-                                        of your home and experience 
-                                        service at its best.
+                                    <Card.Title className='fw-bold'>Engineering Services</Card.Title>
+                                    {/* <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle> */}
+                                    <Card.Text className='mt-4'>
+                                        Connect with skilled engineering-related  
+                                        workers in your local area.  
+                                        Get your projects completed efficiently  
+                                        and on time, without hassle.  
+                                        Access experienced professionals nearby  
+                                        to tackle jobs of any scale.  
+                                        Simplify your hiring process today!
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
                         </Col>
                     </Row>
 
-                </Row>
-
-                <Row className='py-3 text-center' style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Col className='text-center py-3 mb-3' lg={12} md={12} sm={12}>
-                        <h1>Our Clients</h1>
-                    </Col>
-
-
-                    <Col className='mb-3'>
-                        <img src={metalogo} alt='meta logo'/>
-                    </Col>
-
-                    <Col className='mb-3'>
-                        <img src={abblogo} alt='meta logo' />
-                    </Col>
-
-                    <Col className='mb-3'>
-                        <img src={ericsson} alt='meta logo' />
-                    </Col>
-
-                    <Col className='mb-3'>
-                        <img src={chevron} alt='meta logo' />
-                    </Col>
-
-                   
+                    <Row>
+                        <Col className='text-center' style={{display: 'flex', justifyContent: 'center'}}>
+                            <div className='text-center' style={{width:'140px'}}>
+                                <Button type='button' htmlType='button' className='rounded-2 py-1 m-1 outline-btn' text={
+                                    <span>
+                                        Start for free
+                                        <i className="fa-light fa-chevron-right m-2"></i>
+                                    </span>
+                                    } />
+                            </div>          
+                        </Col>
+                    </Row>
+                    
 
                 </Row>
-
+            </Container>
+            <Container className='fadeup-dark-bg pt-5'>
+                <div className='m-0 p-0'>
+                    <Row className='my-2'>
+                        <Col className='text-center'><h3><span>Our</span><span className='text-light'> Partners</span></h3></Col>
+                    </Row>
+                    <EngineeringCarousel companies={companies} />
+                    <EngineeringCarousel companies={companies} />
+                    <EngineeringCarousel companies={companies} />
+                </div>
+                <div className='mt-2 p-0'>
+                    <Row className='my-2'>
+                        <Col className='text-center'><h3><span>Our</span><span className='text-light'> Clients</span></h3></Col>
+                    </Row>
+                    <EngineeringCarousel companies={companies} />
+                    <EngineeringCarousel companies={companies} />
+                    <EngineeringCarousel companies={companies} />
+                </div>
                 <Row className='mb-5'style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col className='py-3 text-center' lg={12} md={12} sm={12}>
                         <h1>Earn with us </h1>
@@ -168,7 +200,7 @@ function Home ({ API_URL,Companyname }) {
                         <div className='p-3'>
                             <img src='https://images.pexels.com/photos/8961146/pexels-photo-8961146.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='engineer' width='100%'/> 
                         </div>
-                       
+                    
                     </Col>
 
                     <Col className='py-3'> 
@@ -201,7 +233,7 @@ function Home ({ API_URL,Companyname }) {
                     <Col>
                         <a href='/sdsdd'>
                             <img src='https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='product' width='100%'/>
-                           
+                        
                         </a>
                         <p>Cables</p>
                     </Col>
@@ -246,11 +278,11 @@ function Home ({ API_URL,Companyname }) {
                                 <Link><h5>View all </h5></Link>
                             </Col>
                         </Row>
-                       
+                    
                     </Col>
                         
                     <Col>
-                         <div>
+                        <div>
                             <img src={CIPAC_cover_photo} alt='news' width='100%'/>
                         </div>
                         <h5>Oahse Engineering Fest 2024</h5>
@@ -259,9 +291,9 @@ function Home ({ API_URL,Companyname }) {
                             and experience and on-time supply/ delivery of your quality materials.
                         </p>
                     </Col>
-                       
+                    
                     <Col>
-                         <div>
+                        <div>
                             <img src={CIPAC_cover_photo} alt='news' width='100%'/>
                         </div>
                         <h5>Oahse Engineering Training Programs and Certification </h5>
@@ -270,7 +302,7 @@ function Home ({ API_URL,Companyname }) {
                             and experience and on-time supply/ delivery of your quality materials.
                         </p>
                     </Col>
-                       
+                    
                     <Col>
                         <div>
                             <img src={CIPAC_cover_photo} alt='news' width='100%'/>
@@ -299,8 +331,7 @@ function Home ({ API_URL,Companyname }) {
                     </Col>
 
                 </Row>
-
-            </Container>
+                </Container>
 
             <Footer className='footer'/>
         </div>
