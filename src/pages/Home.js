@@ -188,7 +188,6 @@ function Home ({ API_URL,Companyname }) {
                         All engineering products easily accessible and procurement-supply process streamlined and
                         made very easy!
                     </p>
-                    
                 </div>
                 <div className='mt-4 p-0' style={{width:'auto'}}>
                     <Row className='my-2'>
@@ -293,7 +292,6 @@ function Home ({ API_URL,Companyname }) {
                             <Button type='button' htmlType='button' className='m-1 ' text={<span><i className='fa-brands fa-google-play'></i> Download the App</span>} />
                         </a>
                     </Col>
-
                 </Row>
                 <Footer className='footer'/>
             </Container>
