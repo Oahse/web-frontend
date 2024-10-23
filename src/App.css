@@ -670,6 +670,7 @@ a {
       background-size: cover;
    */
       color: var(--white);
+      width: auto;
 }
 
 .showcase-pic{
@@ -679,6 +680,7 @@ a {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    width: auto;
 }
 
 .showcase h1,
@@ -746,21 +748,22 @@ footer{
 }
 .fadeup-dark-bg {
   background: linear-gradient(to top, black, white); /* Gradient from black at the bottom to white at the top */
-  height: 100vh; /* Full-screen height for example */
+  height: 100%; /* Full-screen height for example */
   width: 100%; /* Full width */
+  box-shadow: #1E1E1E;
 }
 
 /* partners swiper */
 
 .myPartners {
-  width: 100%;
+  width: auto;
   height: 150px;
 }
 
 .myPartners-swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: transparent;
+  background: white;
   width: 150px;
   /* Center slide text vertically */
   display: flex;
@@ -768,6 +771,47 @@ footer{
   align-items: center;
   border: 0.5px solid var(--background-color);
   border-radius: var(--border-radius);
+}
+.need-img {
+  border: 0.5px solid var(--background-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+.separator{
+  background-color: var(--white);
+  height:8px;
+  width: '100%';
+  margin: '20px';
+}
+.client-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+/* For tablets or medium-sized screens */
+@media (max-width: 768px) {
+  .client-grid {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+/* For mobile or small-sized screens */
+@media (max-width: 480px) {
+  .client-grid {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+
+.client-item {
+  flex-basis: 30%; /* Three per line */
+  margin: 10px 0; /* Margin between rows */
+  text-align: center;
 }
 
 

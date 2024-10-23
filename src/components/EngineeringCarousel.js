@@ -6,10 +6,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
-
+// import loaderimg from '../assets/loader.jpeg';
+// import oasheicon from  '../assets/oahse-icon.png';
 // Import required modules
 import { Autoplay, FreeMode, Mousewheel, Pagination, Navigation } from 'swiper/modules';
-import { Card } from 'react-bootstrap';
+import { Avatar } from 'antd';
 
 const EngineeringCarousel = ({ companies }) => {
     const [autoplayDelay, setAutoplayDelay] = useState(2500); // Default value
@@ -25,7 +26,6 @@ const EngineeringCarousel = ({ companies }) => {
             slidesPerView={'auto'}
             centeredSlides={true}
             spaceBetween={3}
-            grabCursor={true}
             freeMode={true}
             pagination={false}
             loop={true}
@@ -38,9 +38,19 @@ const EngineeringCarousel = ({ companies }) => {
         >
             {companies.map((company, idx) => (
                 <SwiperSlide key={idx} className='myPartners-swiper-slide'>
-                    <Card.Img src={company.logo} alt={company.name} style={{ objectFit: 'contain', height: '100%' }} />
+                    {company.logo ? (
+                        <Avatar 
+                            shape='square' 
+                            src={company.logo} 
+                            alt={company.name} 
+                            style={{ objectFit: 'cover', width: '100%', height: '100%', borderRadius: '0%' }} 
+                        />
+                    ) : (
+                        <i className="fa-sharp fa-thin fa-loader text-dark text-center"></i>
+                    )}
                 </SwiperSlide>
             ))}
+
         </Swiper>
     );
 };
