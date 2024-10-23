@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.20fd61ad.css",
-    "main.js": "/web-frontend/static/js/main.1da19234.js",
+    "main.css": "/web-frontend/static/css/main.1614fa0a.css",
+    "main.js": "/web-frontend/static/js/main.c6a07755.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/localhost_3000_O-sell(iPhone 6_7_8 Plus).png": "/web-frontend/static/media/localhost_3000_O-sell(iPhone 6_7_8 Plus).f5019a1cd39123dbbac8.png",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
@@ -11,12 +11,12 @@
     "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
     "index.html": "/web-frontend/index.html",
     "static/media/faceid.svg": "/web-frontend/static/media/faceid.6a5f2dd80c788b25da03f9dd5c9a8867.svg",
-    "main.20fd61ad.css.map": "/web-frontend/static/css/main.20fd61ad.css.map",
-    "main.1da19234.js.map": "/web-frontend/static/js/main.1da19234.js.map",
+    "main.1614fa0a.css.map": "/web-frontend/static/css/main.1614fa0a.css.map",
+    "main.c6a07755.js.map": "/web-frontend/static/js/main.c6a07755.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.20fd61ad.css",
-    "static/js/main.1da19234.js"
+    "static/css/main.1614fa0a.css",
+    "static/js/main.c6a07755.js"
   ]
 }
