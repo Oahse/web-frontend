@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import ImageLoader from '../components/Loader';
 import Header from '../components/Header';
-import { Row, Col, Button, Card, Avatar, Typography, Descriptions } from 'antd';
+import { Row, Col,Card, Avatar, Typography, Descriptions } from 'antd';
 import { Link } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import { UserOutlined, HeartOutlined, FileTextOutlined, WalletOutlined, LogoutOutlined, CheckCircleOutlined, PhoneOutlined, MailOutlined, GlobalOutlined } from '@ant-design/icons';
+import { UserOutlined,CheckCircleOutlined } from '@ant-design/icons';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-
+import Button from '../components/Button';
 const { Title, Text } = Typography;
 
 const User = ({ API_URL, Companyname }) => {
@@ -51,19 +51,19 @@ const User = ({ API_URL, Companyname }) => {
                             Olaitan Chinedu Rufai <CheckCircleOutlined style={{ color: 'green' }} />
                         </Title>
                         <Text>
-                            <PhoneOutlined /> +2349012345678
+                            <i className="fa-sharp fa-light fa-phone m-2"></i> +2349012345678
                         </Text>
                         <br />
                         <Text>
-                            <MailOutlined /> ocrafiu@ncc.com
+                            <i className="fa-sharp fa-light fa-envelope m-2"></i>ocrafiu@ncc.com
                         </Text>
                         <br />
                         <Text>
-                            <GlobalOutlined /> Ikoyi, Lagos State, Nigeria
+                            <i className="fa-light fa-location-dot m-2"></i> Ikoyi, Lagos State, Nigeria
                         </Text>
                         <br />
                         <Link to="/edit-profile">
-                            <Button type='primary' style={{ marginTop: '16px' }}>Edit Profile</Button>
+                            <Button type="primary" style={{ marginTop: '16px' }} className={'mt-4 outline-btn'} text='Edit Profile' />
                         </Link>
                     </Col>
                 </Row>
@@ -81,41 +81,41 @@ const User = ({ API_URL, Companyname }) => {
               </Descriptions>
 
                 {/* Bottom Icon Row */}
-                <Row className='p-5 text-center'>
-                    <Col span={4}>
+                <Row className='p-5 text-center' gutter={[16, 16]}>
+                    <Col xs={12} sm={8} md={6} lg={4}>
                         <Link to={{ pathname: `/profile/reports/${1455}` }} style={{ textDecoration: 'none', color: 'black' }}>
-                            <Card hoverable>
-                                <UserOutlined style={{ fontSize: '36px' }} />
-                                <Title level={4}>Reports</Title>
-                            </Card>
+                        <Card hoverable>
+                            <i className="fa-sharp fa-thin fa-file-chart-column" style={{ fontSize: '28px' }}></i>
+                            <Title level={4}>Reports</Title>
+                        </Card>
                         </Link>
                     </Col>
 
-                    <Col span={4}>
+                    <Col xs={12} sm={8} md={6} lg={4}>
                         <Card hoverable>
-                            <HeartOutlined style={{ fontSize: '36px' }} />
-                            <Title level={4}>Saved Items</Title>
+                        <i className="fa-thin fa-floppy-disk-circle-arrow-right" style={{ fontSize: '28px' }}></i>
+                        <Title level={4}>Saved Items</Title>
                         </Card>
                     </Col>
 
-                    <Col span={4}>
+                    <Col xs={12} sm={8} md={6} lg={4}>
                         <Card hoverable>
-                            <FileTextOutlined style={{ fontSize: '36px' }} />
-                            <Title level={4}>Submissions</Title>
+                        <i className="fa-sharp fa-thin fa-file-check" style={{ fontSize: '28px' }}></i>
+                        <Title level={4}>Submissions</Title>
                         </Card>
                     </Col>
 
-                    <Col span={4}>
+                    <Col xs={12} sm={8} md={6} lg={4}>
                         <Card hoverable>
-                            <WalletOutlined style={{ fontSize: '36px' }} />
-                            <Title level={4}>Payment</Title>
+                        <i className="fa-thin fa-wallet" style={{ fontSize: '28px' }}></i>
+                        <Title level={4}>Payment</Title>
                         </Card>
                     </Col>
 
-                    <Col span={4}>
+                    <Col xs={12} sm={8} md={6} lg={4}>
                         <Card hoverable>
-                            <LogoutOutlined style={{ fontSize: '36px' }} />
-                            <Title level={4}>Logout</Title>
+                        <i className="fa-thin fa-left-from-bracket" style={{ fontSize: '28px' }}></i>
+                        <Title level={4}>Logout</Title>
                         </Card>
                     </Col>
                 </Row>

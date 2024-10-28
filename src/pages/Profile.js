@@ -65,10 +65,10 @@ function ProfilePage() {
                 </Col>
                 <Col className='py-4 mt-5'>
                     <h2>Olaitan Chinedu Rufai <span><i class="bi bi-patch-check-fill"></i></span></h2>
-                    <p><span><i className="bi bi-briefcase-fill"></i></span>  Professional Engineer</p>
-                    <p><span><i className="bi bi-geo-alt-fill"></i></span>  Ikoyi, Lagos State, Nigeria</p>
-                    <p><span><i className="bi bi-telephone-fill"></i></span>  +2349012345678</p>
-                    <p><span><i className="bi bi-envelope-fill"></i></span>  ocrafiu@ncc.com</p>
+                    <p><span><i className="fa-light fa-briefcase"></i></span>  Professional Engineer</p>
+                    <p><span><i className="fa-light fa-location-dot"></i></span>  Ikoyi, Lagos State, Nigeria</p>
+                    <p><span><i className="fa-sharp fa-light fa-phone"></i></span>  +2349012345678</p>
+                    <p><span><i className="fa-sharp fa-light fa-envelope"></i></span>  ocrafiu@ncc.com</p>
 
                     <Button type='button' htmlType={'button'} text='Edit Profile'/>
                 </Col>
@@ -88,44 +88,43 @@ function ProfilePage() {
                
             </Row>
 
-            <Row className='p-3 mb-3 text-center' lg={4} md={4} sm={3}>
-                <Col className='mb-5'>
-                    <Link to={{pathname:`/profile/reports/${1455}`}} state={{indexpage:'Dashboard'}} style={{textDecoration:'none', color:'black'}}>
-                        <h1><i className="bi bi-card-list"></i></h1>
+            <Row className='p-3 mb-3 text-center'>
+                <Col xs={12} sm={6} md={4} lg={3} className='mb-5'>
+                    <Link to={{ pathname: `/profile/reports/${1455}` }} state={{ indexpage: 'Dashboard' }} style={{ textDecoration: 'none', color: 'black' }}>
+                        <h3><i className="fa-sharp fa-thin fa-file-chart-column m-2"></i></h3>
                         <h4>Reports</h4>
                     </Link>
                 </Col>
 
-                <Col className='mb-5'>
-                    <h1><i className="bi bi-heart"></i></h1>
+                <Col xs={12} sm={6} md={4} lg={3} className='mb-5'>
+                    <h3><i className="fa-thin fa-floppy-disk-circle-arrow-right m-2"></i></h3>
                     <h4>Saved Items</h4>
                 </Col>
 
-                <Col className='mb-5'>
-                    <h1><i className="bi bi-chat-left-text"></i></h1>
+                <Col xs={12} sm={6} md={4} lg={3} className='mb-5'>
+                    <h3><i className="fa-sharp-duotone fa-solid fa-star-sharp-half m-2"></i></h3>
                     <h4>Reviews</h4>
                 </Col>
 
-                <Col className='mb-5'>
-                    <h1><i className="bi bi-file-earmark-text"></i></h1>
+                <Col xs={12} sm={6} md={4} lg={3} className='mb-5'>
+                    <h3><i className="fa-sharp fa-thin fa-file-check m-2"></i></h3>
                     <h4>Submissions</h4>
                 </Col>
 
-                <Col className='mb-5'>
-                    <h1><i className="bi bi-map"></i></h1>
+                <Col xs={12} sm={6} md={4} lg={3} className='mb-5'>
+                    <h3><i className="fa-sharp fa-thin fa-address-book m-2"></i></h3>
                     <h4>Address Book</h4>
                 </Col>
 
-                <Col className='mb-5'>
-                     
-                    <Link to={{pathname:`/profile/reports/${1455}`}} state={{indexpage:'Transactions'}} style={{textDecoration:'none', color:'black'}}>
-                        <h1><i className="bi bi-wallet"></i></h1>
+                <Col xs={12} sm={6} md={4} lg={3} className='mb-5'>
+                    <Link to={{ pathname: `/profile/reports/${1455}` }} state={{ indexpage: 'Transactions' }} style={{ textDecoration: 'none', color: 'black' }}>
+                        <h3><i className="fa-thin fa-wallet m-2"></i></h3>
                         <h4>Payment</h4>
                     </Link>
                 </Col>
 
-                <Col className='mb-5'>
-                <h1><i className="bi bi-box-arrow-right"></i></h1>
+                <Col xs={12} sm={6} md={4} lg={3} className='mb-5'>
+                    <h3><i className="fa-thin fa-left-from-bracket m-2"></i></h3>
                     <h4>Logout</h4>
                 </Col>
             </Row>
