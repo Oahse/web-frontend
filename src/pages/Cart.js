@@ -100,15 +100,8 @@ const Cart = ({ API_URL, Companyname }) => {
   };
 
   if (isLoading) {
-    return (
-      <ImageLoader
-        src={oahseicon}
-        alt="oahse"
-        src2={oahselogo}
-        alt2="oahse"
-      />
-    );
-  }
+    return <ImageLoader src={oahseicon} alt='oahse' src2={oahselogo} alt2='oahse' />;
+}
 
   // Columns for the Antd Table
   const columns = [
@@ -213,7 +206,7 @@ const Cart = ({ API_URL, Companyname }) => {
 
   return (
     <div className="cart">
-      <span className="d-flex flex-column topbar">
+      <span className="d-flex flex-column topbar ms-2">
         <Header Companyname={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
         <FilterComponent onSearch={filterItems} name={true} date={true} price={true} onChangeDrawer={setDrawerVisible}
             drawervisible={drawerVisible} />

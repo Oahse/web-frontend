@@ -68,11 +68,11 @@ const OrderResult = ({ API_URL, Companyname, orderDetails, onContinueShopping })
 
               {/* Buttons for Tracking Order and Continuing Shopping */}
               <Row justify="center" className="mt-4">
-                <Col xs={24} sm={11} className="mb-3">
+                <Col xs={24} sm={11} className="m-1" >
                   <Button
                     type="button"
                     htmlType="button"
-                    className="m-1"
+                    className="m-3"
                     text={<span><i className="fa-light fa-box"></i> Track Your Order</span>}
                     onClick={() => {
                       // Add your tracking page logic here
@@ -82,11 +82,11 @@ const OrderResult = ({ API_URL, Companyname, orderDetails, onContinueShopping })
                   />
                 </Col>
 
-                <Col xs={24} sm={11}>
+                <Col xs={24} sm={11} className='m-1'>
                   <Button
                     type="button"
                     htmlType="button"
-                    className="m-1"
+                    className="m-3"
                     text={<span><i className="fa-light fa-shop"></i> Continue Shopping</span>}
                     onClick={navigate('/')}
                   />

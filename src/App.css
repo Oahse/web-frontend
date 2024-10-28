@@ -410,6 +410,7 @@ a {
   border: 1px solid var(--primary-color) !important;
   background-color: var(--white) !important;
   color: var(--background-color) !important;
+  cursor: pointer !important;
 }
 .ant-picker-cell-today .ant-picker-cell-inner::before {
   border: 1px solid transparent !important;
