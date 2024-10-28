@@ -206,7 +206,7 @@ const Cart = ({ API_URL, Companyname }) => {
 
   return (
     <div className="cart">
-      <span className="d-flex flex-column topbar ms-2">
+      <span className="d-flex flex-column topbar">
         <Header Companyname={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
         <FilterComponent onSearch={filterItems} name={true} date={true} price={true} onChangeDrawer={setDrawerVisible}
             drawervisible={drawerVisible} />
