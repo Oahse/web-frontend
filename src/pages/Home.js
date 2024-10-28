@@ -97,7 +97,7 @@ function Home ({ API_URL,Companyname }) {
                 </Row>
             </Container >
 
-            <Container fluid>
+            <Container fluid >
                 <Row className='py-3 ' style={{ display: 'flex', justifyContent: 'center' }}>
                     <Row className='my-2'>
                         <Col className='text-center'><h1><span>Our</span><span className='text-light'> Services</span></h1></Col>
@@ -105,7 +105,7 @@ function Home ({ API_URL,Companyname }) {
 
                     <Row >
                         <Col className='mb-3 d-flex justify-content-center align-items-center'>
-                            <Card style={{ width: '18rem', height: '300px', margin:'8px' }} >
+                            <Card style={{ width: '18rem', height: '300px'}} >
                                 <Card.Body>
                                     <Card.Title className='fw-bold'>Engineering Network</Card.Title>
                                     {/* <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle> */}
@@ -121,7 +121,7 @@ function Home ({ API_URL,Companyname }) {
                         </Col>
 
                         <Col className='mb-3 d-flex justify-content-center align-items-center' >
-                            <Card style={{ width: '18rem', height: '300px',margin:'8px' }}>
+                            <Card style={{ width: '18rem', height: '300px'}}>
                                 <Card.Body>
                                     <Card.Title className='fw-bold'>Procurement</Card.Title>
                                     {/* <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle> */}
@@ -139,7 +139,7 @@ function Home ({ API_URL,Companyname }) {
                         </Col>
 
                         <Col className='mb-3 d-flex justify-content-center align-items-center'>
-                            <Card style={{ width: '18rem', height: '300px',margin:'8px'}}>
+                            <Card style={{ width: '18rem', height: '300px'}}>
                                 <Card.Body>
                                     <Card.Title className='fw-bold'>Engineering Services</Card.Title>
                                     {/* <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle> */}
@@ -173,8 +173,8 @@ function Home ({ API_URL,Companyname }) {
 
                 </Row>
             </Container>
-            <Container className='fadeup-dark-bg p-0 pt-5' fluid>
-                <div className='m-0 p-0' style={{width:'auto'}}>
+            <Container className='fadeup-dark-bg pt-5' fluid>
+                <div className='m-0 p-0' >
                     <Row className='my-2'>
                         <Col className='text-center'><h3><span>Our</span><span className='text-light'> Partners</span></h3></Col>
                     </Row>
@@ -231,7 +231,7 @@ function Home ({ API_URL,Companyname }) {
                         </Col>
                     </Row>
                 </div>
-                <div className='mt-5 p-0' style={{width:'auto'}}>
+                <div className='mt-5 mb-5 p-0' style={{width:'auto'}}>
                     <Row className='my-2'>
                         <Col className='text-center'><h3><span className='text-dark'>What Do you Need? Let's Handle It!</span></h3></Col>
                     </Row>
@@ -256,21 +256,29 @@ function Home ({ API_URL,Companyname }) {
                         <Col xs={12} md={2} className='text-center' style={{display: 'flex', justifyContent: 'center'}}>
                             <i className="fa-sharp fa-solid fa-circle-arrow-right text-center" style={{fontSize:'26px'}}></i>  
                         </Col>
-                        <Col xs={12} md={4} className='text-center' style={{display: 'flex', justifyContent: 'center'}}>
-                            <p>
-                                We have all you 
-                                need to 
-                                drive those
-                                Innovative Projects
-                            </p>
-                            <p className='text-center' style={{width:'140px'}}>
-                                <Button type='button' htmlType='button' className='rounded-2 py-1 m-1 outline-btn' text={
-                                    <span >
-                                        It's just here
-                                        <i className="fa-light fa-chevron-right m-2"></i>
-                                    </span>
-                                    } />
-                            </p>       
+                        <Col xs={12} md={4} style={{display: 'flex', justifyContent: 'center'}}>
+                            <Row className='my-2'>
+                                <Col xs={24} md={24}>
+                                    <h2  className='text-start text-white'>
+                                        We have all you 
+                                        need to 
+                                        drive those
+                                        <p className='text-dark'>Innovative Projects</p>
+                                    </h2>
+                                </Col>
+                                <Col xs={24} md={24} >
+                                    <h2  className='d-flex justify-content-end' style={{width:'140px'}}>
+                                        <Button type='button' htmlType='button' className='rounded-2 py-1 m-1 outline-btn' text={
+                                            <span >
+                                                It's just here
+                                                <i className="fa-light fa-chevron-right m-2"></i>
+                                            </span>
+                                            } />
+                                    </h2>  
+                                </Col>
+                            </Row>
+                            
+                                 
                         </Col>
                     </Row>
                 </div>
@@ -295,8 +303,6 @@ function Home ({ API_URL,Companyname }) {
                 </Row>
                 <Footer className='footer'/>
             </Container>
-
-            
         </div>
     );
 }

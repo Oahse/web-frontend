@@ -5,10 +5,30 @@ import Logo from '../assets/oahse-logo.png';
 import BottomNavbar from './BottomNavBar';
 import { isDesktop, isMobile, isTablet } from 'react-device-detect';
 import Button from './Button';
+import { Drawer } from 'antd';
 
 const Header = ({ Companyname, isloggedIn, userDetails }) => {
     const location = useLocation(); // Get the current location (URL)
     const [activeLink, setActiveLink] = useState(location.pathname); // Track the active link based on the current path
+    const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+    const [toggle, setToogle] =useState('fa-bars')
+  
+    // Function to toggle the Drawer
+    const toggleDrawer = () => {
+        if (toggle === 'fa-bars'){
+            setToogle('fa-x')
+        }else{
+            setToogle('fa-bars')
+        }
+        setIsDrawerVisible(!isDrawerVisible);
+    };
+    const links = [
+        { name: 'Home', url: '/home', icon: <i className="fa-light fa-house nav-icons"></i> },
+        { name: 'MarketPlace', url: '/', icon: <i className="fa-light fa-grid-2 nav-icons"></i> },
+        // { name: 'Map', url: '/map', icon: <i className="fa-light fa-location-crosshairs nav-icons"></i> },
+        { name: 'Cart', url: '/cart', icon: <i className="fa-light fa-cart-shopping nav-icons"></i> },
+        { name: 'User', url: '/user', icon: <i className="fa-light fa-user nav-icons"></i> },
+    ];
 
     // Update active link based on the URL change
     useEffect(() => {
@@ -16,13 +36,6 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
     }, [location]); // Only run when the URL changes
 
     const renderLinks = () => {
-        const links = [
-            { name: 'Home', url: '/home', icon: <i className="fa-light fa-house nav-icons"></i> },
-            { name: 'MarketPlace', url: '/', icon: <i className="fa-light fa-grid-2 nav-icons"></i> },
-            { name: 'Map', url: '/map', icon: <i className="fa-light fa-location-crosshairs nav-icons"></i> },
-            { name: 'Cart', url: '/cart', icon: <i className="fa-light fa-cart-shopping nav-icons"></i> },
-            { name: 'User', url: '/user', icon: <i className="fa-light fa-user nav-icons"></i> },
-        ];
 
         return links.map((link, index) => (
             <Link 
@@ -76,7 +89,8 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                                         >
                                             <Button type='button' htmlType='button' className='' text={<span>Start for free<i className="fa-light fa-chevron-right m-2"></i></span>} />
                                         </Link>
-                                        <i className="fa-light fa-bars nav-icons mr-2" style={{cursor:'pointer'}}></i>
+                                        {/* Hamburger icon for Drawer toggle */}
+                                        {isDesktop ? <i className={`fa-light ${toggle} nav-icons mr-2`} style={{ cursor: 'pointer' }} onClick={toggleDrawer}></i>:null}
                                     </>
                                 :
                                 isDesktop ?
@@ -100,6 +114,17 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
 
             {/* Bottom Navbar for mobile and tablet */}
             {(isMobile || isTablet) ? <BottomNavbar renderLinks={renderLinks} /> : null}
+            {/* Drawer component */}
+            <Drawer
+                title="Navigation"
+                placement="left"
+                onClose={toggleDrawer}
+                visible={isDrawerVisible}
+            >
+                {links.map((link, index) => (
+                    <p key={index}><Link to={link.url} className={`${activeLink === link.url ? 'text-light fw-bold' : 'text-dark'}`}>{link.icon}<span className='ms-3'>{link.name}</span></Link></p>
+                ))}
+            </Drawer>
         </>
     );
 };

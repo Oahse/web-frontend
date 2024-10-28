@@ -701,16 +701,21 @@ a {
 /* footer.css */
 
 footer{
-  background: var(--background-color);
   color: var(--white);
 }
-
 .footer-listitem{
-  text-decoration: none;
   display: flex;
   flex-direction: row;
   justify-self: left;
+  text-decoration: none;
 }
+.footer-listHeader{
+  display: flex;
+  flex-direction: row;
+  justify-self: left;
+  text-decoration: underline;
+}
+
 .footer-listitem:hover{
   color: var(--primary-text-color);
 }
@@ -723,23 +728,30 @@ footer{
   margin: 0px;
   margin-top: 8px;
   margin-bottom: 8px;
+  border:1px solid var(--white);
+  border-radius: var(--border-radius);
+  cursor: pointer;
 }
 .store-list-item a{
   text-decoration: none;
   color: var(--white);
-  padding: 16px;
+  padding: 8px;
   font-weight: bold;
   width: '100%';
-  border:1px solid var(--white);
-  border-radius: var(--border-radius);
+  
 }
 .store-list-item a:hover{
   border-color: var(--primary-text-color);
 }
-.store-list-item a img{
-  margin-bottom: 8px;
+.store-list-item a i{
+  margin-bottom: 0px;
   margin-right: 4px;
   width:40px;
+  height: 40px;
+  font-size: 34px;
+}
+.store-list-item a span{
+  font-weight: 400;
 }
 .bottom{
   text-decoration: none;
@@ -749,7 +761,6 @@ footer{
 .fadeup-dark-bg {
   background: linear-gradient(to top, black, white); /* Gradient from black at the bottom to white at the top */
   height: 100%; /* Full-screen height for example */
-  width: 100%; /* Full width */
   box-shadow: #1E1E1E;
 }
 
