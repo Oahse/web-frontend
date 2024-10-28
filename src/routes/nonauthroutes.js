@@ -13,6 +13,8 @@ import Categories from '../pages/Categories';
 import PaymentConfirmation from '../pages/PaymentConfirmation';
 import OrderResult from '../pages/OrderResultPage';
 import TrackingOrder from '../pages/OrderTracking';
+import VerifyMail from '../pages/VerifyMail';
+import VerifyMailConfirmation from '../pages/VerifyMailConfirmation';
 
 
 const NonAuthRoutes = ({ API_URL,Companyname }) => [
@@ -45,6 +47,16 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     path: "/signup",
     element: <Signup API_URL={API_URL} Companyname={Companyname}/>,
     title: "signup"
+  },
+  {
+    path: "/verify-email-otp",
+    element: <VerifyMail API_URL={API_URL} Companyname={Companyname}/>,
+    title: "verify-email-otp"
+  },
+  {
+    path: "/verify-email-confirmation",
+    element: <VerifyMailConfirmation API_URL={API_URL} Companyname={Companyname}/>,
+    title: "verify-email-confirmation"
   },
   {
     path: "/forgotpassword",

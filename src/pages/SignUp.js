@@ -1,20 +1,21 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import { Card, Form} from 'antd';
+import { Avatar, Card, Form} from 'antd';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import FormInput from '../components/FormInput';
 import FormCheckBox from '../components/FormCheckBox';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
-
 function Signup({ API_URL }) {
+  const navigate = useNavigate();
   //const [isLoading, setIsLoading] = useState(false); // Start with loading true
   // setIsLoading(true);
   const isLoading = false;
   const onFinish = (values) => {
     console.log('Form values:', values);
+    navigate('/verify-email-otp')
   };
    if (isLoading){
     return <ImageLoader
@@ -26,9 +27,8 @@ function Signup({ API_URL }) {
    }
   return (
     <Card className={`signup ${!isMobile ? 'bigpadding':''}`} style={{textAlign:'center'}}>
-            <div className='mb-4' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ marginLeft: 'auto' }} className='title'>Sign Up</span>
-                <Link to='/login' className='semititle' style={{ marginLeft: 'auto' }}>Login</Link>
+            <div className='mb-4' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <span className='title'>Sign Up</span>
             </div>
             <Form
               name="signup"
@@ -77,13 +77,17 @@ function Signup({ API_URL }) {
                   }),
                 ]}
                 />
-            <div className='minititle mb-4' style={{ textAlign: 'right' }}>
-                <small >Already have an account? </small>
-                <Link to="/login">Login</Link>
-              </div>
-              
-            <FormCheckBox name="newsletter" valuePropName="checked" text={'I would like to receive your newsletter and other promotional information.'} />
-
+              <div className='minititle mb-4' style={{ textAlign: 'right' }}>
+                  
+                  <Link to="/login"><small >Already have an account? Login</small></Link>
+                </div>
+                
+              <FormCheckBox name="newsletter" valuePropName="checked" text={'I would like to receive your newsletter and other promotional information.'} />
+              <div className='minititle mb-4 text-white' style={{ textAlign: 'left' }}>
+                or signup with 
+                <Link to="/login"><Avatar shape={'square'} className='ms-2' src={'https://iconape.com/wp-content/uploads/1/11/gmail-02.png'}  style={{backgroundColor:'white', minWidth:'60px'}}></Avatar></Link>
+                <Link to="/login"><Avatar shape={'square'} className='ms-3' src={'http://www.pngall.com/wp-content/uploads/2016/07/Linkedin-Free-PNG-Image.png'} style={{backgroundColor:'white', minWidth:'60px'}}></Avatar></Link>
+                </div>
               <Form.Item>
                 <Button type="primary" htmlType="submit" text='Register' />
               </Form.Item>

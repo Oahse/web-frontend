@@ -3,10 +3,19 @@ import { Input } from 'antd';
 
 const MAX_PRICE = 9999999999999999; // Max limit
 const MIN_PRICE = 0; // Min limit
+const VALUE = 0
 
-const InputNumber = ({ min = MIN_PRICE, max = MAX_PRICE, value = 0, onChange, placeholder,style }) => {
+const InputNumber = ({ min = MIN_PRICE, max = MAX_PRICE, value = VALUE, singlevalue, onChange, placeholder,style }) => {
   const [val, setValue] = useState(value);
+  function getSecondDigit(num) {
+    // Ensure the number is two digits
+    if (num < 10 || num > 99) {
+        throw new Error('Input must be a two-digit number');
+    }
 
+    // Use modulus and division to extract the second digit
+    return num % 10; // Gets the second digit directly
+}
   const handleNumberChange = (e) => {
     let newValue = e.target.value;
 
@@ -22,7 +31,13 @@ const InputNumber = ({ min = MIN_PRICE, max = MAX_PRICE, value = 0, onChange, pl
     if (newValue < min) {
       newValue = min;
     } else if (newValue > max) {
-      newValue = max;
+      
+      if (singlevalue) {
+        newValue = getSecondDigit(newValue);
+      }else{
+        newValue = max;
+      }
+
     }
 
     // Update local state

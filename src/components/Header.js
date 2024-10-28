@@ -124,6 +124,18 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                 {links.map((link, index) => (
                     <p key={index}><Link to={link.url} className={`${activeLink === link.url ? 'text-light fw-bold' : 'text-dark'}`}>{link.icon}<span className='ms-3'>{link.name}</span></Link></p>
                 ))}
+                {isloggedIn?<Link 
+                    to='/logout' 
+                    className="m-2 icon-container"
+                >
+                    <Button type='button' htmlType='button' className='' text={<span>Logout <i className="fa-light fa-left-to-bracket m-2"></i></span>} />
+                </Link>:<Link 
+                    to='/login' 
+                    className="m-2 icon-container"
+                >
+                    <Button type='button' htmlType='button' className='' text={<span>Login<i className="fa-light fa-right-to-bracket m-2"></i></span>} />
+                </Link>}
+                
             </Drawer>
         </>
     );
