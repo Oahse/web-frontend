@@ -10,7 +10,6 @@ import Header from '../components/Header';
 
 
 
-
 function ForgotPassword({ API_URL,Companyname, isloggedIn, userDetails }) {
   const isLoading = false;
 
@@ -34,7 +33,7 @@ function ForgotPassword({ API_URL,Companyname, isloggedIn, userDetails }) {
       
       <div className="forgot-password-content">
         <Title level={3} className='semititle'>Reset Password</Title>
-        <Title level={4} className='title'>Forgotten Password</Title>
+        <Title level={5}  className='semititle'>Forgotten Password</Title>
         <Form
           name="signup"
           layout="vertical"
@@ -44,15 +43,17 @@ function ForgotPassword({ API_URL,Companyname, isloggedIn, userDetails }) {
           }}
           className="forgot-password-form"
         >
+
           <FormInput
             label="Email"
             name="email"
             placeholder="Enter your email"
             rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
           />
+          <small className='text-white text-center'><p>A password reset link will be sent to you.</p></small>
           
           <Form.Item className="forgot-password-submit">
-            <Button type="primary" htmlType="submit" text="Login" />
+            <Button type="primary" htmlType="submit" text="Send" icon={<i className="fa-thin fa-paper-plane m-2"></i>} />
           </Form.Item>
         </Form>
       </div>

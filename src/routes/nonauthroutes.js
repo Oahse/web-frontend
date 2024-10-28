@@ -15,6 +15,7 @@ import OrderResult from '../pages/OrderResultPage';
 import TrackingOrder from '../pages/OrderTracking';
 import VerifyMail from '../pages/VerifyMail';
 import VerifyMailConfirmation from '../pages/VerifyMailConfirmation';
+import PasswordReset from '../pages/PasswordReset';
 
 
 const NonAuthRoutes = ({ API_URL,Companyname }) => [
@@ -62,6 +63,11 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     path: "/forgotpassword",
     element: <ForgotPassword API_URL={API_URL} Companyname={Companyname}/>,
     title: 'forgotpassword'
+  },
+  {
+    path: "/passwordreset",
+    element: <PasswordReset API_URL={API_URL} Companyname={Companyname}/>,
+    title: 'passwordreset'
   },
   {
     path: "/",
