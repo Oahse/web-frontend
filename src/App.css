@@ -209,7 +209,21 @@
 .ant-timeline-item-head{
   border-color: var(--secondary-color) !important;
 }
-
+.ant-breadcrumb{
+  background-color: var(--alt-background-color) !important;
+  
+}
+.ant-breadcrumb-link{
+  color: var(--background-color) !important;
+}
+.ant-tabs-tab,
+.ant-tabs-tab:hover,
+.ant-tabs-tab-active .ant-tabs-tab-btn{
+  color: var(--background-color)!important;
+}
+.ant-tabs-ink-bar{
+  background-color: var(--background-color)!important;
+}
 .image-loader {
   position: absolute;
   top: 50%;

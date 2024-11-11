@@ -122,7 +122,7 @@ export const useLogout = () => {
     return { logout, success };
 };
 
-export const useLogin = () => {
+export const useLogin = ({API_URL, email, password}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
@@ -131,9 +131,10 @@ export const useLogin = () => {
         setLoading(true);
         setError(null);
         try {
-            const res = await axios.post('/api/login', { email, password });
+            const res = await axios.post(`${API_URL}/api/users/login/`, { email, password });
+            console.log(res.data,'==========')
             setUser(res.data.user);
-            localStorage.setItem('token', res.data.token); // Store token in localStorage
+            //localStorage.setItem('token', res.data.access); // Store token in localStorage
         } catch (err) {
             setError(err.response.data.message || 'Login failed');
         } finally {

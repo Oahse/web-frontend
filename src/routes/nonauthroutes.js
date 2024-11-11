@@ -16,6 +16,7 @@ import TrackingOrder from '../pages/OrderTracking';
 import VerifyMail from '../pages/VerifyMail';
 import VerifyMailConfirmation from '../pages/VerifyMailConfirmation';
 import PasswordReset from '../pages/PasswordReset';
+import ProductPage from '../pages/ProductItem';
 
 
 const NonAuthRoutes = ({ API_URL,Companyname }) => [
@@ -78,6 +79,11 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     path: "/categories/:id",
     element: <Categories API_URL={API_URL} Companyname={Companyname}/>,
     title: "categories"
+  },
+  {
+    path:"/products/:id",
+    element:<ProductPage API_URL={API_URL} Companyname={Companyname}/>,
+    title:'productitem'
   },
   {
     path: "/map",

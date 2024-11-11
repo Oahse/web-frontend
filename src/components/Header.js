@@ -5,7 +5,7 @@ import Logo from '../assets/oahse-logo.png';
 import BottomNavbar from './BottomNavBar';
 import { isDesktop, isMobile, isTablet } from 'react-device-detect';
 import Button from './Button';
-import { Drawer } from 'antd';
+import { Avatar, Drawer, Dropdown, Menu } from 'antd';
 
 const Header = ({ Companyname, isloggedIn, userDetails }) => {
     const location = useLocation(); // Get the current location (URL)
@@ -29,6 +29,25 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
         { name: 'Cart', url: '/cart', icon: <i className="fa-light fa-cart-shopping nav-icons"></i> },
         { name: 'User', url: '/user', icon: <i className="fa-light fa-user nav-icons"></i> },
     ];
+    // Dropdown menu for User options
+    const userMenu = (
+        <Menu>
+            <Menu.Item key="email">
+                <span>{userDetails && userDetails.email?userDetails:'user@example.com'}</span>
+            </Menu.Item>
+            
+            {
+                isloggedIn?
+                <Menu.Item key="logout">
+                    <Link to="/logout" className='text-dark'>Logout</Link>
+                </Menu.Item>:
+                <Menu.Item key="login">
+                    <Link to="/login" className='text-dark'>Login</Link> 
+                </Menu.Item>
+            }
+        </Menu>
+    );
+
 
     // Update active link based on the URL change
     useEffect(() => {
@@ -38,20 +57,30 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
     const renderLinks = () => {
 
         return links.map((link, index) => (
-            <Link 
-                key={index} 
-                to={link.url} 
-                className="m-2 icon-container"
-            >
-                <div className="d-flex align-items-center">
-                    {/* Conditionally apply 'text-white fw-bold' to the active link */}
-                    
-                    {isDesktop ?
-                        <i className={`${link.icon.props.className} ${activeLink === link.url ? 'text-dark fw-bold' : ''}`}></i>: 
-                        <i className={`${link.icon.props.className} ${activeLink === link.url ? 'text-white fw-bold' : ''}`}></i>}
-                    {isDesktop && <span className='text-dark ms-1'>{link.name}</span>}
-                </div>
-            </Link>
+            
+            link.url === '/user'?
+                <Dropdown overlay={userMenu} trigger={['click']} placement="bottomRight">
+                    <span className="nav-link" style={{ cursor: 'pointer' }}>
+                        <Avatar style={{padding:'10px' }} icon={<i className="fa-light fa-user nav-icons"></i>} />
+                        {userDetails?.name}
+                    </span>
+                </Dropdown>:
+                <Link 
+                    key={index} 
+                    to={link.url} 
+                    className="m-2 icon-container"
+                >
+                    <div className="d-flex align-items-center">
+                        {/* Conditionally apply 'text-white fw-bold' to the active link */}
+                        
+                        {isDesktop ?
+                            <i className={`${link.icon.props.className} ${activeLink === link.url ? 'text-dark fw-bold' : ''}`}></i>: 
+                            <i className={`${link.icon.props.className} ${activeLink === link.url ? 'text-white fw-bold' : ''}`}></i>}
+                        {isDesktop && <span className='text-dark ms-1'>{link.name}</span>}
+                    </div>
+                </Link>
+            
+            
         ));
     };
 
@@ -96,12 +125,12 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                                 isDesktop ?
                                     <>
                                         {renderLinks()}
-                                        <Link to="/messages" className="m-2 icon-container">
+                                        {/* <Link to="/messages" className="m-2 icon-container">
                                             <div className="d-flex align-items-center">
                                                 <i className="fa-light fa-message-lines nav-icons"></i>
                                                 {isDesktop?<span className='text-dark ms-1'>Messages</span>:null}
                                             </div>
-                                        </Link>
+                                        </Link> */}
                                     </>:
                                     null
                                     }

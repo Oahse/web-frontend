@@ -10,6 +10,7 @@ import { MiddleVerticalScroller } from '../components/VerticalScroller';
 import { getProducts, useCategories, } from '../services/api';
 import config from '../services/config';
 import dayjs from 'dayjs';
+import Footer from '../components/Footer';
 
 function MarketPlace({ API_URL,Companyname }) {
   const { isloggedIn, userDetails } = { isloggedIn: false, userDetails: {} };
@@ -29,7 +30,34 @@ function MarketPlace({ API_URL,Companyname }) {
   // Example usage in trending items
   const trending = [
       {
-          url: '/item1',
+          url: '/products/1',
+          name: 'Wireless Headphones',
+          description: 'This is a great item for music lovers.',
+          rating: 4.8,
+          price: 29.99,
+          currency: 'GBP',
+          image: 'https://images.unsplash.com/photo-1721332155567-55d1b12aa271?q=80&&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      },
+            {
+              url: '/products/2',
+              name: 'Wireless Headphones',
+              description: 'This is a great item for music lovers.',
+              rating: 4.8,
+              price: 29.99,
+              currency: 'GBP',
+              image: 'https://images.unsplash.com/photo-1721332155567-55d1b12aa271?q=80&&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          },
+          {
+            url: '/products/3',
+            name: 'Wireless Headphones',
+            description: 'This is a great item for music lovers.',
+            rating: 4.8,
+            price: 29.99,
+            currency: 'GBP',
+            image: 'https://images.unsplash.com/photo-1721332155567-55d1b12aa271?q=80&&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        },
+        {
+          url: '/products/4',
           name: 'Wireless Headphones',
           description: 'This is a great item for music lovers.',
           rating: 4.8,
@@ -38,7 +66,7 @@ function MarketPlace({ API_URL,Companyname }) {
           image: 'https://images.unsplash.com/photo-1721332155567-55d1b12aa271?q=80&&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       },
       {
-          url: '/item2',
+          url: '/products/5',
           name: 'Smartphone',
           description: 'This is another great item with top features.',
           rating: 4.0,
@@ -47,7 +75,7 @@ function MarketPlace({ API_URL,Companyname }) {
           image: 'https://images.unsplash.com/photo-1720048171230-c60d162f93a0?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       },
       {
-          url: '/item3',
+          url: '/products/6',
           name: 'Smartwatch',
           description: 'An amazing gadget that you need!',
           rating: 4.5,
@@ -56,7 +84,7 @@ function MarketPlace({ API_URL,Companyname }) {
           image: 'https://images.unsplash.com/photo-1503328427499-d92d1ac3d174?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       },
       {
-          url: '/item4',
+          url: '/products/7',
           name: 'Laptop',
           description: 'Top-notch quality and performance for professionals.',
           rating: 3.8,
@@ -65,7 +93,7 @@ function MarketPlace({ API_URL,Companyname }) {
           image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       },
       {
-          url: '/item5',
+          url: '/products/8',
           name: 'Bluetooth Speaker',
           description: 'A must-have for tech lovers and music enthusiasts.',
           rating: 4.2,
@@ -76,7 +104,7 @@ function MarketPlace({ API_URL,Companyname }) {
   ];
   const newarrivals = [
     {
-        url: '/item1',
+        url: '/products/1',
         name: 'Electric Kettle',
         description: 'Boil water quickly and efficiently with this stylish kettle.',
         rating: 4.8,
@@ -89,7 +117,46 @@ function MarketPlace({ API_URL,Companyname }) {
         }
     },
     {
-        url: '/item2',
+      url: '/products/2',
+      name: 'Electric Kettle',
+      description: 'Boil water quickly and efficiently with this stylish kettle.',
+      rating: 4.8,
+      price: 49.99,
+      currency: 'GBP',
+      image: 'https://images.unsplash.com/photo-1647619124290-10fb9273b4b5?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      brand: {
+          name: 'Breville',
+          logo: 'https://www.breville.com/content/dam/breville-brands/favicon.ico'
+      }
+  },
+  {
+    url: '/products/3',
+    name: 'Electric Kettle',
+    description: 'Boil water quickly and efficiently with this stylish kettle.',
+    rating: 4.8,
+    price: 49.99,
+    currency: 'GBP',
+    image: 'https://images.unsplash.com/photo-1647619124290-10fb9273b4b5?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    brand: {
+        name: 'Breville',
+        logo: 'https://www.breville.com/content/dam/breville-brands/favicon.ico'
+    }
+},
+{
+  url: '/products/4',
+  name: 'Electric Kettle',
+  description: 'Boil water quickly and efficiently with this stylish kettle.',
+  rating: 4.8,
+  price: 49.99,
+  currency: 'GBP',
+  image: 'https://images.unsplash.com/photo-1647619124290-10fb9273b4b5?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  brand: {
+      name: 'Breville',
+      logo: 'https://www.breville.com/content/dam/breville-brands/favicon.ico'
+  }
+},
+    {
+        url: '/products/5',
         name: 'Yoga Mat',
         description: 'Durable and eco-friendly yoga mat for all types of workouts.',
         rating: 4.6,
@@ -102,7 +169,7 @@ function MarketPlace({ API_URL,Companyname }) {
         }
     },
     {
-        url: '/item3',
+        url: '/products/6',
         name: 'Bluetooth Tracker',
         description: 'Never lose your belongings again with this handy tracker.',
         rating: 4.3,
@@ -115,7 +182,7 @@ function MarketPlace({ API_URL,Companyname }) {
         }
     },
     {
-        url: '/item4',
+        url: '/products/7',
         name: 'Portable Blender',
         description: 'Make smoothies on the go with this compact, powerful blender.',
         rating: 4.7,
@@ -128,7 +195,7 @@ function MarketPlace({ API_URL,Companyname }) {
         }
     },
     {
-        url: '/item5',
+        url: '/products/8',
         name: 'Fitness Tracker',
         description: 'Track your workouts and health metrics with this advanced device.',
         rating: 4.5,
@@ -352,7 +419,7 @@ function MarketPlace({ API_URL,Companyname }) {
           <BottomHorizontalScroller title={'Consumers Devices'} categories={categories} />
         </>
         }
-        
+        <Footer className='footer'/>
       </Container>
       
     </div>

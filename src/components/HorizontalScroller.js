@@ -69,7 +69,9 @@ const MiddleHorizontalScroller = ({ title, items, toCurrency }) => {
                                                 {toCurrency?
                                                     <CurrencyConverter amount={item.price} fromCurrency={item.currency} toCurrency={toCurrency||"USD"} />
                                                     :<>{item.currency} {item.price}</>} 
+                                                <i className="fa-thin fa-cart-plus text-success ms-5"></i>
                                             </span>
+                                            
                                         </>
                                     }
                                 />
