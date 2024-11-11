@@ -8,19 +8,20 @@ import FilterComponent from '../components/Filter';
 import {BottomHorizontalScroller, MiddleHorizontalScroller, } from '../components/HorizontalScroller';
 import { MiddleVerticalScroller } from '../components/VerticalScroller';
 import { getProducts, useCategories, } from '../services/api';
+import { useAuth } from '../services/auth';
 import config from '../services/config';
 import dayjs from 'dayjs';
 import Footer from '../components/Footer';
 
 function MarketPlace({ API_URL,Companyname }) {
-  const { isloggedIn, userDetails } = { isloggedIn: false, userDetails: {} };
+  const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();
   const {minprice, maxprice }  = { minprice: 0, maxprice :1000000};
 
   const [isLoading, setIsLoading] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   const { categories:engineeringcategories, loading:iscategoryLoading, error:iscategoryerror } = useCategories(config.apiUrl);
-  console.log(iscategoryerror)
+  console.log(config.apiUrl,'===',iscategoryerror, '===', loading)
   const params ={};
   
   const [filteredItems, setFilteredItems] = useState([]);

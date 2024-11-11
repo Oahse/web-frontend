@@ -17,6 +17,7 @@ import VerifyMail from '../pages/VerifyMail';
 import VerifyMailConfirmation from '../pages/VerifyMailConfirmation';
 import PasswordReset from '../pages/PasswordReset';
 import ProductPage from '../pages/ProductItem';
+import LogoutPage from '../pages/Logout';
 
 
 const NonAuthRoutes = ({ API_URL,Companyname }) => [
@@ -34,6 +35,11 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     path: "/login",
     element: <Login API_URL={API_URL} Companyname={Companyname}/>,
     title: "login"
+  },
+  {
+    path: "/logout",
+    element: <LogoutPage/>,
+    title: "logout"
   },
   {
     path: "/login-fingerprint",

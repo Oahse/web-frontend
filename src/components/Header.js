@@ -23,24 +23,25 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
         setIsDrawerVisible(!isDrawerVisible);
     };
     const links = [
-        { name: 'Home', url: '/home', icon: <i className="fa-light fa-house nav-icons"></i> },
+        !isloggedIn ? { name: 'Home', url: '/home', icon: <i className="fa-light fa-house nav-icons"></i> } : null,
         { name: 'MarketPlace', url: '/', icon: <i className="fa-light fa-grid-2 nav-icons"></i> },
-        // { name: 'Map', url: '/map', icon: <i className="fa-light fa-location-crosshairs nav-icons"></i> },
         { name: 'Cart', url: '/cart', icon: <i className="fa-light fa-cart-shopping nav-icons"></i> },
         { name: 'User', url: '/user', icon: <i className="fa-light fa-user nav-icons"></i> },
-    ];
+    ].filter(Boolean); // Remove null values
     // Dropdown menu for User options
     const userMenu = (
         <Menu>
-            <Menu.Item key="email">
-                <span>{userDetails && userDetails.email?userDetails:'user@example.com'}</span>
-            </Menu.Item>
-            
             {
                 isloggedIn?
-                <Menu.Item key="logout">
-                    <Link to="/logout" className='text-dark'>Logout</Link>
-                </Menu.Item>:
+                <>
+                    <Menu.Item key="email">
+                        <span>{userDetails?.email}</span>
+                    </Menu.Item>
+                    <Menu.Item key="logout">
+                        <Link to="/logout" className='text-dark'>Logout</Link>
+                    </Menu.Item>
+                </>
+                :
                 <Menu.Item key="login">
                     <Link to="/login" className='text-dark'>Login</Link> 
                 </Menu.Item>
@@ -62,7 +63,7 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                 <Dropdown overlay={userMenu} trigger={['click']} placement="bottomRight">
                     <span className="nav-link" style={{ cursor: 'pointer' }}>
                         <Avatar style={{padding:'10px' }} icon={<i className="fa-light fa-user nav-icons"></i>} />
-                        {userDetails?.name}
+                        <small className='m-2 text-dark'>{userDetails?.first_name}</small>
                     </span>
                 </Dropdown>:
                 <Link 
@@ -80,7 +81,6 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                     </div>
                 </Link>
             
-            
         ));
     };
 
@@ -93,13 +93,7 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                         <span className="navbar-title"> {Companyname}</span>
                     </Navbar.Brand>
                     <div className="d-flex justify-content-between align-items-center" style={{ marginLeft: 'auto' }}>
-                        {isloggedIn ? (
-                            <span className="d-flex flex-row align-items-center">
-                                <i className="fa-light fa-message-lines nav-icons"></i>
-                                {isDesktop && <span className='text-dark ms-1'>Messages</span>}
-                            </span>
-                        ) : (
-                            <span className="d-flex flex-row align-items-center">
+                    <span className="d-flex flex-row align-items-center">
                                 {activeLink === '/home'?
                                     <>
                                         <Link 
@@ -136,7 +130,6 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
                                     }
                                 
                             </span>
-                        )}
                     </div>
                 </Container>
             </Navbar>
