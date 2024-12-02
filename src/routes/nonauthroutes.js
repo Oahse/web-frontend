@@ -22,7 +22,7 @@ import LogoutPage from '../pages/Logout';
 
 const NonAuthRoutes = ({ API_URL,Companyname }) => [
   {
-    path: "/home",
+    path: "/",
     element: <Home API_URL={API_URL} Companyname={Companyname} />,
     title: "home"
   },
@@ -77,7 +77,7 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     title: 'passwordreset'
   },
   {
-    path: "/",
+    path: "/marketplace",
     element: <Marketplace API_URL={API_URL} Companyname={Companyname}/>,
     title: "marketplace"
   },
