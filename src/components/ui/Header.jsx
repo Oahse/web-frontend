@@ -9,11 +9,11 @@ import useDeviceType from '../../hooks/useDeviceType';
 function Header({ Companyname, isScrolled }) {
     const { isMobile } = useDeviceType();
     return (
-        <nav className='navbar'>
-            <Container className={`bg-none ${isScrolled ? 'header-scrolled' : ''}`} fluid={isScrolled}>
+        <nav className={`navbar`}>
+            <Container className={`${isScrolled ? 'header-scrolled bg-white' : 'bg-none'}`} fluid={isScrolled}>
                 <Navbar.Brand href="/">
                     <img
-                    src={Logo}
+                    src={`${isScrolled ? Logo : Logo}`}
                     width="80"
                     height="46"
                     className="navbar-logo"
@@ -27,11 +27,11 @@ function Header({ Companyname, isScrolled }) {
                     <span className="d-flex flex-row align-items-center">
                     {!isMobile?
                     <>
-                    <span className='text-white p-1'><Globe width={22} height={22} color="white" /><span className='text-white m-1 fw-bold'>English</span></span>
-                    <span className='text-white p-1'><span className='text-white m-1 fw-bold'>Become A Supplier</span></span>
+                    <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Globe width={22} height={22} color={`${isScrolled ? 'black' : 'white'}`} /><span className='m-1 fw-bold'>English</span></span>
+                    <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><span className='m-1 fw-bold'>Become A Supplier</span></span>
                     </>:null}
-                    <span className='text-white p-1'>
-                            <span className='text-white m-1'><Button
+                    <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}>
+                            <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Button
                                         type='link'
                                         text="Start for Free"
                                         color="primary"
@@ -41,7 +41,7 @@ function Header({ Companyname, isScrolled }) {
                             </span>
                         </span>
                     </span>
-                    {isMobile?<span className='text-white p-1'><i className="fa-light fa-bars " style={{ fontSize: '24px' }}></i></span>:null}
+                    {isMobile?<span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><i className="fa-light fa-bars " style={{ fontSize: '24px' }}></i></span>:null}
                 </div>
             </Container>
         </nav>
