@@ -87,7 +87,7 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
     return (
         <>
             <Navbar bg="light" expand="lg" fixed="top" className="m-0 p-0">
-                <Container >
+                <Container>
                     <Navbar.Brand href="/">
                         <img src={Logo} width="80" height="46" className="navbar-logo" alt="Logo" />
                         <span className="navbar-title"> {Companyname}</span>

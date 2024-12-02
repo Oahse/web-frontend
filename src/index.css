@@ -18,7 +18,19 @@ code {
 
 :root{
   --primary-color: #979797; /* Example primary color */
+  --primary-color-light: #d1d1d1;
   --secondary-color: #50555C; /* Example secondary color */
+  --secondary-color-light:#919ba8;
+  --danger-color:#DC3545;
+  --danger-color-light:#dd7e88;
+  --success-color:#198754;
+  --success-color-light:#7dab96;
+  --warning-color:#FBA70D;
+  --warning-color-light:#f9dba2;
+  --link-primary-color: #ACDDFC;
+  --link-primary-color-light:#dff3ff;
+  --link-secondary-color: #5d92b3;
+  --link-secondary-color-light:#86d1ff;
   --background-color: #1E1E1E;
   --alt-background-color: #f1f1f1;
 
@@ -31,9 +43,12 @@ code {
   --primary-button-background-color:var(--primary-color);
   --secondary-button-background-color:var(--modal-background-color);
 
-  --white:#F6F6F6;
+  --white:#ffffff;
   --warning: #FBA70D;
   --focus-color:var(--background-color);
+  
+  --disabled-color: #d1d1d1;
+
 
   --border-radius:2px;
   --btn-radius: 2px;
