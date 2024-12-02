@@ -27,10 +27,9 @@ function Header({ Companyname, isScrolled }) {
                 <span className='text-white p-1 m-1'><span className='text-white m-1 fw-bold'>Become A Supplier</span></span>
                 <span className='text-white p-1 m-1'>
                         <span className='text-white m-1'><Button
-                                    type='button'
+                                    type='link'
                                     text="Start for Free"
-                                    color="warning"
-                                    variant='outlined'
+                                    color="primary"
                                     onClick={() => console.log('Button clicked')}
                                     />
 
