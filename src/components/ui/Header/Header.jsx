@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, Navbar } from 'react-bootstrap';
-import Logo from '../../assets/oahse-logo.png';
-import Globe from '../icons/globe';
-import Button from './Button/Button';
-import useDeviceType from '../../hooks/useDeviceType';
+import Logo from '../../../assets/oahse-logo.png';
+import Globe from '../../icons/globe';
+import Button from '../Button/Button';
+import useDeviceType from '../../../hooks/useDeviceType';
+import './Header.css';
 
 function Header({ Companyname, isScrolled }) {
     const { isMobile } = useDeviceType();

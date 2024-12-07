@@ -1,0 +1,68 @@
+.card-container {
+    padding: 60px;
+    padding-left: 100px;
+    padding-right: 100px;
+    background-color: var(--alt-background-color) !important;
+    justify-content: space-around !important;
+  }
+  
+  .card {
+    background-color: var(--alt-background-color) !important; /* Light gray background */
+    border: 1px solid var(--border-color) !important;
+    border-radius: 18px !important;
+    padding: 2px !important;
+    text-align: center !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.025) !important; /* Subtle shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    cursor: pointer !important;
+    max-height: 250px;
+    width: 355px !important;
+  }
+  .card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  }
+  .card:focus {
+    outline: 3px solid var(--focus-color) !important;
+    outline-offset: 4px !important;
+  }
+  
+  .card:active {
+    transform: scale(0.98) !important;
+  }
+  .card-header {
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    margin: 0px !important;
+    padding-bottom: 0px;
+    border: none !important;
+    background-color: transparent !important;
+    text-align: left; /* Aligns the header to the left */
+    align-items: flex-start; /* Ensures alignment consistency */
+    line-height: 30.26px;
+    
+}
+
+.card-body {
+    font-size: 1rem !important;
+    margin: 0px !important;
+    padding-top: 0px;
+    color: var(--alternate-text-color) !important;
+    text-align:left; /* Justifies the text */
+    line-height: 1.5; /* Optional: improves readability */
+}
+
+.card-footer {
+    margin: 0px !important;
+    padding-top: 0px;
+    font-size: 0.875rem !important;
+    color: var(--alternate-text-color) !important;
+    border: none !important;
+    background-color: transparent !important;
+}
+@media (max-width: 768px) {
+    .card {
+        width: 100%; /* Full-width on smaller screens */
+    }
+}
+

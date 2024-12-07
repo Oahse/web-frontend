@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'; // Link component for anchor tags (if needed)
-
+import './Button.css';
 const Button = ({
   type = 'button', // Default is button
   variant = 'contained', // Default is contained button

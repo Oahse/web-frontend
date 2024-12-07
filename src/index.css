@@ -31,6 +31,14 @@ code {
   --link-primary-color-light:#dff3ff;
   --link-secondary-color: #5d92b3;
   --link-secondary-color-light:#86d1ff;
+  --link-danger-color:var(--danger-color);
+  --link-danger-color-light:var(--danger-color-light);
+  --link-success-color:var(--success-color);
+  --link-success-color-light:var(--success-color-light);
+  --link-warning-color:var(--warning-color);
+  --link-warning-color-light:var(--warning-color-light);
+  --info-color:var(--link-primary-color);
+  --info-color-light:var(--link-primary-color-light);
   --background-color: #1E1E1E;
   --alt-background-color: #f1f1f1;
 
@@ -44,13 +52,15 @@ code {
   --secondary-button-background-color:var(--modal-background-color);
 
   --white:#ffffff;
+  --black:#1E1E1E;
   --warning: #FBA70D;
   --focus-color:var(--background-color);
   
   --disabled-color: #d1d1d1;
 
 
-  --border-radius:2px;
+  --border-radius:1px;
+  --border-color: #DADADA;
   --btn-radius: 2px;
   
 }
