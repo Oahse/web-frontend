@@ -36,7 +36,7 @@
   background-size: cover; /* Makes sure the image covers the entire div */
   background-position: center; /* Centers the image */
   background-repeat: no-repeat; /* Prevents the image from repeating */
-  height: 98vh; /* Adjust the height as needed */
+  height: 88vh; /* Adjust the height as needed */
   width: 100%; /* Makes sure the background spans the full width */
   display: flex;
   flex-direction: column; /* Stack children vertically */

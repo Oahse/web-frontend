@@ -1,9 +1,11 @@
 .card-container {
-    padding: 60px;
+    padding-top: 60px;
+    padding-bottom: 60px;
     padding-left: 100px;
     padding-right: 100px;
     background-color: var(--alt-background-color) !important;
     justify-content: space-around !important;
+    align-items: center;
   }
   
   .card {
@@ -64,5 +66,7 @@
     .card {
         width: 100%; /* Full-width on smaller screens */
     }
+    .card-container {
+      padding: 20px;
+    }
 }
-
