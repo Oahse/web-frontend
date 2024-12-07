@@ -58,8 +58,8 @@ function Homepage({ Companyname }) {
                 ))}
             </Grid>
         </div>
-        <div className='start-for-free d-flex align-items-center'>
-            <span className="d-flex flex-row align-items-center m-auto">
+        <div className='start-for-free d-flex align-items-center start-btn-class'>
+            <span className="d-flex flex-row align-items-center p-2 m-auto bg-none">
                 <Button
                     type='link'
                     text="Start for Free"

@@ -155,7 +155,9 @@
   color: var(--black);
 }
 
-
+.start-btn-class {
+  background-color: var(--alt-background-color) !important;
+}
 /* Loading Spinner */
 .spinner-border {
   width: 1rem;
