@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import { Card, Form, notification } from 'antd';
+import { Col, Form, notification, Row } from 'antd';
 import ImageLoader from '../components/Loader';
+import Card from '../components/ui/Card/Card'
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
+import procurement from '../assets/procurement3.jpg'
 import FormInput from '../components/FormInput';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
@@ -61,46 +63,63 @@ function Login({ API_URL }) {
   }
 
   return (
-    <Card className={`signup ${!isMobile ? 'bigpadding' : ''}`} style={{ textAlign: 'center' }}>
-      <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <span className="title">Login</span>
-      </div>
-      <Form
-        form={form}
-        name="signup"
-        layout="vertical"
-        onFinish={onFinish}
-        initialValues={{
-          newsletter: true, // Default checkbox to checked
-        }}
-      >
-        <FormInput
-          name="email"
-          placeholder="Email"
-          rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
-        />
+    <Row>
+        <Col span={12} className=''>
+           <div  style={{height: '100vh', overflow: 'hidden', margin: 0, padding: 0 }}>
+             <img src={procurement} alt='procurement login' width='100%' height='100%'/>
+           </div>
+        </Col>
 
-        <FormInput
-          name="password"
-          type="password"
-          placeholder="Password"
-          rules={[{ required: true, message: 'Please enter your password' }]}
-        />
+        <Col span={12} >
+            <div className='card-container'>
+                <Card className='' style={{textAlign: 'center' }} onClick={() => console.log('clicked')}>
+                        <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'inherit' }}>
+                            <span className="title">Login</span>
+                        </div>
 
-        <div className="minititle mb-4 d-flex flex-column" style={{ textAlign: 'right' }}>
-          <Link to="/forgotpassword"><small>Forgot Password?</small></Link>
-        </div>
-        <div className="minititle mb-4" style={{ textAlign: 'right' }}>
-          <Link to="/signup"><small>Not Account Yet? Sign up</small></Link>
-        </div>
+                <Form
+                        form={form}
+                        name="signup"
+                        layout="vertical"
+                        onFinish={onFinish}
+                        initialValues={{
+                        newsletter: true, // Default checkbox to checked
+                        }}
+                    >
+                        <FormInput
+                        name="email"
+                        placeholder="Email"
+                        rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
+                        />
 
-        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if login fails */}
+                        <FormInput
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        rules={[{ required: true, message: 'Please enter your password' }]}
+                        />
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" text="Login" />
-        </Form.Item>
-      </Form>
-    </Card>
+                        <div className="minititle mb-4 d-flex flex-column" style={{ textAlign: 'right' }}>
+                        <Link to="/forgotpassword"><small>Forgot Password?</small></Link>
+                        </div>
+                        <div className="minititle mb-4" style={{ textAlign: 'right' }}>
+                        <Link to="/signup"><small>Not Account Yet? Sign up</small></Link>
+                        </div>
+
+                        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if login fails */}
+
+                        <Form.Item>
+                        <Button type="primary" htmlType="submit" text="Login" />
+                        </Form.Item>
+                    </Form>
+                </Card>
+            </div>
+            
+
+           
+        </Col>
+    </Row>
+    
   );
 }
 
