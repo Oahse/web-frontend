@@ -61,9 +61,11 @@
   margin-left: 8px;
 }
 .homepage-bottom {
-  background: var(--white); /* Fallback for older browsers */
-  background: linear-gradient(to bottom, var(--white), var(--black));
+  background: var(--black); /* Fallback for older browsers */
+  background: linear-gradient(to bottom, var(--primary-color-light), var(--black));
 }
+
+
 
 .chat-pop {
   position: absolute; /* Absolute positioning within homepage-content */
