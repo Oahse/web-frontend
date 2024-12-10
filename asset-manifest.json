@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.784e4633.css",
+    "main.css": "/web-frontend/static/css/main.073a1ab9.css",
     "main.js": "/web-frontend/static/js/main.51ceb2cf.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/oahse-logo-light.png": "/web-frontend/static/media/oahse-logo-light.a220c2246b915327a90a.png",
@@ -12,12 +12,12 @@
     "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
     "static/media/user.svg": "/web-frontend/static/media/user.54a9668c76dc920e538cdd50b152d5b0.svg",
     "index.html": "/web-frontend/index.html",
-    "main.784e4633.css.map": "/web-frontend/static/css/main.784e4633.css.map",
+    "main.073a1ab9.css.map": "/web-frontend/static/css/main.073a1ab9.css.map",
     "main.51ceb2cf.js.map": "/web-frontend/static/js/main.51ceb2cf.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.784e4633.css",
+    "static/css/main.073a1ab9.css",
     "static/js/main.51ceb2cf.js"
   ]
 }
