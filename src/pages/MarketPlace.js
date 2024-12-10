@@ -11,7 +11,7 @@ import { getProducts, useCategories, } from '../services/api';
 import { useAuth } from '../services/auth';
 import config from '../services/config';
 import dayjs from 'dayjs';
-import Footer from '../components/Footer';
+import Footer from '../components/ui/Footer/Footer';
 
 function MarketPlace({ API_URL,Companyname }) {
   const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();

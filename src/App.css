@@ -60,6 +60,10 @@
 .homepage-content-top .homepage-content-top-text {
   margin-left: 8px;
 }
+.homepage-bottom {
+  background: var(--white); /* Fallback for older browsers */
+  background: linear-gradient(to bottom, var(--white), var(--black));
+}
 
 .chat-pop {
   position: absolute; /* Absolute positioning within homepage-content */
@@ -157,6 +161,25 @@
 
 .start-btn-class {
   background-color: var(--alt-background-color) !important;
+}
+
+.fw-800{
+  font-weight: 800; /* Medium weight */
+}
+.fw-700{
+  font-weight: 700; /* Medium weight */
+}
+.fw-600{
+  font-weight: 600; /* Medium weight */
+}
+.fw-500{
+  font-weight: 500; /* Medium weight */
+}
+.fw-400{
+  font-weight: 400; /* Medium weight */
+}
+.fw-300{
+  font-weight: 300; /* Medium weight */
 }
 /* Loading Spinner */
 .spinner-border {
@@ -854,30 +877,6 @@
     margin-bottom: 30px;
 }
 
-/* footer.css */
-
-footer{
-  color: var(--white);
-}
-.footer-listitem{
-  display: flex;
-  flex-direction: row;
-  justify-self: left;
-  text-decoration: none;
-}
-.footer-listHeader{
-  display: flex;
-  flex-direction: row;
-  justify-self: left;
-  text-decoration: underline;
-}
-
-.footer-listitem:hover{
-  color: var(--primary-text-color);
-}
-.footer-listitem:active{
-  color: var(--primary-text-color);
-}
 
 .store-list-item {
   padding: 8px;

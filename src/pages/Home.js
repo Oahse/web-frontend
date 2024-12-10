@@ -5,6 +5,7 @@ import Button from '../components/ui/Button/Button';
 import Card from '../components/ui/Card/Card';
 import { Avatar } from 'antd';
 import User from '../assets/icons/user.svg';
+import Footer from '../components/ui/Footer/Footer';
 
 function Homepage({ Companyname }) {
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -71,7 +72,10 @@ function Homepage({ Companyname }) {
             
         </div>
       
-      {/* Other content */}
+        {/* Other content */}
+        <div className='homepage-bottom'>
+          <Footer />
+        </div>
     </div>
   );
 }
