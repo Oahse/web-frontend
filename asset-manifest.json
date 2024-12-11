@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.ab183e08.css",
-    "main.js": "/web-frontend/static/js/main.7c195b0b.js",
+    "main.css": "/web-frontend/static/css/main.bb829a70.css",
+    "main.js": "/web-frontend/static/js/main.539c8ea0.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/oahse-logo-light.png": "/web-frontend/static/media/oahse-logo-light.a220c2246b915327a90a.png",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
@@ -12,12 +12,12 @@
     "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
     "static/media/user.svg": "/web-frontend/static/media/user.54a9668c76dc920e538cdd50b152d5b0.svg",
     "index.html": "/web-frontend/index.html",
-    "main.ab183e08.css.map": "/web-frontend/static/css/main.ab183e08.css.map",
-    "main.7c195b0b.js.map": "/web-frontend/static/js/main.7c195b0b.js.map",
+    "main.bb829a70.css.map": "/web-frontend/static/css/main.bb829a70.css.map",
+    "main.539c8ea0.js.map": "/web-frontend/static/js/main.539c8ea0.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ab183e08.css",
-    "static/js/main.7c195b0b.js"
+    "static/css/main.bb829a70.css",
+    "static/js/main.539c8ea0.js"
   ]
 }
