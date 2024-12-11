@@ -64,7 +64,14 @@
   background: var(--black); /* Fallback for older browsers */
   background: linear-gradient(to bottom, var(--primary-color-light), var(--black));
 }
-
+.homepage-bottom .homepage-aiestimator{
+  background: none;
+  padding-top: 20px;
+}
+.homepage-bottom .homepage-aiestimator .green{
+  background-color: #5C9E31;
+  height: 100px;
+ }
 
 
 .chat-pop {
