@@ -183,6 +183,21 @@
 .fw-300{
   font-weight: 300; /* Medium weight */
 }
+.fw-200{
+  font-weight: 200; /* Medium weight */
+}
+.fs-xl{
+  font-size: 10px;
+}
+.fs-lg{
+  font-size: 10px;
+}
+.fs-md{
+  font-size: 10px;
+}
+.fs-sm{
+  font-size: 10px;
+}
 /* Loading Spinner */
 .spinner-border {
   width: 1rem;

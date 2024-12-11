@@ -12,83 +12,83 @@ function Footer({className, style, header, body, footer}) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className=" p-5 footer">
+    <footer className="footer">
 
-      <div className="row mb-2 px-5 border-top border-white bg-none ">
-                <Navbar.Brand href="/">
-                    <img
-                    src={Logo}
-                    width="70"
-                    height="36"
-                    className="navbar-logo my-3"
-                    alt={`Logo`}
-                    />
-                </Navbar.Brand>
-        <div className="col-6 col-md-4 col-lg-2 bg-none mb-4">
-        <Text fontColor='text-white' textDecoration='text-decoration-underline'> Get Support</Text>
-          <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Help Center</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Live Chat</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Check Order Status</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Refunds</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Report Abuse</Text></a></li>
-          </ul>
-        </div>
+      <div className="footer-top row mb-2 border-top border-white bg-none ">
+          <Navbar.Brand href="/">
+              <img
+              src={Logo}
+              width="70"
+              height="36"
+              className="navbar-logo my-3"
+              alt={`Logo`}
+              />
+          </Navbar.Brand>
+          <div className="col-6 col-md-4 col-lg-2 bg-none mb-4">
+          <Text fontColor='text-white' textDecoration='text-decoration-underline'> Get Support</Text>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Help Center</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Live Chat</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Check Order Status</Text></a></li>
+              <li class="nav-item mb-0" fontWeight='fw-300'><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Refunds</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Report Abuse</Text></a></li>
+            </ul>
+          </div>
 
-        <div class="col-6 col-md-4 col-lg-2 bg-none mb-4">
-        <Text fontColor='text-white' textDecoration='text-decoration-underline'> Source on Oahse</Text>
-          <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Request for quotes</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Intelligent Estimation</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Membership Program</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Logistics</Text></a></li>
-          </ul>
-        </div>
+          <div class="col-6 col-md-4 col-lg-2 bg-none mb-4">
+          <Text fontColor='text-white' textDecoration='text-decoration-underline'> Source on Oahse</Text>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Request for quotes</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Intelligent Estimation</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Membership Program</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Logistics</Text></a></li>
+            </ul>
+          </div>
 
-        <div class="col-6 col-md-4 col-lg-2 bg-none  mb-4">
-        <Text fontColor='text-white' textDecoration='text-decoration-underline'>Products</Text>
-          <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Start Selling</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Become A verfiied supplier</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Parterships</Text></a></li>
-          </ul>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2 bg-none  mb-4">
-        <Text fontColor='text-white' textDecoration='text-decoration-underline'> Get to Know Us</Text>
-          <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> About</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Coperate Responsiblity</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> New Center</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Careers</Text></a></li>
-          </ul>
-        </div>
+          <div class="col-6 col-md-4 col-lg-2 bg-none  mb-4">
+          <Text fontColor='text-white' textDecoration='text-decoration-underline'>Products</Text>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Start Selling</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Become A verfiied supplier</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300' > Parterships</Text></a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2 bg-none  mb-4">
+          <Text fontColor='text-white' textDecoration='text-decoration-underline'> Get to Know Us</Text>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> About</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Coperate Responsiblity</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> New Center</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Careers</Text></a></li>
+            </ul>
+          </div>
 
-        <div class="col-12 col-md-8 col-lg-4 bg-none  mb-4">
-          <Text fontColor='text-white' textDecoration='text-decoration-underline'> Payment and Protections</Text>
-          <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Safe and Easy Payments</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Money Back Policy</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Ontime Shipping</Text></a></li>
-            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white'> Product Monitoring Services</Text></a></li>
-          </ul>
-        </div>
+          <div class="col-12 col-md-8 col-lg-4 bg-none  mb-4">
+            <Text fontColor='text-white' textDecoration='text-decoration-underline'> Payment and Protections</Text>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Safe and Easy Payments</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Money Back Policy</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Ontime Shipping</Text></a></li>
+              <li class="nav-item mb-0"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> Product Monitoring Services</Text></a></li>
+            </ul>
+          </div>
 
       </div>
       
-      <div class="mb-2 px-5  mt-3 bg-none">
+      <div class="footer-bottom mb-2 mt-3 bg-none">
         <div class="container">
           <div class="row gy-3 align-items-center">
             <div class="col-6 col-sm-3 bg-none">
             <Text fontColor='text-white' > Canada</Text>
               <ul class="nav flex-column">
-                <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> 1060 Dot Avenue,
-                Windsor, ON N9C 3H8</Text></a></li>
+                <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300' tag='small'> 1060 Dot Avenue,
+                Windsor, ON N9C 3H8, Canada</Text></a></li>
               </ul>
             </div>
-            <div class="col-6 col-sm-3 col-lg-2 bg-none">
+            <div class="col-6 col-sm-3 bg-none">
               <Text fontColor='text-white' > Nigeria</Text>
                 <ul class="nav flex-column">
-                  <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text fontColor='text-white' fontWeight='fw-300'> No. 2 Engr. Lanre Crescent,
+                  <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted"><Text tag='small' fontColor='text-white' fontWeight='fw-300'> No. 2 Engr. Lanre Crescent,
                   Amuwo-Odofin, Lagos</Text></a></li>
                 </ul>
             </div>
@@ -164,18 +164,18 @@ function Footer({className, style, header, body, footer}) {
       </div>
 
       <div className="d-flex justify-content-between py-2 border-top border-white bg-none">
-        <Text tag='small' fontWeight='fw-300' fontColor='text-white'>© {currentYear} Oahse, Inc. All rights reserved.</Text>
+        <Text tag='small' fontWeight='fw-300' fontColor='text-white'  fontSize='fs-sm'>© {currentYear} Oahse, Inc. All rights reserved.</Text>
         <ul className="list-unstyled d-flex bg-none">
           <li className="ms-3 ">
-            <Link href='#' className='hover:underline text-decoration-none'><Text tag='small' fontColor='text-white' fontWeight='fw-300'>Legal Compliance</Text></Link>
+            <Link href='#' className='hover:underline text-decoration-none'><Text tag='small' fontColor='text-white' fontWeight='fw-300' fontSize='fs-sm'>Legal Compliance</Text></Link>
             
           </li>
           <li className="ms-3">
-            <Link href='#' className='hover:underline text-decoration-none'><Text tag='small'  fontColor='text-white' fontWeight='fw-300'>Cookies</Text></Link>
+            <Link href='#' className='hover:underline text-decoration-none'><Text tag='small'  fontColor='text-white' fontWeight='fw-300' fontSize='fs-sm'>Cookies</Text></Link>
             
           </li>
           <li className="ms-3">
-            <Link href='#' className='hover:underline text-decoration-none'><Text tag='small' fontColor='text-white' fontWeight='fw-300'>Security</Text></Link>
+            <Link href='#' className='hover:underline text-decoration-none'><Text tag='small' fontColor='text-white' fontWeight='fw-300' fontSize='fs-sm'>Security</Text></Link>
             
           </li>
         </ul>
