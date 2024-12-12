@@ -64,15 +64,23 @@
   background: var(--black); /* Fallback for older browsers */
   background: linear-gradient(to bottom, var(--primary-color-light), var(--black));
 }
-.homepage-bottom .homepage-aiestimator{
-  background: none;
-  padding-top: 20px;
-}
-.homepage-bottom .homepage-aiestimator .green{
-  background-color: #5C9E31;
-  height: 100px;
- }
 
+.homepage-bubbles {
+  min-height: 730px;
+}
+.homepage-aiestimator{
+  background: none;
+}
+.bg-blue {
+  background-color: #92D3F5;
+
+ }
+.bg-green {
+  background-color: #5C9E31;
+ }
+.bg-transparent {
+  background: transparent;
+}
 
 .chat-pop {
   position: absolute; /* Absolute positioning within homepage-content */
@@ -194,13 +202,13 @@
   font-weight: 200; /* Medium weight */
 }
 .fs-xl{
-  font-size: 10px;
+  font-size: 24px;
 }
 .fs-lg{
-  font-size: 10px;
+  font-size: 20px;
 }
 .fs-md{
-  font-size: 10px;
+  font-size: 13px;
 }
 .fs-sm{
   font-size: 10px;

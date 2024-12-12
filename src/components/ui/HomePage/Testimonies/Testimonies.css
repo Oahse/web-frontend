@@ -1,0 +1,34 @@
+.homepage-testimonies {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+  
+  .homepage-testimonies .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 1rem;
+    background: #f8f9fa; /* Example background */
+    border: 1px solid #dee2e6; /* Example border */
+  }
+  
+  @media (max-width: 768px) {
+    /* Mobile Styles */
+    .homepage-testimonies .col-12 {
+      width: 100%;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    /* Non-Mobile Styles */
+    .homepage-testimonies .col-md-7 {
+      width: 60%;
+    }
+    .homepage-testimonies .col-md-5 {
+      width: 40%;
+    }
+  }
+  
