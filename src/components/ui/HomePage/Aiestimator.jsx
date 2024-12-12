@@ -13,7 +13,7 @@ function HomeAiestimator({isMobile}){
                     <path d="M34.5 115.25H15.75C12.4348 115.25 9.25537 113.933 6.91116 111.589C4.56696 109.245 3.25 106.065 3.25 102.75V15.25C3.25 11.9348 4.56696 8.75537 6.91116 6.41116C9.25537 4.06696 12.4348 2.75 15.75 2.75H59.5L90.75 34V59" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M59.5 115.25V90.25C59.5 86.9348 60.817 83.7554 63.1612 81.4112C65.5054 79.067 68.6848 77.75 72 77.75C75.3152 77.75 78.4946 79.067 80.8388 81.4112C83.183 83.7554 84.5 86.9348 84.5 90.25V115.25M59.5 102.75H84.5M103.25 77.75V115.25" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
-                  <Text fontColor='text-white' fontWeight='fw-400' fontSize='fs-md'> Ontime Shipping</Text>
+                  <Text fontColor='text-white' fontWeight='fw-400' fontSize='fs-md'>  RQF Generator</Text>
 
 
                 </div>
@@ -34,7 +34,7 @@ function HomeAiestimator({isMobile}){
                     <path d="M34.5 115.25H15.75C12.4348 115.25 9.25537 113.933 6.91116 111.589C4.56696 109.245 3.25 106.065 3.25 102.75V15.25C3.25 11.9348 4.56696 8.75537 6.91116 6.41116C9.25537 4.06696 12.4348 2.75 15.75 2.75H59.5L90.75 34V59" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M59.5 115.25V90.25C59.5 86.9348 60.817 83.7554 63.1612 81.4112C65.5054 79.067 68.6848 77.75 72 77.75C75.3152 77.75 78.4946 79.067 80.8388 81.4112C83.183 83.7554 84.5 86.9348 84.5 90.25V115.25M59.5 102.75H84.5M103.25 77.75V115.25" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
-                  <Text fontColor='text-white' fontWeight='fw-400' fontSize='fs-md'> Ontime Shipping</Text>
+                  <Text fontColor='text-white' fontWeight='fw-400' fontSize='fs-md'> RQF Generator</Text>
 
 
 
