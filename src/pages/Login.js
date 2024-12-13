@@ -3,6 +3,7 @@ import { isMobile } from 'react-device-detect';
 import { Col, Form, notification, Row } from 'antd';
 import ImageLoader from '../components/Loader';
 import Card from '../components/ui/Card/Card'
+import Grid from '../components/ui/Grid/Grid'
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import procurement from '../assets/procurement3.jpg'
@@ -71,10 +72,10 @@ function Login({ API_URL }) {
         </Col>
 
         <Col span={12} >
-            <div className='card-container'>
-                <Card className='' style={{textAlign: 'center' }} onClick={() => console.log('clicked')}>
-                        <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'inherit' }}>
-                            <span className="title">Login</span>
+            <div className='' style={{width: '50%', height: '100vh',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Card className='' style={{textAlign: 'center', width: '460px', }} >
+                        <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <span className="card-header">Log In</span>
                         </div>
 
                 <Form
@@ -111,6 +112,24 @@ function Login({ API_URL }) {
                         <Form.Item>
                         <Button type="primary" htmlType="submit" text="Login" />
                         </Form.Item>
+
+                        {/* <Form.Item>
+                            <Grid>
+                                <Col span={24}>
+                                    <p>Or Sign in with </p>
+                                </Col>
+
+                                <Col span={12}>
+                                    <Button type="primary" htmlType="submit" text="Google" />
+                                </Col>
+                            
+                                <Col span={12}>
+                                    <Button type="primary" htmlType="submit" text="Apple" />
+                                </Col>
+                            </Grid>
+                        
+                        
+                        </Form.Item> */}
                     </Form>
                 </Card>
             </div>

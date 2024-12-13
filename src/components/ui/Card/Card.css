@@ -17,7 +17,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.025) !important; /* Subtle shadow */
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
     cursor: pointer !important;
-    max-height: 250px;
+    min-height: 100px;
     width: 355px !important;
   }
   .card:hover {
