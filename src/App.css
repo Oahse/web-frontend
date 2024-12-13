@@ -65,8 +65,11 @@
   background: linear-gradient(to bottom, var(--primary-color-light), var(--black));
 }
 
-.homepage-bubbles {
+.homepage-bubbles-mobile {
   min-height: 730px;
+}
+.homepage-bubbles-not-mobile {
+  height: 480px;
 }
 .homepage-aiestimator{
   background: none;
