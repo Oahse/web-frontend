@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Card.css'; // Create a CSS file for styles or use inline styles
 
-const Card = ({ className, onClick, style, header, body, footer, children}) => {
+const Card = ({ className, onClick, style, header, body, footer, children,cardBodyClass}) => {
+  const cardBody = "card-body "+cardBodyClass;
   return (
     <div
       className={`card ${className}`} // Combine base class with custom classes
@@ -10,8 +11,8 @@ const Card = ({ className, onClick, style, header, body, footer, children}) => {
       style={style}
     >
       {header && <div className='card-header'>{header} </div>}
-      {body && <div className='card-body'> {body}</div>}
-      {children && <div className="card-body">{children}</div>} {/* Supports children */}
+      {body && <div className={cardBody}> {body}</div>}
+      {children && <div className={cardBody}>{children}</div>} {/* Supports children */}
       {footer && <div className='card-footer'> {footer}</div>}
     </div>
   );

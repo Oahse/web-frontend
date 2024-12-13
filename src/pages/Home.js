@@ -7,8 +7,8 @@ import { Avatar } from 'antd';
 import User from '../assets/icons/user.svg';
 import Footer from '../components/ui/Footer/Footer';
 import useDeviceType from '../hooks/useDeviceType';
-import HomePageBubble from '../components/ui/HomePage/Bubbles';
-import HomeAiestimator from '../components/ui/HomePage/Aiestimator';
+import HomePageBubble from '../components/ui/HomePage/Bubbles/Bubbles';
+import HomeAiestimator from '../components/ui/HomePage/Aiestimator/Aiestimator';
 import HomepageTestimonies from '../components/ui/HomePage/Testimonies/Testimonies';
 function Homepage({ Companyname }) {
   const [isScrolled, setIsScrolled] = React.useState(false);

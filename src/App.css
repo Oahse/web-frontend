@@ -65,15 +65,6 @@
   background: linear-gradient(to bottom, var(--primary-color-light), var(--black));
 }
 
-.homepage-bubbles-mobile {
-  min-height: 730px;
-}
-.homepage-bubbles-not-mobile {
-  height: 480px;
-}
-.homepage-aiestimator{
-  background: none;
-}
 .bg-blue {
   background-color: #92D3F5;
 
@@ -178,7 +169,10 @@
 .text-black {
   color: var(--black);
 }
-
+.text-link {
+  color: var(--link-primary-color);
+  text-decoration: none;
+}
 .start-btn-class {
   background-color: var(--alt-background-color) !important;
 }
@@ -211,7 +205,7 @@
   font-size: 20px;
 }
 .fs-md{
-  font-size: 13px;
+  font-size: 12px;
 }
 .fs-sm{
   font-size: 10px;

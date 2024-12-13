@@ -4,40 +4,40 @@
     padding-top: 60px;
     padding-bottom: 60px;
     
-    background-color: var(--alt-background-color) !important;
-    justify-content: space-around !important;
+    background-color: var(--alt-background-color);
+    justify-content: space-around ;
     align-items: center;
   }
   .card {
-    background-color: var(--alt-background-color) !important; /* Light gray background */
-    border: 1px solid var(--border-color) !important;
-    border-radius: 18px !important;
-    padding: 2px !important;
-    text-align: center !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.025) !important; /* Subtle shadow */
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-    cursor: pointer !important;
+    background-color: var(--alt-background-color); /* Light gray background */
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 2px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.025); /* Subtle shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer ;
     min-height: 100px;
-    width: 355px !important;
+    width: 355px ;
     max-height: 250px;
     
   }
   .card:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    transform: translateY(-4px) ;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) ;
   }
   .card:focus {
-    outline: 3px solid var(--focus-color) !important;
-    outline-offset: 4px !important;
+    outline: 3px solid var(--focus-color) ;
+    outline-offset: 4px ;
   }
   
   .card:active {
-    transform: scale(0.98) !important;
+    transform: scale(0.98) ;
   }
   .card-header {
     font-weight: 700 !important;
-    font-size: 1.25rem !important;
-    margin: 0px !important;
+    font-size: 1.25rem ;
+    margin: 0px ;
     padding-bottom: 0px;
     border: none !important;
     background-color: transparent !important;
@@ -48,21 +48,21 @@
 }
 
 .card-body {
-    font-size: 1rem !important;
-    margin: 0px !important;
+    font-size: 1rem ;
+    margin: 0px;
     padding-top: 0px;
-    color: var(--alternate-text-color) !important;
+    color: var(--alternate-text-color) ;
     text-align:left; /* Justifies the text */
     line-height: 1.5; /* Optional: improves readability */
 }
 
 .card-footer {
-    margin: 0px !important;
+    margin: 0px ;
     padding-top: 0px;
-    font-size: 0.875rem !important;
-    color: var(--alternate-text-color) !important;
-    border: none !important;
-    background-color: transparent !important;
+    font-size: 0.875rem ;
+    color: var(--alternate-text-color) ;
+    border: none ;
+    background-color: transparent ;
 }
 @media (max-width: 768px) {
     .card {

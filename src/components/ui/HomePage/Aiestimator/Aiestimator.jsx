@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Text from '../Typography/Text';
-
+import Text from '../../Typography/Text';
+import './Aiestimator.css'
 function HomeAiestimator({isMobile}){
     return(
         <>{isMobile?
