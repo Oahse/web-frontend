@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, Navbar } from 'react-bootstrap';
 import Logo from '../../../assets/oahse-logo.png';
+import Logolight from '../../../assets/oahse-logo-light.png';
 import Globe from '../../icons/globe';
 import Button from '../Button/Button';
-import useDeviceType from '../../../hooks/useDeviceType';
 import './Header.css';
 
-function Header({ Companyname, isScrolled }) {
-    const { isMobile } = useDeviceType();
+function Header({ Companyname, isScrolled,isMobile }) {
+    
     return (
         <nav className={`navbar`}>
             <Container className={`${isScrolled ? 'header-scrolled bg-white' : 'bg-none'}`} fluid={isScrolled}>
                 <Navbar.Brand href="/">
                     <img
-                    src={`${isScrolled ? Logo : Logo}`}
+                    src={`${isScrolled ? Logo : Logolight}`}
                     width="80"
                     height="46"
                     className="navbar-logo"

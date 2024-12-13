@@ -1,7 +1,14 @@
 .navbar {
   padding-top: 40px;
-  top:30px;
+  top: 30px;
 }
+
+@supports (-webkit-touch-callout: none) and (not (translate: none)) {
+  .navbar {
+    top: 30px;
+  }
+}
+
 .navbar-logo {
   transition: transform 0.3s ease-in-out;
   color: var(--alt-background-color);

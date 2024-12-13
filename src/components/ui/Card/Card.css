@@ -1,13 +1,13 @@
 .card-container {
+    padding-left: 50px;
+    padding-right: 50px;
     padding-top: 60px;
     padding-bottom: 60px;
-    padding-left: 100px;
-    padding-right: 100px;
+    
     background-color: var(--alt-background-color) !important;
     justify-content: space-around !important;
     align-items: center;
   }
-  
   .card {
     background-color: var(--alt-background-color) !important; /* Light gray background */
     border: 1px solid var(--border-color) !important;
@@ -19,6 +19,8 @@
     cursor: pointer !important;
     min-height: 100px;
     width: 355px !important;
+    max-height: 250px;
+    
   }
   .card:hover {
     transform: translateY(-4px) !important;

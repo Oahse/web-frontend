@@ -5,9 +5,15 @@ import Button from '../components/ui/Button/Button';
 import Card from '../components/ui/Card/Card';
 import { Avatar } from 'antd';
 import User from '../assets/icons/user.svg';
-
+import Footer from '../components/ui/Footer/Footer';
+import Text from '../components/ui/Typography/Text';
+import useDeviceType from '../hooks/useDeviceType';
+import HomePageBubble from '../components/ui/HomePage/Bubbles';
+import HomeAiestimator from '../components/ui/HomePage/Aiestimator';
+import HomepageTestimonies from '../components/ui/HomePage/Testimonies/Testimonies';
 function Homepage({ Companyname }) {
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const { isMobile } = useDeviceType();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +36,7 @@ function Homepage({ Companyname }) {
   return (
     <div className="homepage">
         <div className={`homepage-bg`}>
-            <Header Companyname={Companyname} isScrolled={isScrolled}/>
+            <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile}/>
             <div className='homepage-content'>
                 <div className='homepage-content-top'>
                   <i className="homepage-content-top-icon fa-regular fa-circle-play"></i>
@@ -70,8 +76,15 @@ function Homepage({ Companyname }) {
             </span>
             
         </div>
-      
-      {/* Other content */}
+          
+        {/* Other content */}
+        <div className='homepage-bottom'>
+          <HomepageTestimonies isMobile={true} />
+          <HomePageBubble isMobile={true} />
+          <HomeAiestimator isMobile={true} />
+          
+          <Footer />
+        </div>
     </div>
   );
 }
