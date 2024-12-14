@@ -1,34 +1,88 @@
-.homepage-testimonies {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: stretch;
+@media (min-width: 768px) {
+  .col-md-6:first-child {
+    flex: 0 0 60%; /* Left part takes 60% */
   }
-  
-  .homepage-testimonies .content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding: 1rem;
-    background: #f8f9fa; /* Example background */
-    border: 1px solid #dee2e6; /* Example border */
+  .col-md-6:last-child {
+    flex: 0 0 40%; /* Right part takes 40% */
   }
+}
+.scrollable-homepage-testimonies-container {
+  display: flex; /* Use flexbox for horizontal alignment */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent wrapping of items */
+  gap: 10px; /* Optional: Add space between items */
+  padding: 10px; /* Optional: Add padding around the scrollable area */
+  border: 1px solid #ccc; /* Optional: Visualize the container */
+  scrollbar-width: none; /* Hide scrollbar for modern browsers */
   
-  @media (max-width: 768px) {
-    /* Mobile Styles */
-    .homepage-testimonies .col-12 {
-      width: 100%;
-    }
+}
+.scrollable-homepage-testimonies-container.active {
+  cursor: grabbing; /* Change cursor when dragging */
+}
+
+.scrollable-homepage-testimonies-container::-webkit-scrollbar {
+  display: none; 
+} 
+.homepage-testimonies{
+  border-radius: 20px;
+  background-color: var(--secondary-color) !important;
+  width: 550px !important;
+  flex-shrink: 0; /* Prevent items from shrinking */
+  position: relative; /* Make the container relative to position buttons inside it */
+}
+@media (max-width: 768px) {
+  .homepage-testimonies{
+    width: 100% !important;
   }
-  
-  @media (min-width: 769px) {
-    /* Non-Mobile Styles */
-    .homepage-testimonies .col-md-7 {
-      width: 60%;
-    }
-    .homepage-testimonies .col-md-5 {
-      width: 40%;
-    }
-  }
-  
+}
+.homepage-testimonies-name {
+  margin-left: 20px;
+}
+.homepage-testimonies-writeup {
+  border: dashed;
+  border-color: var(--white);
+  margin:4px;
+  padding: 4px;
+  height: 98%;
+  text-overflow: ellipsis; /* Show ellipsis when text overflows */
+  word-wrap: break-word; /* Break long words */
+  white-space: normal; /* Allow multi-line text */
+}
+
+.navigation-buttons {
+  position: relative; /* Parent container for the buttons */
+  z-index: 2; /* Ensure buttons are on top */
+  top:-100px;
+}
+
+.prev-button,
+.next-button {
+  position: absolute;
+  top: 50%; /* Vertically align the buttons to the middle */
+  transform: translateY(-50%); /* Adjust for perfect vertical centering */
+  background-color: transparent;
+  color: white;
+  font-size: 18px; /* Adjust icon size if necessary */
+  cursor: pointer;
+  border: none;
+  padding: 8px;
+  border: none;
+  border-radius: 50%; /* Optional: rounded button style */
+  /* Optional: add some shadow for better visibility */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);  */
+
+}
+
+.prev-button {
+  left: -5px; /* Move it slightly outside the container on the left */
+}
+
+.next-button {
+  right: -5px; /* Move it slightly outside the container on the right */
+}
+
+.prev-button:disabled,
+.next-button:disabled {
+  background-color: var(--disabled-color);
+  cursor: not-allowed; /* Change appearance when disabled */
+}
