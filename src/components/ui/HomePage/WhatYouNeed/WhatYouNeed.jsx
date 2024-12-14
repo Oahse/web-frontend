@@ -51,7 +51,9 @@ const WhatYouNeed = ({ isMobile }) => {
        ];
   return (
     <div className={`what-you-need-container ${isMobile ? 'mobile-layout' : 'desktop-layout'} m-0 mb-4 bg-transparent`}>
+        
       <div className="what-you-need-item">
+      
             {featureItems.map((item, index) => (
                 <Avatar
                   key={index}

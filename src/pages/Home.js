@@ -11,6 +11,7 @@ import HomePageBubble from '../components/ui/HomePage/Bubbles/Bubbles';
 import HomeAiestimator from '../components/ui/HomePage/Aiestimator/Aiestimator';
 import HomepageTestimonies from '../components/ui/HomePage/Testimonies/Testimonies';
 import WhatYouNeed from '../components/ui/HomePage/WhatYouNeed/WhatYouNeed';
+import Text from '../components/ui/Typography/Text';
 function Homepage({ Companyname }) {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const { isMobile } = useDeviceType();
@@ -79,6 +80,7 @@ function Homepage({ Companyname }) {
           
         {/* Other content */}
         <div className='homepage-bottom'>
+          <Text fontWeight='fw-500' fontSize='fs-xl' className={'text-center lh-1 p-4'}>What Do you Need? Let’s Handle It!</Text>
           <WhatYouNeed isMobile={isMobile} />
           <HomepageTestimonies isMobile={isMobile} />
           <HomePageBubble isMobile={isMobile} />
