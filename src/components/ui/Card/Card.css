@@ -19,7 +19,7 @@
     cursor: pointer !important;
     min-height: 100px;
     width: 355px !important;
-    max-height: 250px;
+    /* max-height: 250px; */
     
   }
   .card:hover {
