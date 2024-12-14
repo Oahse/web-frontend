@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './WhatYouNeed.css';
 import Card from '../../Card/Card';
+import { Avatar } from 'antd';
+import Text from '../../Typography/Text';
+import Button from '../../Button/Button';
 
 const WhatYouNeed = ({ isMobile }) => {
     const featureItems = [
-        { body: <svg width="224" height="205" viewBox="0 0 224 205" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+        { body: <svg className='whatyouneedsvg' width="300" height="300" viewBox="0 0 224 205" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <rect width="224" height="205" rx="50" fill="url(#pattern0_2812_2885)"/>
             <defs>
             <pattern id="pattern0_2812_2885" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -15,7 +18,7 @@ const WhatYouNeed = ({ isMobile }) => {
             </defs>
             </svg>
              },
-        { body: <svg width="224" height="205" viewBox="0 0 224 205" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+        { body: <svg className='whatyouneedsvg' width="300" height="300" viewBox="0 0 224 205" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <rect width="224" height="205" rx="50" fill="url(#pattern0_2812_2888)"/>
             <defs>
             <pattern id="pattern0_2812_2888" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -25,7 +28,7 @@ const WhatYouNeed = ({ isMobile }) => {
             </defs>
             </svg>
              },
-        { body: <svg width="224" height="205" viewBox="0 0 224 205" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+        { body: <svg className='whatyouneedsvg' width="300" height="300" viewBox="0 0 224 205" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <rect width="224" height="205" rx="50" fill="url(#pattern0_2812_2886)"/>
             <defs>
             <pattern id="pattern0_2812_2886" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -35,7 +38,7 @@ const WhatYouNeed = ({ isMobile }) => {
             </defs>
             </svg>
              },
-        { body: <svg width="224" height="205" viewBox="0 0 224 205" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+        { body: <svg className='whatyouneedsvg' width="300" height="300" viewBox="0 0 224 205" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <rect width="224" height="205" rx="50" fill="url(#pattern0_2812_2887)"/>
             <defs>
             <pattern id="pattern0_2812_2887" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -47,24 +50,42 @@ const WhatYouNeed = ({ isMobile }) => {
              },
        ];
   return (
-    <div className={`what-you-need-container ${isMobile ? 'mobile-layout' : 'desktop-layout'} m-0 bg-transparent`}>
+    <div className={`what-you-need-container ${isMobile ? 'mobile-layout' : 'desktop-layout'} m-0 mb-4 bg-transparent`}>
       <div className="what-you-need-item">
             {featureItems.map((item, index) => (
-                <Card
+                <Avatar
                   key={index}
                   onClick={() => console.log(`Clicked: ${item.header}`)}
-                  header={item.header}
-                  body={item.body}
+                  icon={item.body}
+                  shape='square'
+                  size={200}
+                  className='bg-transparent d-flex justify-content-center align-items-center'
+                  
                 />
                 ))}
       </div>
-      <div className="what-you-need-item">
-        <h3>Item 2</h3>
-        <p>Some description or details about Item 2.</p>
+      <div className="what-you-need-item what-you-need-item-onecol">
+        <svg className="svg" width="37" height="37" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="33.5" cy="33.5" r="33.5" fill="#D9D9D9" fill-opacity="0.37"/>
+            <path d="M40.875 21V32.2H14V37.8H40.875V49L57 34.832L40.875 21Z" fill="#505050"/>
+        </svg>
+
       </div>
-      <div className="what-you-need-item">
-        <h3>Item 3</h3>
-        <p>Some description or details about Item 3.</p>
+      <div className="what-you-need-item what-you-need-item-onecol p-2 m-3 mx-5">
+        <Text fontColor='text-white' fontWeight='fw-300' fontSize='fs-2xl' className={'text-end lh-1'}>We have all you<br/> 
+                need to <br/> 
+                drive those</Text>
+        <Text fontWeight='fw-300' fontSize='fs-2xl' className={'text-end lh-1'}>Engineering <br/> Projects</Text>
+        <span className="d-flex flex-row align-items-center p-2 m-auto bg-none">
+                <Button
+                    type='link'
+                    text="It's Just here"
+                    color="primary"
+                    onClick={() => console.log('Button clicked')}
+                    endIcon={<i className="fa-light fa-chevron-right "></i>}
+                    className={'text-end shake-item'}
+                    />
+            </span>
       </div>
     </div>
   );

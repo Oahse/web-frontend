@@ -5,6 +5,7 @@ const validTags = ['p', 'small', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'di
 
 const Text = ({ 
   children, 
+  className,
   fontSize = 'text-base',  // Default font size
   fontColor = 'text-black', // Default text color
   fontWeight = 'fw-600',
@@ -20,7 +21,7 @@ const Text = ({
   const Tag = validTags.includes(tag) ? tag : 'p'; 
   
   return (
-    <Tag className={`${fontSize} ${fontColor} ${fontWeight} ${bgColor} ${padding} ${margin} ${textDecoration} flex items-center`}>
+    <Tag className={`${className} ${fontSize} ${fontColor} ${fontWeight} ${bgColor} ${padding} ${margin} ${textDecoration} flex items-center`}>
       {/* Render start icon if provided */}
       {startIcon && <span className="mr-2">{startIcon}</span>}
 

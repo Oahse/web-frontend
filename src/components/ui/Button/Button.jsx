@@ -34,9 +34,9 @@ const Button = ({
     return (
       <>
         {renderLoadingSpinner()}
-        {StartIcon && !isLoading && <StartIcon />}
+        {StartIcon && !isLoading && <span className='mx-2' >{StartIcon}</span> }
         <span >{text}</span>
-        {EndIcon && !isLoading && <EndIcon />}
+        {EndIcon && !isLoading && <span className='mx-2' >{EndIcon}</span>}
       </>
     );
   };
@@ -79,8 +79,6 @@ Button.propTypes = {
   className: PropTypes.string, // Additional custom class names
   onClick: PropTypes.func, // onClick handler
   style: PropTypes.object, // Inline styles
-  startIcon: PropTypes.elementType, // Icon component at the start
-  endIcon: PropTypes.elementType, // Icon component at the end
 };
 
 export default Button;

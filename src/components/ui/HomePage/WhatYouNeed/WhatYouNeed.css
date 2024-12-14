@@ -15,18 +15,47 @@
   }
   
   .what-you-need-item {
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    background-color: transparent;
     text-align: center;
     display: grid;
+    align-items: center;
     gap: 8px; /* Space between grid items */
-    padding: 8px;
-    grid-template-columns: repeat(2, 1fr);
+    padding: 8px; /* Default padding for desktop */
+    padding-left: 90px; /* Padding for left on desktop */
+    padding-right: 20px; /* Padding for right on desktop */
+    grid-template-columns: repeat(2, 1fr); /* For desktop layout */
     grid-auto-rows: auto; /* Adjust row height automatically */
   }
-  .what-you-need-item .card{
-      height: 205px;
-      width: 205px;
+  .what-you-need-item-onecol {
+    grid-template-columns: repeat(1, 1fr);
   }
-  
+  .whatyouneedsvg{
+    width: 300px;
+    height: 300px;
+  }  
+  /* Media query for mobile devices */
+  @media (max-width: 768px) {
+    .what-you-need-item {
+      padding: 8px; /* Remove all padding for mobile */
+      align-items: center;
+    }
+    .what-you-need-item .ant-avatar {
+      width: 150px !important;
+      height: 150px !important;
+      align-self: center;
+      margin: auto;
+    }
+    .whatyouneedsvg{
+      width: 150px;
+      height: 150px;
+    }  
+    
+    .what-you-need-item .svg {
+      transform: rotate(90deg); /* Apply 45-degree rotation */
+      align-self: center;
+      margin: auto;
+    }
+    
+  }
+
+
