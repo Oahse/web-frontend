@@ -1,0 +1,32 @@
+.what-you-need-container {
+    display: grid;
+    gap: 8px; /* Space between grid items */
+    padding: 8px;
+  }
+  
+  .desktop-layout {
+    grid-template-columns: 4fr 0.25fr 4fr; /* Columns in 4.5:1:4.5 ratio */
+    grid-auto-rows: auto; /* Adjust row height automatically */
+  }
+  
+  .mobile-layout {
+    grid-template-columns: 1fr; /* Single column */
+    grid-template-rows: 4fr 0.25fr 4fr;
+  }
+  
+  .what-you-need-item {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    display: grid;
+    gap: 8px; /* Space between grid items */
+    padding: 8px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto; /* Adjust row height automatically */
+  }
+  .what-you-need-item .card{
+      height: 205px;
+      width: 205px;
+  }
+  

@@ -10,6 +10,7 @@ import useDeviceType from '../hooks/useDeviceType';
 import HomePageBubble from '../components/ui/HomePage/Bubbles/Bubbles';
 import HomeAiestimator from '../components/ui/HomePage/Aiestimator/Aiestimator';
 import HomepageTestimonies from '../components/ui/HomePage/Testimonies/Testimonies';
+import WhatYouNeed from '../components/ui/HomePage/WhatYouNeed/WhatYouNeed';
 function Homepage({ Companyname }) {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const { isMobile } = useDeviceType();
@@ -78,6 +79,7 @@ function Homepage({ Companyname }) {
           
         {/* Other content */}
         <div className='homepage-bottom'>
+          <WhatYouNeed isMobile={isMobile} />
           <HomepageTestimonies isMobile={isMobile} />
           <HomePageBubble isMobile={isMobile} />
           <HomeAiestimator isMobile={isMobile} />
