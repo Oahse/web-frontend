@@ -1,0 +1,137 @@
+.clients-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+  
+/* Scrollable Bar */
+.scrollable-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap;
+    margin: auto;
+    scrollbar-width: none; /* Hide scrollbar for modern browsers */
+}
+
+.scrollable-bar.active {
+    cursor: grabbing; /* Change cursor when dragging */
+}
+
+.scrollable-bar::-webkit-scrollbar {
+    display: none; 
+} 
+
+.scrollable-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    scroll-behavior: smooth;
+    flex-shrink: 0; /* Prevent items from shrinking */
+    
+}
+
+.scroll-item {
+    background-color: transparent;;
+    padding: 8px;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    text-align: center;
+    flex: 0 0 auto;
+    width: 120px; /* Adjust as needed */
+    height: 120px;
+    flex-shrink: 0; /* Prevent items from shrinking */
+    margin: auto;
+}
+
+@media (max-width: 768px) {
+.scroll-item {
+    width: 100px;
+    height: 100px;
+}
+}
+
+/* Description Row */
+.description-row {
+    text-align: center;
+    line-height: 1.5;
+    padding: 8px;
+    font-size: var(--fs-md);
+}
+
+@media (max-width: 768px) {
+.description-row {
+    font-size: var(--fs-sm);
+}
+}
+
+/* Button Row */
+.button-row {
+    display: flex;
+    justify-content: center;
+}
+.clients-navigation-buttons {
+    position: relative; /* Parent container for the buttons */
+    z-index: 2; /* Ensure buttons are on top */
+    top:-340px;
+  }
+/* For iPhone X and similar devices */
+@media (max-width: 360px) {
+    .clients-navigation-buttons {
+        top: -366px;  /* Adjust top position for iPhone X */
+    }
+}
+/* For iPads in portrait mode */
+@media (max-width: 768px){
+    .clients-navigation-buttons {
+        top: -300px;  /* Adjust for iPad in portrait mode */
+    }
+}
+@media (max-width: 1024px){
+    .clients-navigation-buttons {
+        top: -320px;  /* Adjust for iPad landscape mode */
+    }
+}
+
+/* For larger tablets or smart displays (e.g., Nest Hub) */
+@media (min-width: 1025px) {
+    .clients-navigation-buttons {
+        top: -320px;  /* Adjust for larger tablets or smart displays */
+    }
+}
+  .clients-prev-button,
+  .clients-next-button {
+    position: absolute;
+    top: 50%; /* Vertically align the buttons to the middle */
+    transform: translateY(-50%); /* Adjust for perfect vertical centering */
+    background-color: transparent;
+    color: white;
+    font-size: 18px; /* Adjust icon size if necessary */
+    cursor: pointer;
+    border: none;
+    padding: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: none;
+    border-radius: 50%; /* Optional: rounded button style */
+    /* Optional: add some shadow for better visibility */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+  
+  }
+  
+  .clients-prev-button {
+    left: -5px; /* Move it slightly outside the container on the left */
+  }
+  
+  .clients-next-button {
+    right: -5px; /* Move it slightly outside the container on the right */
+  }
+  
+  .clients-prev-button:disabled,
+  .clients-next-button:disabled {
+    background-color: var(--disabled-color);
+    cursor: not-allowed; /* Change appearance when disabled */
+  }
+  

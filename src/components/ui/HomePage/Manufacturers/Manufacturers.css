@@ -1,0 +1,68 @@
+.manufacturers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+  
+/* Scrollable Bar */
+.manufacturers-scrollable-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap;
+    margin: auto;
+    scrollbar-width: none; /* Hide scrollbar for modern browsers */
+}
+
+.manufacturers-scrollable-bar.active {
+    cursor: grabbing; /* Change cursor when dragging */
+}
+
+.manufacturers-scrollable-bar::-webkit-scrollbar {
+    display: none; 
+} 
+
+.manufacturers-scrollable-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    scroll-behavior: smooth;
+    flex-shrink: 0; /* Prevent items from shrinking */
+    
+}
+
+.manufacturers-scroll-item {
+    background-color: transparent;
+    padding: 8px;
+    border: 1px solid var(--black);
+    border-radius: 10px;
+    text-align: center;
+    flex: 0 0 auto;
+    width: 120px; /* Adjust as needed */
+    height: 120px;
+    flex-shrink: 0; /* Prevent items from shrinking */
+    margin: auto;
+}
+
+@media (max-width: 768px) {
+.manufacturers-scroll-item {
+    width: 100px;
+    height: 100px;
+}
+}
+
+/* Description Row */
+.manufacturers-description-row {
+    text-align: center;
+    line-height: 1.5;
+    padding: 8px;
+    font-size: var(--fs-md);
+}
+
+@media (max-width: 768px) {
+.manufacturers-description-row {
+    font-size: var(--fs-sm);
+}
+}
