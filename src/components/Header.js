@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Container } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom'; // useLocation to detect URL changes
-import Logo from '../assets/oahse-logo.png';
+import Logo from '../assets/oahse-logo-text.png';
 import BottomNavbar from './BottomNavBar';
 import { isDesktop, isMobile, isTablet } from 'react-device-detect';
 import Button from './Button';
@@ -89,7 +89,7 @@ const Header = ({ Companyname, isloggedIn, userDetails }) => {
             <Navbar bg="light" expand="lg" fixed="top" className="m-0 p-0">
                 <Container>
                     <Navbar.Brand href="/">
-                        <img src={Logo} width="80" height="46" className="navbar-logo" alt="Logo" />
+                        <img src={Logo} width="80" height="46" className="navbar-logo" alt="Company Logo" />
                         <span className="navbar-title"> {Companyname}</span>
                     </Navbar.Brand>
                     <div className="d-flex justify-content-between align-items-center" style={{ marginLeft: 'auto' }}>

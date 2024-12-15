@@ -1,0 +1,9 @@
+.formInput{
+    border: 1px solid white;
+    border-radius: 18px;
+    background-color: white;
+    outline: none;
+    padding: 4px;
+    /* min-height: 5px; */
+    
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import { Avatar, Card, Form, Radio, message} from 'antd';
+import { Row, Col, Avatar, Form, Radio, message} from 'antd';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
@@ -9,6 +9,9 @@ import FormCheckBox from '../components/FormCheckBox';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import { useRegister } from '../services/auth';
+import Card from '../components/ui/Card/Card'
+import procurement from '../assets/procurement3.jpg'
+
 
 function Signup({ API_URL }) {
   const [redirectToHome, setRedirectToHome] = useState(false);
@@ -86,152 +89,29 @@ function Signup({ API_URL }) {
   }
 
   return (
-    <Card className={`signup ${!isMobile ? 'bigpadding' : ''} my-5`} style={{ textAlign: 'center' }}>
-      <div className='mb-4' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <span className='title'>Sign Up</span>
-      </div>
-      <Form
-        name="signup"
-        layout="vertical"
-        onFinish={onFinish}
-        initialValues={{
-          newsletter: true, // Default checkbox to checked
-        }}
-      >
-        <FormInput
-          name="name"
-          placeholder="Name"
-          rules={[{ required: true, message: 'Please enter your name' }]}
-        />
+    <Row>
+    <Col span={12} className=''>
+       <div  style={{height: '100vh', overflow: 'hidden', margin: 0, padding: 0 }}>
+         <img src={procurement} alt='procurement login' width='100%' height='100%'/>
+       </div>
+    </Col>
 
-        <FormInput
-          name="email"
-          placeholder="Email"
-          rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
-        />
+    <Col span={12} >
+        <div className='' style={{width: '50%', height: '100vh',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Card className='' style={{textAlign: 'center', width: '460px', }} >
+                    <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <p className="card-header">Create an Account</p>
+                        
+                    </div>
 
-        <FormInput
-          name="password"
-          type="password"
-          placeholder="Password"
-          rules={[{ required: true, message: 'Please enter your password' }]}
-        />
-
-        <FormInput
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          dependencies={['password']}
-          hasFeedback
-          rules={[
-            { required: true, message: 'Please confirm your password' },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error('Passwords do not match'));
-              },
-            }),
-          ]}
-        />
-
-        {/* User Type Selection */}
-        <Form.Item
-          name="userType"
-          label={<span className='text-white'>Select User Type</span>}
-          rules={[{ required: true, message: 'Please select your user type' }]}
-        >
-          <Radio.Group onChange={handleUserTypeChange} value={userType}>
-            {['clients', 'deliverers', 'distributors', 'businesses', 'tradepersons'].map((type) => (
-              <Radio key={type} value={type}>
-                <span className='text-white'>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
-              </Radio>
-            ))}
-          </Radio.Group>
-        </Form.Item>
-
-        {/* Conditional Fields Based on User Type */}
-        {userType === 'clients' && (
-            <>
-              <FormInput
-                name="first_name"
-                placeholder="First Name"
-                rules={[{ required: true, message: 'First name is required for business users.' }]}
-              />
-              <FormInput
-                name="last_name"
-                placeholder="Last Name"
-                rules={[{ required: true, message: 'Last Name is required for business users.' }]}
-              />
-          </>
-        )}
-        {userType === 'businesses' && (
-          <>
-            <FormInput
-              name="businessname"
-              placeholder="Business Name"
-              rules={[{ required: true, message: 'Business name is required for business users.' }]}
-            />
-            <FormInput
-              name="cac"
-              placeholder="CAC"
-              rules={[{ required: true, message: 'CAC is required for business users.' }]}
-            />
-            <FormInput
-              name="websiteurl"
-              placeholder="Website URL"
-              rules={[{ required: true, message: 'Website URL is required for business users.' }]}
-            />
-          </>
-        )}
-
-        {userType === 'tradepersons' && (
-          <>
-            <FormInput
-              name="professionname"
-              placeholder="Profession Name"
-              rules={[{ required: true, message: 'Profession Name is required for tradepersons.' }]}
-            />
-          </>
-        )}
-
-        {userType === 'distributors' && (
-          <>
-            <FormInput
-              name="distributorname"
-              placeholder="Distributor Name"
-              rules={[{ required: true, message: 'Distributor Name is required for distributors.' }]}
-            />
-          </>
-        )}
-
-        {userType === 'deliverers' && (
-          <>
-            <FormInput
-              name="deliverername"
-              placeholder="Deliverer Name"
-              rules={[{ required: true, message: 'Deliverer name is required for deliverers.' }]}
-            />
-          </>
-        )}
-
-        <div className='minititle mb-4' style={{ textAlign: 'right' }}>
-          <Link to="/login"><small>Already have an account? Login</small></Link>
+                
+            </Card>
         </div>
+        
 
-        <FormCheckBox name="newsletter" valuePropName="checked" text={'I would like to receive your newsletter and other promotional information.'} />
-
-        <div className='minititle mb-4 text-white' style={{ textAlign: 'left' }}>
-          or signup with 
-          <Link to="/login"><Avatar shape={'square'} className='ms-2' src={'https://iconape.com/wp-content/uploads/1/11/gmail-02.png'}  style={{backgroundColor:'white', minWidth:'60px'}}></Avatar></Link>
-          <Link to="/login"><Avatar shape={'square'} className='ms-3' src={'http://www.pngall.com/wp-content/uploads/2016/07/Linkedin-Free-PNG-Image.png'} style={{backgroundColor:'white', minWidth:'60px'}}></Avatar></Link>
-        </div>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit" text='Register' />
-        </Form.Item>
-      </Form>
-    </Card>
+       
+    </Col>
+</Row>
   );
 }
 

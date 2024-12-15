@@ -6,10 +6,10 @@ import Card from '../components/ui/Card/Card'
 import Grid from '../components/ui/Grid/Grid'
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import procurement from '../assets/procurement3.jpg'
+import procurement from '../assets/procurement.jpg'
 import FormInput from '../components/FormInput';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
+import Button from '../components/ui/Button/Button';
 import { useLogin } from '../services/auth'; // Adjust path as needed
 
 function Login({ API_URL }) {
@@ -73,7 +73,7 @@ function Login({ API_URL }) {
 
         <Col span={12} >
             <div className='' style={{width: '50%', height: '100vh',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Card className='' style={{textAlign: 'center', width: '460px', }} >
+                <Card className='' style={{textAlign: 'center', width: '460px', backgroundColor: '#D9D9D9', }} >
                         <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <span className="card-header">Log In</span>
                         </div>
@@ -103,33 +103,33 @@ function Login({ API_URL }) {
                         <div className="minititle mb-4 d-flex flex-column" style={{ textAlign: 'right' }}>
                         <Link to="/forgotpassword"><small>Forgot Password?</small></Link>
                         </div>
-                        <div className="minititle mb-4" style={{ textAlign: 'right' }}>
-                        <Link to="/signup"><small>Not Account Yet? Sign up</small></Link>
-                        </div>
 
                         {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if login fails */}
 
                         <Form.Item>
-                        <Button type="primary" htmlType="submit" text="Login" />
+                        <Button type="primary" htmlType="submit" text="Login" className='' style={{width: '100%',}}/>
                         </Form.Item>
 
-                        {/* <Form.Item>
-                            <Grid>
-                                <Col span={24}>
-                                    <p>Or Sign in with </p>
-                                </Col>
+                        <div className="minititle mb-4" style={{ textAlign: 'right' }}>
+                        <span>Don't have an Account yet? </span><Link to="/signup"><small>Sign up</small></Link>
+                        </div>
 
-                                <Col span={12}>
-                                    <Button type="primary" htmlType="submit" text="Google" />
-                                </Col>
-                            
-                                <Col span={12}>
-                                    <Button type="primary" htmlType="submit" text="Apple" />
-                                </Col>
-                            </Grid>
-                        
-                        
-                        </Form.Item> */}
+                        <div style={{textAlign: 'center',}}>
+                            <div>
+                                <p>or Sign in with</p>
+                            </div>
+                           
+                            <Row >
+                                <Col span={8}><Button text={<i class="bi bi-google"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
+
+                                <Col span={8}><Button text={<i class="bi bi-apple"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
+
+                                <Col span={8}><Button text={<i class="bi bi-linkedin"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
+                                
+                            </Row>
+                               
+                        </div>
+                       
                     </Form>
                 </Card>
             </div>

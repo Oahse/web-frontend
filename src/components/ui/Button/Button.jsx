@@ -14,6 +14,7 @@ const Button = ({
   style = {},
   startIcon: StartIcon,
   endIcon: EndIcon,
+  children,
   ...props
 }) => {
   // Generate button class dynamically
@@ -54,6 +55,7 @@ const Button = ({
           className={buttonClass}
           onClick={onClick}
           style={style}
+          children
           {...props}
         >
           {renderButtonContent()}
