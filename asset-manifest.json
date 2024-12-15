@@ -1,23 +1,25 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.0b674b63.css",
-    "main.js": "/web-frontend/static/js/main.a355c483.js",
+    "main.css": "/web-frontend/static/css/main.7e621aed.css",
+    "main.js": "/web-frontend/static/js/main.6f53a3c2.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/oahse-logo-light.png": "/web-frontend/static/media/oahse-logo-light.a220c2246b915327a90a.png",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
     "static/media/procurement3.jpg": "/web-frontend/static/media/procurement3.65cf0e6203bf828df7d4.jpg",
     "static/media/CIPAC_cover_photo.jpg": "/web-frontend/static/media/CIPAC_cover_photo.c9896af6b416cad75641.jpg",
     "static/media/oahse-logo.png": "/web-frontend/static/media/oahse-logo.abeea64afabf7d674fef.png",
+    "static/media/procurement.jpg": "/web-frontend/static/media/procurement.2a81563ca7744373eebd.jpg",
     "static/media/oahse-icon.png": "/web-frontend/static/media/oahse-icon.c628d4a92daa1c19dd6a.png",
-    "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
-    "static/media/user.svg": "/web-frontend/static/media/user.54a9668c76dc920e538cdd50b152d5b0.svg",
+    "static/media/oahse-logo-text.png": "/web-frontend/static/media/oahse-logo-text.126fbac7f34e86f6cbd1.png",
+    "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.240dfd990a1b22b26649c8894c21da4b.svg",
+    "static/media/user.svg": "/web-frontend/static/media/user.f75d63bf85d79e9ef291ca0f32b81de5.svg",
     "index.html": "/web-frontend/index.html",
-    "main.0b674b63.css.map": "/web-frontend/static/css/main.0b674b63.css.map",
-    "main.a355c483.js.map": "/web-frontend/static/js/main.a355c483.js.map",
+    "main.7e621aed.css.map": "/web-frontend/static/css/main.7e621aed.css.map",
+    "main.6f53a3c2.js.map": "/web-frontend/static/js/main.6f53a3c2.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0b674b63.css",
-    "static/js/main.a355c483.js"
+    "static/css/main.7e621aed.css",
+    "static/js/main.6f53a3c2.js"
   ]
 }
