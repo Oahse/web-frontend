@@ -21,8 +21,8 @@
     align-items: center;
     gap: 8px; /* Space between grid items */
     padding: 8px; /* Default padding for desktop */
-    padding-left: 90px; /* Padding for left on desktop */
-    padding-right: 20px; /* Padding for right on desktop */
+    padding-left: auto; /* Padding for left on desktop */
+    padding-right: auto; /* Padding for right on desktop */
     grid-template-columns: repeat(2, 1fr); /* For desktop layout */
     grid-auto-rows: auto; /* Adjust row height automatically */
   }
@@ -33,6 +33,14 @@
     width: 300px;
     height: 300px;
   }  
+   /* Media query for mobile devices */
+   @media (min-width: 1000px) {
+    .what-you-need-item {
+      padding-left: 90px; /* Padding for left on desktop */
+      padding-right: 20px; /* Padding for right on desktop */
+    }
+    
+   }
   /* Media query for mobile devices */
   @media (max-width: 768px) {
     .what-you-need-item {
