@@ -17,6 +17,11 @@ import Manufacturers from '../components/ui/HomePage/Manufacturers/Manufacturers
 
 
 function Homepage({ Companyname }) {
+  const user ={'firstname':'Henrio',
+              'lastname':'sfdff',
+              'email':'sdsdsd@gmail.com',
+              'id':'1212121',
+            'isloggedin':true}
   const [isScrolled, setIsScrolled] = React.useState(false);
   const { isMobile, isTablet,isDesktop } = useDeviceType();
 
@@ -62,7 +67,7 @@ function Homepage({ Companyname }) {
   return (
     <div className="homepage">
         <div className={`homepage-bg`}>
-            <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile}/>
+            <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile} user={user}/>
             <div className='homepage-content'>
                 <div className='homepage-content-top'>
                   <i className="homepage-content-top-icon fa-regular fa-circle-play"></i>

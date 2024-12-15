@@ -77,10 +77,10 @@
 }
 
 .chat-pop {
-  z-index: 99999;
+  z-index: 2;
   position: fixed; /* Absolute positioning within homepage-content */
-  bottom: 20px; /* Distance from the bottom */
-  right: 60px; /* Distance from the right */
+  bottom: 10px; /* Distance from the bottom */
+  right: 46px; /* Distance from the right */
   display: flex; /* Align icon and background */
   align-items: center;
   justify-content: center;
@@ -115,7 +115,7 @@
 .chat-pop-arrow {
   background-color: var(--white);
   color: var(--black);
-  margin-left:96px;
+  margin-left:92px;
   display: flex; /* Align icon and background */
   align-items: center;
   justify-content: center;
