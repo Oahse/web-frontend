@@ -45,16 +45,24 @@
 .homepage-content {
   background-color: transparent;
   color: #1E1E1E;
-  padding: 20px 70px; /* Adjust padding as needed */
+  padding: 20px 65px; /* Adjust padding as needed */
   margin-top: 60px; /* Ensure there is space below the header */
   transition: padding 0.3s ease-in-out, transform 0.3s ease-in-out;
   position: relative; /* Needed for stacking context */
   flex: 1; /* Ensure it takes up the remaining space */
 }
+@media (max-width: 768px) {
+  .homepage-content  {
+    padding: 20px 34px; /* Adjust padding as needed */
+    margin-right: 0px;
+    margin-left: 0px;
+      
+  }
+  }
 .homepage-content-top{
   color: var(--link-primary-color);
   font-weight: 700;
-  line-height: 19.36px;
+  line-height: 8.36px;
   font-size: 16px;
 }
 .homepage-content-top .homepage-content-top-text {
@@ -202,7 +210,7 @@
   font-weight: 200; /* Medium weight */
 }
 .fs-3xl{
-  font-size: 48px;
+  font-size: 50px;
 }
 .fs-2xl{
   font-size: 36px;
@@ -222,17 +230,6 @@
 .fs-sm{
   font-size: 10px;
 }
-/* Loading Spinner */
-.spinner-border {
-  width: 1rem;
-  height: 1rem;
-  margin-right: 8px;
-  border: 2px solid transparent;
-  border-top-color: var(--white, #ffffff);
-  border-radius: 50%;
-  animation: spinner 0.75s linear infinite;
-}
-
 
 
 /* Animation for Spinner */

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Avatar, Drawer} from 'antd';
 import './SideBar.css';
 import Text from '../Typography/Text';
+import Button from '../Button/Button';
 
 const Sidebar = ({ logo, visible, onClose, placement, title,items,user }) => {
 
@@ -31,7 +32,16 @@ const Sidebar = ({ logo, visible, onClose, placement, title,items,user }) => {
         open={visible}
         footer={<div className='sidebar-footer m-auto'>
             {!user?.isloggedin?
-            <span>login</span>
+            <span className='d-flex flex-row'>
+              <Button
+                type='link'
+                text="Login"
+                color="secondary"
+                className='fw-500 m-auto'
+                onClick={() => console.log('Button clicked')}
+                startIcon={<i className="fa-thin fa-right-to-bracket"></i>}
+              />
+            </span>
             :
             <span className='d-flex flex-row'>
                 <Avatar size={40}/> 

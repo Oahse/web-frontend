@@ -10,7 +10,8 @@ import './Header.css';
 
 
 function Header({ Companyname, isScrolled,isMobile, user }) {
-    const [state, setState] = useState({ 
+    
+    const [sidebarstate, setSidebarState] = useState({ 
         visible: false, 
         placement: 'left', 
         title: 'Oahse', 
@@ -19,22 +20,22 @@ function Header({ Companyname, isScrolled,isMobile, user }) {
       });
     
     const showDrawer = () => {
-        console.log(state)
-        setState((prevState) => ({
+        console.log(sidebarstate)
+        setSidebarState((prevState) => ({
             ...prevState, // spread previous state
             visible: true, // update only the `visible` property
           }));
       };
     
     const onClose = () => {
-        setState((prevState) => ({
+        setSidebarState((prevState) => ({
             ...prevState, // spread previous state
             visible: false, // update only the `visible` property
           }));
       };
     
     const onChange = e => {
-        setState((prevState) => ({
+        setSidebarState((prevState) => ({
             ...prevState, // spread previous state
             placement: e.target.value,
           }));
@@ -67,25 +68,29 @@ function Header({ Companyname, isScrolled,isMobile, user }) {
                                         type='link'
                                         text="Start for Free"
                                         color="primary"
+                                        href='/shop'
                                         onClick={() => console.log('Button clicked')}
                                         />
 
                             </span>
                         </span>
                     </span>
-                    {isMobile?<span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><i className="fa-light fa-bars " style={{ fontSize: '24px' }} onClick={showDrawer}></i></span>:null}
+                    {isMobile?<span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><i className={`fa-light ${sidebarstate.visible?'fa-x':'fa-bars'} `} style={{ fontSize: '24px' }} onClick={showDrawer}></i></span>:null}
                 </div>
             </Container>
             {/* Sidebar component */}
             <Sidebar
                 logo={Logo}
-                visible={state.visible}
+                visible={sidebarstate.visible}
                 onClose={onClose}
-                placement={state?.placement}
-                title={state.title}
-                items={state.items}
+                placement={sidebarstate?.placement}
+                title={sidebarstate.title}
+                items={sidebarstate.items}
                 user={user}
             />
+            {/* Bottom Navbar for mobile and tablet */}
+            {/* {(isMobile || isTablet) ? <BottomNavbar renderLinks={renderLinks} /> : null} */}
+            
         </nav>
         
     );

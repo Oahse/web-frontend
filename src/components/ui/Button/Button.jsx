@@ -15,14 +15,15 @@ const Button = ({
   startIcon: StartIcon,
   endIcon: EndIcon,
   children,
+  fontWeight,
   ...props
 }) => {
   // Generate button class dynamically
   const buttonClass = (() => {
     if (type === 'link') {
-      return `button button-link-${variant}-${color} ${className}`;
+      return `button button-link-${variant}-${color} ${className} ${fontWeight}`;
     }
-    return `button button-${variant}-${color} ${className}`;
+    return `button button-${variant}-${color} ${className} ${fontWeight}`;
   })();
 
   // Render a loading spinner if the button is loading
@@ -35,9 +36,9 @@ const Button = ({
     return (
       <>
         {renderLoadingSpinner()}
-        {StartIcon && !isLoading && <span className='mx-2' >{StartIcon}</span> }
-        <span >{children?children:text}</span>
-        {EndIcon && !isLoading && <span className='mx-2' >{EndIcon}</span>}
+        {StartIcon && !isLoading && <span >{StartIcon}</span> }
+        <span className='mx-2' >{children?children:text}</span>
+        {EndIcon && !isLoading && <span >{EndIcon}</span>}
       </>
     );
   };

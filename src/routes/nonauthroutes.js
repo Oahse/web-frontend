@@ -77,9 +77,9 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     title: 'passwordreset'
   },
   {
-    path: "/marketplace",
+    path: "/shop",
     element: <Marketplace API_URL={API_URL} Companyname={Companyname}/>,
-    title: "marketplace"
+    title: "shop"
   },
   {
     path: "/categories/:id",

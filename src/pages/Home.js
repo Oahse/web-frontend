@@ -21,7 +21,7 @@ function Homepage({ Companyname }) {
               'lastname':'sfdff',
               'email':'sdsdsd@gmail.com',
               'id':'1212121',
-            'isloggedin':true}
+            'isloggedin':false}
   const [isScrolled, setIsScrolled] = React.useState(false);
   const { isMobile, isTablet,isDesktop } = useDeviceType();
 
@@ -73,6 +73,34 @@ function Homepage({ Companyname }) {
                   <i className="homepage-content-top-icon fa-regular fa-circle-play"></i>
                   <span className='homepage-content-top-text'>Learn more about Oahse</span>
                 </div>
+                <div className='row mt-2'>
+                  <div className='col-12 col-md-8 col-lg-8'>
+                    <div className='homepage-content-second'>
+                      <Text fontWeight='fw-800' fontColor='text-white' fontSize='fs-2xl' style={{lineHeight:'40px'}}>
+                        Revolutionized Procurement 
+                        platform for engineering 
+                        and technology trade.
+                      </Text>
+                      <Text className={'mt-3'} fontWeight='fw-500' fontColor='text-white' fontSize={isMobile?'fs-md':'fs-md-lg'}>Ensuring seamless access to high-quality engineering products from trusted suppliers, 
+                        enabling business and individuals to streamline their procurement processes, 
+                        reduce costs and enhance operational efficiency.</Text>
+                    </div>
+                    </div>
+                    <div className={`col-12 col-md-4 col-lg-4 `}>
+                        <span className='d-flex flex-row justify-content-center mt-5'>
+                          <Button
+                            type='link'
+                            text="Get the App"
+                            color="secondary"
+                            variant='outlined'
+                            className='fw-500 m-auto'
+                            onClick={() => console.log('Button clicked')}
+                          />
+                        </span>
+                      </div>
+
+                </div>
+               
                 
             </div>
         </div>
