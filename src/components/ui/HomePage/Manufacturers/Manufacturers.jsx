@@ -1,9 +1,9 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import './Manufacturers.css';
 import Button from '../../Button/Button';
 import Text from '../../Typography/Text';
 import { Avatar } from 'antd';
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
     // Usage
@@ -147,5 +147,11 @@ const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
         </div>
     );
   };
-  
+// Prop Validation
+Manufacturers.propTypes = {
+    isMobile: PropTypes.bool.isRequired,   // isScrolled must be a boolean and is required
+    isTablet: PropTypes.bool.isRequired,   // isScrolled must be a boolean and is required
+    isDesktop: PropTypes.bool.isRequired,   // isScrolled must be a boolean and is required
+  };
+   
 export default Manufacturers;

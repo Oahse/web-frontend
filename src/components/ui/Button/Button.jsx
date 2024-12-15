@@ -36,7 +36,7 @@ const Button = ({
       <>
         {renderLoadingSpinner()}
         {StartIcon && !isLoading && <span className='mx-2' >{StartIcon}</span> }
-        <span >{text}</span>
+        <span >{children?children:text}</span>
         {EndIcon && !isLoading && <span className='mx-2' >{EndIcon}</span>}
       </>
     );

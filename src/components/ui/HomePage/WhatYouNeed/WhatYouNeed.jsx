@@ -68,7 +68,7 @@ const WhatYouNeed = ({ isMobile }) => {
       </div>
       <div className="what-you-need-item what-you-need-item-onecol">
         <svg className="svg" width="37" height="37" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="33.5" cy="33.5" r="33.5" fill="#D9D9D9" fill-opacity="0.37"/>
+            <circle cx="33.5" cy="33.5" r="33.5" fill="#D9D9D9" fillOpacity="0.37"/>
             <path d="M40.875 21V32.2H14V37.8H40.875V49L57 34.832L40.875 21Z" fill="#505050"/>
         </svg>
 

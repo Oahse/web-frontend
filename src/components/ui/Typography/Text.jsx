@@ -50,18 +50,4 @@ Text.propTypes = {
   tag: PropTypes.string,               // `tag` is the tag to be rendered (default is 'p')
 };
 
-// Default props
-Text.defaultProps = {
-  fontSize: 'text-base',  // Default font size (standard text)
-  bold: 'font-normal',    // Default font weight (normal)
-  fontColor: 'text-black', // Default text color (black)
-  bgColor: 'bg-transparent', // Default background color (transparent)
-  padding: 'p-0',            // No padding by default
-  margin: 'm-0',             // No margin by default
-  textDecoration: '',        // No decoration by default
-  startIcon: null,           // No start icon by default
-  endIcon: null,             // No end icon by default
-  tag: 'p',                   // Default to <p> tag
-};
-
 export default Text;

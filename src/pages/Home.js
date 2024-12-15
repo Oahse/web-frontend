@@ -1,9 +1,9 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Header from '../components/ui/Header/Header';
 import Grid from '../components/ui/Grid/Grid';
 import Button from '../components/ui/Button/Button';
 import Card from '../components/ui/Card/Card';
-import { Avatar } from 'antd';
+import { Avatar, Modal } from 'antd';
 import User from '../assets/icons/user.svg';
 import Footer from '../components/ui/Footer/Footer';
 import useDeviceType from '../hooks/useDeviceType';
@@ -14,6 +14,8 @@ import WhatYouNeed from '../components/ui/HomePage/WhatYouNeed/WhatYouNeed';
 import Text from '../components/ui/Typography/Text';
 import Clients from '../components/ui/HomePage/Clients/Clients';
 import Manufacturers from '../components/ui/HomePage/Manufacturers/Manufacturers';
+
+
 function Homepage({ Companyname }) {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const { isMobile, isTablet,isDesktop } = useDeviceType();
@@ -36,6 +38,27 @@ function Homepage({ Companyname }) {
     { header: 'Niche Market Expansion', body: 'Cater to specialized industries with tailored solutions.' },
     { header: 'Support Sustainability', body: 'Promote environmentally friendly products and suppliers to help businesses achieve their sustainability goals.' }
   ];
+
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState('Content of the modal');
+
+  const showModal = () => {
+    setOpen(true);
+    
+  };
+  const handleOk = () => {
+    setModalText('The modal will be closed after two seconds');
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
   return (
     <div className="homepage">
         <div className={`homepage-bg`}>
@@ -45,14 +68,28 @@ function Homepage({ Companyname }) {
                   <i className="homepage-content-top-icon fa-regular fa-circle-play"></i>
                   <span className='homepage-content-top-text'>Learn more about Oahse</span>
                 </div>
-                <div className='chat-pop'>
-                  <div className='d-flex flex-row align-items-center chat-pop-case'>
-                      <Avatar src={User} className='chat-pop-avatar' />
-                      <span className='chat-pop-dot'><i class="fa-sharp fa-solid fa-circle"></i></span>
-                  </div>
-                  <span className='chat-pop-arrow'><i className="fa-regular fa-chevron-up"></i></span>
-                </div>
+                
             </div>
+        </div>
+        <div className='chat-pop' onClick={showModal}>
+          <div className='d-flex flex-row align-items-center chat-pop-case'>
+              <Avatar src={User} className='chat-pop-avatar' />
+              <span className='chat-pop-dot'><i class="fa-sharp fa-solid fa-circle"></i></span>
+          </div>
+          <span className='chat-pop-arrow'><i className="fa-regular fa-chevron-up"></i></span>
+          <Modal
+            title="Title"
+            open={open}
+            confirmLoading={confirmLoading}
+            footer={(_, { }) => (
+              <>
+                <Button onClick={handleCancel} text={'cancel'} />
+                <Button onClick={handleOk} text={'ok'} />
+              </>
+            )}
+          >
+            <p>{modalText}</p>
+          </Modal>
         </div>
         
         <div className='card-container'>

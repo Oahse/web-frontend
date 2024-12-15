@@ -77,8 +77,9 @@
 }
 
 .chat-pop {
-  position: absolute; /* Absolute positioning within homepage-content */
-  bottom: 2px; /* Distance from the bottom */
+  z-index: 99999;
+  position: fixed; /* Absolute positioning within homepage-content */
+  bottom: 20px; /* Distance from the bottom */
   right: 60px; /* Distance from the right */
   display: flex; /* Align icon and background */
   align-items: center;
@@ -113,7 +114,8 @@
 }
 .chat-pop-arrow {
   background-color: var(--white);
-  margin-left:120px;
+  color: var(--black);
+  margin-left:96px;
   display: flex; /* Align icon and background */
   align-items: center;
   justify-content: center;
@@ -126,6 +128,7 @@
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 .text-success {
   color: var(--success-color);
 }
