@@ -11,6 +11,7 @@ import FormInput from '../components/FormInput';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button/Button';
 import { useLogin } from '../services/auth'; // Adjust path as needed
+import './Login.css';
 
 function Login({ API_URL }) {
   const [redirectToHome, setRedirectToHome] = useState(false);
@@ -65,14 +66,14 @@ function Login({ API_URL }) {
 
   return (
     <Row>
-        <Col span={12} className=''>
+        <Col className={isMobile ? 'hidden' : ''} xl={12} lg={12}> 
            <div  style={{height: '100vh', overflow: 'hidden', margin: 0, padding: 0 }}>
              <img src={procurement} alt='procurement login' width='100%' height='100%'/>
            </div>
         </Col>
 
-        <Col span={12} >
-            <div className='' style={{width: '50%', height: '100vh',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Col className='px-5' xl={12} lg={12} md={24} sm={24}>
+            <div className='' style={{width: '100%', height: '100vh',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Card className='' style={{textAlign: 'center', width: '460px', backgroundColor: '#D9D9D9', }} >
                         <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <span className="card-header">Log In</span>
