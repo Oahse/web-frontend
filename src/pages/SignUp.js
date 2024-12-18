@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { Children, useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import { Row, Col, Avatar, Form, Radio, message} from 'antd';
+import { Row, Col, Avatar, Form, Radio, message, Cascader, Checkbox, Select} from 'antd';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import FormInput from '../components/FormInput';
 import FormCheckBox from '../components/FormCheckBox';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
+import Button from '../components/ui/Button/Button';
 import { useRegister } from '../services/auth';
 import Card from '../components/ui/Card/Card'
 import procurement from '../assets/procurement3.jpg'
@@ -18,6 +18,33 @@ function Signup({ API_URL }) {
   const navigate = useNavigate();
   const [userType, setUserType] = useState(""); // Store selected user type
   const { register, loading, error, user } = useRegister(); // Use the register hook
+  const countryList = [
+    {value: 'Canada',
+        label: 'Canada',
+        children: [
+            {value: 'Alberta',
+                label: 'Alberta'
+            },
+
+            {value: 'Ontario',
+                label: 'Ontario'
+            }
+        ]
+    },
+
+    {value: 'Nigeria', 
+        label: 'Nigeria',
+        children: [
+            {value: 'Abuja',
+                label: 'Abuja',
+            },
+
+            {value: 'Lagos',
+                label: 'Lagos',
+            }
+        ]
+    }
+  ]
   console.log(user)
   // Handle form submission
   const onFinish = (values) => {
@@ -90,28 +117,103 @@ function Signup({ API_URL }) {
 
   return (
     <Row>
-    <Col span={12} className=''>
-       <div  style={{height: '100vh', overflow: 'hidden', margin: 0, padding: 0 }}>
-         <img src={procurement} alt='procurement login' width='100%' height='100%'/>
-       </div>
-    </Col>
 
-    <Col span={12} >
-        <div className='' style={{width: '50%', height: '100vh',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Card className='' style={{textAlign: 'center', width: '460px', }} >
-                    <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <p className="card-header">Create an Account</p>
-                        
-                    </div>
+        <Col className='py-5' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div className='' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Card className='' style={{textAlign: 'center', width: '460px', backgroundColor: '#D9D9D9', }} >
+                        <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <p className="card-header">Sign Up</p>
+                        </div>
 
-                
-            </Card>
-        </div>
+                        <Form 
+                            name="signup"
+                            // layout="vertical"
+                            onFinish={onFinish}
+                            initialValues={{
+                            newsletter: true, // Default checkbox to checked
+                            }}
+                        >
+                            <Form.Item name='Country' label='Country' hasFeedback colon>
+                                <Select placeholder="Select your Country" style= {{width: 200}} options={countryList} />
+                            </Form.Item>
+                           
+                          <Form.Item label='Trade Role'>
+                            <Radio.Group >
+                                    <Radio value={1}>Buyer</Radio>
+                                    <Radio value={2}>Seller</Radio>
+                                    <Radio value={3}>Both</Radio>
+                                </Radio.Group>
+                          </Form.Item>
+                            
+                            <Form.Item label='Full Name'>
+                                <FormInput name='name' placeholder='First name' 
+                                    rules={[{ required: true, message: 'Please enter your name' }]}
+                                />
+                                
+                                <FormInput name='name' placeholder='Last name' 
+                                    rules={[{ required: true, message: 'Please enter your name' }]}
+                                />
+                            </Form.Item>
+                            
+                            
+                            <FormInput
+                                name="email"
+                                placeholder="Email"
+                                rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
+                            />
+
+                            <FormInput
+                                name="password"
+                                type="password"
+                                placeholder="Password"
+                                rules={[{ required: true, message: 'Please enter your password' }]}
+                            />
+
+                            <FormInput
+                                name="confirmPassword"
+                                placeholder="Confirm Password"
+                                dependencies={['password']}
+                                hasFeedback
+                                rules={[
+                                    { required: true, message: 'Please confirm your password' },
+                                    ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error('Passwords do not match'));
+                                    },
+                                    }),
+                                ]}
+                            />
+
+                            <Form.Item>
+                                <Checkbox>  
+                                    I would like to receive your newsletter and promotional updates 
+                                    from Oahse about its products and services.
+                                </Checkbox>
+                            </Form.Item>
+                            
+
+                            <Form.Item>
+                                <Checkbox>  
+                                    I would like to receive your newsletter and promotional updates 
+                                    from Oahse about its products and services.
+                                </Checkbox>
+                            </Form.Item>
+                            
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" text="Register" className='' style={{width: '100%',}}/>
+                            </Form.Item>
+                        </Form>
+                    
+                </Card>
+            </div>
+            
+
         
-
-       
-    </Col>
-</Row>
+        </Col>
+    </Row>
   );
 }
 
