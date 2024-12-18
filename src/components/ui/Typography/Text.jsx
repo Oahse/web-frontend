@@ -6,6 +6,7 @@ const validTags = ['p', 'small', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'di
 const Text = ({ 
   children, 
   className,
+  style,
   fontSize = 'text-base',  // Default font size
   fontColor = 'text-black', // Default text color
   fontWeight = 'fw-600',
@@ -21,7 +22,7 @@ const Text = ({
   const Tag = validTags.includes(tag) ? tag : 'p'; 
   
   return (
-    <Tag className={`${className} ${fontSize} ${fontColor} ${fontWeight} ${bgColor} ${padding} ${margin} ${textDecoration} flex items-center`}>
+    <Tag style={style} className={`${className} ${fontSize} ${fontColor} ${fontWeight} ${bgColor} ${padding} ${margin} ${textDecoration} flex items-center`}>
       {/* Render start icon if provided */}
       {startIcon && <span className="mr-2">{startIcon}</span>}
 
@@ -47,20 +48,6 @@ Text.propTypes = {
   startIcon: PropTypes.node,           // `startIcon` can be any React node (an icon component or HTML element)
   endIcon: PropTypes.node,             // `endIcon` can be any React node (an icon component or HTML element)
   tag: PropTypes.string,               // `tag` is the tag to be rendered (default is 'p')
-};
-
-// Default props
-Text.defaultProps = {
-  fontSize: 'text-base',  // Default font size (standard text)
-  bold: 'font-normal',    // Default font weight (normal)
-  fontColor: 'text-black', // Default text color (black)
-  bgColor: 'bg-transparent', // Default background color (transparent)
-  padding: 'p-0',            // No padding by default
-  margin: 'm-0',             // No margin by default
-  textDecoration: '',        // No decoration by default
-  startIcon: null,           // No start icon by default
-  endIcon: null,             // No end icon by default
-  tag: 'p',                   // Default to <p> tag
 };
 
 export default Text;

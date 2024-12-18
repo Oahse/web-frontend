@@ -12,7 +12,6 @@
   white-space: nowrap; /* Prevent wrapping of items */
   gap: 10px; /* Optional: Add space between items */
   padding: 10px; /* Optional: Add padding around the scrollable area */
-  border: 1px solid #ccc; /* Optional: Visualize the container */
   scrollbar-width: none; /* Hide scrollbar for modern browsers */
   
 }

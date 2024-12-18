@@ -1,9 +1,9 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Header from '../components/ui/Header/Header';
 import Grid from '../components/ui/Grid/Grid';
 import Button from '../components/ui/Button/Button';
 import Card from '../components/ui/Card/Card';
-import { Avatar } from 'antd';
+import { Avatar, Modal } from 'antd';
 import User from '../assets/icons/user.svg';
 import Footer from '../components/ui/Footer/Footer';
 import useDeviceType from '../hooks/useDeviceType';
@@ -12,9 +12,18 @@ import HomeAiestimator from '../components/ui/HomePage/Aiestimator/Aiestimator';
 import HomepageTestimonies from '../components/ui/HomePage/Testimonies/Testimonies';
 import WhatYouNeed from '../components/ui/HomePage/WhatYouNeed/WhatYouNeed';
 import Text from '../components/ui/Typography/Text';
+import Clients from '../components/ui/HomePage/Clients/Clients';
+import Manufacturers from '../components/ui/HomePage/Manufacturers/Manufacturers';
+
+
 function Homepage({ Companyname }) {
+  const user ={'firstname':'Henrio',
+              'lastname':'sfdff',
+              'email':'sdsdsd@gmail.com',
+              'id':'1212121',
+            'isloggedin':false}
   const [isScrolled, setIsScrolled] = React.useState(false);
-  const { isMobile } = useDeviceType();
+  const { isMobile, isTablet,isDesktop } = useDeviceType();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -34,23 +43,86 @@ function Homepage({ Companyname }) {
     { header: 'Niche Market Expansion', body: 'Cater to specialized industries with tailored solutions.' },
     { header: 'Support Sustainability', body: 'Promote environmentally friendly products and suppliers to help businesses achieve their sustainability goals.' }
   ];
+
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState('Content of the modal');
+
+  const showModal = () => {
+    setOpen(true);
+    
+  };
+  const handleOk = () => {
+    setModalText('The modal will be closed after two seconds');
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
   return (
     <div className="homepage">
         <div className={`homepage-bg`}>
-            <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile}/>
+            <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile} user={user}/>
             <div className='homepage-content'>
                 <div className='homepage-content-top'>
                   <i className="homepage-content-top-icon fa-regular fa-circle-play"></i>
                   <span className='homepage-content-top-text'>Learn more about Oahse</span>
                 </div>
-                <div className='chat-pop'>
-                  <div className='d-flex flex-row align-items-center chat-pop-case'>
-                      <Avatar src={User} className='chat-pop-avatar' />
-                      <span className='chat-pop-dot'><i class="fa-sharp fa-solid fa-circle"></i></span>
-                  </div>
-                  <span className='chat-pop-arrow'><i className="fa-regular fa-chevron-up"></i></span>
+                <div className='row mt-2'>
+                  <div className='col-12 col-md-8 col-lg-8'>
+                    <div className='homepage-content-second'>
+                      <Text fontWeight='fw-800' fontColor='text-white' fontSize='fs-2xl' style={{lineHeight:'40px'}}>
+                        Revolutionized Procurement 
+                        platform for engineering 
+                        and technology trade.
+                      </Text>
+                      <Text className={'mt-3'} fontWeight='fw-500' fontColor='text-white' fontSize={isMobile?'fs-md':'fs-md-lg'}>Ensuring seamless access to high-quality engineering products from trusted suppliers, 
+                        enabling business and individuals to streamline their procurement processes, 
+                        reduce costs and enhance operational efficiency.</Text>
+                    </div>
+                    </div>
+                    <div className={`col-12 col-md-4 col-lg-4 `}>
+                        <span className='d-flex flex-row justify-content-center mt-5'>
+                          <Button
+                            type='link'
+                            text="Get the App"
+                            color="secondary"
+                            variant='outlined'
+                            className='fw-500 m-auto'
+                            onClick={() => console.log('Button clicked')}
+                          />
+                        </span>
+                      </div>
+
                 </div>
+               
+                
             </div>
+        </div>
+        <div className='chat-pop' onClick={showModal}>
+          <div className='d-flex flex-row align-items-center chat-pop-case'>
+              <Avatar src={User} className='chat-pop-avatar' />
+              <span className='chat-pop-dot'><i class="fa-sharp fa-solid fa-circle"></i></span>
+          </div>
+          <span className='chat-pop-arrow'><i className="fa-regular fa-chevron-up"></i></span>
+          <Modal
+            title="Title"
+            open={open}
+            confirmLoading={confirmLoading}
+            footer={(_, { }) => (
+              <>
+                <Button onClick={handleCancel} text={'cancel'} />
+                <Button onClick={handleOk} text={'ok'} />
+              </>
+            )}
+          >
+            <p>{modalText}</p>
+          </Modal>
         </div>
         
         <div className='card-container'>
@@ -80,6 +152,10 @@ function Homepage({ Companyname }) {
           
         {/* Other content */}
         <div className='homepage-bottom'>
+          <Manufacturers isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
+          <Text fontWeight='fw-500' fontSize='fs-xl' className={'text-center lh-1 p-4'}><span className='text-white'>Our</span> Clients</Text>
+          
+          <Clients isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
           <Text fontWeight='fw-500' fontSize='fs-xl' className={'text-center lh-1 p-4'}>What Do you Need? Let’s Handle It!</Text>
           <WhatYouNeed isMobile={isMobile} />
           <HomepageTestimonies isMobile={isMobile} />
