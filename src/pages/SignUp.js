@@ -118,13 +118,15 @@ function Signup({ API_URL }) {
   return (
     <Row>
 
-        <Col className='py-5' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Col className='py-3' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <div className='' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Card className='' style={{textAlign: 'center', width: '460px', backgroundColor: '#D9D9D9', }} >
-                        <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <p className="card-header">Sign Up</p>
-                        </div>
-
+                <Card className='' style={{textAlign: 'center', width: '500px', backgroundColor: '#D9D9D9', }} >
+                    <Row className='py-3'>
+                        <Col span={24}>
+                            <p className="card-header text-center">Sign Up</p>
+                            {/* <span className="text-end">Log In</span> */}
+                        </Col>
+                    </Row>
                         <Form 
                             name="signup"
                             // layout="vertical"
@@ -133,8 +135,8 @@ function Signup({ API_URL }) {
                             newsletter: true, // Default checkbox to checked
                             }}
                         >
-                            <Form.Item name='Country' label='Country' hasFeedback colon>
-                                <Select placeholder="Select your Country" style= {{width: 200}} options={countryList} />
+                            <Form.Item name='Country' label='Country' hasFeedback colon >
+                                <Select placeholder="Select your Country" style= {{width: '100%', border: 'none', }} options={countryList} />
                             </Form.Item>
                            
                           <Form.Item label='Trade Role'>
@@ -144,18 +146,24 @@ function Signup({ API_URL }) {
                                     <Radio value={3}>Both</Radio>
                                 </Radio.Group>
                           </Form.Item>
-                            
-                            <Form.Item label='Full Name'>
-                                <FormInput name='name' placeholder='First name' 
-                                    rules={[{ required: true, message: 'Please enter your name' }]}
-                                />
-                                
-                                <FormInput name='name' placeholder='Last name' 
-                                    rules={[{ required: true, message: 'Please enter your name' }]}
-                                />
-                            </Form.Item>
-                            
-                            
+                            <Row gutter={16} >
+                                <Col span={12} >
+                                    {/* <Form.Item> */}
+                                        <FormInput name='name' placeholder='First name' 
+                                            rules={[{ required: true, message: 'Please enter your name' }]}
+                                        />
+                                    {/* </Form.Item> */}
+                                </Col>
+
+                                <Col span={12}>
+                                    {/* <Form.Item> */}
+                                        <FormInput name='name' placeholder='Last name' 
+                                            rules={[{ required: true, message: 'Please enter your name' }]}
+                                        />
+                                    {/* </Form.Item> */}
+                                </Col>
+                            </Row>
+      
                             <FormInput
                                 name="email"
                                 placeholder="Email"
@@ -171,6 +179,7 @@ function Signup({ API_URL }) {
 
                             <FormInput
                                 name="confirmPassword"
+                                type='password'
                                 placeholder="Confirm Password"
                                 dependencies={['password']}
                                 hasFeedback
@@ -189,8 +198,8 @@ function Signup({ API_URL }) {
 
                             <Form.Item>
                                 <Checkbox>  
-                                    I would like to receive your newsletter and promotional updates 
-                                    from Oahse about its products and services.
+                                    I agree to a) Free Membership Agreement, 
+                                    b)Terms of Use, and c) Privacy Policy
                                 </Checkbox>
                             </Form.Item>
                             
