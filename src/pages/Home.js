@@ -125,7 +125,7 @@ function Homepage({ Companyname }) {
           </Modal>
         </div>
         
-        <div className='card-container'>
+        <div className='card-container m-auto d-flex align-items-center '>
             <Grid>
                 {featureItems.map((item, index) => (
                 <Card
@@ -133,6 +133,8 @@ function Homepage({ Companyname }) {
                   onClick={() => console.log(`Clicked: ${item.header}`)}
                   header={item.header}
                   body={item.body}
+                  style={{'height':'250px'}}
+                  className={'bg-transparent'}
                 />
                 ))}
             </Grid>
@@ -145,6 +147,7 @@ function Homepage({ Companyname }) {
                     color="primary"
                     variant='outlined'
                     onClick={() => console.log('Button clicked')}
+                    className='p-2 px-5'
                     />
             </span>
             

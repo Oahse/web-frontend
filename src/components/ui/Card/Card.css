@@ -11,8 +11,8 @@
   .card {
     background-color: var(--alt-background-color); /* Light gray background */
     border: 1px solid var(--border-color);
-    border-radius: 18px;
-    padding: 2px;
+    border-radius: 20px;
+    padding: 12px;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.025); /* Subtle shadow */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -36,8 +36,8 @@
   }
   .card-header {
     font-weight: 700 !important;
-    font-size: 1.25rem ;
-    margin: 0px ;
+    font-size: 25px ;
+    margin-top: 4px ;
     padding-bottom: 0px;
     border: none !important;
     background-color: transparent !important;
@@ -48,12 +48,12 @@
 }
 
 .card-body {
-    font-size: 1rem ;
-    margin: 0px;
+    font-size: 20px ;
+    margin: 2px;
     padding-top: 0px;
-    color: var(--alternate-text-color) ;
+    color: #505050;
     text-align:left; /* Justifies the text */
-    line-height: 1.5; /* Optional: improves readability */
+    line-height: 24.2px; /* Optional: improves readability */
 }
 
 .card-footer {
