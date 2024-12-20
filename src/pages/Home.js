@@ -125,7 +125,7 @@ function Homepage({ Companyname }) {
           </Modal>
         </div>
         
-        <div className='card-container m-auto d-flex align-items-center '>
+        <div className='card-container p-auto d-flex align-items-center '>
             <Grid>
                 {featureItems.map((item, index) => (
                 <Card

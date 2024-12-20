@@ -1,7 +1,7 @@
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(1, 355px); /* 1 column by default */
+    grid-template-columns: repeat(1, 335px); /* 1 column by default */
     gap: 24px;
     margin: auto;
   }
@@ -9,7 +9,7 @@
 /* Medium screens: 2 columns */
 @media (min-width: 768px) {
   .grid {
-    grid-template-columns: repeat(2, 355px);
+    grid-template-columns: repeat(2, 345px);
   }
 }
 

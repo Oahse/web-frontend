@@ -1,9 +1,12 @@
-import React,{ useState } from 'react';
-import './Manufacturers.css';
+import React, { useRef, useState } from 'react';
+
 import Button from '../../Button/Button';
 import Text from '../../Typography/Text';
 import { Avatar } from 'antd';
 import PropTypes from 'prop-types';
+
+import './Manufacturers.css';
+
 
 const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
     // Usage
@@ -66,85 +69,120 @@ const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
         </svg>, 
         "Client 7", "Client 8","Client 7", "Client 8","Client 7", "Client 8","Client 7", "Client 8","Client 8","Client 7", "Client 8","Client 7", "Client 8","Client 8","Client 7", "Client 8","Client 7", "Client 8",
     ];
-        // Divide the clients into two groups
-        const itemsPerPage = isMobile ? 6: isTablet ? 12 :isDesktop ? 18 :20; // 4 items for each row
-        const divisions = Math.ceil(clientData.length / itemsPerPage);
-        const range = Array.from({ length: divisions }, (_, index) => index);
-      
-        const [currentPageIndex, setCurrentPageIndex] = useState(0);
-      
-        // Get the current page's data
-        const currentPageClients = clientData.slice(
-          currentPageIndex * itemsPerPage,
-          (currentPageIndex + 1) * itemsPerPage
-        );
-      
-        const firstRow = currentPageClients.slice(0, itemsPerPage/2); // First 4 items
-        const secondRow = currentPageClients.slice(itemsPerPage/2); // Next 4 items
-      
-        // Navigation functions
-        const nextPage = () => {
-          if (currentPageIndex < range.length - 1) {
-            setCurrentPageIndex(currentPageIndex + 1);
-          }
-        };
-      
-        const prevPage = () => {
-          if (currentPageIndex > 0) {
-            setCurrentPageIndex(currentPageIndex - 1);
-          }
-        };
-    return (
-        <div className="manufacturers-container p-2 mb-4 pt-4 ">
-            {/* First Row: Scrollable bar with two rows */}
-            <div className="manufacturers-scrollable-bar">
-            {/* Map over the first row */}
-            
-                <div className="manufacturers-scrollable-row">
-                    {firstRow.map((client, index) => (
-                    <Avatar 
-                        key={`client-row1-${index}`} 
-                        className="manufacturers-scroll-item p-1" 
-                        src={client} 
-                        alt={`Client ${index + 1}`}
-                    />
-                    ))}
-                </div>
-        
-                {/* Map over the second row */}
-                <div className="manufacturers-scrollable-row">
-                    {secondRow.map((client, index) => (
-                    <Avatar 
-                        key={`client-row2-${index}`} 
-                        className="manufacturers-scroll-item p-1" 
-                        src={client} 
-                        alt={`Client ${index + 5}`}
-                    />
-                    ))}
-                </div>
-                <div className="manufacturers-scrollable-row">
-                    {secondRow.map((client, index) => (
-                    <Avatar 
-                        key={`client-row2-${index}`} 
-                        className="manufacturers-scroll-item p-1" 
-                        src={client} 
-                        alt={`Client ${index + 5}`}
-                    />
-                    ))}
-                </div>
-            </div>
+    // Divide the clients into two groups
+    const itemsPerPage = 20; // 4 items for each row
+    const divisions = Math.ceil(clientData.length / itemsPerPage);
+    const range = Array.from({ length: divisions }, (_, index) => index);
+    
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+    
+    // Get the current page's data
+    const currentPageClients = clientData.slice(
+        currentPageIndex * itemsPerPage,
+        (currentPageIndex + 1) * itemsPerPage
+    );
+    
+    const firstRow = currentPageClients.slice(0, itemsPerPage/3); // First 4 items
+    const secondRow = currentPageClients.slice(itemsPerPage/3,(itemsPerPage/3)*2); // Next 4 items
+    const thirdRow = currentPageClients.slice((itemsPerPage/3)*2,(itemsPerPage/3)*3); // Next 4 items
+    
+    const scrollContainerRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.clientX);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+    scrollContainerRef.current.classList.add('active');
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+    scrollContainerRef.current.classList.remove('active');
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    scrollContainerRef.current.classList.remove('active');
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    const x = e.clientX;
+    const scrollDistance = (x - startX) * 2; // You can adjust the multiplier for drag speed
+    scrollContainerRef.current.scrollLeft = scrollLeft - scrollDistance;
+  };
+    return (
+        <div className="manufacturers-container p-2 mb-4 pt-4">
+            {/* First Row: Scrollable bar with items */}
+            <div className="manufacturers-scrollable-col">
+                <div ref={scrollContainerRef}
+                    className="manufacturers-scrollable-bar"
+                    onMouseDown={handleMouseDown}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove}>
+                    <div className="manufacturers-scrollable-row">
+                        {firstRow.map((client, index) => (
+                        <Avatar
+                            key={`client-row2-${index}`}
+                            className="manufacturers-scroll-item p-1"
+                            src={client}
+                            alt={`Client ${index + 5}`}
+                        />
+                        ))}
+                    </div>
+                </div>
+                <div ref={scrollContainerRef}
+                    className="manufacturers-scrollable-bar"
+                    onMouseDown={handleMouseDown}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove}>
+                    <div className="manufacturers-scrollable-row">
+                        {secondRow.map((client, index) => (
+                        <Avatar
+                            key={`client-row2-${index}`}
+                            className="manufacturers-scroll-item p-1"
+                            src={client}
+                            alt={`Client ${index + 5}`}
+                        />
+                        ))}
+                    </div>
+                </div>
+                <div ref={scrollContainerRef}
+                    className="manufacturers-scrollable-bar"
+                    onMouseDown={handleMouseDown}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove}>
+                    <div className="manufacturers-scrollable-row">
+                        {thirdRow.map((client, index) => (
+                        <Avatar
+                            key={`client-row2-${index}`}
+                            className="manufacturers-scroll-item p-1"
+                            src={client}
+                            alt={`Client ${index + 5}`}
+                        />
+                        ))}
+                    </div>
+                </div>
+                
+            </div>
 
             {/* Second Row: Description */}
             <div className="manufacturers-description-row">
-            <Text fontColor="text-white" fontWeight="fw-400" fontSize={isMobile ? 'fs-md-lg' : 'fs-lg'}>
-                Partnering wth over 100+ manufacturers of engineering products <br />
-                <small className='text-black'>All engineering products easily accessible and procurement-supply process streamlined and
-                made very easy!</small>
-            </Text>
+                <Text fontColor="text-white" fontWeight="fw-400" fontSize={isMobile ? 'fs-md-lg' : 'fs-lg'}>
+                Partnering with over 100+ manufacturers of engineering products <br />
+                <small className='text-black'>
+                    All engineering products easily accessible and procurement-supply process streamlined and made very easy!
+                </small>
+                </Text>
             </div>
-
         </div>
+
     );
   };
 // Prop Validation

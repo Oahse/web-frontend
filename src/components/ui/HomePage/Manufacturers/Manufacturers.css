@@ -6,50 +6,61 @@
   }
   
 /* Scrollable Bar */
-.manufacturers-scrollable-bar {
+.manufacturers-scrollable-col {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    white-space: nowrap;
     margin: auto;
-    scrollbar-width: none; /* Hide scrollbar for modern browsers */
+    width: 100%;
 }
 
-.manufacturers-scrollable-bar.active {
-    cursor: grabbing; /* Change cursor when dragging */
+
+
+/* Hide scrollbar on all platforms */
+.manufacturers-scrollable-bar {
+    display: flex;
+    justify-content: center;  /* Aligns the items to the left */
+    align-items: center;
+    width: 100%;
+    cursor: grab; /* Hand cursor when hovering */
+    overflow-x: auto; /* Enables horizontal scrolling */
+    scroll-behavior: smooth; /* Smooth scrolling */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    scrollbar-width: none;  /* For Firefox */
 }
+  
+.manufacturers-scrollable-bar::-webkit-scrollbar:hover {
+    display: none; /* Hide scrollbar in WebKit browsers (Chrome, Safari, Edge) */
+}
+  
 
-.manufacturers-scrollable-bar::-webkit-scrollbar {
-    display: none; 
-} 
-
+  
 .manufacturers-scrollable-row {
     display: flex;
-    overflow-x: auto;
-    gap: 8px;
-    scroll-behavior: smooth;
-    flex-shrink: 0; /* Prevent items from shrinking */
-    
+    justify-content: center;  /* Aligns the items to the left */
+    align-items: center;
+    gap: 8px;  /* Space between items */
+    flex: 0 0 auto;  /* Ensures the row doesn't stretch */
 }
-
+  
 .manufacturers-scroll-item {
     background-color: transparent;
     padding: 8px;
     border: 1px solid var(--black);
     border-radius: 10px;
     text-align: center;
-    flex: 0 0 auto;
-    width: 120px; /* Adjust as needed */
-    height: 120px;
-    flex-shrink: 0; /* Prevent items from shrinking */
+    flex: 0 0 auto;  /* Prevent shrinking or growing */
+    width: 200px;  /* Fixed width for each item */
+    height: 200px;  /* Fixed height for each item */
     margin: auto;
+    flex-shrink: 0;  /* Prevent shrinking */
 }
+  
 
 @media (max-width: 768px) {
 .manufacturers-scroll-item {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
 }
 }
 
