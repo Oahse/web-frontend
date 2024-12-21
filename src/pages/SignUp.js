@@ -1,6 +1,6 @@
 import React, { Children, useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import { Row, Col, Avatar, Form, Radio, message, Cascader, Checkbox, Select} from 'antd';
+import { Row, Col, Avatar, Form, Radio, message, Cascader, Checkbox, Select, Modal, Input, Flex} from 'antd';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
@@ -11,40 +11,28 @@ import Button from '../components/ui/Button/Button';
 import { useRegister } from '../services/auth';
 import Card from '../components/ui/Card/Card'
 import procurement from '../assets/procurement3.jpg'
-
+import axios from 'axios'
 
 function Signup({ API_URL }) {
   const [redirectToHome, setRedirectToHome] = useState(false);
   const navigate = useNavigate();
   const [userType, setUserType] = useState(""); // Store selected user type
   const { register, loading, error, user } = useRegister(); // Use the register hook
-  const countryList = [
-    {value: 'Canada',
-        label: 'Canada',
-        children: [
-            {value: 'Alberta',
-                label: 'Alberta'
-            },
+  const [countries, setCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState('')
+  const [open, setOpen] = useState(false);
 
-            {value: 'Ontario',
-                label: 'Ontario'
-            }
-        ]
-    },
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleOk = () => {
+    setOpen(false);
+  };
 
-    {value: 'Nigeria', 
-        label: 'Nigeria',
-        children: [
-            {value: 'Abuja',
-                label: 'Abuja',
-            },
+  const handleCancel = () => {
+    setOpen(false);
+  };
 
-            {value: 'Lagos',
-                label: 'Lagos',
-            }
-        ]
-    }
-  ]
   console.log(user)
   // Handle form submission
   const onFinish = (values) => {
@@ -92,12 +80,36 @@ function Signup({ API_URL }) {
     if (redirectToHome) {
       navigate('/verify-email-otp'); // Redirect on successful login
     }
+
   }, [redirectToHome, navigate]);
 
   // Handle change in selected user type
   const handleUserTypeChange = (e) => {
     setUserType(e.target.value);
   };
+
+  useEffect(() => {
+    // Fetch countries and flags
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then((response) => {
+        const countryData = response.data.map((country) => ({
+          name: country.name.common,
+          flag: country.flags.svg, // URL for the flag
+          code: country.cca2, // ISO code
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+        setCountries(countryData);
+      })
+      .catch((error) => console.error("Error fetching countries:", error));
+  }, []);
+
+//   const handleCountryChange = (event) => {
+//     const selectedName = event.target.value;
+//     const country = countries.find((c) => c.name === selectedName);
+//     setSelectedCountry(country);
+//   };
+
 
   if (loading) {
     return (
@@ -136,7 +148,14 @@ function Signup({ API_URL }) {
                             }}
                         >
                             <Form.Item name='Country' label='Country' hasFeedback colon >
-                                <Select placeholder="Select your Country" style= {{width: '100%', border: 'none', }} options={countryList} />
+                                <Select  placeholder="Select your Country" style= {{width: '100%', border: 'none', }}>
+                                    <option value="">-- Choose a Country --</option>
+                                        {countries.map((country) => (
+                                            <option key={country.code} value={country.name}>
+                                                {country.name}
+                                            </option>
+                                        ))}
+                                </Select>
                             </Form.Item>
                            
                           <Form.Item label='Trade Role'>
@@ -213,15 +232,43 @@ function Signup({ API_URL }) {
                             
                             <Form.Item>
                                 <Button type="primary" htmlType="submit" text="Register" className='' style={{width: '100%',}}/>
+                                {/* <Button type="primary" onClick={showModal} text='OTP'/>  */}
                             </Form.Item>
                         </Form>
                     
                 </Card>
             </div>
-            
-
-        
         </Col>
+         {/* OTP Modal */}
+            {/* <Modal
+                style={{backgroundColor: '#D9D9D9', textAlign: 'center' }}
+                open={open}
+                title=""
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={null}
+                // footer={(_, { OkBtn, CancelBtn }) => (
+                // <>
+                //     <Button onClick={handleOk}>Verify</Button>
+                //     <CancelBtn />
+                //     <OkBtn className='button'/>
+                // </>
+                // )}
+            >
+               
+                    <h3>Verify your Email</h3>
+                    <p>Enter the 4-digit code sent to your e-mail</p>
+                <Form layout='vertical'>
+                    <Flex gap="middle" align="flex-start-center" vertical className='py-3'>
+                        <Input.OTP length={5} variant="variant" className='formInput' name='otp'/>
+                    </Flex>
+                    
+                    <Button onClick={handleOk}>Verify</Button>
+                </Form>
+                <p>Did not get a code? Resend in 00:50</p>
+                
+                
+            </Modal> */}
     </Row>
   );
 }
