@@ -4,6 +4,7 @@ import Button from '../../Button/Button';
 import Text from '../../Typography/Text';
 import { Avatar } from 'antd';
 import { useState } from 'react';
+import ScrollBar from '../../ScrollBar/ScrollBar';
 
 const Clients = ({isMobile,isTablet,isDesktop}) => {
     // Usage
@@ -66,66 +67,63 @@ const Clients = ({isMobile,isTablet,isDesktop}) => {
         "Client 7", "Client 8","Client 7", "Client 8","Client 7", "Client 8","Client 7", "Client 8","Client 8","Client 7", "Client 8","Client 7", "Client 8","Client 8","Client 7", "Client 8","Client 7", "Client 8",
     ];
         // Divide the clients into two groups
-        const itemsPerPage = isMobile ? 6: isTablet ? 12 :isDesktop ? 18 :20; // 4 items for each row
-        const divisions = Math.ceil(clientData.length / itemsPerPage);
-        const range = Array.from({ length: divisions }, (_, index) => index);
-      
-        const [currentPageIndex, setCurrentPageIndex] = useState(0);
-      
+        const itemsPerPage = 20; // 4 items for each row
+        
+        const currentPageIndex=0;
+        
         // Get the current page's data
         const currentPageClients = clientData.slice(
-          currentPageIndex * itemsPerPage,
-          (currentPageIndex + 1) * itemsPerPage
+            currentPageIndex * itemsPerPage,
+            (currentPageIndex + 1) * itemsPerPage
         );
-      
+        
         const firstRow = currentPageClients.slice(0, itemsPerPage/2); // First 4 items
         const secondRow = currentPageClients.slice(itemsPerPage/2); // Next 4 items
-      
-        // Navigation functions
-        const nextPage = () => {
-          if (currentPageIndex < range.length - 1) {
-            setCurrentPageIndex(currentPageIndex + 1);
-          }
-        };
-      
-        const prevPage = () => {
-          if (currentPageIndex > 0) {
-            setCurrentPageIndex(currentPageIndex - 1);
-          }
-        };
+        
+        
     return (
         <div className="clients-container p-2 mb-4 ">
             {/* First Row: Scrollable bar with two rows */}
-            <div className="scrollable-bar">
+            <div className="clients-scrollable-col">
             {/* Map over the first row */}
             
-                <div className="scrollable-row">
-                    {firstRow.map((client, index) => (
-                    <Avatar 
-                        key={`client-row1-${index}`} 
-                        className="scroll-item p-1" 
-                        src={client} 
-                        alt={`Client ${index + 1}`}
+                <ScrollBar
+                    items={firstRow}
+                    itemsslicestart={0}
+                    itemsshape='circle'
+                    itemssliceend = {itemsPerPage/3}
+                    axis="horizontal"
+                    size={isMobile?'small':'medium'}
+                    shorter={true}
+                    children={firstRow.map((child, index) => ({
+                        key: `child-row-${index}`,
+                        tag: Avatar,
+                        props: { src: child, alt:`Client ${index + 5}` }
+                        }))
+                    }
                     />
-                    ))}
-                </div>
+                <ScrollBar
+                    items={secondRow}
+                    itemsslicestart={itemsPerPage/3}
+                    itemsshape='circle'
+                    itemssliceend = {(itemsPerPage/3)*2}
+                    axis="horizontal"
+                    size={isMobile?'small':'medium'}
+                    shorter={true}
+                    children={firstRow.map((child, index) => ({
+                        key: `child-row-${index}`,
+                        tag: Avatar,
+                        props: { src: child, alt:`Client ${index + 5}` }
+                        }))
+                    }
+                    />
         
-                {/* Map over the second row */}
-                <div className="scrollable-row">
-                    {secondRow.map((client, index) => (
-                    <Avatar 
-                        key={`client-row2-${index}`} 
-                        className="scroll-item p-1" 
-                        src={client} 
-                        alt={`Client ${index + 5}`}
-                    />
-                    ))}
-                </div>
+                
             </div>
 
 
             {/* Second Row: Description */}
-            <div className="description-row">
+            <div className="clients-description-row">
             <Text fontColor="text-white" fontWeight="fw-400" fontSize={isMobile ? 'fs-md-lg' : 'fs-lg'}>
                 Industries, school clubs, and all involved in any engineering project or process are {isMobile ? null : <br />} part of our big family. 
                 We make their work easier to do and facilitate better quality{isMobile ? null : <br />} in results. So, what are you waiting for?
@@ -133,22 +131,14 @@ const Clients = ({isMobile,isTablet,isDesktop}) => {
             </div>
 
             {/* Third Row: Button */}
-            <div className="button-row">
+            <div className="clients-button-row">
             <Button
                 type="link"
-                text="Click to View"
+                text="Click to Start"
                 color="secondary"
                 onClick={() => console.log('Button clicked')}
+                className='p-2 px-5'
             />
-            </div>
-            {/* Navigation Buttons */}
-            <div className="clients-navigation-buttons d-flex justify-content-between">
-            
-            <i className="fa-light fa-chevron-left clients-prev-button" onClick={prevPage}
-                disabled={currentPageIndex === 0}></i>
-            <i className="fa-light fa-chevron-right clients-next-button" onClick={nextPage}
-                disabled={currentPageIndex === range.length - 1}></i>
-            
             </div>
         </div>
     );

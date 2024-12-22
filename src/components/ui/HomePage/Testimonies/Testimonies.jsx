@@ -6,6 +6,7 @@ import './Testimonies.css';
 import Text from '../../Typography/Text';
 import Card from '../../Card/Card';
 import Button from '../../Button/Button'
+import ScrollBar from '../../ScrollBar/ScrollBar';
 
 const HomepageTestimonies = ({ isMobile }) => {
   // Array of testimonies (just as an example)
@@ -83,39 +84,47 @@ const HomepageTestimonies = ({ isMobile }) => {
     <>
       {!isMobile ? 
       <div className={`p-2 mb-4 scrollable-homepage-testimonies-container`}>
-        {testimonies.map((testimony, index) => (
-          <Card
-            key={index}
-            className="homepage-testimonies row m-auto"
-            cardBodyClass="row"
-          >
-            <div className="col-12 col-md-6">
-              <div className="homepage-testimonies-content d-flex flex-row align-items-center">
-                <Avatar
-                  shape="circle"
-                  size={isMobile ? 70 : 130}
-                  alt="Testimony Image"
-                  className="m-1 homepage-testimonies-image"
-                />
-                <span className="homepage-testimonies-name">
-                  <Text fontColor="text-white" fontSize="fs-md" fontWeight="fw-500">
-                    {testimony.name}
-                  </Text>
-                  <Text tag="small" fontSize="fs-sm" fontColor="text-link" fontWeight="fw-200">
-                    {testimony.title}
-                  </Text>
-                </span>
-              </div>
-            </div>
-            <div className="col-12 col-md-6">
-              <div className="homepage-testimonies-writeup">
-                <Text fontWeight="fw-300" fontSize="fs-md" fontColor="text-white">
-                  “{testimony.text}”
-                </Text>
-              </div>
-            </div>
-          </Card>
-        ))}
+        <ScrollBar
+            items={testimonies}
+            itemsslicestart={0}
+            itemsshape='square'
+            itemssliceend = {testimonies.length}
+            axis="horizontal"
+            size={isMobile?'small':'medium'}
+            shorter={false}
+            children={testimonies.map((testimony, index) => ({
+                key: `testimony-${index}`,
+                tag: Card,
+                props: { alt:`testimony ${index + 5}`, className:"homepage-testimonies row m-auto", cardBodyClass:"row" },
+                content : {content :<><div className="col-12 col-md-6">
+                  <div className="homepage-testimonies-content d-flex flex-row align-items-center">
+                    <Avatar
+                      shape="circle"
+                      size={isMobile ? 70 : 130}
+                      alt="Testimony Image"
+                      className="m-1 homepage-testimonies-image"
+                    />
+                    <span className="homepage-testimonies-name">
+                      <Text fontColor="text-white" fontSize="fs-md" fontWeight="fw-500">
+                        {testimony.name}
+                      </Text>
+                      <Text tag="small" fontSize="fs-sm" fontColor="text-link" fontWeight="fw-200">
+                        {testimony.title}
+                      </Text>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-12 col-md-6">
+                  <div className="homepage-testimonies-writeup">
+                    <Text fontWeight="fw-300" fontSize="fs-md" fontColor="text-white">
+                      “{testimony.text}”
+                    </Text>
+                  </div>
+                </div></>}
+              }))
+            }
+            />
+        
       </div>
  : 
       <div className="p-2 mb-4">

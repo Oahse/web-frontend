@@ -2,8 +2,9 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Avatar, Upload} from 'antd';  // Import necessary Ant Design components
 import './ScrollBar.css';
+import Button from '../Button/Button';
 
-const ScrollBar = ({ items, itemsslicestart = 0, itemssliceend=4, axis = 'horizontal', children, shorter }) => {
+const ScrollBar = ({ items, itemsshape='square', size='medium', itemsslicestart = 0, itemssliceend=4, axis = 'horizontal', children, shorter }) => {
   const row = items.slice(itemsslicestart, itemssliceend); // Slice the items according to the given number
 
   const scrollContainerRef = useRef(null);
@@ -27,15 +28,17 @@ const ScrollBar = ({ items, itemsslicestart = 0, itemssliceend=4, axis = 'horizo
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-
+  
+    const deltaX = axis === 'horizontal' ? e.clientX - startX : 0;
+    const deltaY = axis === 'vertical' ? e.clientY - startY : 0;
+  
     if (axis === 'horizontal') {
-      const distance = e.clientX - startX; // Calculate horizontal distance
-      scrollContainerRef.current.scrollLeft = scrollLeft - distance; // Update scroll position
+      scrollContainerRef.current.scrollLeft = scrollLeft - deltaX;
     } else {
-      const distance = e.clientY - startY; // Calculate vertical distance
-      scrollContainerRef.current.scrollTop = scrollTop - distance; // Update scroll position
+      scrollContainerRef.current.scrollTop = scrollTop - deltaY;
     }
   };
+  
 
   const handleMouseUp = () => {
     setIsDragging(false);
@@ -55,7 +58,7 @@ const ScrollBar = ({ items, itemsslicestart = 0, itemssliceend=4, axis = 'horizo
       return (
         <Avatar
           key={`row-${index}`}
-          className={`scrollbar-scroll-item p-1 ${item.className || ''}`}
+          className={`scrollbar-scroll-item scrollbar-scroll-item-${size} scrollbar-scroll-item-${itemsshape === 'circle' ?  'circle' : "square"} p-1 ${item.className || ''}`}
           src={item.src}
           alt={item.alt || `Image ${index + 1}`}
         />
@@ -66,7 +69,7 @@ const ScrollBar = ({ items, itemsslicestart = 0, itemssliceend=4, axis = 'horizo
           <div className="scrollbar-scroll-item p-1">
             <video
               key={`row-${index}`}
-              className={`scrollbar-scroll-item-video ${item.className || ''}`}
+              className={`scrollbar-scroll-item-${itemsshape === 'circle' ?  'circle' : "square"} scrollbar-scroll-item-${size} ${item.className || ''}`}
               src={item.src}
               controls
               width="200"
@@ -81,11 +84,11 @@ const ScrollBar = ({ items, itemsslicestart = 0, itemssliceend=4, axis = 'horizo
       return (
         <Upload
           key={`row-${index}`}
-          className={`scrollbar-scroll-item p-1 ${item.className || ''}`}
+          className={`scrollbar-scroll-item scrollbar-scroll-item-${size} scrollbar-scroll-item-${itemsshape === 'circle' ?  'circle' : "square"}  p-1 ${item.className || ''}`}
           fileList={[item.src]} // You may need to adjust how file is passed based on your logic
           showUploadList={{ showDownloadIcon: true }}
         >
-          <button className="ant-btn">Download File</button>
+          <Button startIcon={<i className="fa-thin fa-upload"></i>}>Download File</Button>
         </Upload>
       );
     }
@@ -94,7 +97,7 @@ const ScrollBar = ({ items, itemsslicestart = 0, itemssliceend=4, axis = 'horizo
     return (
       <Avatar
         key={`row-${index}`}
-        className={`scrollbar-scroll-item p-1 ${item.className || ''}`}
+        className={`scrollbar-scroll-item scrollbar-scroll-item-${size} scrollbar-scroll-item-${itemsshape === 'circle' ?  'circle' : "square"}  p-1 ${item.className || ''}`}
         src={item.src}
         alt={item.alt || `Client ${index + 1}`}
       />
@@ -116,20 +119,20 @@ const ScrollBar = ({ items, itemsslicestart = 0, itemssliceend=4, axis = 'horizo
         >
         <div className="scrollbar-scrollable-row">
             {/* Render custom children if provided */}
-            {children ? (
-            children.map((child, index) => {
-                const { tag: Tag, props } = child;
+            { Array.isArray(children) ? (
+              children.map((child, index) => {
+                const { tag: Tag, props, content } = child;
                 return (
-                <Tag
-                    key={`row-${index}`}
-                    className={`scrollbar-scroll-item p-1 ${props.className || ''}`}
-                    {...props} // Spread the rest of the props like `alt`, `src`, etc.
-                />
-                );
-            })
+                  <Tag
+                      key={`row-${index}`}
+                      className={`scrollbar-scroll-item scrollbar-scroll-item-${size} scrollbar-scroll-item-${itemsshape === 'circle' ?  'circle' : "square"}  p-1 ${props.className || ''}`}
+                      {...props} // Spread the rest of the props like alt, src, etc.
+                      {...content}
+                  />
+                  );
+              })
             ) : (
-            // Default rendering of items if no children are passed
-            row.map(renderItem)
+              row.map(renderItem)
             )}
         </div>
     </div>
@@ -139,12 +142,15 @@ const ScrollBar = ({ items, itemsslicestart = 0, itemssliceend=4, axis = 'horizo
 
 // Prop Validation
 ScrollBar.propTypes = {
-  items: PropTypes.array,   // Ensure items prop is passed as an array
-  itemsslicestart: PropTypes.number,        // Number of items to slice per row
-  itemssliceend: PropTypes.number,        // Number of items to slice per row
-  axis: PropTypes.oneOf(['horizontal', 'vertical']),  // Ensure axis prop is either horizontal or vertical
-  children: PropTypes.array,           // Children prop is an array of elements with tag and props
-  shorter: PropTypes.bool,             // Optionally shortens the scrollbar
+    items: PropTypes.arrayOf(PropTypes.object), // Array of objects for items
+    itemsslicestart: PropTypes.number,
+    itemssliceend: PropTypes.number,
+    itemsshape: PropTypes.oneOf(['circle', 'square']),
+    axis: PropTypes.oneOf(['horizontal', 'vertical']),
+    children: PropTypes.node, // Any renderable React node (element, string, etc.)
+    shorter: PropTypes.bool,
+    size: PropTypes.oneOf(['small','medium', 'large']),
 };
+
 
 export default ScrollBar;

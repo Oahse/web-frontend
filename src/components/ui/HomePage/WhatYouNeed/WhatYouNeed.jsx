@@ -85,7 +85,7 @@ const WhatYouNeed = ({ isMobile }) => {
                     color="primary"
                     onClick={() => console.log('Button clicked')}
                     endIcon={<i className="fa-light fa-chevron-right "></i>}
-                    className={'text-end shake-item'}
+                    className={'text-end shake-item p-2 px-5'}
                     />
             </span>
       </div>

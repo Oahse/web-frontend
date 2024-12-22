@@ -34,6 +34,7 @@
     align-items: center;
     gap: 8px; /* Space between items */
     flex: 0 0 auto; /* Prevent row from stretching */
+    margin: auto;
 }
 
 /* Scrollable Item */
@@ -51,12 +52,24 @@
     margin-right: 15px; /* Remove extra margins */
     flex-shrink: 0; /* Prevent shrinking */
 }
-
-.scrollbar-scrollable-item-video {
-    border-radius: 10px;
-    background-color: #000; /* Optional: Background color for video */
+.scrollbar-scroll-item-square {
+    border-radius: 10px !important;
 }
-
+.scrollbar-scroll-item-circle {
+    border-radius: 50% !important;
+}
+.scrollbar-scroll-item-large {
+    width: 300px !important;
+    height: 300px !important;
+}
+.scrollbar-scroll-item-medium {
+    width: 200px !important;
+    height: 200px !important;
+}
+.scrollbar-scroll-item-small {
+    width: 100px !important;
+    height: 100px !important;
+}
 /* Description Row */
 .scrollbar-description-row {
     text-align: center;
@@ -67,7 +80,7 @@
 
 /* Specific Width Adjustments */
 .scrollbar-scrollable-bar-shorter {
-    width: 60%;
+    width: 56%;
 }
 
 @media (max-width: 768px) {
@@ -88,8 +101,4 @@
         margin-right: 8px; /* Remove extra margins */
     }
 
-    .scrollbar-scroll-item-video {
-        width: 130px; /* Ensure video fits smaller screens */
-        height: 130px;
-    }
 }
