@@ -3,65 +3,59 @@
     flex-direction: column;
     gap: 16px;
     padding: 16px;
-  }
-  
-/* Scrollable Bar */
+}
+
+/* Scrollable Column */
 .manufacturers-scrollable-col {
     display: flex;
     flex-direction: column;
     gap: 16px;
     margin: auto;
     width: 100%;
+    overflow-x: hidden; /* Ensure no overflow or scrollbars */
+    position: relative; /* Ensure correct positioning */
 }
 
-
-
-/* Hide scrollbar on all platforms */
+/* Scrollable Bar */
 .manufacturers-scrollable-bar {
     display: flex;
-    justify-content: center;  /* Aligns the items to the left */
+    justify-content: flex-start; /* Align items to the left */
     align-items: center;
+    margin: auto;
+    margin-top: 48px;
     width: 100%;
     cursor: grab; /* Hand cursor when hovering */
-    overflow-x: auto; /* Enables horizontal scrolling */
-    scroll-behavior: smooth; /* Smooth scrolling */
-    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
-    scrollbar-width: none;  /* For Firefox */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-behavior: smooth; /* Smooth scrolling for programmatic navigation */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+    /* Hide the scrollbar on all platforms */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
 }
-  
-.manufacturers-scrollable-bar::-webkit-scrollbar:hover {
-    display: none; /* Hide scrollbar in WebKit browsers (Chrome, Safari, Edge) */
+.manufacturers-scrollable-bar::-webkit-scrollbar {
+    display: none; /* Webkit browsers (Chrome, Safari, Edge) */
 }
-  
 
-  
+/* Scrollable Row */
 .manufacturers-scrollable-row {
     display: flex;
-    justify-content: center;  /* Aligns the items to the left */
     align-items: center;
-    gap: 8px;  /* Space between items */
-    flex: 0 0 auto;  /* Ensures the row doesn't stretch */
+    gap: 8px; /* Space between items */
+    flex: 0 0 auto; /* Prevent row from stretching */
 }
-  
+
+/* Scrollable Item */
 .manufacturers-scroll-item {
     background-color: transparent;
     padding: 8px;
     border: 1px solid var(--black);
     border-radius: 10px;
     text-align: center;
-    flex: 0 0 auto;  /* Prevent shrinking or growing */
-    width: 200px;  /* Fixed width for each item */
-    height: 200px;  /* Fixed height for each item */
-    margin: auto;
-    flex-shrink: 0;  /* Prevent shrinking */
-}
-  
-
-@media (max-width: 768px) {
-.manufacturers-scroll-item {
-    width: 120px;
-    height: 120px;
-}
+    flex: 0 0 auto; /* Prevent shrinking or growing */
+    width: 200px; /* Fixed width for each item */
+    height: 200px; /* Fixed height for each item */
+    margin: 0; /* Remove extra margins */
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Description Row */
@@ -72,8 +66,23 @@
     font-size: var(--fs-md);
 }
 
-@media (max-width: 768px) {
-.manufacturers-description-row {
-    font-size: var(--fs-sm);
+/* Specific Width Adjustments */
+.manufacturers-scrollable-bar-one,
+.manufacturers-scrollable-bar-three {
+    width: 90%;
 }
+
+@media (max-width: 768px) {
+    .manufacturers-description-row {
+        font-size: var(--fs-sm);
+    }
+    .manufacturers-scrollable-bar-one,
+    .manufacturers-scrollable-bar-three {
+        width: 100%;
+    }
+
+    .manufacturers-scroll-item {
+        width: 150px; /* Smaller width for items on smaller screens */
+        height: 150px; /* Smaller height for items on smaller screens */
+    }
 }

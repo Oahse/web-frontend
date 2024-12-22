@@ -86,45 +86,50 @@ const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
     const secondRow = currentPageClients.slice(itemsPerPage/3,(itemsPerPage/3)*2); // Next 4 items
     const thirdRow = currentPageClients.slice((itemsPerPage/3)*2,(itemsPerPage/3)*3); // Next 4 items
     
-    const scrollContainerRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+    const firstscrollContainerRef = useRef(null);
+    const secondscrollContainerRef = useRef(null);
+    const thirdscrollContainerRef = useRef(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
 
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.clientX);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
-    scrollContainerRef.current.classList.add('active');
-  };
+    const handleMouseDown = (e,scrollContainerRef) => {
+        setIsDragging(true);
+        setStartX(e.clientX);
+        setScrollLeft(scrollContainerRef.current.scrollLeft);
+        scrollContainerRef.current.style.cursor = 'grabbing'; // Change cursor on drag start
+    };
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-    scrollContainerRef.current.classList.remove('active');
-  };
+    const handleMouseMove = (e,scrollContainerRef) => {
+        if (!isDragging) return;
+        const distance = e.clientX - startX; // Calculate horizontal distance
+        scrollContainerRef.current.scrollLeft = scrollLeft - distance; // Update scroll position
+    };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    scrollContainerRef.current.classList.remove('active');
-  };
+    const handleMouseUp = (scrollContainerRef) => {
+        setIsDragging(false);
+        scrollContainerRef.current.style.cursor = 'grab'; // Reset cursor when dragging stops
+    };
 
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const x = e.clientX;
-    const scrollDistance = (x - startX) * 2; // You can adjust the multiplier for drag speed
-    scrollContainerRef.current.scrollLeft = scrollLeft - scrollDistance;
-  };
+    const handleMouseLeave = (scrollContainerRef) => {
+        if (isDragging) {
+        setIsDragging(false);
+        scrollContainerRef.current.style.cursor = 'grab'; // Reset cursor on mouse leave
+        }
+    };
+
     return (
         <div className="manufacturers-container p-2 mb-4 pt-4">
             {/* First Row: Scrollable bar with items */}
             <div className="manufacturers-scrollable-col">
-                <div ref={scrollContainerRef}
-                    className="manufacturers-scrollable-bar"
-                    onMouseDown={handleMouseDown}
-                    onMouseLeave={handleMouseLeave}
-                    onMouseUp={handleMouseUp}
-                    onMouseMove={handleMouseMove}>
-                    <div className="manufacturers-scrollable-row">
+                <div ref={firstscrollContainerRef}
+                    className="manufacturers-scrollable-bar manufacturers-scrollable-bar-one">
+                    <div className="manufacturers-scrollable-row"
+                        onMouseDown={(e)=>(handleMouseDown(e,firstscrollContainerRef))}
+                        onMouseMove={(e)=>(handleMouseMove(e,firstscrollContainerRef))}
+                        onMouseUp={(e)=>(handleMouseUp(firstscrollContainerRef))}
+                        onMouseLeave={(e)=>(handleMouseLeave(firstscrollContainerRef))}
+                        >
                         {firstRow.map((client, index) => (
                         <Avatar
                             key={`client-row2-${index}`}
@@ -135,13 +140,14 @@ const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
                         ))}
                     </div>
                 </div>
-                <div ref={scrollContainerRef}
-                    className="manufacturers-scrollable-bar"
-                    onMouseDown={handleMouseDown}
-                    onMouseLeave={handleMouseLeave}
-                    onMouseUp={handleMouseUp}
-                    onMouseMove={handleMouseMove}>
-                    <div className="manufacturers-scrollable-row">
+                <div ref={secondscrollContainerRef}
+                    className="manufacturers-scrollable-bar">
+                    <div className="manufacturers-scrollable-row"
+                        onMouseDown={(e)=>(handleMouseDown(e,secondscrollContainerRef))}
+                        onMouseMove={(e)=>(handleMouseMove(e,secondscrollContainerRef))}
+                        onMouseUp={(e)=>(handleMouseUp(secondscrollContainerRef))}
+                        onMouseLeave={(e)=>(handleMouseLeave(secondscrollContainerRef))}
+                    >
                         {secondRow.map((client, index) => (
                         <Avatar
                             key={`client-row2-${index}`}
@@ -152,13 +158,14 @@ const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
                         ))}
                     </div>
                 </div>
-                <div ref={scrollContainerRef}
-                    className="manufacturers-scrollable-bar"
-                    onMouseDown={handleMouseDown}
-                    onMouseLeave={handleMouseLeave}
-                    onMouseUp={handleMouseUp}
-                    onMouseMove={handleMouseMove}>
-                    <div className="manufacturers-scrollable-row">
+                <div ref={thirdscrollContainerRef}
+                    className="manufacturers-scrollable-bar">
+                    <div className="manufacturers-scrollable-row manufacturers-scrollable-bar-three"
+                        onMouseDown={(e)=>(handleMouseDown(e,thirdscrollContainerRef))}
+                        onMouseMove={(e)=>(handleMouseMove(e,thirdscrollContainerRef))}
+                        onMouseUp={(e)=>(handleMouseUp(thirdscrollContainerRef))}
+                        onMouseLeave={(e)=>(handleMouseLeave(thirdscrollContainerRef))}
+                    >
                         {thirdRow.map((client, index) => (
                         <Avatar
                             key={`client-row2-${index}`}
