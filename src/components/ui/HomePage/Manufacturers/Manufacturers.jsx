@@ -6,6 +6,7 @@ import { Avatar } from 'antd';
 import PropTypes from 'prop-types';
 
 import './Manufacturers.css';
+import ScrollBar from '../../ScrollBar/ScrollBar';
 
 
 const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
@@ -71,10 +72,8 @@ const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
     ];
     // Divide the clients into two groups
     const itemsPerPage = 20; // 4 items for each row
-    const divisions = Math.ceil(clientData.length / itemsPerPage);
-    const range = Array.from({ length: divisions }, (_, index) => index);
     
-    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+    const currentPageIndex=0;
     
     // Get the current page's data
     const currentPageClients = clientData.slice(
@@ -86,96 +85,53 @@ const Manufacturers = ({isMobile,isTablet,isDesktop}) => {
     const secondRow = currentPageClients.slice(itemsPerPage/3,(itemsPerPage/3)*2); // Next 4 items
     const thirdRow = currentPageClients.slice((itemsPerPage/3)*2,(itemsPerPage/3)*3); // Next 4 items
     
-    const firstscrollContainerRef = useRef(null);
-    const secondscrollContainerRef = useRef(null);
-    const thirdscrollContainerRef = useRef(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
-
-    const handleMouseDown = (e,scrollContainerRef) => {
-        setIsDragging(true);
-        setStartX(e.clientX);
-        setScrollLeft(scrollContainerRef.current.scrollLeft);
-        scrollContainerRef.current.style.cursor = 'grabbing'; // Change cursor on drag start
-    };
-
-    const handleMouseMove = (e,scrollContainerRef) => {
-        if (!isDragging) return;
-        const distance = e.clientX - startX; // Calculate horizontal distance
-        scrollContainerRef.current.scrollLeft = scrollLeft - distance; // Update scroll position
-    };
-
-    const handleMouseUp = (scrollContainerRef) => {
-        setIsDragging(false);
-        scrollContainerRef.current.style.cursor = 'grab'; // Reset cursor when dragging stops
-    };
-
-    const handleMouseLeave = (scrollContainerRef) => {
-        if (isDragging) {
-        setIsDragging(false);
-        scrollContainerRef.current.style.cursor = 'grab'; // Reset cursor on mouse leave
-        }
-    };
+    
+    
 
     return (
         <div className="manufacturers-container p-2 mb-4 pt-4">
             {/* First Row: Scrollable bar with items */}
             <div className="manufacturers-scrollable-col">
-                <div ref={firstscrollContainerRef}
-                    className="manufacturers-scrollable-bar manufacturers-scrollable-bar-one">
-                    <div className="manufacturers-scrollable-row"
-                        onMouseDown={(e)=>(handleMouseDown(e,firstscrollContainerRef))}
-                        onMouseMove={(e)=>(handleMouseMove(e,firstscrollContainerRef))}
-                        onMouseUp={(e)=>(handleMouseUp(firstscrollContainerRef))}
-                        onMouseLeave={(e)=>(handleMouseLeave(firstscrollContainerRef))}
-                        >
-                        {firstRow.map((client, index) => (
-                        <Avatar
-                            key={`client-row2-${index}`}
-                            className="manufacturers-scroll-item p-1"
-                            src={client}
-                            alt={`Client ${index + 5}`}
-                        />
-                        ))}
-                    </div>
-                </div>
-                <div ref={secondscrollContainerRef}
-                    className="manufacturers-scrollable-bar">
-                    <div className="manufacturers-scrollable-row"
-                        onMouseDown={(e)=>(handleMouseDown(e,secondscrollContainerRef))}
-                        onMouseMove={(e)=>(handleMouseMove(e,secondscrollContainerRef))}
-                        onMouseUp={(e)=>(handleMouseUp(secondscrollContainerRef))}
-                        onMouseLeave={(e)=>(handleMouseLeave(secondscrollContainerRef))}
-                    >
-                        {secondRow.map((client, index) => (
-                        <Avatar
-                            key={`client-row2-${index}`}
-                            className="manufacturers-scroll-item p-1"
-                            src={client}
-                            alt={`Client ${index + 5}`}
-                        />
-                        ))}
-                    </div>
-                </div>
-                <div ref={thirdscrollContainerRef}
-                    className="manufacturers-scrollable-bar">
-                    <div className="manufacturers-scrollable-row manufacturers-scrollable-bar-three"
-                        onMouseDown={(e)=>(handleMouseDown(e,thirdscrollContainerRef))}
-                        onMouseMove={(e)=>(handleMouseMove(e,thirdscrollContainerRef))}
-                        onMouseUp={(e)=>(handleMouseUp(thirdscrollContainerRef))}
-                        onMouseLeave={(e)=>(handleMouseLeave(thirdscrollContainerRef))}
-                    >
-                        {thirdRow.map((client, index) => (
-                        <Avatar
-                            key={`client-row2-${index}`}
-                            className="manufacturers-scroll-item p-1"
-                            src={client}
-                            alt={`Client ${index + 5}`}
-                        />
-                        ))}
-                    </div>
-                </div>
+                
+                <ScrollBar
+                    items={firstRow}
+                    itemsslicestart={0}
+                    itemssliceend = {itemsPerPage/3}
+                    axis="horizontal"
+                    shorter={true}
+                    children={firstRow.map((child, index) => ({
+                        key: `child-row-${index}`,
+                        tag: Avatar,
+                        props: { src: child, alt:`Client ${index + 5}` }
+                        }))
+                    }
+                    />
+                <ScrollBar
+                    items={secondRow}
+                    itemsslicestart={itemsPerPage/3}
+                    itemssliceend = {(itemsPerPage/3)*2}
+                    axis="horizontal"
+                    children={secondRow.map((child, index) => ({
+                        key: `child-row-${index}`,
+                        tag: Avatar,
+                        props: { src: child, alt:`Client ${index + 5}` }
+                        }))
+                    }
+                    />
+                <ScrollBar
+                    items={thirdRow}
+                    itemsslicestart={(itemsPerPage/3)*2}
+                    itemssliceend = {(itemsPerPage/3)*3}
+                    axis="horizontal"
+                    shorter={true}
+                    children={thirdRow.map((child, index) => ({
+                        key: `child-row-${index}`,
+                        tag: Avatar,
+                        props: { src: child, alt:`Client ${index + 5}` }
+                        }))
+                    }
+                    />
+
                 
             </div>
 
