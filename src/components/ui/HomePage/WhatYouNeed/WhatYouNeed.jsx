@@ -55,15 +55,17 @@ const WhatYouNeed = ({ isMobile }) => {
       <div className="what-you-need-item">
       
             {featureItems.map((item, index) => (
-                <Avatar
-                  key={index}
-                  onClick={() => console.log(`Clicked: ${item.header}`)}
-                  icon={item.body}
-                  shape='square'
-                  size={200}
-                  className='bg-transparent d-flex justify-content-center align-items-center'
-                  
-                />
+                <span className='d-flex flex-col align-items-center'>
+                  <Avatar
+                    key={index}
+                    onClick={() => console.log(`Clicked: ${item.header}`)}
+                    icon={item.body}
+                    shape='square'
+                    size={200}
+                    className='bg-transparent d-flex justify-content-center align-items-center'
+                    
+                  />
+                  <Text fontWeight='fw-400' fontSize='fs-sm' fontColor='red'>{item.text?item.text:'sddsd'}</Text></span>
                 ))}
       </div>
       <div className="what-you-need-item what-you-need-item-onecol">
@@ -85,7 +87,7 @@ const WhatYouNeed = ({ isMobile }) => {
                     color="primary"
                     onClick={() => console.log('Button clicked')}
                     endIcon={<i className="fa-light fa-chevron-right "></i>}
-                    className={'text-end shake-item p-2 px-5'}
+                    className={'text-end shake-item p-2 px-4'}
                     />
             </span>
       </div>

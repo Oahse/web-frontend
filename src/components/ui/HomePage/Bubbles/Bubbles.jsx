@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import './Bubbles.css';
 function HomePageBubble({isMobile}){
     return(
-        <>{isMobile?
-            <div className='homepage-bubbles-mobile m-0 mb-3 bg-transparent'>
-              <div style={{position:'relative' }}>
+        <div  style={{marginTop:'100px',marginBottom:'100px'}}>{isMobile?
+            <div className='homepage-bubbles-mobile m-0  mt-5 mb-5 bg-transparent'>
+              <div style={{position:'relative' }} >
                 
                 <svg style={{position:'absolute', top:'20px', left:'40%'}} width="50%" height="170" viewBox="0 0 170 170" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="85" cy="85" r="85" fill="#EED49F" fill-opacity="0.5"/>
@@ -58,8 +58,8 @@ function HomePageBubble({isMobile}){
               </div>
             </div>
             :
-            <div className='homepage-bubbles-not-mobile m-0 mb-3 bg-transparent'>
-              <div style={{position:'relative' }}>
+            <div className='homepage-bubbles-not-mobile m-0 mt-5 mb-5 bg-transparent'>
+              <div style={{position:'relative' }} >
                 
               <svg style={{position:'absolute', top:'10px', left:'11%'}} width="270" height="270" viewBox="0 0 270 270" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle opacity="0.2" cx="135" cy="135" r="135" fill="#5C9E31"/>
@@ -104,7 +104,7 @@ function HomePageBubble({isMobile}){
 
 
               </div>
-            </div>}</>
+            </div>}</div>
     )
 }
 

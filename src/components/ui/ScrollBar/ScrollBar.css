@@ -66,6 +66,10 @@
     width: 200px !important;
     height: 200px !important;
 }
+.scrollbar-scroll-item-medium-small {
+    width: 150px !important;
+    height: 150px !important;
+}
 .scrollbar-scroll-item-small {
     width: 100px !important;
     height: 100px !important;
@@ -80,10 +84,11 @@
 
 /* Specific Width Adjustments */
 .scrollbar-scrollable-bar-shorter {
-    width: 56%;
+    width: 720px;
 }
 
-@media (max-width: 768px) {
+
+@media (max-width: 767px) {
     .scrollbar-description-row {
         font-size: var(--fs-sm);
     }

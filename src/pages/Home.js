@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import Header from '../components/ui/Header/Header';
 import Grid from '../components/ui/Grid/Grid';
 import Button from '../components/ui/Button/Button';
@@ -14,6 +14,7 @@ import WhatYouNeed from '../components/ui/HomePage/WhatYouNeed/WhatYouNeed';
 import Text from '../components/ui/Typography/Text';
 import Clients from '../components/ui/HomePage/Clients/Clients';
 import Manufacturers from '../components/ui/HomePage/Manufacturers/Manufacturers';
+import useIsScrolled from '../hooks/useIsScrolled';
 
 
 function Homepage({ Companyname }) {
@@ -22,18 +23,9 @@ function Homepage({ Companyname }) {
               'email':'sdsdsd@gmail.com',
               'id':'1212121',
             'isloggedin':false}
-  const [isScrolled, setIsScrolled] = React.useState(false);
   const { isMobile, isTablet,isDesktop } = useDeviceType();
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  
+  const isScrolled = useIsScrolled();
 
   const featureItems = [
     { header: 'Streamline Procument Processes', body: 'User-friendly platform that simplifies sourcing, ordering and delivery for engineering resources.' },
@@ -93,7 +85,7 @@ function Homepage({ Companyname }) {
                             text="Get the App"
                             color="secondary"
                             variant='outlined'
-                            className='fw-500 m-auto'
+                            className='fw-500 m-auto p-2 px-5'
                             onClick={() => console.log('Button clicked')}
                           />
                         </span>
@@ -161,7 +153,7 @@ function Homepage({ Companyname }) {
           <Clients isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
           <Text fontWeight='fw-500' fontSize='fs-xl' className={'text-center lh-1 p-4'}>What Do you Need? Let’s Handle It!</Text>
           <WhatYouNeed isMobile={isMobile} />
-          <HomepageTestimonies isMobile={isMobile} />
+          <HomepageTestimonies isMobile={isMobile} isTablet={isTablet} />
           <HomePageBubble isMobile={isMobile} />
           <HomeAiestimator isMobile={isMobile} />
           

@@ -149,7 +149,7 @@ ScrollBar.propTypes = {
     axis: PropTypes.oneOf(['horizontal', 'vertical']),
     children: PropTypes.node, // Any renderable React node (element, string, etc.)
     shorter: PropTypes.bool,
-    size: PropTypes.oneOf(['small','medium', 'large']),
+    size: PropTypes.oneOf(['small','medium-small','medium', 'large']),
 };
 
 

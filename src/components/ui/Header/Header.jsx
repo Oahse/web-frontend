@@ -2,21 +2,35 @@ import React,{ useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Navbar } from 'react-bootstrap';
 import Logo from '../../../assets/oahse-logo.png';
-import Logolight from '../../../assets/oahse-logo-light.png';
+import Logolight from '../../../assets/oahse-logo-text.png';
 import Globe from '../../icons/globe';
 import Button from '../Button/Button';
 import Sidebar from '../SideBar/SideBar';
 import './Header.css';
+import { useNavigate,useLocation } from 'react-router-dom';
+import {useCountryByLocation} from '../../../hooks/useCountry';
+import { Avatar } from 'antd';
+import NavLinks from './NavLinks';
+import SideNavLinks from './SideNavLinks';
 
 
 function Header({ Companyname, isScrolled,isMobile, user }) {
-    
+    const navigate = useNavigate();
+    const { country, error } = useCountryByLocation();
+    // console.log(country,'=========')
+    const location = useLocation(); // Get the current location
+    if (location.pathname === '/shop') {
+        console.log('Current URL is /shop');
+        // Perform actions specific to the /shop route
+    }
+
+    const sidebarlinks = SideNavLinks({ location, isScrolled, country });
     const [sidebarstate, setSidebarState] = useState({ 
         visible: false, 
         placement: 'left', 
         title: 'Oahse', 
-        items: [<><Globe width={22} height={22} color={'black'} /><span className='m-1 fw-bold'>English</span></>, 
-            <span className='m-1 fw-bold'>Become A Supplier</span>] 
+        items: sidebarlinks
+ 
       });
     
     const showDrawer = () => {
@@ -57,25 +71,9 @@ function Header({ Companyname, isScrolled,isMobile, user }) {
 
                 {/* Align this div to the right */}
                 <div className="d-flex align-items-center">
-                    <span className="d-flex flex-row align-items-center">
-                    {!isMobile?
-                    <>
-                    <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Globe width={22} height={22} color={`${isScrolled ? 'black' : 'white'}`} /><span className='m-1 fw-bold'>English</span></span>
-                    <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><span className='m-1 fw-bold'>Become A Supplier</span></span>
-                    </>:null}
-                    <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}>
-                            <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Button
-                                        type='link'
-                                        text="Start for Free"
-                                        color="primary"
-                                        href='/shop'
-                                        onClick={() => console.log('Button clicked')}
-                                        />
-
-                            </span>
-                        </span>
-                    </span>
-                    {isMobile?<span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><i className={`fa-light ${sidebarstate.visible?'fa-x':'fa-bars'} `} style={{ fontSize: '24px' }} onClick={showDrawer}></i></span>:null}
+                    <NavLinks isMobile={isMobile} isScrolled={isScrolled} location={location} country={country}/>
+                    
+                    {isMobile?<span className={`p-1 mx-2  ${isScrolled ? 'text-black' : 'text-white '}`}><i className={`fa-light ${sidebarstate.visible?'fa-x':'fa-bars'} m-auto`} style={{ fontSize: '24px' }} onClick={showDrawer}></i></span>:null}
                 </div>
             </Container>
             {/* Sidebar component */}

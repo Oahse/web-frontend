@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import Header from '../components/Header';
+import Header from '../components/ui/Header/Header';
 import FilterComponent from '../components/Filter';
 import {BottomHorizontalScroller, MiddleHorizontalScroller, } from '../components/HorizontalScroller';
 import { MiddleVerticalScroller } from '../components/VerticalScroller';
@@ -12,9 +12,13 @@ import { useAuth } from '../services/auth';
 import config from '../services/config';
 import dayjs from 'dayjs';
 import Footer from '../components/ui/Footer/Footer';
+import useDeviceType from '../hooks/useDeviceType';
+import useIsScrolled from '../hooks/useIsScrolled';
 
 function MarketPlace({ API_URL,Companyname }) {
   const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();
+  const { isMobile, isTablet,isDesktop } = useDeviceType();
+  const isScrolled = useIsScrolled();
   const {minprice, maxprice }  = { minprice: 0, maxprice :1000000};
 
   const [isLoading, setIsLoading] = useState(false);
@@ -389,7 +393,7 @@ function MarketPlace({ API_URL,Companyname }) {
   return (
     <div className="explore">
       <span className='d-flex flex-column topbar'>
-        <Header Companyname ={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
+        <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile} user={userDetails}/>
         <FilterComponent 
             onSearch={filterItems} 
             onChangeDrawer={setDrawerVisible}
@@ -420,9 +424,9 @@ function MarketPlace({ API_URL,Companyname }) {
           <BottomHorizontalScroller title={'Consumers Devices'} categories={categories} />
         </>
         }
-        <Footer className='footer'/>
+        
       </Container>
-      
+      <Footer className='footer'/>
     </div>
   );
 }

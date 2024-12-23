@@ -12,13 +12,14 @@ import { useRegister } from '../services/auth';
 import Card from '../components/ui/Card/Card'
 import procurement from '../assets/procurement3.jpg'
 import axios from 'axios'
+import {useCountries} from '../hooks/useCountry';
 
 function Signup({ API_URL }) {
   const [redirectToHome, setRedirectToHome] = useState(false);
   const navigate = useNavigate();
   const [userType, setUserType] = useState(""); // Store selected user type
   const { register, loading, error, user } = useRegister(); // Use the register hook
-  const [countries, setCountries] = useState([])
+  const countries = useCountries();
   const [selectedCountry, setSelectedCountry] = useState('')
   const [open, setOpen] = useState(false);
 
@@ -88,21 +89,7 @@ function Signup({ API_URL }) {
     setUserType(e.target.value);
   };
 
-  useEffect(() => {
-    // Fetch countries and flags
-    axios
-      .get("https://restcountries.com/v3.1/all")
-      .then((response) => {
-        const countryData = response.data.map((country) => ({
-          name: country.name.common,
-          flag: country.flags.svg, // URL for the flag
-          code: country.cca2, // ISO code
-        }))
-        .sort((a, b) => a.name.localeCompare(b.name));
-        setCountries(countryData);
-      })
-      .catch((error) => console.error("Error fetching countries:", error));
-  }, []);
+  
 
 //   const handleCountryChange = (event) => {
 //     const selectedName = event.target.value;

@@ -6,52 +6,95 @@
     flex: 0 0 40%; /* Right part takes 40% */
   }
 }
-.scrollable-homepage-testimonies-container {
+.homepage-testimonies-container {
   display: flex; /* Use flexbox for horizontal alignment */
   overflow-x: auto; /* Enable horizontal scrolling */
   white-space: nowrap; /* Prevent wrapping of items */
   gap: 10px; /* Optional: Add space between items */
-  padding: 10px; /* Optional: Add padding around the scrollable area */
   scrollbar-width: none; /* Hide scrollbar for modern browsers */
-  
+  width: 80%;
+  height: 300px !important;
+  min-width: 240px !important;
+  margin: auto;
+  margin-top: 98px;
 }
-.scrollable-homepage-testimonies-container.active {
+.homepage-testimonies-container.active {
   cursor: grabbing; /* Change cursor when dragging */
 }
 
-.scrollable-homepage-testimonies-container::-webkit-scrollbar {
+.homepage-testimonies-container::-webkit-scrollbar {
   display: none; 
 } 
 .homepage-testimonies{
-  border-radius: 20px;
+  border: 1px solid !important;
+  border-radius: 30px !important;
   background-color: var(--secondary-color) !important;
-  width: 550px !important;
+  width: 100% !important;
+  height: 100% !important;
   flex-shrink: 0; /* Prevent items from shrinking */
   position: relative; /* Make the container relative to position buttons inside it */
+  margin: auto;
 }
-@media (max-width: 768px) {
-  .homepage-testimonies{
-    width: 100% !important;
-  }
-}
+
 .homepage-testimonies-name {
-  margin-left: 20px;
+  margin: auto;
+  margin-left: 6px;
+  
+}
+.homepage-testimonies-content {
+  margin: auto;
+}
+.homepage-testimonies-image{
+  width: 200px !important;
+  height: 200px!important;
+  margin: auto;
 }
 .homepage-testimonies-writeup {
-  border: dashed;
-  border-color: var(--white);
-  margin:4px;
-  padding: 4px;
-  height: 98%;
+  border: none;
+  border-radius: 10px;
+  background: 
+    linear-gradient(to right, var(--white) 50%, transparent 50%) 0 100% / 64px 1px repeat-x, /* Longer dashes, more space */
+    linear-gradient(to bottom, var(--white) 50%, transparent 50%) 100% 0 / 1px 64px repeat-y, /* Longer dashes, more space */
+    linear-gradient(to right, var(--white) 50%, transparent 50%) 0 0 / 64px 1px repeat-x, /* Longer dashes, more space */
+    linear-gradient(to bottom, var(--white) 50%, transparent 50%) 0 0 / 1px 64px repeat-y; /* Longer dashes, more space */
+
+
+  margin:auto;
+  padding: 30px;
+  width:100%;
+  height: 100%;
   text-overflow: ellipsis; /* Show ellipsis when text overflows */
   word-wrap: break-word; /* Break long words */
   white-space: normal; /* Allow multi-line text */
 }
-
+@media (max-width: 768px) {
+  .homepage-testimonies{
+    height: 70% !important;
+    
+  }
+  .homepage-testimonies-image{
+    width: 70px !important;
+    height: 70px!important;
+  }
+  .homepage-testimonies-writeup {
+    padding: 15px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  
+  .homepage-testimonies-image{
+    width: 130px !important;
+    height: 130px!important;
+  }
+  .homepage-testimonies-writeup {
+    padding: 15px;
+    font-size: 1px;
+  }
+}
 .navigation-buttons {
   position: relative; /* Parent container for the buttons */
   z-index: 2; /* Ensure buttons are on top */
-  top:-100px;
+  top:-160px;
 }
 
 .prev-button,
