@@ -2,6 +2,7 @@ import React from 'react';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Signup from '../pages/SignUp';
+import SignUpForSuppliers from '../pages/SignUpForSuppliers'
 import Login from '../pages/Login';
 import Loginfingerprint from '../pages/Login-fingerprint';
 import ForgotPassword from '../pages/ForgotPassword';
@@ -18,6 +19,7 @@ import VerifyMailConfirmation from '../pages/VerifyMailConfirmation';
 import PasswordReset from '../pages/PasswordReset';
 import ProductPage from '../pages/ProductItem';
 import LogoutPage from '../pages/Logout';
+import Test from '../pages/TestingPage'
 
 
 const NonAuthRoutes = ({ API_URL,Companyname }) => [
@@ -55,6 +57,11 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     path: "/signup",
     element: <Signup API_URL={API_URL} Companyname={Companyname}/>,
     title: "signup"
+  },
+  {
+    path: "/signup-for-suppliers",
+    element: <SignUpForSuppliers API_URL={API_URL} Companyname={Companyname}/>,
+    title: "signUpForSuppliers"
   },
   {
     path: "/verify-email-otp",
@@ -131,6 +138,11 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     element: <User API_URL={API_URL} Companyname={Companyname}/>,
     title: "message"
   },
+  {
+    path: "/test",
+    element: <Test API_URL={API_URL} Companyname={Companyname}/>,
+    title: "testPage"
+  }, 
 ];
 
 export default NonAuthRoutes;

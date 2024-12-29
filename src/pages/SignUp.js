@@ -4,7 +4,8 @@ import { Row, Col, Avatar, Form, Radio, message, Cascader, Checkbox, Select, Mod
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import FormInput from '../components/FormInput';
+import FormInput from '../components/ui/FormInput/FormInput';
+import FormSelect from '../components/ui/FormInput/FormSelect'
 import FormCheckBox from '../components/FormCheckBox';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button/Button';
@@ -19,8 +20,8 @@ function Signup({ API_URL }) {
   const navigate = useNavigate();
   const [userType, setUserType] = useState(""); // Store selected user type
   const { register, loading, error, user } = useRegister(); // Use the register hook
-  const countries = useCountries();
-  const [selectedCountry, setSelectedCountry] = useState('')
+  const [countries, setCountries] = useState([])
+    const [selectedCountry, setSelectedCountry] = useState('')
   const [open, setOpen] = useState(false);
 
   const showModal = () => {
@@ -84,7 +85,52 @@ function Signup({ API_URL }) {
 
   }, [redirectToHome, navigate]);
 
+//   useEffect(() => {
+//     // Fetch countries and flags
+//     axios
+//       .get("https://restcountries.com/v3.1/all")
+//       .then((response) => {
+//         const countryData = response.data.map((country) => ({
+//           name: country.name.common,
+//           flag: country.flags.svg, // URL for the flag
+//           code: country.cca2, // ISO code
+//         }))
+//         .sort((a, b) => a.name.localeCompare(b.name));
+//         setCountries(countryData);
+//       })
+//       .catch((error) => console.error("Error fetching countries:", error));
+//   }, []);
+
   // Handle change in selected user type
+  
+     useEffect(() => {
+            const fetchCountries = async () => {
+              try {
+                const response = await fetch("https://restcountries.com/v3.1/all");
+                const data = await response.json();
+        
+                // Transform API data into options for the FormSelect component
+                const countryOptions = data.map((country) => ({
+                  value: country.cca2, // Use the country code as the value
+                  label: country.name.common, // Use the common name as the label
+                  flag: country.flags.svg, // URL of the country's flag image
+                })) 
+                .sort((a, b) => a.label.localeCompare(b.label)); // Sort alphabetically by label
+        
+                setCountries(countryOptions);
+              } catch (error) {
+                console.error("Error fetching countries:", error);
+                message.error("Failed to fetch countries!");
+              }
+            };
+        
+            fetchCountries();
+          }, []);
+        
+          const customFilterOption = (input, option) => {
+            return option.label.toLowerCase().includes(input.toLowerCase());
+          };
+
   const handleUserTypeChange = (e) => {
     setUserType(e.target.value);
   };
@@ -134,16 +180,13 @@ function Signup({ API_URL }) {
                             newsletter: true, // Default checkbox to checked
                             }}
                         >
-                            <Form.Item name='Country' label='Country' hasFeedback colon >
-                                <Select  placeholder="Select your Country" style= {{width: '100%', border: 'none', }}>
-                                    <option value="">-- Choose a Country --</option>
-                                        {countries.map((country) => (
-                                            <option key={country.code} value={country.name}>
-                                                {country.name}
-                                            </option>
-                                        ))}
-                                </Select>
-                            </Form.Item>
+                            <FormSelect
+                                label='Select a Country'
+                                name='Country'
+                                placeholder='Please select a country'
+                                options={countries}
+                                filterOption={customFilterOption}
+                            />
                            
                           <Form.Item label='Trade Role'>
                             <Radio.Group >

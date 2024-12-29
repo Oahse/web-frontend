@@ -277,11 +277,12 @@
 .ant-select-outlined-active,
 .ant-select-active,
 .ant-select-outlined:active,
-.ant-select-selector  {
-  height: 45px !important;
+.ant-select-selector  
+{
+  height: 30px !important;
   border: 1px solid transparent !important;
   background-color: white !important;
-  border-radius: var(--border-radius) !important;
+  border-radius: 10px;
   color: var(--primary-color) !important;
   outline: none !important; /* Remove default blue outline */
   box-shadow: none !important;

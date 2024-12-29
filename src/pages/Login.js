@@ -4,10 +4,11 @@ import { Col, Form, notification, Row } from 'antd';
 import ImageLoader from '../components/Loader';
 import Card from '../components/ui/Card/Card'
 import Grid from '../components/ui/Grid/Grid'
+import FormInput from '../components/ui/FormInput/FormInput'
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import procurement from '../assets/procurement.jpg'
-import FormInput from '../components/FormInput';
+// import FormInput from '../components/FormInput';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button/Button';
 import { useLogin } from '../services/auth'; // Adjust path as needed
