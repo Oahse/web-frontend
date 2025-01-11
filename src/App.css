@@ -87,8 +87,8 @@
 .chat-pop {
   z-index: 2;
   position: fixed; /* Absolute positioning within homepage-content */
-  bottom: 10px; /* Distance from the bottom */
-  right: 46px; /* Distance from the right */
+  bottom: 20px; /* Distance from the bottom */
+  right: 70px; /* Distance from the right */
   display: flex; /* Align icon and background */
   align-items: center;
   justify-content: center;
