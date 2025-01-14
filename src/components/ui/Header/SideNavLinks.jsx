@@ -3,7 +3,7 @@ import Globe from '../../icons/globe'; // Adjust import path as necessary
 import { Avatar } from 'antd'; // Assuming Avatar is from Ant Design
 
 const SideNavLinks = ({ location, isScrolled, country }) => {
-    console.log(location,isScrolled, country?.country,'+++++++')
+    // console.log(location,isScrolled, country?.country,'+++++++')
   // Initialize an array to hold the JSX elements
   const links = [];
 
