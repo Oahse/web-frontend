@@ -4,7 +4,7 @@ import { Table,Row, Col, Divider, Avatar, message, Modal, Radio } from 'antd';
 import Header from '../components/Header';
 import FilterComponent from '../components/Filter';
 import ImageLoader from '../components/Loader';
-import InputNumber from '../components/InputNumber';
+import InputNumber from '../components/ui/Input/InputNumber';
 import { Container } from 'react-bootstrap';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';

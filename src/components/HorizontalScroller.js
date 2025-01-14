@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Avatar, Card, Col, Row, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { CurrencyConverter } from '../utils/helper';
+import Button from './ui/Button/Button';
 
 const { Title } = Typography;
 
-const TopHorizontalScroller = ({ items,onSearch }) => {
+const TopHorizontalScroller = ({ items,onSearch,isMobile }) => {
 
     const handleCategoryChange = (e) => {
         onSearch && onSearch({ itemName:null, dateRange:null, minPrice:null, maxPrice:null, selectedCategory : e.target.id });
@@ -17,9 +18,17 @@ const TopHorizontalScroller = ({ items,onSearch }) => {
             <div className="tophorizontal-scroller">
                 <div className="topscrollable-content" style={{ paddingRight: '20px' }}>
                     {items?.map((item, index) => (
-                        <span id={item.id} className="topscrollitem" onClick={handleCategoryChange} key={index}>
-                            {item.name}
-                        </span>
+                        
+                        <Button 
+                            key={index} 
+                            text={item.name} 
+                            onClick={handleCategoryChange} 
+                            color="primary"
+                            variant='outlined'
+                            href='/shop'
+                            className='bg-transparent mx-2'
+                            style={{fontSize:isMobile?7:14}} />
+                        
                     ))}
                 </div>
             </div>
@@ -28,20 +37,62 @@ const TopHorizontalScroller = ({ items,onSearch }) => {
 };
 
 const MiddleHorizontalScroller = ({ title, items, toCurrency }) => {
+    const scrollContainerRef = useRef(null);
+      const [isDragging, setIsDragging] = useState(false);
+      const [startX, setStartX] = useState(0);
+      const [scrollLeft, setScrollLeft] = useState(0);
+      const [startY, setStartY] = useState(0);
+      const [scrollTop, setScrollTop] = useState(0);
+    
+      const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.clientX);
+        setScrollLeft(scrollContainerRef.current.scrollLeft);
+        scrollContainerRef.current.style.cursor = 'grabbing'; // Change cursor on drag start
+      };
+    
+      const handleMouseMove = (e) => {
+        if (!isDragging) return;
+      
+        const deltaX = e.clientX - startX || 0;
+      
+        scrollContainerRef.current.scrollLeft = scrollLeft - deltaX;
+      };
+      
+    
+      const handleMouseUp = () => {
+        setIsDragging(false);
+        scrollContainerRef.current.style.cursor = 'grab'; // Reset cursor when dragging stops
+      };
+    
+      const handleMouseLeave = () => {
+        if (isDragging) {
+          setIsDragging(false);
+          scrollContainerRef.current.style.cursor = 'grab'; // Reset cursor on mouse leave
+        }
+      };
     return (
         <div className='me-1 ms-1 mt-4'>
             <Title level={4}>{title}</Title>
-            <div className="middlehorizontal-scroller">
+            <div className="middlehorizontal-scroller" ref={scrollContainerRef}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+                // onWheel={handleWheel} // Handle mouse wheel scroll
+                >
                 <div className="middlescrollable-content">
                     {items.map((item, index) => (
                         <Link to={item.url} className="text-decoration-none" key={index}>
                             <Card
                                 hoverable
                                 style={{ width: 176, margin: '8px' }} // Adjust width and margin as needed
-                                cover={<img alt={item.name} src={item.image} style={{height:'176px',width: '100%', objectFit: 'cover'}} />}
+                                cover={<img alt={item.name} src={item.image} style={{height:'156px',width: '100%', objectFit: 'cover'}} />}
                             >
                                 <Card.Meta
-                                    title={<span  className='mb-0'>{item.name} {item.brand ?<p className='mb-0'>
+                                    title={<span  className='mb-0'>
+                                        {item.name} 
+                                        {item.brand ?<p className='mb-0'>
                                         <small>
                                             <Avatar src={item.brand?.logo} size ={24} className='me-1' />
                                             {item.brand?.name}

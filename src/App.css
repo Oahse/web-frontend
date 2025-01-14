@@ -28,7 +28,7 @@
 .homepage {
   height: 100%;
   color: transparent;
-  width: auto;
+  width: 100%;
   background-color: var(--alt-background-color);
 }
 .homepage-bg {
@@ -36,7 +36,7 @@
   background-size: cover; /* Makes sure the image covers the entire div */
   background-position: center; /* Centers the image */
   background-repeat: no-repeat; /* Prevents the image from repeating */
-  height: 88vh; /* Adjust the height as needed */
+  max-height: 88vh; /* Adjust the height as needed */
   width: 100%; /* Makes sure the background spans the full width */
   display: flex;
   flex-direction: column; /* Stack children vertically */
@@ -83,12 +83,17 @@
 .bg-transparent {
   background: transparent;
 }
+.bg-black {
+  background: var(--black); /* Fallback for older browsers */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), var(--black));
+
+}
 
 .chat-pop {
   z-index: 2;
   position: fixed; /* Absolute positioning within homepage-content */
   bottom: 20px; /* Distance from the bottom */
-  right: 70px; /* Distance from the right */
+  right: 54px; /* Distance from the right */
   display: flex; /* Align icon and background */
   align-items: center;
   justify-content: center;
@@ -279,13 +284,23 @@
 .ant-select-outlined:active,
 .ant-select-selector  
 {
-  height: 30px !important;
+  height: 32px !important;
   border: 1px solid transparent !important;
   background-color: white !important;
-  border-radius: 10px;
+  border-radius: 50px !important;
   color: var(--primary-color) !important;
   outline: none !important; /* Remove default blue outline */
   box-shadow: none !important;
+  font-size: var(--fs-md) !important;
+}
+.ant-input-group-addon {
+  border-top-right-radius: 50px !important;
+  border-bottom-right-radius: 50px !important;
+  background-color: var(--link-primary-color) !important;
+  font-size: var(--fs-md) !important;
+  font-weight: var(--fw-500) !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
 }
 
 /* Hover state for both regular and outlined inputs and form item controls */
@@ -400,6 +415,9 @@
 /* Indeterminate hover effect */
 .ant-checkbox-indeterminate:hover .ant-checkbox-inner {
   border-color: var(--secondary-color) !important;
+}
+.ant-card-body{
+  padding: 8px !important;
 }
 
 .ant-btn{
@@ -673,7 +691,6 @@
   background-color: var(--alt-background-color);
   padding: 0px;
   margin: 0px;
-  margin-bottom: 90px;
 }
 .tophorizontal-scroller {
   overflow-x: auto; /* Allow horizontal scrolling */
@@ -783,7 +800,11 @@
   color: var(--warning);
   font-weight: 700;
 }
-
+.recommended-for-you,
+.top-quotation {
+  background-color: var(--primary-color-light) !important;
+  padding: 6px;
+}
 /* home.css */
 
 .mini-navbar{

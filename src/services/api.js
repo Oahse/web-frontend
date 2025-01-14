@@ -102,7 +102,13 @@ const useNewArrivalsProducts = (url, params) => {
 
 // Hook to get categories
 const useCategories = (url) => {
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState(
+        [{name:'Electrical'},{name:'Mechanical'},
+            {name:'Industrial'},{name:'Construction'},
+            {name:'Electornics'},{name:'Chemical'},
+            {name:'Energy'},{name:'Aerospace'},
+            {name:'Automotive'}
+        ]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 

@@ -55,17 +55,28 @@ const WhatYouNeed = ({ isMobile }) => {
       <div className="what-you-need-item">
       
             {featureItems.map((item, index) => (
-                <span className='d-flex flex-col align-items-center'>
+                <span className='d-flex flex-column align-items-center'>
+                  {/* Avatar Component */}
                   <Avatar
                     key={index}
                     onClick={() => console.log(`Clicked: ${item.header}`)}
                     icon={item.body}
-                    shape='square'
+                    shape="square"
                     size={200}
-                    className='bg-transparent d-flex justify-content-center align-items-center'
-                    
+                    className="bg-transparent d-flex justify-content-center align-items-center"
                   />
-                  <Text fontWeight='fw-400' fontSize='fs-sm' fontColor='red'>{item.text?item.text:'sddsd'}</Text></span>
+                  
+                  {/* Text Component */}
+                  <Text
+                    fontWeight="fw-400"
+                    fontSize="fs-md-lg"
+                    fontColor="text-white"
+                    className="text-center"  // Optionally, if you want to center the text inside the Text component.
+                  >
+                    {item.text ? item.text : 'sddsd'}dsds
+                  </Text>
+                </span>
+              
                 ))}
       </div>
       <div className="what-you-need-item what-you-need-item-onecol">

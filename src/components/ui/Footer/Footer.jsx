@@ -7,14 +7,14 @@ import Title from '../Typography/Title';
 import Logo from '../../../assets/oahse-logo.png';
 import { Navbar } from 'react-bootstrap';
 
-function Footer({className, style, header, body, footer}) {
+function Footer({className,transparent=true}) {
 
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="footer">
+    <footer className={`footer ${transparent?'':'bg-black'}`}>
 
-      <div className="footer-top row mb-2 border-top border-white bg-none ">
+      <div className={`footer-top row mb-2 border-top border-white bg-none`}>
           <Navbar.Brand href="/">
               <img
               src={Logo}

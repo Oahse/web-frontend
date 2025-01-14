@@ -5,7 +5,7 @@ import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import Header from '../components/ui/Header/Header';
 import FilterComponent from '../components/Filter';
-import {BottomHorizontalScroller, MiddleHorizontalScroller, } from '../components/HorizontalScroller';
+import {BottomHorizontalScroller, MiddleHorizontalScroller, TopHorizontalScroller, } from '../components/HorizontalScroller';
 import { MiddleVerticalScroller } from '../components/VerticalScroller';
 import { getProducts, useCategories, } from '../services/api';
 import { useAuth } from '../services/auth';
@@ -14,6 +14,8 @@ import dayjs from 'dayjs';
 import Footer from '../components/ui/Footer/Footer';
 import useDeviceType from '../hooks/useDeviceType';
 import useIsScrolled from '../hooks/useIsScrolled';
+import { SearchInput } from '../components/ui/Input/Input';
+import ScrollBar from '../components/ui/ScrollBar/ScrollBar';
 
 function MarketPlace({ API_URL,Companyname }) {
   const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();
@@ -394,39 +396,69 @@ function MarketPlace({ API_URL,Companyname }) {
     <div className="explore">
       <span className='d-flex flex-column topbar'>
         <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile} user={userDetails}/>
-        <FilterComponent 
-            onSearch={filterItems} 
-            onChangeDrawer={setDrawerVisible}
-            drawervisible={drawerVisible}
-            name={true} 
-            date={true} 
-            price={true} 
-            categoryoptions={engineeringcategories}
-            iscategoryLoading = {iscategoryLoading}
-            minprice={minprice || 0}
-            maxprice ={maxprice  || 1000000}
-            />
+        <div className='m-2'>
+          <SearchInput
+              onSearch={filterItems} 
+              onChangeDrawer={setDrawerVisible}
+              drawervisible={drawerVisible}
+              name={true} 
+              date={true} 
+              price={true} 
+              categoryoptions={engineeringcategories}
+              iscategoryLoading = {iscategoryLoading}
+              minprice={minprice || 0}
+              maxprice ={maxprice  || 1000000}
+              />
+        </div>
       </span>
       <Container fluid className='body-container'>
-        {/* <TopHorizontalScroller 
+        <div className='top-quotation'>
+          <TopHorizontalScroller 
             items = {engineeringcategories} 
             iscategoryLoading = {iscategoryLoading} 
-            onSearch={filterItems} /> */}
+            onSearch={filterItems} isMobile={isMobile} />
+            <div className='d-flex justify-content-between align-items-center p-2 text-black'>
+              <span >
+                Welcome, to Oahse, <span className='fw-600'>Henrio</span>
+              </span>
+              <div>
+                <span className='m-2' style={{cursor:'pointer'}}>
+                  <svg width="26" height="20" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.2448 13.75V17.5H4.70255V2.5H12.5415V1.25H4.70255C4.28675 1.25 3.88798 1.3817 3.59396 1.61612C3.29994 1.85054 3.13477 2.16848 3.13477 2.5V17.5C3.13477 17.8315 3.29994 18.1495 3.59396 18.3839C3.88798 18.6183 4.28675 18.75 4.70255 18.75H17.2448C17.6607 18.75 18.0594 18.6183 18.3534 18.3839C18.6475 18.1495 18.8126 17.8315 18.8126 17.5V13.75H17.2448Z" fill="black"/>
+                    <path d="M23.1571 3.60031L20.5703 1.53781C20.3358 1.35458 20.0206 1.25195 19.6923 1.25195C19.364 1.25195 19.0488 1.35458 18.8144 1.53781L7.83984 10.2878V13.7503H12.1748L23.1493 5.00031C23.3791 4.81338 23.5078 4.56206 23.5078 4.30031C23.5078 4.03856 23.3791 3.78724 23.1493 3.60031H23.1571ZM11.5241 12.5003H9.40763V10.8128L16.8076 4.90656L18.9319 6.60031L11.5241 12.5003ZM20.0372 5.71906L17.9129 4.02531L19.6923 2.60656L21.8167 4.30031L20.0372 5.71906Z" fill="black"/>
+                  </svg>
+                  Request for quote
+                </span>
+                <span className='m-2' style={{cursor:'pointer'}}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 8.756V6.8C18 4.537 18 3.406 17.225 2.703C16.449 2 15.202 2 12.705 2H8.295C5.798 2 4.551 2 3.775 2.703C2.999 3.406 3 4.537 3 6.8V13.2C3 15.463 3 16.594 3.775 17.297C4.551 18 5.798 18 8.295 18H12.705M6 6H15M6 10H7M10 10H11M14 10H15M6 14H7M10 14H11M20.706 15.004C20.432 14.309 19.726 13.494 18.12 13.494C16.254 13.494 15.468 14.349 15.309 14.806C15.06 15.417 15.037 16.736 17.298 16.811C19.998 16.901 21.128 17.268 20.988 18.748C20.849 20.228 19.293 20.434 18.12 20.514C16.915 20.479 15.425 20.227 15 18.949M17.994 12V13.436M18.003 20.509V22" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Estimate
+                </span>
+              </div>
+            </div>
+        </div>
+        
         {(filteredItems?.length > 0) ?
-        <>
-        <MiddleVerticalScroller title={`Results: ${filteredItems.length}`} items={filteredItems} toCurrency={"USD"} noitemsPerPage={noitemsPerPage} />
+            <div className=' mx-4'>
+            <MiddleVerticalScroller title={`Results: ${filteredItems.length}`} items={filteredItems} toCurrency={"USD"} noitemsPerPage={noitemsPerPage} />
 
-        </>
-        :
-        <>
-          <MiddleHorizontalScroller title={'Trending'} items={trending} toCurrency={"USD"} />
-          <MiddleHorizontalScroller title={'New Arrivals'} items={newarrivals} toCurrency={"USD"} />
-          <BottomHorizontalScroller title={'Consumers Devices'} categories={categories} />
-        </>
+            </div>
+            :
+            <div className='mx-2'>
+              <MiddleHorizontalScroller title={'Trending'} items={trending} toCurrency={"USD"} />
+              
+              <MiddleHorizontalScroller title={'New Arrivals'} items={newarrivals} toCurrency={"USD"} />
+              <MiddleHorizontalScroller title={'Brands'} items={newarrivals} toCurrency={"USD"} />
+              <BottomHorizontalScroller title={'Top Rated Products'} categories={categories} />
+            </div>
         }
+        <div className='recommended-for-you'>
+          <MiddleHorizontalScroller title={'Recommended for you'} items={newarrivals} toCurrency={"USD"} />
+        </div>
         
       </Container>
-      <Footer className='footer'/>
+      <Footer className='footer' transparent={false}/>
     </div>
   );
 }

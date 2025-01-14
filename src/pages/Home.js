@@ -15,6 +15,7 @@ import Text from '../components/ui/Typography/Text';
 import Clients from '../components/ui/HomePage/Clients/Clients';
 import Manufacturers from '../components/ui/HomePage/Manufacturers/Manufacturers';
 import useIsScrolled from '../hooks/useIsScrolled';
+import { SearchInput } from '../components/ui/Input/Input';
 
 
 function Homepage({ Companyname }) {
@@ -56,6 +57,11 @@ function Homepage({ Companyname }) {
     console.log('Clicked cancel button');
     setOpen(false);
   };
+  const frequentlysearched = [
+    {name:'Lafarge Cement'},
+    {name:'Arduino Kit'},
+    {name:'Dry Wall'},
+  ]
   return (
     <div className="homepage">
         <div className={`homepage-bg`}>
@@ -91,6 +97,29 @@ function Homepage({ Companyname }) {
                         </span>
                       </div>
 
+                </div>
+                <div className='mt-3'>
+                    <SearchInput />
+                    <div className='row text-white m-3'>
+                        <div className='col' style={{color:'white', fontSize:isMobile?10:14}}>
+                            Frequently searched: 
+                        </div>
+                        {frequentlysearched.map((item, index)=>(
+                            <div className='col' key={index}>
+                                <Button
+                                    type='link'
+                                    text={item.name}
+                                    color="primary"
+                                    variant='outlined'
+                                    href='/shop'
+                                    className='bg-transparent'
+                                    style={{color:'white', fontSize:isMobile?7:14}}
+                                    onClick={() => console.log('Button clicked')}
+                                    /> 
+                            </div>
+                        ))}
+                        
+                    </div>
                 </div>
                
                 

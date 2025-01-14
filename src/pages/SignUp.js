@@ -20,7 +20,9 @@ function Signup({ API_URL }) {
   const navigate = useNavigate();
   const [userType, setUserType] = useState(""); // Store selected user type
   const { register, loading, error, user } = useRegister(); // Use the register hook
-  const [countries, setCountries] = useState([])
+  
+  const countries = useCountries();
+  console.log('----sdsd', countries)
     const [selectedCountry, setSelectedCountry] = useState('')
   const [open, setOpen] = useState(false);
 
@@ -85,51 +87,14 @@ function Signup({ API_URL }) {
 
   }, [redirectToHome, navigate]);
 
-//   useEffect(() => {
-//     // Fetch countries and flags
-//     axios
-//       .get("https://restcountries.com/v3.1/all")
-//       .then((response) => {
-//         const countryData = response.data.map((country) => ({
-//           name: country.name.common,
-//           flag: country.flags.svg, // URL for the flag
-//           code: country.cca2, // ISO code
-//         }))
-//         .sort((a, b) => a.name.localeCompare(b.name));
-//         setCountries(countryData);
-//       })
-//       .catch((error) => console.error("Error fetching countries:", error));
-//   }, []);
 
   // Handle change in selected user type
   
-     useEffect(() => {
-            const fetchCountries = async () => {
-              try {
-                const response = await fetch("https://restcountries.com/v3.1/all");
-                const data = await response.json();
+  
         
-                // Transform API data into options for the FormSelect component
-                const countryOptions = data.map((country) => ({
-                  value: country.cca2, // Use the country code as the value
-                  label: country.name.common, // Use the common name as the label
-                  flag: country.flags.svg, // URL of the country's flag image
-                })) 
-                .sort((a, b) => a.label.localeCompare(b.label)); // Sort alphabetically by label
-        
-                setCountries(countryOptions);
-              } catch (error) {
-                console.error("Error fetching countries:", error);
-                message.error("Failed to fetch countries!");
-              }
-            };
-        
-            fetchCountries();
-          }, []);
-        
-          const customFilterOption = (input, option) => {
-            return option.label.toLowerCase().includes(input.toLowerCase());
-          };
+      const customFilterOption = (input, option) => {
+        return option.label.toLowerCase().includes(input.toLowerCase());
+      };
 
   const handleUserTypeChange = (e) => {
     setUserType(e.target.value);

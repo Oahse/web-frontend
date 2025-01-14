@@ -66,28 +66,28 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
 
           {location.pathname === '/shop' && (
             <>
-              <span className={`ms-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
+              <span className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
                 <span className='m-1 fw-bold d-flex flex-row align-items-center'>
                   <i className="fa-light fa-list fs-lg me-1"></i>Categories
                 </span>
               </span>
-              <span className={`ms-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
+              <span className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
                 <span className='m-1 fw-bold d-flex flex-row align-items-center'>
                   {country?.country}
                   <Avatar className='fs-lg ms-1' shape='square' src={country?.flag} size={18} />
                 </span>
               </span>
-              <span className={`ms-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
+              <span className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
                 <Globe width={22} height={22} color={`${isScrolled ? 'black' : 'white'}`} />
                 <span className='m-1 fw-bold'>English</span>
               </span>
-              <span className={`ms-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
+              <span className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
                 <i className="fa-light fa-message-lines fs-lg"></i>
               </span>
-              <span className={`ms-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
+              <span className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
                 <i className="fa-light fa-cart-shopping fs-lg"></i>
               </span>
-              <span className={`ms-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
+              <span className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}>
                 <i className="fa-light fa-user fs-lg"></i>
               </span>
             </>

@@ -8,7 +8,7 @@ import axios from 'axios';
  */
 const useCountries = () => {
     // State to store the fetched countries
-    const [countries, setCountries] = useState(null);
+    const [countries, setCountries] = useState([]);
 
     useEffect(() => {
         /**
