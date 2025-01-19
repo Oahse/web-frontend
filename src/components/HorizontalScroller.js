@@ -7,34 +7,79 @@ import Button from './ui/Button/Button';
 
 const { Title } = Typography;
 
-const TopHorizontalScroller = ({ items,onSearch,isMobile }) => {
+const TopHorizontalScroller = ({ items, onSearch, isMobile }) => {
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+    const [scrollRight, setScrollRight] = useState(0);
 
     const handleCategoryChange = (e) => {
-        onSearch && onSearch({ itemName:null, dateRange:null, minPrice:null, maxPrice:null, selectedCategory : e.target.id });
+        onSearch && onSearch({
+            itemName: null,
+            dateRange: null,
+            minPrice: null,
+            maxPrice: null,
+            selectedCategory: e.target.id
+        });
     };
-    
+
+    const startDrag = (e) => {
+        // Prevent text selection while dragging
+        e.preventDefault();
+        setIsDragging(true);
+        setStartX(e.pageX || e.touches[0].pageX);
+        setScrollLeft(e.currentTarget.scrollLeft);
+        setScrollRight(e.currentTarget.scrollRight);
+    };
+
+    const endDrag = () => {
+        setIsDragging(false);
+    };
+
+    const onDrag = (e) => {
+        if (!isDragging) return;
+
+        const x = e.pageX || e.touches[0].pageX;
+        const walk = (x - startX) * 3; // Scroll speed factor (adjust for sensitivity)
+
+        e.currentTarget.scrollLeft = scrollLeft - walk;
+        e.currentTarget.scrollRight = scrollRight + walk;
+    };
+
     return (
-        <div className='me-1 ms-1'>
-            <div className="tophorizontal-scroller">
-                <div className="topscrollable-content" style={{ paddingRight: '20px' }}>
+        <div className='m-1'>
+            <div
+                className="tophorizontal-scroller"
+                onMouseDown={startDrag}
+                onMouseUp={endDrag}
+                onMouseLeave={endDrag}
+                onMouseMove={onDrag}
+                onTouchStart={startDrag}
+                onTouchEnd={endDrag}
+                onTouchMove={onDrag}
+                
+            >
+                <div className="topscrollable-content">
                     {items?.map((item, index) => (
-                        
-                        <Button 
-                            key={index} 
-                            text={item.name} 
-                            onClick={handleCategoryChange} 
+                        <Button
+                            key={index}
+                            text={item.name}
+                            onClick={handleCategoryChange}
                             color="primary"
                             variant='outlined'
                             href='/shop'
+                            type='link'
                             className='bg-transparent mx-2'
-                            style={{fontSize:isMobile?7:14}} />
-                        
+                            style={{ fontSize: isMobile ? 12 : 14 }}
+                        />
                     ))}
                 </div>
             </div>
         </div>
     );
 };
+
+export default TopHorizontalScroller;
 
 const MiddleHorizontalScroller = ({ title, items, toCurrency }) => {
     const scrollContainerRef = useRef(null);

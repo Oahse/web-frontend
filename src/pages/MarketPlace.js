@@ -16,6 +16,8 @@ import useDeviceType from '../hooks/useDeviceType';
 import useIsScrolled from '../hooks/useIsScrolled';
 import { SearchInput } from '../components/ui/Input/Input';
 import ScrollBar from '../components/ui/ScrollBar/ScrollBar';
+import Button from '../components/ui/Button/Button';
+import Text from '../components/ui/Typography/Text';
 
 function MarketPlace({ API_URL,Companyname }) {
   const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();
@@ -379,6 +381,11 @@ function MarketPlace({ API_URL,Companyname }) {
     setIsLoading(true);
     setIsLoading(false);
   }, []);
+  const frequentlysearched = [
+    {name:'Lafarge Cement'},
+    {name:'Arduino Kit'},
+    {name:'Dry Wall'},
+  ]
 
 
   if (isLoading) {
@@ -396,19 +403,52 @@ function MarketPlace({ API_URL,Companyname }) {
     <div className="explore">
       <span className='d-flex flex-column topbar'>
         <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile} user={userDetails}/>
-        <div className='m-2'>
-          <SearchInput
-              onSearch={filterItems} 
-              onChangeDrawer={setDrawerVisible}
-              drawervisible={drawerVisible}
-              name={true} 
-              date={true} 
-              price={true} 
-              categoryoptions={engineeringcategories}
-              iscategoryLoading = {iscategoryLoading}
-              minprice={minprice || 0}
-              maxprice ={maxprice  || 1000000}
-              />
+        <div className={`homepage-content`}>
+            <div className='row mt-0'>
+              <div className='col-12 col-md-8 col-lg-8'>
+                <div className='homepage-content-second'>
+                  <Text fontWeight='fw-800' fontColor='text-white' fontSize='fs-2xl' style={{lineHeight:'40px'}}>
+                  Quality Engineering Products, <br/>readily acessible, <br/>procurement process simplified! 
+                  </Text>
+                </div>
+                </div>
+                <div className={`col-12 col-md-4 col-lg-4 `}>
+                    <span className='d-flex flex-row justify-content-center mt-3'>
+                      <Button
+                        type='link'
+                        text="Get the App"
+                        color="secondary"
+                        variant='outlined'
+                        className='fw-500 m-auto p-2 px-5'
+                        onClick={() => console.log('Button clicked')}
+                      />
+                    </span>
+                  </div>
+
+            </div>
+            <div className='mt-4'>
+                <SearchInput />
+                <div className='row text-white m-2 mt-3'>
+                    <div className='col' style={{color:'white', fontSize:isMobile?10:14}}>
+                        Frequently searched: 
+                    </div>
+                    {frequentlysearched.map((item, index)=>(
+                        <div className='col' key={index}>
+                            <Button
+                                type='link'
+                                text={item.name}
+                                color="primary"
+                                variant='outlined'
+                                href='/shop'
+                                className='bg-transparent'
+                                style={{color:'white', fontSize:isMobile?10:14, margin:'4px'}}
+                                onClick={() => console.log('Button clicked')}
+                                /> 
+                        </div>
+                    ))}
+                    
+                </div>
+            </div>
         </div>
       </span>
       <Container fluid className='body-container'>

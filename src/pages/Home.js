@@ -85,7 +85,7 @@ function Homepage({ Companyname }) {
                     </div>
                     </div>
                     <div className={`col-12 col-md-4 col-lg-4 `}>
-                        <span className='d-flex flex-row justify-content-center mt-5'>
+                        <span className='d-flex flex-row justify-content-center mt-3'>
                           <Button
                             type='link'
                             text="Get the App"
@@ -98,7 +98,7 @@ function Homepage({ Companyname }) {
                       </div>
 
                 </div>
-                <div className='mt-3'>
+                <div className='mt-4'>
                     <SearchInput />
                     <div className='row text-white m-3'>
                         <div className='col' style={{color:'white', fontSize:isMobile?10:14}}>
@@ -113,7 +113,7 @@ function Homepage({ Companyname }) {
                                     variant='outlined'
                                     href='/shop'
                                     className='bg-transparent'
-                                    style={{color:'white', fontSize:isMobile?7:14}}
+                                    style={{color:'white', fontSize:isMobile?10:14, margin:'4px'}}
                                     onClick={() => console.log('Button clicked')}
                                     /> 
                             </div>
