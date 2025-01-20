@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { isMobile } from 'react-device-detect';
 import { Col, Form, notification, Row } from 'antd';
 import ImageLoader from '../components/Loader';
 import Card from '../components/ui/Card/Card'
@@ -13,9 +12,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button/Button';
 import { useLogin } from '../services/auth'; // Adjust path as needed
 import './Login.css';
+import useDeviceType from '../hooks/useDeviceType';
 
 function Login({ API_URL }) {
   const [redirectToHome, setRedirectToHome] = useState(false);
+  const { isMobile, isTablet} = useDeviceType();
   const navigate = useNavigate();
   const { login, loading, error } = useLogin();
   const [form] = Form.useForm();
@@ -121,12 +122,12 @@ function Login({ API_URL }) {
                                 <p>or Sign in with</p>
                             </div>
                            
-                            <Row >
-                                <Col span={8}><Button text={<i class="bi bi-google"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
+                            <Row>
+                                <Col span={8}><Button text={<i className="bi bi-google"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
 
-                                <Col span={8}><Button text={<i class="bi bi-apple"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
+                                <Col span={8}><Button text={<i className="bi bi-apple"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
 
-                                <Col span={8}><Button text={<i class="bi bi-linkedin"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
+                                <Col span={8}><Button text={<i className="bi bi-linkedin"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
                                 
                             </Row>
                                

@@ -38,6 +38,7 @@ const Sidebar = ({ logo, visible, onClose, placement, title,items,user }) => {
                 text="Login"
                 color="secondary"
                 className='fw-500 m-auto'
+                href={'/login'}
                 onClick={() => console.log('Button clicked')}
                 startIcon={<i className="fa-thin fa-right-to-bracket"></i>}
               />
