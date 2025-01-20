@@ -4,8 +4,8 @@ import { Link, useLocation } from 'react-router-dom'; // useLocation to detect U
 import Logo from '../assets/oahse-logo-text.png';
 import BottomNavbar from './BottomNavBar';
 import { isDesktop, isMobile, isTablet } from 'react-device-detect';
-import Button from './Button';
 import { Avatar, Drawer, Dropdown, Menu } from 'antd';
+import Button from './ui/Button/Button';
 
 const Header = ({ Companyname, isloggedIn, userDetails }) => {
     const location = useLocation(); // Get the current location (URL)

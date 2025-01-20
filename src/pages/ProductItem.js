@@ -2,8 +2,7 @@ import React from 'react';
 import { Carousel,Tabs, Descriptions, Row, Col, Rate, Breadcrumb } from 'antd';
 import { Container } from 'react-bootstrap';
 import Header from '../components/Header';
-import Button from '../components/Button';
-
+import Button from '../components/ui/Button/Button';
 const { TabPane } = Tabs;
 
 const ProductPage = ({API_URL,Companyname }) => {

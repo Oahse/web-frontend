@@ -414,14 +414,14 @@ function MarketPlace({ API_URL,Companyname }) {
                 </div>
                 <div className={`col-12 col-md-4 col-lg-4 `}>
                     <span className='d-flex flex-row justify-content-center mt-3'>
-                      <Button
+                      {/* <Button
                         type='link'
                         text="Get the App"
                         color="secondary"
                         variant='outlined'
                         className='fw-500 m-auto p-2 px-5'
                         onClick={() => console.log('Button clicked')}
-                      />
+                      /> */}
                     </span>
                   </div>
 

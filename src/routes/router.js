@@ -4,12 +4,13 @@ import NotFound from '../components/NotFound';  // Import the NotFound page comp
 import NonAuthRoutes from './nonauthroutes';  // Import non-authenticated routes
 import AuthRoutes from './authroutes';  // Import authenticated routes
 
-const Router = ({ API_URL,basename }) => {
+const Router = ({ API_URL,basename, Companyname }) => {
+
   // Generate non-authenticated routes using the API_URL prop
-  const nonauthroutes = NonAuthRoutes({ API_URL });
+  const nonauthroutes = NonAuthRoutes({ API_URL, Companyname });
 
   // Generate authenticated routes using the API_URL prop
-  const authroutes = AuthRoutes({ API_URL });
+  const authroutes = AuthRoutes({ API_URL, Companyname });
 
   return (
     <BrowserRouter basename={basename}>

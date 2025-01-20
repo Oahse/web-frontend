@@ -2,9 +2,8 @@ import React,{ useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Navbar } from 'react-bootstrap';
 import Logo from '../../../assets/oahse-logo.png';
-import Logolight from '../../../assets/oahse-logo-text.png';
-import Globe from '../../icons/globe';
-import Button from '../Button/Button';
+import Logolight from '../../../assets/oahse-logo-light.png';
+
 import Sidebar from '../SideBar/SideBar';
 import './Header.css';
 import { useNavigate,useLocation } from 'react-router-dom';
@@ -66,7 +65,9 @@ function Header({ Companyname, isScrolled,isMobile, user }) {
                     className="navbar-logo"
                     alt={`${Companyname} Logo`}
                     />
-                    <span className="navbar-title">{Companyname}</span>
+                    
+                    
+                    {/* <span className="navbar-title">{Companyname}</span> */}
                 </Navbar.Brand>
 
                 {/* Align this div to the right */}

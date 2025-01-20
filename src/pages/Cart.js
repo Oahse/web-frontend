@@ -2,14 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { Table,Row, Col, Divider, Avatar, message, Modal, Radio } from 'antd';
 import Header from '../components/Header';
-import FilterComponent from '../components/Filter';
+import Footer from '../components/ui/Footer/Footer';
 import ImageLoader from '../components/Loader';
 import InputNumber from '../components/ui/Input/InputNumber';
 import { Container } from 'react-bootstrap';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import { useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
+import Button from '../components/ui/Button/Button';
+import { SearchInput } from '../components/ui/Input/Input';
 
 const Cart = ({ API_URL, Companyname }) => {
   const navigate = useNavigate();
@@ -208,7 +209,8 @@ const Cart = ({ API_URL, Companyname }) => {
     <div className="cart">
       <span className="d-flex flex-column topbar">
         <Header Companyname={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
-        <FilterComponent onSearch={filterItems} name={true} date={true} price={true} onChangeDrawer={setDrawerVisible}
+        
+        <SearchInput onSearch={filterItems} name={true} date={true} price={true} onChangeDrawer={setDrawerVisible}
             drawervisible={drawerVisible} />
       </span>
       <Container fluid>
@@ -266,6 +268,7 @@ const Cart = ({ API_URL, Companyname }) => {
 
         <Divider />
       </Container>
+      <Footer  className='footer' transparent={false}/>
 
       {/* Checkout Modal */}
       <Modal
@@ -283,6 +286,7 @@ const Cart = ({ API_URL, Companyname }) => {
           ))}
         </Radio.Group>
       </Modal>
+      
     </div>
   );
 };

@@ -4,9 +4,9 @@ import { Card, Form } from 'antd';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import Button from '../components/Button';
 import InputNumber from '../components/ui/Input/InputNumber';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/ui/Button/Button';
 function VerifyMail({ API_URL }) {
     const navigate = useNavigate();
     const [otp, setOtp] = useState([null, null, null, null]);

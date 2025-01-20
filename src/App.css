@@ -31,17 +31,22 @@
   width: 100%;
   background-color: var(--alt-background-color);
 }
+
 .homepage-bg {
-  background-image: url('./assets/CIPAC_cover_photo.jpg'); /* Replace with the path to your image */
-  background-size: cover; /* Makes sure the image covers the entire div */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  max-height: 88vh; /* Adjust the height as needed */
-  width: 100%; /* Makes sure the background spans the full width */
-  display: flex;
-  flex-direction: column; /* Stack children vertically */
-  justify-content: flex-start; /* Align children from the top */
+    background-image: 
+      linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), /* Dark overlay with 50% opacity */
+      url('./assets/CIPAC_cover_photo.jpg'); /* Your image */
+    
+    background-size: cover; /* Makes sure the image covers the entire div */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    max-height: 88vh; /* Adjust the height as needed */
+    width: 100%; /* Makes sure the background spans the full width */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-start; /* Align children from the top */
 }
+
 .homepage-content {
   background-color: transparent;
   color: #1E1E1E;
@@ -51,13 +56,15 @@
   position: relative; /* Needed for stacking context */
   flex: 1; /* Ensure it takes up the remaining space */
 }
+/* .homepage-bg-scrolled::before{
+  max-height:  calc(88vh - 44px);
+} */
 
 @media (max-width: 768px) {
   .homepage-content  {
     padding: 20px 34px; /* Adjust padding as needed */
     margin-right: 0px;
     margin-left: 0px;
-      
   }
   }
 .homepage-content-top{
@@ -266,6 +273,9 @@
 }
 
 /* Merged styles for regular and outlined input fields */
+.ant-input-wrapper {
+  padding: 8px !important;
+}
 .ant-input-outlined,
 .ant-input-outlined:focus,
 .ant-input-outlined-focused, 
@@ -1066,5 +1076,45 @@
   text-align: center;
 }
 
+/* CSS to style horizontal dropdown menu */
 
+.ant-modal-body {
+  width: 100% !important;
+}
+.dropdown{
+  border-radius: 8px !important;
+  top: 90px !important;
+  width: 100% !important;
+}
+.dropdown .ant-modal-close {
+  visibility: hidden !important;
+}
+.ant-dropdown {
+  border-radius: 8px !important;
+}
+.ant-dropdown-menu-horizontal {
+  display: flex !important;
+  justify-content: space-evenly !important;
+  background-color: var(--white) !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+}
+.ant-dropdown-menu-horizontal-item-wrapper {
+  margin: 4px !important;
+  width: 33.33vw !important;
 
+}
+.ant-dropdown-menu-horizontal-item-wrapper .ant-dropdown-menu,
+.ant-dropdown-menu-horizontal-item {
+  background-color: var(--primary-color-light) !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+}
+.ant-dropdown-menu-horizontal-item-wrapper .ant-dropdown-menu-horizontal-item .ant-menu-item-active {
+    background-color: var(--link-secondary-color-light) !important;
+ }
+
+ .disabled {
+    color: var(--disabled-color);
+    cursor: not-allowed;
+ }

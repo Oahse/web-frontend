@@ -2,13 +2,16 @@ import React, { useEffect } from 'react';
 import ImageLoader from '../components/Loader';
 import Header from '../components/Header';
 import { Row, Col, Card, Avatar, Typography, Descriptions } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import { UserOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import Button from '../components/Button';
+
 import { useAuth } from '../services/auth'; // Assuming the hook is in services/auth.js
+import Button from '../components/ui/Button/Button';
+import Footer from '../components/ui/Footer/Footer';
+
 const { Title, Text } = Typography;
 
 const User = ({ API_URL, Companyname }) => {
@@ -54,17 +57,17 @@ const User = ({ API_URL, Companyname }) => {
         return <ImageLoader src={oahseicon} alt="oahse" src2={oahselogo} alt2="oahse" />;
     }
 
-    if (!isLoggedIn) {
-        return <p>You are not logged in. Please log in to view this page.</p>;
+    if (isLoggedIn) {
+        return  <Navigate to="/login" state={{'next-url':'/user'}} />;
     }
 
     return (
         <div className="user">
             <Header Companyname={Companyname} isloggedIn={isLoggedIn} userDetails={userDetails} />
             <Container fluid>
-                <Row className="py-5 gradient-bg">
-                    <Col className="text-center mt-5" sm={12} md={6} lg={6}>
-                        <Avatar size={100} icon={<UserOutlined />} />
+                <Row className="gradient-bg p-3 py-5 d-flex align-items-center">
+                    <Col className="d-flex align-items-center mt-5" sm={12} md={6} lg={6}>
+                        <Avatar size={200} icon={<UserOutlined />} />
                     </Col>
                     <Col className="py-4 mt-5">
                         <Title level={2}>
@@ -82,11 +85,9 @@ const User = ({ API_URL, Companyname }) => {
                             <i className="fa-light fa-location-dot m-2"></i> {userAddress}
                         </Text>
                         <br />
-                        <Link to="/edit-profile">
+                        <Link to="/edit-profile" className='mt-4'>
                             <Button
-                                type="primary"
-                                style={{ marginTop: '16px' }}
-                                className={'mt-4 outline-btn'}
+                                
                                 text="Edit Profile"
                             />
                         </Link>
@@ -149,6 +150,7 @@ const User = ({ API_URL, Companyname }) => {
                     </Col>
                 </Row>
             </Container>
+            <Footer  className='footer' transparent={false}/>
         </div>
     );
 };

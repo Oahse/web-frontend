@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Typography, Divider, Descriptions, Timeline, message, Tag } from 'antd';
 import { useParams } from 'react-router-dom'; // To capture the order ID from the URL
 import Header from '../components/Header';
-import Button from '../components/Button'; // Your custom Button component
 import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/ui/Button/Button';
+import Footer from '../components/ui/Footer/Footer';
 const { Title, Text } = Typography;
 
 const TrackingOrder = ({ API_URL, Companyname }) => {
@@ -137,6 +138,7 @@ const TrackingOrder = ({ API_URL, Companyname }) => {
           </Col>
         </Row>
       </Container>
+      <Footer  className='footer' transparent={false}/>
     </div>
   );
 };

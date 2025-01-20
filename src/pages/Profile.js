@@ -130,7 +130,7 @@ function ProfilePage() {
             </Row>
         </Container>
 
-        <Footer/>
+        <Footer  className='footer' transparent={false}/>
         
     </div>
   )

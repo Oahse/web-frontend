@@ -4,9 +4,9 @@ import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import FormInput from '../components/FormInput';
-import Button from '../components/Button';
 import Title from 'antd/es/typography/Title';
 import Header from '../components/Header';
+import Button from '../components/ui/Button/Button';
 
 
 

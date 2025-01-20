@@ -5,7 +5,7 @@ import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import FormInput from '../components/FormInput';
-import Button from '../components/Button';
+import Button from '../components/ui/Button/Button';
 
 function PasswordReset({ API_URL }) {
   //const [isLoading, setIsLoading] = useState(false); // Start with loading true

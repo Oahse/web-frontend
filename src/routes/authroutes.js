@@ -8,15 +8,7 @@ import OrderResult from '../pages/OrderResultPage';
 import OrdersList from '../pages/Orders';
 
 const AuthRoutes = ({ API_URL,Companyname }) => [
-  {
-    path: "/user",
-    element: (
-      <PrivateRoute
-        element={<Explore API_URL={API_URL} />}
-      />
-    ),
-    title: "home"
-  },
+  
   {
     path: "/dashboard",
     element: (

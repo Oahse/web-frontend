@@ -9,7 +9,7 @@ function App() {
   // Replace with the actual API URL or configuration as needed.
 
   return (
-    <Router API_URL={config.apiUrl} basename={"/web-frontend"} />
+    <Router API_URL={config.apiUrl} basename={"/web-frontend"}  Companyname={'Oahse'} />
   );
 }
 

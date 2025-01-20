@@ -4,6 +4,7 @@ import { Row, Col, Card, Typography, Divider, List, Button } from 'antd';
 import Header from '../components/Header'; // Your custom header component
 import FilterComponent from '../components/Filter'; // Importing the existing filter component
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/ui/Footer/Footer';
 
 const { Title, Text } = Typography;
 
@@ -127,6 +128,7 @@ const OrdersList = ({ API_URL, Companyname }) => {
           </Card>
         </Col>
       </Row>
+      <Footer  className='footer' transparent={false}/>
     </div>
   );
 };

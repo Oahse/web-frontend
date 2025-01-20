@@ -1,10 +1,11 @@
 // src/pages/PaymentConfirmation.js
 import React from 'react';
 import { Row, Col, Card, Divider, Descriptions, Typography, message } from 'antd';
-import Button from '../components/Button'; 
 import Header from '../components/Header';
 import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/ui/Button/Button';
+import { Footer } from 'antd/es/layout/layout';
 
 const { Title, Text } = Typography;
 
@@ -90,7 +91,9 @@ const PaymentConfirmation = ({ API_URL, Companyname,orderDetails, onConfirmPayme
                     </Card>
                 </Col>
             </Row>
+            <Footer  className='footer' transparent={false}/>
         </Container>
+        
     </div>
   );
 };

@@ -64,9 +64,9 @@ function Homepage({ Companyname }) {
   ]
   return (
     <div className="homepage">
-        <div className={`homepage-bg`}>
+        <div className={`homepage-bg  ${isScrolled ? 'homepage-bg-scrolled' : 'homepage-bg-not-scrolled'}`}>
             <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile} user={user}/>
-            <div className='homepage-content'>
+            <div className={`homepage-content`}>
                 <div className='homepage-content-top'>
                   <i className="homepage-content-top-icon fa-regular fa-circle-play"></i>
                   <span className='homepage-content-top-text'>Learn more about Oahse</span>
@@ -146,7 +146,7 @@ function Homepage({ Companyname }) {
           </Modal>
         </div>
         
-        <div className='card-container p-auto d-flex align-items-center '>
+        <div className='card-container p-auto d-flex align-items-center'>
             <Grid>
                 {featureItems.map((item, index) => (
                 <Card

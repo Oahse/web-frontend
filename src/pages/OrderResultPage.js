@@ -1,10 +1,11 @@
 // src/pages/OrderSuccess.js
 import React from 'react';
 import { Row, Col, Card, Typography, Divider, Descriptions } from 'antd';
-import Button from '../components/Button'; // Your custom button component
 import Header from '../components/Header';
 import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/ui/Button/Button';
+import Footer from '../components/ui/Footer/Footer';
 const { Title, Text } = Typography;
 
 const OrderResult = ({ API_URL, Companyname, orderDetails, onContinueShopping }) => {
@@ -96,6 +97,7 @@ const OrderResult = ({ API_URL, Companyname, orderDetails, onContinueShopping })
           </Col>
         </Row>
       </Container>
+      <Footer  className='footer' transparent={false}/>
     </div>
   );
 };
