@@ -106,6 +106,7 @@ const FilterDrawer = ({ onSearch, onChangeDrawer, name, categoryoptions, minpric
           placeholder='Start Date'
           value={startDate}
           onChange={(date) => handleDateChange(date, endDate)}
+          
         />
         
         <span>End Date</span>
@@ -148,24 +149,53 @@ const FilterDrawer = ({ onSearch, onChangeDrawer, name, categoryoptions, minpric
 };
 
 // SearchInput Component
-const SearchInput = ({ onSearch, categoryoptions, minprice, maxprice, drawervisible, iscategoryLoading }) => {
-  const [drawerVisible, setDrawerVisible] = useState(drawervisible);
+const SearchInput = ({ onSearch,name, categoryoptions, minprice, maxprice, drawervisible, iscategoryLoading }) => {
+  
+      const MAX_PRICE = 9999999999999999; // Max price limit
+      const MIN_PRICE = 0; // Min price limit
+      const [itemName, setItemName] = useState('');
+      const [startDate, setStartDate] = useState(dayjs('2000-01-01'));
+      const [endDate, setEndDate] = useState(dayjs(Date.now()));
+      const [dateRange, setDateRange] = useState([startDate, endDate]);
+      const [minPrice, setMinPrice] = useState(minprice || MIN_PRICE);
+      const [maxPrice, setMaxPrice] = useState(maxprice || MAX_PRICE);
+      const [drawerVisible, setDrawerVisible] = useState(drawervisible);
+      const [image, setImage] = useState(null);
+      const [selectedCategory, setSelectedCategory] = useState(categoryoptions?.length > 0 ? categoryoptions[0]?.id : '');
+  
+      
+  
+      const handleItemNameChange = (e) => {
+          setItemName(e.target.value);
+          onSearch && onSearch({ itemName: e.target.value, dateRange, minPrice, maxPrice, selectedCategory });
+      };
+  
+      
+      const handleCapture = (event) => {
+          const file = event.target.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                  setImage(reader.result);
+              };
+              reader.readAsDataURL(file);
+          }
+      };
 
   const showDrawer = () => {
     setDrawerVisible(true);
   };
 
-  const onCloseDrawer = () => {
-    setDrawerVisible(false);
-  };
+  
 
   // Define the icons with actions
   const presuffix = (
-    <i
-      className="fa-light fa-barcode-read"
-      style={{ fontSize: 16 }}
-      onClick={startBarcodeScan} // Start barcode scanning
-    ></i>
+    <label htmlFor="cameraInput"><i
+    className="fa-light fa-barcode-read"
+    style={{ fontSize: 16 }}
+    onChange={handleCapture}
+    onClick={startBarcodeScan} // Start barcode scanning
+  ></i></label>
   );
 
   const suffix = (
@@ -178,23 +208,35 @@ const SearchInput = ({ onSearch, categoryoptions, minprice, maxprice, drawervisi
 
   return (
     <div>
-      <Input
-        placeholder="Input search text"
-        size="large"
-        suffix={presuffix}  // Prefix for the barcode icon
-        addonAfter={suffix}     // Suffix for the filter icon
-        onSearch={onSearch}
-        className="search-input"
-      />
-      <FilterDrawer
-        onSearch={onSearch}
-        onChangeDrawer={setDrawerVisible}
-        categoryoptions={categoryoptions}
-        minprice={minprice}
-        maxprice={maxprice}
-        drawervisible={drawerVisible}
-        iscategoryLoading={iscategoryLoading}
-      />
+      <div style={{ display: 'flex', alignItems: 'center', padding: '2px', margin: '2px' }}>
+        {name && (<Input
+            placeholder="Input search text"
+            size="large"
+            suffix={presuffix}  // Prefix for the barcode icon
+            addonAfter={suffix}     // Suffix for the filter icon
+            onSearch={onSearch}
+            onChange={handleItemNameChange}
+            className="search-input"
+          />)}
+          <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleCapture}
+              style={{ display: 'none' }}
+              id="cameraInput"
+          />
+      </div>
+      {image && <img src={image} alt="Captured" style={{ marginTop: '20px', maxWidth: '100%' }} />}
+        <FilterDrawer
+          onSearch={onSearch}
+          onChangeDrawer={setDrawerVisible}
+          categoryoptions={categoryoptions}
+          minprice={minprice}
+          maxprice={maxprice}
+          drawervisible={drawerVisible}
+          iscategoryLoading={iscategoryLoading}
+        />
     </div>
   );
 };

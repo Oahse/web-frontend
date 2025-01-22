@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import { Container } from 'react-bootstrap';
+import { Avatar, Card, Col, Row, Typography, Pagination } from 'antd';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
@@ -26,6 +27,8 @@ function MarketPlace({ API_URL,Companyname }) {
   const {minprice, maxprice }  = { minprice: 0, maxprice :1000000};
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSearch, setSearch] = useState(false);
+  
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   const { categories:engineeringcategories, loading:iscategoryLoading, error:iscategoryerror } = useCategories(config.apiUrl);
@@ -386,8 +389,7 @@ function MarketPlace({ API_URL,Companyname }) {
     {name:'Arduino Kit'},
     {name:'Dry Wall'},
   ]
-
-
+  
   if (isLoading) {
     return (
       <ImageLoader
@@ -427,7 +429,15 @@ function MarketPlace({ API_URL,Companyname }) {
 
             </div>
             <div className='mt-4'>
-                <SearchInput />
+                <SearchInput onSearch={filterItems} 
+                    drawervisible={drawerVisible}
+                    name={true} 
+                    date={true} 
+                    price={true} 
+                    categoryoptions={engineeringcategories}
+                    iscategoryLoading = {iscategoryLoading}
+                    minprice={minprice || 0}
+                    maxprice ={maxprice  || 1000000}/>
                 <div className='row text-white m-2 mt-3'>
                     <div className='col' style={{color:'white', fontSize:isMobile?10:14}}>
                         Frequently searched: 
@@ -478,21 +488,26 @@ function MarketPlace({ API_URL,Companyname }) {
               </div>
             </div>
         </div>
-        
         {(filteredItems?.length > 0) ?
             <div className=' mx-4'>
-            <MiddleVerticalScroller title={`Results: ${filteredItems.length}`} items={filteredItems} toCurrency={"USD"} noitemsPerPage={noitemsPerPage} />
-
-            </div>
-            :
-            <div className='mx-2'>
-              <MiddleHorizontalScroller title={'Trending'} items={trending} toCurrency={"USD"} />
-              
-              <MiddleHorizontalScroller title={'New Arrivals'} items={newarrivals} toCurrency={"USD"} />
-              <MiddleHorizontalScroller title={'Brands'} items={newarrivals} toCurrency={"USD"} />
-              <BottomHorizontalScroller title={'Top Rated Products'} categories={categories} />
-            </div>
+              {isDesktop?
+                <div>
+                    
+                </div>
+                :
+                <MiddleVerticalScroller title={`Results: ${filteredItems.length}`} items={filteredItems} toCurrency={"USD"} noitemsPerPage={noitemsPerPage} />
+              }
+              </div>
+              :
+              <div className='mx-2'>
+                <MiddleHorizontalScroller title={'Trending'} items={trending} toCurrency={"USD"} />
+                
+                <MiddleHorizontalScroller title={'New Arrivals'} items={newarrivals} toCurrency={"USD"} />
+                <MiddleHorizontalScroller title={'Brands'} items={newarrivals} toCurrency={"USD"} />
+                <BottomHorizontalScroller title={'Top Rated Products'} categories={categories} />
+              </div>
         }
+        
         <div className='recommended-for-you'>
           <MiddleHorizontalScroller title={'Recommended for you'} items={newarrivals} toCurrency={"USD"} />
         </div>
