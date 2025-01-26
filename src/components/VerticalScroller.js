@@ -17,45 +17,37 @@ const MiddleVerticalScroller = ({ title, items, toCurrency, noitemsPerPage }) =>
     };
 
     return (
-        <div className='me-1 ms-1 mt-4'>
-            <Title level={4}>{title}</Title>
+        <div className='me-1 ms-1 mt-2 mb-2'>
+            <Title level={5}>{title}</Title>
             <div className="middlevertical-scroller">
                 <div className="middleverticalscrollable-content">
-                    <Row gutter={[16, 16]}> {/* gutter adds space between the rows and columns */}
+                    <Row gutter={[16, 16]} justify="center" align="middle" > {/* gutter adds space between the rows and columns */}
                         {paginatedItems?.map((item, index) => (
                             <Col
                                 key={index}
-                                xs={24} sm={12} md={8} lg={6} // Responsive breakpoints
+                                xs={24} sm={12} md={6} lg={4} // Responsive breakpoints
                             >
-                                <Link to={item.url} className="text-decoration-none">
+                                 <Link to={item.url} className="text-decoration-none" key={index}>
                                     <Card
                                         hoverable
-                                        cover={
-                                            <img 
-                                                alt={item.name} 
-                                                src={item.image} 
-                                                style={{ height: '176px', width: '100%', objectFit: 'cover', minWidth:'100px' }} 
-                                            />
-                                        }
+                                        style={{  margin: '8px' }} // Adjust width and margin as needed
+                                        cover={<img alt={item.name} src={item.image} style={{height:'156px',width: '100%', objectFit: 'cover'}} />}
                                     >
                                         <Card.Meta
-                                            title={
-                                                <span className="mb-0">
-                                                    {item.name}
-                                                    {item.brand && (
-                                                        <p className="mb-0">
-                                                            <small>
-                                                                <Avatar src={item.brand?.logo} size={24} className="me-1" />
-                                                                {item.brand?.name}
-                                                            </small>
-                                                        </p>
-                                                    )}
-                                                </span>
-                                            }
+                                            title={<span  className='mb-0'>
+                                                {item.name} 
+                                                {item.brand ?<p className='mb-0'>
+                                                <small>
+                                                    <Avatar src={item.brand?.logo} size ={24} className='me-1' />
+                                                    {item.brand?.name}
+                                                    </small>
+                                                    </p> :null }
+                                            
+                                                    </span>}
                                             description={
                                                 <> 
-                                                    <span>{item.description}</span>
-                                                    <div style={{ display: 'flex', alignItems: 'center', marginTop: 8 }}>
+                                                    <span >{item.description}</span>
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         {/* Display filled, half, and empty stars based on the rating */}
                                                         {Array.from({ length: 5 }, (_, starIndex) => {
                                                             const starValue = starIndex + 1;
@@ -69,12 +61,12 @@ const MiddleVerticalScroller = ({ title, items, toCurrency, noitemsPerPage }) =>
                                                         })}
                                                     </div>
                                                     <span className='price'>
-                                                        {toCurrency ? (
-                                                            <CurrencyConverter amount={item.price} fromCurrency={item.currency} toCurrency={toCurrency || "USD"} />
-                                                        ) : (
-                                                            <>{item.currency} {item.price}</>
-                                                        )}
+                                                        {toCurrency?
+                                                            <CurrencyConverter amount={item.price} fromCurrency={item.currency} toCurrency={toCurrency||"USD"} />
+                                                            :<>{item.currency} {item.price}</>} 
+                                                        <i className="fa-thin fa-cart-plus text-success ms-5"></i>
                                                     </span>
+                                                    
                                                 </>
                                             }
                                         />

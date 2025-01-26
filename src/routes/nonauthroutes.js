@@ -19,7 +19,7 @@ import VerifyMailConfirmation from '../pages/VerifyMailConfirmation';
 import PasswordReset from '../pages/PasswordReset';
 import ProductPage from '../pages/ProductItem';
 import LogoutPage from '../pages/Logout';
-import Test from '../pages/TestingPage'
+import Test from '../pages/TestingPage';
 
 
 const NonAuthRoutes = ({ API_URL,Companyname }) => [
@@ -89,12 +89,13 @@ const NonAuthRoutes = ({ API_URL,Companyname }) => [
     title: "shop"
   },
   {
-    path: "/categories/:id",
+    path: "/shop/:category",
     element: <Categories API_URL={API_URL} Companyname={Companyname}/>,
     title: "categories"
   },
+  
   {
-    path:"/products/:id",
+    path:"/shop/products/:id",
     element:<ProductPage API_URL={API_URL} Companyname={Companyname}/>,
     title:'productitem'
   },

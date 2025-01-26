@@ -6,6 +6,7 @@ import axios from 'axios';
 const fetchData = async (url, params) => {
     try {
         const response = await axios.get(url, { params });
+        
         return response.data.data;  // Assumes the data you need is inside `data.data`
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -101,26 +102,33 @@ const useNewArrivalsProducts = (url, params) => {
 };
 
 // Hook to get categories
+const getCategories = async (url, params) => {
+    return fetchData(`${url}api/categories/`, params);
+};
 const useCategories = (url) => {
     const [categories, setCategories] = useState(
-        [{name:'Electrical'},{name:'Mechanical'},
-            {name:'Industrial'},{name:'Construction'},
-            {name:'Electornics'},{name:'Chemical'},
-            {name:'Energy'},{name:'Aerospace'},
-            {name:'Automotive'}
+        [{ id: 'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced5', label: 'All Categories' },
+            {id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced4',label:'Electrical'},
+            {id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced3',label:'Mechanical'},
+            {id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced2',label:'Industrial'},{id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced1',label:'Construction'},
+            {id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced6',label:'Electronics'},{id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced0',label:'Chemical'},
+            {id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced7',label:'Energy'},{id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918ced8',label:'Aerospace'},
+            {id:'e420b1ab-a8c7-4cc9-ada3-8d2ac918cee5',label:'Automotive'}
         ]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        setLoading(true);
+        setError(null);
         const fetchCategories = async () => {
-            setLoading(true);
-            setError(null);
+            
             try {
                 const data = await fetchData(`${url}api/categories/`);
                 setCategories(data);
             } catch (err) {
                 setError(err);
+                console.log(err,'=====')
             } finally {
                 setLoading(false);
             }
@@ -137,4 +145,4 @@ const getProducts = async (url, params) => {
     return fetchData(`${url}api/products/`, params);
 };
 
-export { getProducts, useCategories, useNewArrivalsProducts, useProducts, useTrendingProducts };
+export { getProducts,getCategories, useCategories, useNewArrivalsProducts, useProducts, useTrendingProducts };

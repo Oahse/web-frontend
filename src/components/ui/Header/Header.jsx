@@ -1,8 +1,8 @@
 import React,{ useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Navbar } from 'react-bootstrap';
-import Logo from '../../../assets/oahse-logo.png';
-import Logolight from '../../../assets/oahse-logo-light.png';
+import Logo from '../../../assets/oahse_logo_text_dark.png';
+import Logolight from '../../../assets/oahse_logo_text_light.png';
 
 import Sidebar from '../SideBar/SideBar';
 import './Header.css';
@@ -60,8 +60,7 @@ function Header({ Companyname, isScrolled,isMobile, user }) {
                 <Navbar.Brand href="/">
                     <img
                     src={`${isScrolled ? Logo : Logolight}`}
-                    width="80"
-                    height="46"
+                    width="70"
                     className="navbar-logo"
                     alt={`${Companyname} Logo`}
                     />

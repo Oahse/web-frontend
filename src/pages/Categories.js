@@ -3,80 +3,97 @@ import { Container } from 'react-bootstrap';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import Header from '../components/Header';
-import FilterComponent from '../components/Filter';
 import {BottomHorizontalScroller, MiddleHorizontalScroller, TopHorizontalScroller} from '../components/HorizontalScroller';
+import useDeviceType from '../hooks/useDeviceType';
+import { useAuth } from '../services/auth';
+import useIsScrolled from '../hooks/useIsScrolled';
+import { getCategories, useCategories } from '../services/api';
+import config from '../services/config';
+import { Link } from 'react-router-dom';
+import Text from '../components/ui/Typography/Text';
+import { Breadcrumb } from 'antd';
+import { SearchInput } from '../components/ui/Input/Input';
+import Button from '../components/ui/Button/Button';
+import dayjs from 'dayjs';
+import { MiddleVerticalScroller } from '../components/VerticalScroller';
+import Footer from '../components/ui/Footer/Footer';
+import Header from '../components/ui/Header/Header';
 
 function Categories({ API_URL,Companyname }) {
-  const { isloggedIn, userDetails } = { isloggedIn: false, userDetails: {} };
+    const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();
+    const { isMobile, isTablet,isDesktop } = useDeviceType();
+    const isScrolled = useIsScrolled();
+    const {minprice, maxprice }  = { minprice: 0, maxprice :1000000};
+    
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSearch, setIsSearch] = useState(false);
+    
+    const [drawerVisible, setDrawerVisible] = useState(false);
+    
 
-  const [items, setItems] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+    const { categories:engineeringcategories, loading:iscategoryLoading, error:iscategoryerror } = useCategories(config.apiUrl);
+    console.log(config.apiUrl,'===',iscategoryerror, '===', loading)
+    const params ={};
+    
+    const [filteredItems, setFilteredItems] = useState([]);
+    const noitemsPerPage = 12;
 
-  const engineeringCategories = [
-      { name: 'Electronics', url: '/electronics' },
-      { name: 'Power Systems', url: '/power-systems' },
-      { name: 'Software Engineering', url: '/software' },
-      { name: 'Mechanical Engineering', url: '/mechanical' },
-      { name: 'Civil Engineering', url: '/civil' },
-      { name: 'Aerospace Engineering', url: '/aerospace' },
-      { name: 'Chemical Engineering', url: '/chemical' },
-      { name: 'Environmental Engineering', url: '/environmental' },
-      { name: 'Robotics', url: '/robotics' },
-      { name: 'Materials Science', url: '/materials' },
-  ];
-  // Example usage in trending items
-  const trending = [
+    // Function to simulate fetching products from API
+  const fetchItems = async () => {
+    try {
+      const searchParams = {
+          search: params?.itemName || '',
+          price_range: `${params?.minPrice || minprice},${params?.maxPrice || maxprice}`,
+          
+          start_date: dayjs(params?.dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss') || dayjs(Date().now()).format('YYYY-MM-DD HH:mm:ss'),
+          end_date: dayjs(params?.dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss')|| dayjs(Date().now()).format('YYYY-MM-DD HH:mm:ss')
+      };
+      
+      if (params?.selectedCategory){
+        searchParams.categories = params?.selectedCategory;
+      }
+      const data = await getCategories(config.apiUrl, searchParams);
+      console.log(data,'====',searchParams)
+      
+      setFilteredItems(data); // Set both full and filtered items
+      setIsSearch(true);
+    } catch (error) {
+      
+        console.error('Error fetching items:', error);
+    } finally {
+      
+    }
+  };
+
+  const filterItems = ({ itemName, dateRange, minPrice, maxPrice, selectedCategory }) => {
+    console.log({ itemName, dateRange, minPrice, maxPrice, selectedCategory })
+    // Prepare the params object
+    params.itemName = itemName.toLowerCase();  // Ensure lowercase for search compatibility
+    params.dateRange = dateRange;
+    params.minPrice=minPrice;
+    params.maxPrice=maxPrice;
+    params.selectedCategory = selectedCategory;
+
+
+    // Pass the parameters to the API call
+    fetchItems();
+  };
+  const newarrivals = [
     {
-        url: '/item1',
-        name: 'Wireless Headphones',
-        description: 'This is a great item for music lovers.',
+        url: '/shop/products/1',
+        name: 'Electric Kettle',
+        description: 'Boil water quickly and efficiently with this stylish kettle.',
         rating: 4.8,
-        price: 29.99,
-        currency: 'GBP',
-        image: 'https://images.unsplash.com/photo-1721332155567-55d1b12aa271?q=80&&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-        url: '/item2',
-        name: 'Smartphone',
-        description: 'This is another great item with top features.',
-        rating: 4.0,
-        price: 19.99,
-        currency: 'EUR',
-        image: 'https://images.unsplash.com/photo-1720048171230-c60d162f93a0?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-        url: '/item3',
-        name: 'Smartwatch',
-        description: 'An amazing gadget that you need!',
-        rating: 4.5,
-        price: 39.99,
-        currency: 'USD',
-        image: 'https://images.unsplash.com/photo-1503328427499-d92d1ac3d174?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-        url: '/item4',
-        name: 'Laptop',
-        description: 'Top-notch quality and performance for professionals.',
-        rating: 3.8,
         price: 49.99,
-        currency: 'JPY',
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        currency: 'GBP',
+        image: 'https://images.unsplash.com/photo-1647619124290-10fb9273b4b5?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        brand: {
+            name: 'Breville',
+            logo: 'https://www.breville.com/content/dam/breville-brands/favicon.ico'
+        }
     },
     {
-        url: '/item5',
-        name: 'Bluetooth Speaker',
-        description: 'A must-have for tech lovers and music enthusiasts.',
-        rating: 4.2,
-        price: 24.99,
-        currency: 'AUD',
-        image: 'https://images.unsplash.com/photo-1618275648002-9758fc97dbf5?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-];
-const newarrivals = [
-  {
-      url: '/item1',
+      url: '/shop/products/2',
       name: 'Electric Kettle',
       description: 'Boil water quickly and efficiently with this stylish kettle.',
       rating: 4.8,
@@ -89,223 +106,208 @@ const newarrivals = [
       }
   },
   {
-      url: '/item2',
-      name: 'Yoga Mat',
-      description: 'Durable and eco-friendly yoga mat for all types of workouts.',
-      rating: 4.6,
-      price: 29.99,
-      currency: 'EUR',
-      image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'Manduka',
-          logo: 'https://www.logolynx.com/images/logolynx/c8/c8126407ec5e60c90d0b9ee1569ef619.jpeg'
-      }
-  },
-  {
-      url: '/item3',
-      name: 'Bluetooth Tracker',
-      description: 'Never lose your belongings again with this handy tracker.',
-      rating: 4.3,
-      price: 19.99,
-      currency: 'USD',
-      image: 'https://images.unsplash.com/photo-1640631826644-ff6a6337a7ff?q=80&w=2373&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'Tile',
-          logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.hQs5sj-USb-1xszopZiDnwHaH6%26pid%3DApi&f=1&ipt=0261ac7da3441f7cff3af3e2556b4e42d6da2fbede909d95a563df7af2272f31&ipo=images'
-      }
-  },
-  {
-      url: '/item4',
-      name: 'Portable Blender',
-      description: 'Make smoothies on the go with this compact, powerful blender.',
-      rating: 4.7,
-      price: 39.99,
-      currency: 'JPY',
-      image: 'https://plus.unsplash.com/premium_photo-1690291494818-068ed0f63c42?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'NutriBullet',
-          logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.vNO3MU__60R1SvgKF8FrnQHaHa%26pid%3DApi&f=1&ipt=a926cde097ff84ba327dec8377e2fc1b1b97a7c4780344259d9b08e961fb84c8&ipo=images'
-      }
-  },
-  {
-      url: '/item5',
-      name: 'Fitness Tracker',
-      description: 'Track your workouts and health metrics with this advanced device.',
-      rating: 4.5,
-      price: 59.99,
-      currency: 'AUD',
-      image: 'https://images.unsplash.com/photo-1557935728-e6d1eaabe558?q=80&w=2673&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      brand: {
-          name: 'Fitbit',
-          logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.5O8cwFpEP_cSYQAnAxUkWwHaEK%26pid%3DApi&f=1&ipt=20b6b4771a9f9ee37d11218e856b466b2a4b14c4969b918fdf378e166d46169a&ipo=images'
-      }
-  },
-];
-const categories = [
+    url: '/shop/products/3',
+    name: 'Electric Kettle',
+    description: 'Boil water quickly and efficiently with this stylish kettle.',
+    rating: 4.8,
+    price: 49.99,
+    currency: 'GBP',
+    image: 'https://images.unsplash.com/photo-1647619124290-10fb9273b4b5?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    brand: {
+        name: 'Breville',
+        logo: 'https://www.breville.com/content/dam/breville-brands/favicon.ico'
+    }
+},
+{
+  url: '/shop/products/4',
+  name: 'Electric Kettle',
+  description: 'Boil water quickly and efficiently with this stylish kettle.',
+  rating: 4.8,
+  price: 49.99,
+  currency: 'GBP',
+  image: 'https://images.unsplash.com/photo-1647619124290-10fb9273b4b5?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  brand: {
+      name: 'Breville',
+      logo: 'https://www.breville.com/content/dam/breville-brands/favicon.ico'
+  }
+},
     {
-      category: {
-        name: 'Consumer Electronics',
-        url: '/consumer-electronics',
-      },
-      divisions: [
-        {
-          name: 'Smartphones',
-          url: '/consumer-electronics/smartphones',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.0Z3MedIftNbB8nRj2KI75gHaF8%26pid%3DApi&f=1&ipt=a8d0eb1b2068e2f13b12aa3ea1c686b07cd6095b211cb12de82d094e6d6e6cfc&ipo=images',
-        },
-        {
-          name: 'Laptops',
-          url: '/consumer-electronics/laptops',
-          image: 'https://media.istockphoto.com/id/2164619317/photo/midsection-of-businessman-using-phone-and-laptop-at-table.jpg?s=612x612&w=0&k=20&c=VlgeUCBaItMsOOBSQwKElq01IEObMB8JNINSzkS1fY8=',
-        },
-        {
-          name: 'Audio Equipment',
-          url: '/consumer-electronics/audio',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.KzpHi9G0gGOUvCIgxqXzNgHaHa%26pid%3DApi&f=1&ipt=c39ef047dff6dfe9d4b56d125116fb4234142b387f6029d5dbae14aad3cdf888&ipo=images',
-        },
-      ],
+        url: '/shop/products/5',
+        name: 'Yoga Mat',
+        description: 'Durable and eco-friendly yoga mat for all types of workouts.',
+        rating: 4.6,
+        price: 29.99,
+        currency: 'EUR',
+        image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        brand: {
+            name: 'Manduka',
+            logo: 'https://www.logolynx.com/images/logolynx/c8/c8126407ec5e60c90d0b9ee1569ef619.jpeg'
+        }
     },
     {
-      category: {
-        name: 'Home Appliances',
-        url: '/home-appliances',
-      },
-      divisions: [
-        {
-          name: 'Refrigerators',
-          url: '/home-appliances/refrigerators',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.COSxEC1y-f90fiGb8c3PPgHaE8%26pid%3DApi&f=1&ipt=af2cf1160da2251bc33dbf1d6aeb2c528178d8a64878ff751f16f86da95f5e6c&ipo=images',
-        },
-        {
-          name: 'Washing Machines',
-          url: '/home-appliances/washing-machines',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.znKp7GGEljG3Pbn_xMmipgHaE8%26pid%3DApi&f=1&ipt=42efb94e6642056b7347e1637a735f76992b09ac18dc7c3e8bfc8ef2dc1a5b2a&ipo=images',
-        },
-        {
-          name: 'Microwave Ovens',
-          url: '/home-appliances/microwave-ovens',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.ZwKfBG4p1Y6QJ9XLHfl8GAHaE8%26pid%3DApi&f=1&ipt=6b4caa75ab9c8e4dc6884b6c0c7e7b2958e9ec745ea08360e689ebbe1d53b57b&ipo=images',
-        },
-      ],
+        url: '/shop/products/6',
+        name: 'Bluetooth Tracker',
+        description: 'Never lose your belongings again with this handy tracker.',
+        rating: 4.3,
+        price: 19.99,
+        currency: 'USD',
+        image: 'https://images.unsplash.com/photo-1640631826644-ff6a6337a7ff?q=80&w=2373&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        brand: {
+            name: 'Tile',
+            logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.hQs5sj-USb-1xszopZiDnwHaH6%26pid%3DApi&f=1&ipt=0261ac7da3441f7cff3af3e2556b4e42d6da2fbede909d95a563df7af2272f31&ipo=images'
+        }
     },
     {
-      category: {
-        name: 'Fashion',
-        url: '/fashion',
-      },
-      divisions: [
-        {
-          name: 'Men’s Clothing',
-          url: '/fashion/mens-clothing',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.LcHkQQqVsAeTLQ-Jd70bsQHaD4%26pid%3DApi&f=1&ipt=fd8749e100c2e77a8ad83b90fa27a09d7245d7588a81f9498fa7e85f88910a5c&ipo=images',
-        },
-        {
-          name: 'Women’s Clothing',
-          url: '/fashion/womens-clothing',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.z5x3N7F36zmyC6hPUGj9hgHaE8%26pid%3DApi&f=1&ipt=8795aaaf375497005cf8eec0a1eb82f2a73a334d14b5184cd378207f818cb4d8&ipo=images',
-        },
-        {
-          name: 'Footwear',
-          url: '/fashion/footwear',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.4rxMmzFe7bgqfj6EGBblTgHaE8%26pid%3DApi&f=1&ipt=32854f7f635c1e0eb328b77c514ae5d5c07e396641fa3cfc7c58c60e7009473a&ipo=images',
-        },
-      ],
+        url: '/shop/products/7',
+        name: 'Portable Blender',
+        description: 'Make smoothies on the go with this compact, powerful blender.',
+        rating: 4.7,
+        price: 39.99,
+        currency: 'JPY',
+        image: 'https://plus.unsplash.com/premium_photo-1690291494818-068ed0f63c42?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        brand: {
+            name: 'NutriBullet',
+            logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.vNO3MU__60R1SvgKF8FrnQHaHa%26pid%3DApi&f=1&ipt=a926cde097ff84ba327dec8377e2fc1b1b97a7c4780344259d9b08e961fb84c8&ipo=images'
+        }
     },
     {
-      category: {
-        name: 'Sports Equipment',
-        url: '/sports-equipment',
-      },
-      divisions: [
-        {
-          name: 'Fitness Gear',
-          url: '/sports-equipment/fitness-gear',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.GTI1sEtvnCX7BJeFyuXsZwHaE8%26pid%3DApi&f=1&ipt=1359e063ecb6a6633a205a6420d75e619c4d4b979b03402e1458aeb6da02b00&ipo=images',
-        },
-        {
-          name: 'Outdoor Gear',
-          url: '/sports-equipment/outdoor-gear',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.YfNq5C8tT42rbLlD4rDQeQHaHa%26pid%3DApi&f=1&ipt=db1b6ab1d74b3a3c79be90d3f5c9086311d04af44ca9fd64b9f30fbd7fc2a52e&ipo=images',
-        },
-        {
-          name: 'Team Sports',
-          url: '/sports-equipment/team-sports',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.7P_zttE3YqOAWBdsV3R5vgHaF1%26pid%3DApi&f=1&ipt=3a670feeb036528f17deca1b88deeb6dc5d9c7a96cc409bb724075665f4731b9&ipo=images',
-        },
-      ],
-    },
-    {
-      category: {
-        name: 'Automobiles',
-        url: '/automobiles',
-      },
-      divisions: [
-        {
-          name: 'Cars',
-          url: '/automobiles/cars',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.FyuYs5rfN3m_q3g1sVN4ZgHaHa%26pid%3DApi&f=1&ipt=f1f5d225b7a956fa2fef1eaa989d34d20e4461eb3bdfb75b8e45ca70a6baec29&ipo=images',
-        },
-        {
-          name: 'Motorcycles',
-          url: '/automobiles/motorcycles',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.OyD-z8FGCByEXt1esqT3xgHaE8%26pid%3DApi&f=1&ipt=077f195dfe77f478f5a32b29b00be572abaf62aa8eec9bfe0ccf4fcb0e46227d&ipo=images',
-        },
-        {
-          name: 'Parts & Accessories',
-          url: '/automobiles/parts-accessories',
-          image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.d9hZ24Ylj4YVpXPIuuv5kwHaE8%26pid%3DApi&f=1&ipt=4228ff0c27eaba0e5e3c9e949a5bc061c93fc4b1daaf035b2a5f0d8580a08ca5&ipo=images',
-        },
-      ],
+        url: '/shop/products/8',
+        name: 'Fitness Tracker',
+        description: 'Track your workouts and health metrics with this advanced device.',
+        rating: 4.5,
+        price: 59.99,
+        currency: 'AUD',
+        image: 'https://images.unsplash.com/photo-1557935728-e6d1eaabe558?q=80&w=2673&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        brand: {
+            name: 'Fitbit',
+            logo: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.5O8cwFpEP_cSYQAnAxUkWwHaEK%26pid%3DApi&f=1&ipt=20b6b4771a9f9ee37d11218e856b466b2a4b14c4969b918fdf378e166d46169a&ipo=images'
+        }
     },
   ];
+    const frequentlysearched = [
+      {name:'Lafarge Cement'},
+      {name:'Arduino Kit'},
+      {name:'Dry Wall'},
+    ]
+  const Breadcrumbitems=[
+    {
+      title: <Link to="/" style={{cursor:'pointer'}}>Home</Link>,
+    },
+    {
+      title: <Link to="/shop" >Shop</Link>,
+    },
+    {
+      title: 'Categories',
+    },
+  ]
   
-  const filterItems = ({ itemName, dateRange }) => {
-    let filtered = items;
+  if (isLoading) {
+    return (
+      <ImageLoader
+        src={oahseicon}
+        alt='oahse'
+        src2={oahselogo}
+        alt2='oahse'
+      />
+    );
+  }
 
-    if (itemName) {
-        filtered = filtered.filter(item => 
-          item.name.toLowerCase().includes(itemName.toLowerCase())
-        );
-    }
-
-    if (dateRange && dateRange.length === 2) {
-        filtered = filtered.filter(item => {
-            const itemDate = new Date(item.date);
-            return itemDate >= dateRange[0] && itemDate <= dateRange[1];
-        });
-    }
-
-    setItems(filtered);
-
-    setFilteredItems(filtered);
-    console.log(filteredItems)
-};
-  useEffect(()=>{
-    setIsLoading(false);
-  }, [])
-   if (isLoading){
-    return <ImageLoader
-      src={oahseicon}
-      alt='oahse'
-      src2 ={oahselogo}
-      alt2='oahse'
-    />
-   }
   return (
     <div className="explore">
       <span className='d-flex flex-column topbar'>
-        <Header Companyname ={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
-        <FilterComponent onSearch={filterItems} name={true} date={true} price={true}/>
+        <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile} user={userDetails}/>
+        <div className={!isSearch && `homepage-content`}>
+            {!isSearch && <div className='row mt-0'>
+              <div className='col-12 col-md-8 col-lg-8'>
+                <div className='homepage-content-second'>
+                  <Text fontWeight='fw-800' fontColor='text-white' fontSize='fs-2xl' style={{lineHeight:'40px'}}>
+                  Quality Engineering Products, <br/>readily acessible, <br/>procurement process simplified! 
+                  </Text>
+                </div>
+                </div>
+                <div className={`col-12 col-md-4 col-lg-4 `}>
+                    <span className='d-flex flex-row justify-content-center mt-3'>
+                      {/* <Button
+                        type='link'
+                        text="Get the App"
+                        color="secondary"
+                        variant='outlined'
+                        className='fw-500 m-auto p-2 px-5'
+                        onClick={() => console.log('Button clicked')}
+                      /> */}
+                    </span>
+                  </div>
+
+            </div>}
+            <div className='mt-4'>
+              <Breadcrumb items={Breadcrumbitems} />
+                <SearchInput onSearch={filterItems} 
+                    drawervisible={drawerVisible}
+                    categoryoptions={engineeringcategories}
+                    iscategoryLoading = {iscategoryLoading}
+                    minprice={minprice || 0}
+                    maxprice ={maxprice  || 1000000}/>
+                <div className='row text-white m-2 mt-3'>
+                    <div className='col' style={{color:'white', fontSize:isMobile?10:14}}>
+                        Frequently searched: 
+                    </div>
+                    {frequentlysearched.map((item, index)=>(
+                        <div className='col' key={index}>
+                            <Button
+                                type='link'
+                                text={item.name}
+                                color="primary"
+                                variant='outlined'
+                                href='/shop'
+                                className='bg-transparent'
+                                style={{color:'white', fontSize:isMobile?8:14, margin:'4px'}}
+                                onClick={() => console.log('Button clicked')}
+                                /> 
+                        </div>
+                    ))}
+                    
+                </div>
+            </div>
+        </div>
       </span>
       <Container fluid className='body-container'>
-        <TopHorizontalScroller items={engineeringCategories} />
-        <MiddleHorizontalScroller title={'Trending'} items={trending} toCurrency={"USD"} />
-        <MiddleHorizontalScroller title={'New Arrivals'} items={newarrivals} toCurrency={"USD"} />
-        {/* <MiddleHorizontalScroller title={'Categories'} items={categories} /> */}
-        <BottomHorizontalScroller title={'Consumers Devices'} categories={categories} />
-
+        <div className='top-quotation'>
+            {(engineeringcategories.length >0) && <TopHorizontalScroller 
+                items = {engineeringcategories} 
+                iscategoryLoading = {iscategoryLoading} 
+                onSearch={filterItems} isMobile={isMobile} />}
+            <div className='d-flex justify-content-between align-items-center px-2 fs-30 text-black'>
+              <span >
+                Welcome, to Oahse, <span className='fw-600'>Henrio</span>
+              </span>
+              <div>
+                <span className='mx-2' style={{cursor:'pointer'}}>
+                  <svg width="26" height="20" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.2448 13.75V17.5H4.70255V2.5H12.5415V1.25H4.70255C4.28675 1.25 3.88798 1.3817 3.59396 1.61612C3.29994 1.85054 3.13477 2.16848 3.13477 2.5V17.5C3.13477 17.8315 3.29994 18.1495 3.59396 18.3839C3.88798 18.6183 4.28675 18.75 4.70255 18.75H17.2448C17.6607 18.75 18.0594 18.6183 18.3534 18.3839C18.6475 18.1495 18.8126 17.8315 18.8126 17.5V13.75H17.2448Z" fill="black"/>
+                    <path d="M23.1571 3.60031L20.5703 1.53781C20.3358 1.35458 20.0206 1.25195 19.6923 1.25195C19.364 1.25195 19.0488 1.35458 18.8144 1.53781L7.83984 10.2878V13.7503H12.1748L23.1493 5.00031C23.3791 4.81338 23.5078 4.56206 23.5078 4.30031C23.5078 4.03856 23.3791 3.78724 23.1493 3.60031H23.1571ZM11.5241 12.5003H9.40763V10.8128L16.8076 4.90656L18.9319 6.60031L11.5241 12.5003ZM20.0372 5.71906L17.9129 4.02531L19.6923 2.60656L21.8167 4.30031L20.0372 5.71906Z" fill="black"/>
+                  </svg>
+                  Request for quote
+                </span>
+                <span className='mx-2' style={{cursor:'pointer'}}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 8.756V6.8C18 4.537 18 3.406 17.225 2.703C16.449 2 15.202 2 12.705 2H8.295C5.798 2 4.551 2 3.775 2.703C2.999 3.406 3 4.537 3 6.8V13.2C3 15.463 3 16.594 3.775 17.297C4.551 18 5.798 18 8.295 18H12.705M6 6H15M6 10H7M10 10H11M14 10H15M6 14H7M10 14H11M20.706 15.004C20.432 14.309 19.726 13.494 18.12 13.494C16.254 13.494 15.468 14.349 15.309 14.806C15.06 15.417 15.037 16.736 17.298 16.811C19.998 16.901 21.128 17.268 20.988 18.748C20.849 20.228 19.293 20.434 18.12 20.514C16.915 20.479 15.425 20.227 15 18.949M17.994 12V13.436M18.003 20.509V22" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Estimate
+                </span>
+              </div>
+            </div>
+        </div>
+        <div className=' mx-4'>
+              <MiddleVerticalScroller title={`Results: ${filteredItems.length}`} items={filteredItems} toCurrency={"USD"} noitemsPerPage={noitemsPerPage} />
+             
+              </div>
+        
+        <div className='recommended-for-you'>
+          <MiddleHorizontalScroller title={'Recommended for you'} items={newarrivals} toCurrency={"USD"} />
+        </div>
+        
       </Container>
-      
+      <Footer className='footer' transparent={false}/>
     </div>
   );
 }

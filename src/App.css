@@ -1118,3 +1118,31 @@
     color: var(--disabled-color);
     cursor: not-allowed;
  }
+.ant-breadcrumb {
+  padding: 6px !important;
+  margin: 8px !important;
+  border-radius: var(--border-radius) !important;
+}
+.ant-breadcrumb-link a {
+  cursor: pointer !important;
+  text-decoration: none !important;
+  color: black !important;
+}
+.ant-row {
+  align-items: center !important;
+}
+/* Default dot appearance */
+.slick-dots li button::after {
+  background-color: var(--secondary-color) !important;
+  width: 100%; /* Make the active dot slightly larger */
+  height: 100%; /* Make the active dot slightly larger */
+  border-radius: 50px; /* Make it circular */
+}
+.slick-dots li button::after :hover {
+  background-color: var(--success-color) !important;
+}
+
+/* Active dot appearance */
+.slick-dots .slick-active button::after {
+  background-color: var(--success-color) !important;
+}

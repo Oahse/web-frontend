@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './Footer.css'; 
 import Text from '../Typography/Text';
 import Title from '../Typography/Title';
-import Logo from '../../../assets/oahse-logo.png';
+import Logo from '../../../assets/oahse_logo_text_light.png';
 import { Navbar } from 'react-bootstrap';
 
 function Footer({className,transparent=true}) {
@@ -19,7 +19,6 @@ function Footer({className,transparent=true}) {
               <img
               src={Logo}
               width="70"
-              height="36"
               className="navbar-logo my-3"
               alt={`Logo`}
               />

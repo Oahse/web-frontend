@@ -8,6 +8,7 @@ import Button from './ui/Button/Button';
 const { Title } = Typography;
 
 const TopHorizontalScroller = ({ items, onSearch, isMobile }) => {
+    console.log(items,'|||||||')
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
@@ -63,7 +64,7 @@ const TopHorizontalScroller = ({ items, onSearch, isMobile }) => {
                     {items?.map((item, index) => (
                         <Button
                             key={index}
-                            text={item.name}
+                            text={item.label}
                             onClick={handleCategoryChange}
                             color="primary"
                             variant='outlined'
@@ -131,7 +132,7 @@ const MiddleHorizontalScroller = ({ title, items, toCurrency }) => {
                         <Link to={item.url} className="text-decoration-none" key={index}>
                             <Card
                                 hoverable
-                                style={{ width: 176, margin: '8px' }} // Adjust width and margin as needed
+                                style={{ width: 182, margin: '8px' }} // Adjust width and margin as needed
                                 cover={<img alt={item.name} src={item.image} style={{height:'156px',width: '100%', objectFit: 'cover'}} />}
                             >
                                 <Card.Meta

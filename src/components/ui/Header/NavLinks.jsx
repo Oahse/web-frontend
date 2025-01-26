@@ -20,7 +20,7 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
         <span className="d-flex flex-row align-items-center">
             {isMobile ? (
               <>
-                {location.pathname === '/' && (
+                {location.pathname === '/' ? (
                   <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Button
                               type='link'
                               text="Start for Free"
@@ -30,9 +30,9 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                               />
 
                   </span>
-                )}
+                )
 
-                {location.pathname === '/shop' && (
+                : (
                   <>
                     <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
                       <i className="fa-light fa-message-lines fs-lg"></i>
@@ -49,7 +49,7 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
               </>
             ) : (
               <>
-                {location.pathname === '/' && (
+                {location.pathname === '/' ?(
                   <>
                     <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Globe width={22} height={22} color={`${isScrolled ? 'black' : 'white'}`} /><span className='m-1 fw-bold'>English</span></span>
                     <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><span className='m-1 fw-bold'>Become A Supplier</span></span>
@@ -65,9 +65,8 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                           </span>
                       </span>
                   </>
-                )}
-
-                {location.pathname === '/shop' && (
+                )
+                : (
                   <>
                     <CategoryDropDown isScrolled={isScrolled} />
                     
