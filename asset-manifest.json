@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.91ec0558.css",
-    "main.js": "/web-frontend/static/js/main.2a73216c.js",
+    "main.css": "/web-frontend/static/css/main.2d55debb.css",
+    "main.js": "/web-frontend/static/js/main.83ac8755.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
     "static/media/topbar-shop-img.png": "/web-frontend/static/media/topbar-shop-img.ef94055dcab6627e0e86.png",
@@ -9,18 +9,17 @@
     "static/media/CIPAC_cover_photo.jpg": "/web-frontend/static/media/CIPAC_cover_photo.c9896af6b416cad75641.jpg",
     "static/media/oahse-logo.png": "/web-frontend/static/media/oahse-logo.abeea64afabf7d674fef.png",
     "static/media/procurement.jpg": "/web-frontend/static/media/procurement.2a81563ca7744373eebd.jpg",
-    "static/media/oahse-logo-text.png": "/web-frontend/static/media/oahse-logo-text.d91cb76105bd5d0331c6.png",
     "static/media/oahse-icon.png": "/web-frontend/static/media/oahse-icon.c628d4a92daa1c19dd6a.png",
     "static/media/suppliersimg.jpeg": "/web-frontend/static/media/suppliersimg.8d824215d597e674ef6e.jpeg",
     "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
     "static/media/user.svg": "/web-frontend/static/media/user.54a9668c76dc920e538cdd50b152d5b0.svg",
     "index.html": "/web-frontend/index.html",
-    "main.91ec0558.css.map": "/web-frontend/static/css/main.91ec0558.css.map",
-    "main.2a73216c.js.map": "/web-frontend/static/js/main.2a73216c.js.map",
+    "main.2d55debb.css.map": "/web-frontend/static/css/main.2d55debb.css.map",
+    "main.83ac8755.js.map": "/web-frontend/static/js/main.83ac8755.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.91ec0558.css",
-    "static/js/main.2a73216c.js"
+    "static/css/main.2d55debb.css",
+    "static/js/main.83ac8755.js"
   ]
 }
