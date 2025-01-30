@@ -398,16 +398,16 @@ function MarketPlace({ API_URL,Companyname }) {
   ]
   const Breadcrumbitems=[
     {
-      title: <Link href="/" style={{cursor:'pointer'}}>Home</Link>,
+      title: <Link to="/" >Home</Link>,
     },
+    // {
+    //   title: <Link to="/shop" >Shop</Link>,
+    // },
+    // {
+    //   title: <a href="">Application List</a>,
+    // },
     {
-      title: <a href="" onClick={(e) => { e.preventDefault(); setIsSearch(false); }}>Shop</a>,
-    },
-    {
-      title: <a href="">Application List</a>,
-    },
-    {
-      title: 'An Application',
+      title: 'Shop',
     },
   ]
   

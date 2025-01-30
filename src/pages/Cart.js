@@ -1,26 +1,31 @@
 // src/pages/Cart.js
 import React, { useState, useEffect } from 'react';
-import { Table,Row, Col, Divider, Avatar, message, Modal, Radio } from 'antd';
-import Header from '../components/Header';
+import { Table,Row, Col, Divider, Avatar, message, Modal, Radio, Breadcrumb } from 'antd';
+import Header from '../components/ui/Header/Header';
 import Footer from '../components/ui/Footer/Footer';
 import ImageLoader from '../components/Loader';
 import InputNumber from '../components/ui/Input/InputNumber';
 import { Container } from 'react-bootstrap';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button/Button';
 import { SearchInput } from '../components/ui/Input/Input';
+import useDeviceType from '../hooks/useDeviceType';
+import { useCategories } from '../services/api';
+import config from '../services/config';
 
 const Cart = ({ API_URL, Companyname }) => {
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
   const { isloggedIn, userDetails } = { isloggedIn: true, userDetails: {} };
+  const { isMobile, isTablet,isDesktop } = useDeviceType();
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5); // Number of items per page
+  const [pageSize, setPageSize] = useState(10); // Default page size
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
   const [isModalVisible, setIsModalVisible] = useState(false); // State for modal visibility
@@ -94,11 +99,18 @@ const Cart = ({ API_URL, Companyname }) => {
     setFilteredItems(updatedItems);
     calculateTotalPrice(updatedItems);
   };
+  // Handle page size change
+  const handleShowSizeChange = (current, size) => {
+    // console.log(`New page size: ${size}`);
+    setPageSize(size); // Update the page size in state
+    setCurrentPage(1); // Reset to first page when page size changes
+  };
 
   // Pagination
   const handlePaginationChange = (page) => {
     setCurrentPage(page);
   };
+  const { categories:engineeringcategories, loading:iscategoryLoading, error:iscategoryerror } = useCategories(config.apiUrl);
 
   if (isLoading) {
     return <ImageLoader src={oahseicon} alt='oahse' src2={oahselogo} alt2='oahse' />;
@@ -165,21 +177,17 @@ const Cart = ({ API_URL, Companyname }) => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
+  
 
   // Batch delete selected items
   const handleBatchDelete = () => {
-    Modal.confirm({
-      title: 'Confirm Batch Delete',
-      content: `Are you sure you want to remove ${selectedRowKeys.length} item(s) from the cart?`,
-      onOk: () => {
-        const updatedItems = items.filter(item => !selectedRowKeys.includes(item.id));
-        setItems(updatedItems);
-        setFilteredItems(updatedItems);
-        calculateTotalPrice(updatedItems);
-        setSelectedRowKeys([]); // Clear selected keys
-        message.success('Selected items removed from cart.');
-      },
-    });
+    const updatedItems = items.filter(item => !selectedRowKeys.includes(item.id));
+      setItems(updatedItems);
+      setFilteredItems(updatedItems);
+      calculateTotalPrice(updatedItems);
+      setSelectedRowKeys([]); // Clear selected keys
+      setModalOpen(false);
+      message.success('Selected items removed from cart.');
   };
 
   // Show modal for checkout
@@ -204,14 +212,36 @@ const Cart = ({ API_URL, Companyname }) => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  const Breadcrumbitems=[
+      {
+        title: <Link to="/" >Home</Link>,
+      },
+      {
+        title: <Link to="/shop" >Shop</Link>,
+      },
+      {
+        title: 'Cart',
+      },
+    ]
 
   return (
     <div className="cart">
       <span className="d-flex flex-column topbar">
-        <Header Companyname={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
+        <Header Companyname={Companyname} isScrolled={true} isMobile={isMobile} user={userDetails} />
         
-        <SearchInput onSearch={filterItems} name={true} date={true} price={true} onChangeDrawer={setDrawerVisible}
-            drawervisible={drawerVisible} />
+        <div className={`homepage-content`}>
+            
+            <div className='mt-4'>
+                <Breadcrumb items={Breadcrumbitems} />
+                <SearchInput onSearch={filterItems} 
+                    drawervisible={drawerVisible}
+                    categoryoptions={engineeringcategories}
+                    iscategoryLoading = {iscategoryLoading}
+                    minprice={0}
+                    maxprice ={1000000}/>
+                
+            </div>
+        </div>
       </span>
       <Container fluid>
         <Row>
@@ -225,8 +255,9 @@ const Cart = ({ API_URL, Companyname }) => {
                   total: items.length,
                   pageSize: pageSize,
                   onChange: handlePaginationChange,
+                  onShowSizeChange: handleShowSizeChange, // Track page size change
                   showSizeChanger: true,
-                  pageSizeOptions: ['10', '20', '50', '100'],
+                  pageSizeOptions: ['5','10', '20', '50', '100'],
                   showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
               }}
               scroll={{ x: 'max-content' }} // Enable horizontal scrolling
@@ -251,7 +282,7 @@ const Cart = ({ API_URL, Companyname }) => {
                 htmlType="button" 
                 className="mb-1" 
                 text={<span><i className="fa-light fa-trash m-1 text-danger"></i>Delete</span>} 
-                onClick={handleBatchDelete} 
+                onClick={() => setModalOpen(true)} 
                 style={{ marginRight: '10px' }} 
               />
             )}
@@ -285,6 +316,25 @@ const Cart = ({ API_URL, Companyname }) => {
             </Radio>
           ))}
         </Radio.Group>
+      </Modal>
+
+      {/** delete confirm modal */}
+      <Modal
+        title="Confirm Batch Delete"
+        visible={modalOpen}
+        // onOk={handleOk}
+        // onCancel={handleCancel}
+        closable={true}
+        closeIcon = {<i onClick={() => setModalOpen(false)} className="fa-light fa-xmark m-1 text-danger"></i>}
+        type='confirm'
+        footer= {(
+          <span className='d-flex justify-content-end align-items-center gap-3'>
+            <Button onClick={handleBatchDelete} text={<span><i className="fa-light fa-trash m-1 text-danger"></i>Yes, Remove</span>} />
+            <Button key="cancel" onClick={() => setModalOpen(false)} text={<span><i className="fa-light fa-xmark m-1 text-success"></i>No, Keep</span>} />
+          </span>
+        )}
+      >
+      Are you sure you want to remove ${selectedRowKeys.length} item(s) from the cart?
       </Modal>
       
     </div>

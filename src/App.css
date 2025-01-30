@@ -524,7 +524,7 @@
 }
 
 .gradient-bg{
-  background-image: linear-gradient(to bottom right, var(--white), var(--primary-color), var(--background-color));
+  background-image: linear-gradient(to top right , var(--white), var(--primary-color), var(--background-color));
   /* color: whitesmoke; */
 }
 

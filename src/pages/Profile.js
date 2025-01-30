@@ -5,6 +5,7 @@ import SideNavBar from '../components/MobileSideBar';
 import Footer from '../components/Footer';
 import userimg from '../assets/user.png'
 // import profile from '../assets/profile.JPG'
+
 import { Container, Row, Col } from 'react-bootstrap';
 import Button from '../components/Button';
 

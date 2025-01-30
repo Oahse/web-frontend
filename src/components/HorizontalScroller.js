@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Avatar, Card, Col, Row, Typography } from 'antd';
+import { Avatar, Card, Col, message, Row, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { CurrencyConverter } from '../utils/helper';
@@ -117,6 +117,10 @@ const MiddleHorizontalScroller = ({ title, items, toCurrency }) => {
           scrollContainerRef.current.style.cursor = 'grab'; // Reset cursor on mouse leave
         }
       };
+      const addtoCart =(e,item) =>{
+        e.preventDefault();
+        message.success(`${item.name} has been added to cart`)
+      }
     return (
         <div className='me-1 ms-1 mt-4'>
             <Title level={4}>{title}</Title>
@@ -162,11 +166,11 @@ const MiddleHorizontalScroller = ({ title, items, toCurrency }) => {
                                                     }
                                                 })}
                                             </div>
-                                            <span className='price'>
+                                            <span className='price d-flex justify-content-between align-items-center'>
                                                 {toCurrency?
                                                     <CurrencyConverter amount={item.price} fromCurrency={item.currency} toCurrency={toCurrency||"USD"} />
                                                     :<>{item.currency} {item.price}</>} 
-                                                <i className="fa-thin fa-cart-plus text-success ms-5"></i>
+                                                <i className="fa-thin fa-cart-plus text-success ms-5" onClick={(e)=>addtoCart(e,item)}></i>
                                             </span>
                                             
                                         </>

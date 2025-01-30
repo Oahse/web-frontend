@@ -60,7 +60,7 @@ const MiddleVerticalScroller = ({ title, items, toCurrency, noitemsPerPage }) =>
                                                             }
                                                         })}
                                                     </div>
-                                                    <span className='price'>
+                                                    <span className='price d-flex justify-content-between align-items-center'>
                                                         {toCurrency?
                                                             <CurrencyConverter amount={item.price} fromCurrency={item.currency} toCurrency={toCurrency||"USD"} />
                                                             :<>{item.currency} {item.price}</>} 

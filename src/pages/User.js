@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ImageLoader from '../components/Loader';
-import Header from '../components/Header';
+
 import { Row, Col, Card, Avatar, Typography, Descriptions } from 'antd';
 import { Link, Navigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
@@ -11,12 +11,14 @@ import oahselogo from '../assets/oahse-logo.png';
 import { useAuth } from '../services/auth'; // Assuming the hook is in services/auth.js
 import Button from '../components/ui/Button/Button';
 import Footer from '../components/ui/Footer/Footer';
+import Header from '../components/ui/Header/Header';
+import useDeviceType from '../hooks/useDeviceType';
 
 const { Title, Text } = Typography;
 
 const User = ({ API_URL, Companyname }) => {
     const { isLoggedIn, userDetails, loading } = useAuth(); // Use the hook to get auth state
-
+    const { isMobile } = useDeviceType();
     const userStatus = userDetails?.verified ? 'Verified' : 'Not Verified'; // Use 'Verified' or 'Not Verified'
     const userFullName = `${userDetails?.first_name} ${userDetails?.last_name}`;
     const userPhoneNumber = userDetails?.phonenumber || 'N/A';
@@ -63,9 +65,9 @@ const User = ({ API_URL, Companyname }) => {
 
     return (
         <div className="user">
-            <Header Companyname={Companyname} isloggedIn={isLoggedIn} userDetails={userDetails} />
-            <Container fluid>
-                <Row className="gradient-bg p-3 py-5 d-flex align-items-center">
+            <Header Companyname={Companyname} isScrolled={true} isMobile={isMobile} user={userDetails} />
+            <Container fluid className='m-0'>
+                <Row className="gradient-bg p-3 py-5mt-0 d-flex align-items-center">
                     <Col className="d-flex align-items-center mt-5" sm={12} md={6} lg={6}>
                         <Avatar size={200} icon={<UserOutlined />} />
                     </Col>
