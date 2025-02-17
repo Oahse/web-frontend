@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/web-frontend/static/css/main.905db518.css",
-    "main.js": "/web-frontend/static/js/main.2eecaadb.js",
+    "main.js": "/web-frontend/static/js/main.548c3893.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
     "static/media/topbar-shop-img.png": "/web-frontend/static/media/topbar-shop-img.ef94055dcab6627e0e86.png",
@@ -15,11 +15,11 @@
     "static/media/user.svg": "/web-frontend/static/media/user.54a9668c76dc920e538cdd50b152d5b0.svg",
     "index.html": "/web-frontend/index.html",
     "main.905db518.css.map": "/web-frontend/static/css/main.905db518.css.map",
-    "main.2eecaadb.js.map": "/web-frontend/static/js/main.2eecaadb.js.map",
+    "main.548c3893.js.map": "/web-frontend/static/js/main.548c3893.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.905db518.css",
-    "static/js/main.2eecaadb.js"
+    "static/js/main.548c3893.js"
   ]
 }
