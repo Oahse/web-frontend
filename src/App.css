@@ -292,17 +292,26 @@
 .ant-select-outlined-focused, 
 .ant-select-outlined-active,
 .ant-select-active,
-.ant-select-outlined:active,
-.ant-select-selector  
+.ant-select-outlined:active 
 {
   height: 32px !important;
   border: 1px solid transparent !important;
   background-color: white !important;
-  border-radius: 50px !important;
+  border-radius: 8px !important;
+  margin: 0px !important;
   color: var(--primary-color) !important;
   outline: none !important; /* Remove default blue outline */
   box-shadow: none !important;
   font-size: var(--fs-md) !important;
+}
+.ant-select-selector {
+  border: 1px solid transparent !important;
+  background-color: white !important;
+  border-radius: 8px !important;
+  margin: 0px !important;
+  border: none !important;
+  outline: none !important; /* Remove default blue outline */
+  box-shadow: none !important;
 }
 .ant-input-group-addon {
   border-top-right-radius: 50px !important;
@@ -546,23 +555,17 @@
   align-items: stretch; /* Make children stretch to fill the container */
 
 }
-.signup {
-  background-color: var(--background-color);
-  color: var(--primary-color) !important;
-  padding: 24px;
-}
+
 .title {
   font-weight: 600; /* Semi-bold weight */
   font-size: 30px; /* Font size 30px */
   line-height: 36px; /* Line height 36px */
-  color: white !important;
 }
 .semititle {
     font-size: 16px;
     font-weight: 500;
     line-height: 19.36px;
     text-decoration:'none';
-    color: white !important;
     
 }
 .minititle {
@@ -709,8 +712,7 @@
 .number:focus,
 .number:active,
 .ant-picker-outlined,
-.ant-picker-cell-selected .ant-picker-cell-inner,
-.ant-select-selector {
+.ant-picker-cell-selected .ant-picker-cell-inner{
   border: 1px solid var(--primary-color) !important;
   background-color: var(--white) !important;
   color: var(--background-color) !important;

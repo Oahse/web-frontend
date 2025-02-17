@@ -6,7 +6,7 @@ import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import FormInput from '../components/ui/FormInput/FormInput';
 import FormSelect from '../components/ui/FormInput/FormSelect'
-import FormCheckBox from '../components/FormCheckBox';
+import FormCheckBox from '../components/ui/FormInput/FormCheckBox';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button/Button';
 import { useRegister } from '../services/auth';
@@ -128,9 +128,8 @@ function Signup({ API_URL }) {
   return (
     <Row>
 
-        <Col className='py-3' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <div className='' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Card className='' style={{textAlign: 'center', width: '500px', backgroundColor: '#D9D9D9', }} >
+        <Col className='p-3' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Card className='' style={{textAlign: 'center', width: '500px', backgroundColor: '#D9D9D9', }} >
                     <Row className='py-3'>
                         <Col span={24}>
                             <p className="card-header text-center">Sign Up</p>
@@ -232,7 +231,6 @@ function Signup({ API_URL }) {
                         </Form>
                     
                 </Card>
-            </div>
         </Col>
          {/* OTP Modal */}
             {/* <Modal

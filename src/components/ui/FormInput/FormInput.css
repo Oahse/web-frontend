@@ -1,0 +1,63 @@
+/* Customize the form item wrapper */
+.ant-form-item {
+    margin-bottom: 16px;
+    padding: 0;
+    
+    border-radius: 10px;
+  }
+  
+  /* Customize the input field inside the form item */
+  .ant-form-item-control-input-content input {
+    color: var(--background-color) !important;
+    border-radius: 8px;
+    padding: 3px 8px;
+    width: 100%;
+    border: 1px solid transparent;
+    background-color: #f0f4f7;
+    transition: all 0.3s ease;
+  }
+  
+  .ant-form-item-control-input-content input:focus {
+    border-color: var(--background-color);
+    background-color: white;
+    outline: none;
+  }
+  
+  /* Success state */
+  .ant-form-item-has-success .ant-form-item-control-input-content,
+  .ant-form-item-has-success .ant-form-item-control-input-content input  {
+    border-color: var(--success-color);
+    border-radius: 8px;
+    background-color: var(--success-color-light);
+  }
+  
+  /* Error state */
+  .ant-form-item-has-error .ant-form-item-control-input-content,
+  .ant-form-item-has-error .ant-form-item-control-input-content input {
+    border-color: var(--danger-color);
+    border-radius: 8px;
+    background-color:  var(--danger-color-light);
+  }
+  .ant-form-item-explain-error {
+    color: var(--danger-color);
+    margin-bottom: 1rem;
+  }
+  
+  .ant-form-item-control-input-content .ant-select {
+    padding: 3px 8px;
+    background-color: #f0f4f7;
+    transition: all 0.3s ease;
+  }
+  
+  .ant-form-item-control-input-content .ant-select-focused {
+    border-color: var(--background-color) !important;
+    outline: none;
+  }
+
+  .ant-form-item-control-input-content .number {
+    color: var(--background-color) !important;
+    cursor:auto !important;
+    text-align: center;
+    padding: 0px 4px !important;
+    font-size: 20px !important;
+  }

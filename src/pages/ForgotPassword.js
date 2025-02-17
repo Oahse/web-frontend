@@ -1,12 +1,13 @@
 import React from 'react';
-import { Form } from 'antd';
+import { Col, Form, Row } from 'antd';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import FormInput from '../components/FormInput';
+import FormInput from '../components/ui/FormInput/FormInput'
 import Title from 'antd/es/typography/Title';
 import Header from '../components/Header';
 import Button from '../components/ui/Button/Button';
+import Card from '../components/ui/Card/Card';
 
 
 
@@ -28,36 +29,39 @@ function ForgotPassword({ API_URL,Companyname, isloggedIn, userDetails }) {
   }
 
   return (
-    <div className="forgot-password-container">
-      <Header Companyname ={Companyname} isloggedIn={isloggedIn} userDetails={userDetails} />
-      
-      <div className="forgot-password-content">
-        <Title level={3} className='semititle'>Reset Password</Title>
-        <Title level={5}  className='semititle'>Forgotten Password</Title>
-        <Form
-          name="signup"
-          layout="vertical"
-          onFinish={onFinish}
-          initialValues={{
-            newsletter: true, // Default checkbox to checked
-          }}
-          className="forgot-password-form"
-        >
+    <Row>
 
-          <FormInput
-            label="Email"
-            name="email"
-            placeholder="Enter your email"
-            rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
-          />
-          <small className='text-white text-center'><p>A password reset link will be sent to you.</p></small>
-          
-          <Form.Item className="forgot-password-submit">
-            <Button type="primary" htmlType="submit" text="Send" icon={<i className="fa-thin fa-paper-plane m-2"></i>} />
-          </Form.Item>
-        </Form>
-      </div>
-    </div>
+        <Col className='p-3' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Card className='' style={{textAlign: 'center', width: '500px', backgroundColor: '#D9D9D9', }} >
+                    <Row className='py-3'>
+                        <Col span={24}>
+                            <p className="card-header text-center">Forgotten Password</p>
+                            {/* <span className="text-end">Log In</span> */}
+                        </Col>
+                    </Row>
+                        <Form 
+                            name="forgottenpassword"
+                            // layout="vertical"
+                            onFinish={onFinish}
+                            initialValues={{
+                              
+                            }}
+                        >
+      
+                            <FormInput
+                                name="email"
+                                placeholder="Email"
+                                type='email'
+                                rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
+                            />
+
+                            <Form.Item className='d-flex justify-content-center align-items-center'>
+                                <Button type="primary" htmlType="submit" text="Reset" className=''/>
+                            </Form.Item>
+                        </Form>
+                    
+                </Card>
+        </Col></Row>
   );
 }
 

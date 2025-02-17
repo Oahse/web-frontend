@@ -68,14 +68,14 @@ function Login({ API_URL }) {
 
   return (
     <Row>
-        <Col className={isMobile ? 'hidden' : ''} xl={12} lg={12}> 
+        <Col className={isMobile || isTablet ? 'hidden' : ''} xl={12} lg={12} style={{boxSizing:'border-box'}}> 
            <div  style={{height: '100vh', overflow: 'hidden', margin: 0, padding: 0 }}>
              <img src={procurement} alt='procurement login' width='100%' height='100%'/>
            </div>
         </Col>
 
-        <Col className='px-5' xl={12} lg={12} md={24} sm={24}>
-            <div className='' style={{width: '100%', height: '100vh',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Col className='px-4' xl={12} lg={12} md={24} sm={24} style={{boxSizing:'border-box'}}>
+            <div className='' style={{width: '100%', height: '100%',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Card className='' style={{textAlign: 'center', width: '460px', backgroundColor: '#D9D9D9', }} >
                         <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <span className="card-header">Log In</span>
@@ -109,8 +109,8 @@ function Login({ API_URL }) {
 
                         {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if login fails */}
 
-                        <Form.Item>
-                        <Button type="primary" htmlType="submit" text="Login" className='' style={{width: '100%',}}/>
+                        <Form.Item className='d-flex justify-content-center align-items-center'>
+                        <Button startIcon={<i class="fa-light fa-right-to-bracket"></i>} type="primary" htmlType="submit" text="Login" className=''/>
                         </Form.Item>
 
                         <div className="minititle mb-4" style={{ textAlign: 'right' }}>
@@ -122,14 +122,15 @@ function Login({ API_URL }) {
                                 <p>or Sign in with</p>
                             </div>
                            
-                            <Row>
-                                <Col span={8}><Button text={<i className="bi bi-google"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
-
-                                <Col span={8}><Button text={<i className="bi bi-apple"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
-
-                                <Col span={8}><Button text={<i className="bi bi-linkedin"></i>} style={{padding: '5px 20px', margin: '', }}/></Col>
-                                
-                            </Row>
+                            <div className='d-flex justify-content-center align-items-center'>
+                              <span className='d-flex justify-content-between align-items-center'>
+                                <Button text={<i className="fa-brands fa-google"></i>}/>
+                                <Button text={<i className="fa-brands fa-apple"></i>}  className='mx-1'/>
+                                <Button text={<i className="fa-brands fa-linkedin"></i>
+}/>
+                                  
+                              </span>
+                            </div>
                                
                         </div>
                        
