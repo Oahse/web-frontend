@@ -7,9 +7,11 @@ import { Content, Footer } from 'antd/es/layout/layout';
 
 const { Sider } = Layout;
 
-const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user }) => {
+const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,onActivePage }) => {
   const [collapsed, setCollapsed] = useState(false);
-
+  const handleActivePage = (item, index)=>{
+    onActivePage(item, index);
+}
     // Disable scrolling when drawer is visible
   useEffect(() => {
     
@@ -78,7 +80,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user 
           >
           <div>
               {items && items.map((item, index) => (
-              <p key={index}>{item}</p>
+              <p key={index} onClick={()=>handleActivePage(item, index)}>{item}</p>
               ))}
           </div>
           
@@ -98,7 +100,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user 
         {/* Menu */}
         <Menu theme="light" mode="inline" className="sidebar-menu">
           {items && items.map((item, index) => (
-            <Menu.Item key={index}>{item}</Menu.Item>
+            <Menu.Item key={index} onClick={()=>handleActivePage(item, index)}>{item}</Menu.Item>
           ))}
         </Menu>
 

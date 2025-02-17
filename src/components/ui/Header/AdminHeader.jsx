@@ -14,7 +14,7 @@ import FormInput from '../FormInput/FormInput';
 import SideNavLinks from './SideNavLinks';
 
 
-function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch }) {
+function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActivePage }) {
     const navigate = useNavigate();
     const { country, error } = useCountryByLocation();
     // console.log(country,'=========')
@@ -34,7 +34,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch }) {
  
       });
       const showDrawer = () => {
-        console.log(sidebarstate)
+        // console.log(sidebarstate)
         setSidebarState((prevState) => ({
             ...prevState, // spread previous state
             visible: true, // update only the `visible` property
@@ -126,6 +126,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch }) {
                 title={sidebarstate.title}
                 items={sidebarstate.items}
                 user={user}
+                onActivePage={(item, index)=>onActivePage(item, index)}
             />}
             
         </Layout.Header>
