@@ -484,12 +484,11 @@
   border-color: var(--secondary-color) !important;
 }
 .ant-breadcrumb{
-  background-color: var(--alt-background-color) !important;
-  
+  background-color: var(--white) !important;
+  border-radius: 4px !important;
+  margin: 8px !important;
 }
-.ant-breadcrumb-link{
-  color: var(--background-color) !important;
-}
+
 .ant-tabs-tab,
 .ant-tabs-tab:hover,
 .ant-tabs-tab-active .ant-tabs-tab-btn{
@@ -1133,6 +1132,9 @@
 .ant-row {
   align-items: center !important;
 }
+.ant-menu {
+  border: none !important;
+}
 /* Default dot appearance */
 .slick-dots li button::after {
   background-color: var(--secondary-color) !important;
@@ -1148,3 +1150,4 @@
 .slick-dots .slick-active button::after {
   background-color: var(--success-color) !important;
 }
+

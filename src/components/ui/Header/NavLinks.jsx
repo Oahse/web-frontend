@@ -30,22 +30,34 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                               />
 
                   </span>
-                )
+                  )
 
-                : (
-                  <>
-                    <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                      <i className="fa-light fa-message-lines fs-lg"></i>
-                    </Link> 
-                    
-                    <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                      <i className="fa-light fa-cart-shopping fs-lg"></i>
-                    </Link> 
-                    <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                      <i className="fa-light fa-user fs-lg"></i>
-                    </Link> 
-                  </>
-                )}
+                  : location.pathname === '/admin/dashboard' ?(
+                    <>
+                      <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
+                        <i className="fa-light fa-message-lines fs-lg"></i>
+                      </Link> <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
+                        <i className="fa-light fa-bell fs-lg"></i>
+                      </Link> 
+                      <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
+                        <i className="fa-light fa-user fs-lg"></i>
+                      </Link> 
+                    </>
+                  ): (
+                    <>
+                      <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                        <i className="fa-light fa-message-lines fs-lg"></i>
+                      </Link> 
+                      
+                      <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                        <i className="fa-light fa-cart-shopping fs-lg"></i>
+                      </Link> 
+                      <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                        <i className="fa-light fa-user fs-lg"></i>
+                      </Link> 
+                    </>
+                  )
+                }
               </>
             ) : (
               <>
@@ -65,35 +77,51 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                           </span>
                       </span>
                   </>
-                )
-                : (
-                  <>
-                    <CategoryDropDown isScrolled={isScrolled} />
-                    
-                    <span className={`mx-3 disabled p-1`}>
-                      <span className='m-1 fw-bold d-flex flex-row align-items-center'>
-                        {country?.country}
-                        <Avatar className='fs-lg ms-1' shape='square' src={country?.flag} size={18} />
-                      </span>
-                    </span>
-                    <span className={`mx-3 p-1 disabled `}>
-                      <Globe width={22} height={22} className='disabled' />
-                      <span className='m-1 fw-bold'>English</span>
-                    </span>
-                    
-                    <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                      <i className="fa-light fa-message-lines fs-lg"></i>
-                    </Link> 
-                    
-                    <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                      <i className="fa-light fa-cart-shopping fs-lg"></i>
-                    </Link> 
-                    <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                      <i className="fa-light fa-user fs-lg"></i>
-                    </Link> 
-                      
-                  </>
-                )}
+                ):
+                
+                  
+                    location.pathname === '/admin/dashboard' ?(
+                      <>
+                        <Link to="/user" className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
+                          <i className="fa-light fa-message-lines fs-lg"></i>
+                        </Link> <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
+                          <i className="fa-light fa-bell fs-lg"></i>
+                        </Link> 
+                        <Link to="/user" className={`mx-2 p-1 text-black`} >
+                          <i className="fa-light fa-user fs-lg"></i>
+                        </Link> 
+                      </>
+                    ): (
+                      <>
+                        <CategoryDropDown isScrolled={isScrolled} />
+                        
+                        <span className={`mx-3 disabled p-1`}>
+                          <span className='m-1 fw-bold d-flex flex-row align-items-center'>
+                            {country?.country}
+                            <Avatar className='fs-lg ms-1' shape='square' src={country?.flag} size={18} />
+                          </span>
+                        </span>
+                        <span className={`mx-3 p-1 disabled `}>
+                          <Globe width={22} height={22} className='disabled' />
+                          <span className='m-1 fw-bold'>English</span>
+                        </span>
+                        
+                        <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                          <i className="fa-light fa-message-lines fs-lg"></i>
+                        </Link> 
+                        
+                        <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                          <i className="fa-light fa-cart-shopping fs-lg"></i>
+                        </Link> 
+                        <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                          <i className="fa-light fa-user fs-lg"></i>
+                        </Link> 
+                          
+                      </>
+                    )}
+                  
+                  
+                
               </>
             )}
         </span>

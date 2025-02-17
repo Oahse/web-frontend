@@ -6,14 +6,13 @@ import Logolight from '../../../assets/oahse_logo_text_light.png';
 
 import Sidebar from '../SideBar/SideBar';
 import './Header.css';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate,useLocation, Link } from 'react-router-dom';
 import {useCountryByLocation} from '../../../hooks/useCountry';
-import { Avatar } from 'antd';
 import NavLinks from './NavLinks';
 import SideNavLinks from './SideNavLinks';
 
 
-function Header({ Companyname, isScrolled,isMobile, user }) {
+function Header({ Companyname, isScrolled,isMobile, user}) {
     const navigate = useNavigate();
     const { country, error } = useCountryByLocation();
     // console.log(country,'=========')
@@ -54,30 +53,36 @@ function Header({ Companyname, isScrolled,isMobile, user }) {
           }));
         
       };
+      const [isVisible, setIsVisible] = useState(false); // State to toggle visibility
+
+      const handleSearchClick = () => {
+          setIsVisible(!isVisible); // Toggle visibility when search icon is clicked
+      };
+  
     return (
         <nav className={`navbar`}>
-            <Container className={`${isScrolled ? 'header-scrolled bg-white' : 'bg-none'}`} fluid={isScrolled}>
+            <Container className={`d-flex flex-row align-items-center ${isScrolled ? 'header-scrolled bg-white' : 'bg-none'}`} fluid={isScrolled}>
                 <Navbar.Brand href="/">
                     <img
-                    src={`${isScrolled ? Logo : Logolight}`}
-                    width="70"
-                    className="navbar-logo"
-                    alt={`${Companyname} Logo`}
+                        src={`${isScrolled ? Logo : Logolight}`}
+                        width="70"
+                        className="navbar-logo mb-2"
+                        alt={`${Companyname} Logo`}
                     />
-                    
-                    
                     {/* <span className="navbar-title">{Companyname}</span> */}
                 </Navbar.Brand>
-
+                    
                 {/* Align this div to the right */}
                 <div className="d-flex align-items-center">
+                    
                     <NavLinks isMobile={isMobile} isScrolled={isScrolled} location={location} country={country}/>
                     
                     {isMobile?<span className={`p-1 mx-2  ${isScrolled ? 'text-black' : 'text-white '}`}><i className={`fa-light ${sidebarstate.visible?'fa-x':'fa-bars'} m-auto`} style={{ fontSize: '24px' }} onClick={showDrawer}></i></span>:null}
                 </div>
             </Container>
             {/* Sidebar component */}
-            <Sidebar
+            {isMobile && <Sidebar
+                isMobile={isMobile}
                 logo={Logo}
                 visible={sidebarstate.visible}
                 onClose={onClose}
@@ -85,7 +90,8 @@ function Header({ Companyname, isScrolled,isMobile, user }) {
                 title={sidebarstate.title}
                 items={sidebarstate.items}
                 user={user}
-            />
+            />}
+            
             {/* Bottom Navbar for mobile and tablet */}
             {/* {(isMobile || isTablet) ? <BottomNavbar renderLinks={renderLinks} /> : null} */}
             

@@ -22,7 +22,7 @@ const LogoutPage = () => {
     }, [success, navigate]);
 
     return (
-        <div className="logout-page" style={{ textAlign: 'center', paddingTop: '50px' }}>
+        <div className="logout-page mt-4" style={{ textAlign: 'center', paddingTop: '50px' }}>
             <Result
                 status="success"
                 title="Successfully Logged Out"

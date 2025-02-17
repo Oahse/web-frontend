@@ -58,7 +58,7 @@ function SignUpForSuppliers() {
       };
 
   return (
-    <Row>
+    <Row  className='mt-4'>
     <Col className={isMobile || isTablet ? 'hidden' : ''} xl={12} lg={12} style={{boxSizing:'border-box'}}> 
        <div  style={{height: '100vh', overflow: 'hidden', margin: 0, padding: 0 }}>
          <img src={procurement} alt='procurement login' width='100%' height='100%'/>

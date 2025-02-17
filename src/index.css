@@ -39,7 +39,7 @@ code {
   --info-color:var(--link-primary-color);
   --info-color-light:var(--link-primary-color-light);
   --background-color: #1E1E1E;
-  --alt-background-color: #f1f1f1;
+  --alt-background-color: var(--primary-color-light);
 
   --primary-text-color: #ecf0f1; /* Example text color */
   --alternate-text-color: #1E1E1E;

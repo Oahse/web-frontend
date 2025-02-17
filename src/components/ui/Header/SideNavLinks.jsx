@@ -40,6 +40,55 @@ const SideNavLinks = ({ location, isScrolled, country }) => {
         </span>
     );
   }
+  if (location.pathname === '/admin/dashboard') {
+      links.push(
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="bi bi-grid-1x2 fs-lg"></i> <span className='ms-2'>Dashboard</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="fa-light fa-file-pen fs-lg"></i> <span className='ms-2'>Orders</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="bi bi-archive fs-lg"></i> <span className='ms-2'>Products</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="fa-light fa-users fs-lg"></i> <span className='ms-2'>Customers</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="fa-light fa-money-bill fs-lg"></i> <span className='ms-2'>Finance</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="bi bi-pie-chart fs-lg"></i> <span className='ms-2'>Analytics</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="fa-light fa-percent fs-lg" ></i> <span className='ms-2'>Discount</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="fa-light fa-megaphone fs-lg"></i> <span className='ms-2'>Marketing</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="fa-light fa-tv fs-lg"></i> <span className='ms-2'>Platform</span>
+            </span>
+        </span>
+      )
+  }
 
   // Return the array of JSX elements
   return links;

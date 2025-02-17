@@ -26,7 +26,7 @@ function VerifyMailConfirmation({ API_URL }) {
   }
 
   return (
-    <Row>
+    <Row className='mt-4'>
 
             <Col className='p-3' style={{width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Card className='' style={{textAlign: 'center', width: '500px', backgroundColor: '#D9D9D9', }} >

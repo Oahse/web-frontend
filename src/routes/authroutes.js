@@ -6,6 +6,7 @@ import PrivateRoute from './privateRoute';
 import User from '../pages/User';
 import OrderResult from '../pages/OrderResultPage';
 import OrdersList from '../pages/Orders';
+import AdminDashBoard from '../pages/Admin/Dashboard';
 
 const AuthRoutes = ({ API_URL,Companyname }) => [
   
@@ -32,6 +33,11 @@ const AuthRoutes = ({ API_URL,Companyname }) => [
     path: "/user",
     element: <User API_URL={API_URL} Companyname={Companyname}/>,
     title: "user"
+  },
+  {
+    path: "/admin/dashboard",
+    element: <AdminDashBoard API_URL={API_URL} Companyname={Companyname}/>,
+    title: "admin-dashboard"
   },
 ];
 
