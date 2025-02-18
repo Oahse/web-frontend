@@ -47,7 +47,6 @@ const Admin = ({API_URL,Companyname }) => {
       });
     const [activepage, setActivePage] = useState(0)
     const handleActivePage = (item, index)=>{
-        console.log(index,'====')
         setActivePage(index);
     }
     const renderContent =() => {
@@ -89,7 +88,7 @@ const Admin = ({API_URL,Companyname }) => {
         <>
         {!isMobile ? 
             <Layout style={{ minHeight: '100vh' }}>
-                <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={false} user={userDetails} onSearch={handleSearch} onActivePage={handleActivePage}/>
+                <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={false} user={userDetails} onSearch={handleSearch} onActivePage={(item, index)=>handleActivePage(item, index)}/>
                 
                 <Layout>
                     <Sidebar
@@ -108,15 +107,15 @@ const Admin = ({API_URL,Companyname }) => {
             :
             <Row>
                 <Col span={24} >
-                    <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={isMobile} user={userDetails} onSearch={handleSearch} onActivePage={handleActivePage}/>
+                    <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={isMobile} user={userDetails} onSearch={handleSearch} onActivePage={(item, index)=>handleActivePage(item, index)}/>
                 </Col>
                 <Col span={24}>
                     <Row>
                         <Col span={24}>
                         
-                        <Layout >
-                            {renderContent()}
-                        </Layout>
+                            <Layout >
+                                {renderContent()}
+                            </Layout>
                         </Col>
                     </Row>
                 </Col>

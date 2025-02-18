@@ -1,6 +1,8 @@
 import React from 'react';
 import Globe from '../../icons/globe'; // Adjust import path as necessary
 import { Avatar } from 'antd'; // Assuming Avatar is from Ant Design
+import { Link } from 'react-router-dom';
+import Button from '../Button/Button';
 
 const SideNavLinks = ({ location, isScrolled, country }) => {
     // console.log(location,isScrolled, country?.country,'+++++++')
@@ -14,6 +16,17 @@ const SideNavLinks = ({ location, isScrolled, country }) => {
         <Globe width={22} height={22} color="black" />
         <span className="m-1 fw-bold">English</span>
       </span>,
+      <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}>
+        <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Button
+                    type='link'
+                    text="DashBoard"
+                    color="primary"
+                    href='/admin/dashboard'
+                    onClick={() => console.log('Button clicked')}
+                    />
+
+        </span>
+    </span>,
       <span className="m-1 fw-bold" key="become-supplier">Become A Supplier</span>,
       <span className="m-1 fw-bold" key="user">
         <i className="fa-light fa-user fs-lg"></i>

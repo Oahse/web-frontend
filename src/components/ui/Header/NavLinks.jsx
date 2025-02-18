@@ -65,7 +65,19 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                   <>
                     <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Globe width={22} height={22} color={`${isScrolled ? 'black' : 'white'}`} /><span className='m-1 fw-bold'>English</span></span>
                     <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><span className='m-1 fw-bold'>Become A Supplier</span></span>
+                    
                     <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}>
+                          <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Button
+                                      type='link'
+                                      text="DashBoard"
+                                      color="primary"
+                                      href='/admin/dashboard'
+                                      onClick={() => console.log('Button clicked')}
+                                      />
+
+                          </span>
+                      </span>
+                      <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}>
                           <span className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`}><Button
                                       type='link'
                                       text="Start for Free"

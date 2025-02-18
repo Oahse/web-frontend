@@ -85,6 +85,9 @@
   background-color: #92D3F5;
 
  }
+ .bg-gray {
+  background-color: var(--primary-color-light);
+ }
 .bg-green {
   background-color: #5C9E31;
  }
@@ -95,6 +98,9 @@
   background: var(--black); /* Fallback for older browsers */
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), var(--black));
 
+}
+.bg-white {
+  background-color: var(--white); 
 }
 
 .chat-pop {
@@ -483,11 +489,7 @@
 .ant-timeline-item-head{
   border-color: var(--secondary-color) !important;
 }
-.ant-breadcrumb{
-  background-color: var(--white) !important;
-  border-radius: 4px !important;
-  margin: 8px !important;
-}
+
 
 .ant-tabs-tab,
 .ant-tabs-tab:hover,
@@ -1119,10 +1121,12 @@
     color: var(--disabled-color);
     cursor: not-allowed;
  }
-.ant-breadcrumb {
-  padding: 6px !important;
-  margin: 8px !important;
-  border-radius: var(--border-radius) !important;
+ .ant-breadcrumb{
+  background-color: var(--white) !important;
+  padding: 8px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  border-radius: 8px !important;
 }
 .ant-breadcrumb-link a {
   cursor: pointer !important;
@@ -1151,3 +1155,7 @@
   background-color: var(--success-color) !important;
 }
 
+/* Hide scrollbar in Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none;
+}

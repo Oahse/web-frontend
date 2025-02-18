@@ -55,6 +55,9 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
           }));
         
       };
+    const handleActivePage = (item, index)=>{
+        onActivePage(item, index);
+    }
     
     return (
         <Layout.Header 
@@ -126,7 +129,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
                 title={sidebarstate.title}
                 items={sidebarstate.items}
                 user={user}
-                onActivePage={(item, index)=>onActivePage(item, index)}
+                onActivePage={handleActivePage}
             />}
             
         </Layout.Header>
