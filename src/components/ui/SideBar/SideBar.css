@@ -1,6 +1,7 @@
 .sidebar {
     position: static;
-    width: 80% !important;
+    padding: 6px;
+    width: 70% !important;
     height: 100vh!important;
 }
 .sidebar-footer {

@@ -3,7 +3,6 @@ import { Avatar, Drawer, Layout,Menu} from 'antd';
 import './SideBar.css';
 import Text from '../Typography/Text';
 import Button from '../Button/Button'
-import { Content, Footer } from 'antd/es/layout/layout';
 
 const { Sider } = Layout;
 
@@ -36,14 +35,14 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
                   width: '26%',  // Make sure the image takes up the full width
                   height: '26%'  // Ensure the image takes up the full height as well
                 }} />
-            <span className='m-auto'>{title}</span>
+            {/* <span className='m-auto'>{title}</span> */}
             </span>}
           
           placement={placement}
           closable={false}
           onClose={onClose}
           open={visible}
-          footer={<div className='sidebar-footer m-auto'>
+          footer={<div className='sidebar-footer'>
               <span className='d-flex flex-row mb-1'>
                 <Button
                   type='link'
@@ -78,11 +77,17 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
                   </span>}
           </div>}
           >
-          <div>
+          {/* <div>
               {items && items.map((item, index) => (
                 <p key={index} onClick={()=>handleActivePage(item, index)}>{item}</p>
               ))}
-          </div>
+          </div> */}
+          {/* Menu */}
+            <Menu theme="light" mode='vertical' className="sidebar-menu" defaultSelectedKeys={['0']}>
+              {items && items.map((item, index) => (
+                <Menu.Item key={index} onClick={()=>handleActivePage(item, index)}>{item}</Menu.Item>
+              ))}
+            </Menu>
           
           </Drawer>
       )}
@@ -94,11 +99,10 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
             onCollapse={setCollapsed}
             className="sidebar"
             theme="light"
-            style={{ padding: '8px' }}
           >
             <div className="d-flex flex-column" style={{minHeight:'90%'}}>
               {/* Menu */}
-              <Menu theme="light" mode="inline" className="sidebar-menu">
+              <Menu theme="light" mode='vertical' className="sidebar-menu" defaultSelectedKeys={['0']}>
                 {items && items.map((item, index) => (
                   <Menu.Item key={index} onClick={()=>handleActivePage(item, index)}>{item}</Menu.Item>
                 ))}
