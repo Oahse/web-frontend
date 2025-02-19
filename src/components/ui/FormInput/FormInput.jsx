@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './FormInput.css'
 import { Form } from 'antd'
-
+import { Icon } from "@iconify/react";
 const FormInput = ({
     label, type, placeholder, value, name, rules,
     onChange, required = false, className, style = {}, onSearch
@@ -38,12 +38,16 @@ const FormInput = ({
                     onChange={onChange}
                     
                     style={{
-                        paddingRight: '30px',  // Space for the icon
+                        paddingRight: (type === 'password' || onSearch) && '30px' ,  // Here both cases are the same, you can adjust as needed
+                        height: "36px",
                     }}
+                    
                 />
                 {type === 'password' && (
-                    <i
-                        className={`fa-sharp fa-light ${typevalue === 'password' ? 'fa-eye' : 'fa-eye-slash'}`}
+                    
+                    <Icon icon={`ph:eye-${typevalue === 'password' ? 'thin' : 'slash-thin'}`} 
+                        width="24" 
+                        height="24" 
                         style={{
                             position: 'absolute',
                             right: '10px',   // Position the icon on the right
@@ -53,22 +57,21 @@ const FormInput = ({
                             color: '#1E1E1E'  // Icon color
                         }}
                         onClick={handleTypeValueChange} // Call function on click
-                    ></i>
+                    />
+                    
                 )}
                 {onSearch && (
-                    <i
-                        className={`fa-sharp fa-light fa-magnifying-glass`}
-                        style={{
-                            position: 'absolute',
-                            right: '10px',   // Position the icon on the right
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            cursor: 'pointer', // Add cursor pointer to indicate it's clickable
-                            color: '#1E1E1E'  // Icon color
+                    <Icon icon="iconamoon:search-thin" width="24" height="24" style={{
+                        position: 'absolute',
+                        right: '10px',   // Position the icon on the right
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        cursor: 'pointer', // Add cursor pointer to indicate it's clickable
+                        color: '#1E1E1E'  // Icon color
                         }}
-                        onClick={handleSearch} // Call function on click
-                    ></i>
-                )}
+                        onClick={handleSearch} // Call function on click 
+                        />
+                    )}
             </Form.Item>
         </div>
     )

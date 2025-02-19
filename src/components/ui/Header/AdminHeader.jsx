@@ -13,6 +13,7 @@ import NavLinks from './NavLinks';
 import FormInput from '../FormInput/FormInput';
 import SideNavLinks from './SideNavLinks';
 import SearchInput from '../Input/SearchInput';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 
 function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActivePage }) {
@@ -91,8 +92,8 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
                 {/* admin searchbar */}
                 {(isMobile && onSearch) && 
                 <div className="d-flex flex-row align-items-right">
-                    <span className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}  onClick={handleSearchClick}>
-                        <i className="fa-light fa-magnifying-glass fs-lg" onClick={handleSearchClick}></i>
+                    <span className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}  onClick={handleSearchClick} style={{cursor:'pointer'}}>
+                        <Icon icon="iconamoon:search-thin" width="24" height="24"onClick={handleSearchClick}/>                
                     </span> 
                     <div 
                         className="d-flex align-items-center " 

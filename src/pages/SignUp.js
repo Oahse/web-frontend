@@ -1,18 +1,16 @@
-import React, { Children, useEffect, useState } from 'react';
-import { isMobile } from 'react-device-detect';
-import { Row, Col, Avatar, Form, Radio, message, Cascader, Checkbox, Select, Modal, Input, Flex} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Form, Radio, message, Checkbox, Card} from 'antd';
 import ImageLoader from '../components/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import FormInput from '../components/ui/FormInput/FormInput';
 import FormSelect from '../components/ui/FormInput/FormSelect'
-import FormCheckBox from '../components/ui/FormInput/FormCheckBox';
+// import FormCheckBox from '../components/ui/FormInput/FormCheckBox';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button/Button';
 import { useRegister } from '../services/auth';
-import Card from '../components/ui/Card/Card'
-import procurement from '../assets/procurement3.jpg'
-import axios from 'axios'
+// import procurement from '../assets/procurement3.jpg'
+// import axios from 'axios'
 import {useCountries} from '../hooks/useCountry';
 
 function Signup({ API_URL }) {

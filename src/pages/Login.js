@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Form, notification, Row } from 'antd';
+import { Col, Form, notification, Row, Card } from 'antd';
 import ImageLoader from '../components/Loader';
-import Card from '../components/ui/Card/Card'
 import Grid from '../components/ui/Grid/Grid'
 import FormInput from '../components/ui/FormInput/FormInput'
 import oahseicon from '../assets/oahse-icon.png';
@@ -77,65 +76,65 @@ function Login({ API_URL }) {
         <Col className='px-4' xl={12} lg={12} md={24} sm={24} style={{boxSizing:'border-box'}}>
             <div className='' style={{width: '100%', height: '100%',  margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Card className='' style={{textAlign: 'center', width: '460px', backgroundColor: '#D9D9D9', }} >
-                        <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <span className="card-header">Log In</span>
-                        </div>
+                      <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          <span className="card-header">Log In</span>
+                      </div>
 
-                <Form
-                        form={form}
-                        name="signup"
-                        layout="vertical"
-                        onFinish={onFinish}
-                        initialValues={{
-                        newsletter: true, // Default checkbox to checked
-                        }}
-                    >
-                        <FormInput
-                        name="email"
-                        placeholder="Email"
-                        rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
-                        />
+                    <Form
+                            form={form}
+                            name="signup"
+                            layout="vertical"
+                            onFinish={onFinish}
+                            initialValues={{
+                            newsletter: true, // Default checkbox to checked
+                            }}
+                        >
+                            <FormInput
+                            name="email"
+                            placeholder="Email"
+                            rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
+                            />
 
-                        <FormInput
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        rules={[{ required: true, message: 'Please enter your password' }]}
-                        />
+                            <FormInput
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            rules={[{ required: true, message: 'Please enter your password' }]}
+                            />
 
-                        <div className="minititle mb-4 d-flex flex-column" style={{ textAlign: 'right' }}>
-                        <Link to="/forgotpassword"><small>Forgot Password?</small></Link>
-                        </div>
-
-                        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if login fails */}
-
-                        <Form.Item className='d-flex justify-content-center align-items-center'>
-                        <Button startIcon={<i class="fa-light fa-right-to-bracket"></i>} type="primary" htmlType="submit" text="Login" className=''/>
-                        </Form.Item>
-
-                        <div className="minititle mb-4" style={{ textAlign: 'right' }}>
-                        <span>Don't have an Account yet? </span><Link to="/signup"><small>Sign up</small></Link>
-                        </div>
-
-                        <div style={{textAlign: 'center',}}>
-                            <div>
-                                <p>or Sign in with</p>
+                            <div className="minititle mb-4 d-flex flex-column" style={{ textAlign: 'right' }}>
+                            <Link to="/forgotpassword"><small>Forgot Password?</small></Link>
                             </div>
-                           
-                            <div className='d-flex justify-content-center align-items-center'>
-                              <span className='d-flex justify-content-between align-items-center'>
-                                <Button text={<i className="fa-brands fa-google"></i>}/>
-                                <Button text={<i className="fa-brands fa-apple"></i>}  className='mx-1'/>
-                                <Button text={<i className="fa-brands fa-linkedin"></i>
-}/>
+
+                            {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if login fails */}
+
+                            <Form.Item className='d-flex justify-content-center align-items-center'>
+                            <Button startIcon={<i class="fa-light fa-right-to-bracket"></i>} type="primary" htmlType="submit" text="Login" className=''/>
+                            </Form.Item>
+
+                            <div className="minititle mb-4" style={{ textAlign: 'right' }}>
+                            <span>Don't have an Account yet? </span><Link to="/signup"><small>Sign up</small></Link>
+                            </div>
+
+                            <div style={{textAlign: 'center',}}>
+                                <div>
+                                    <p>or Sign in with</p>
+                                </div>
+                              
+                                <div className='d-flex justify-content-center align-items-center'>
+                                  <span className='d-flex justify-content-between align-items-center'>
+                                    <Button text={<i className="fa-brands fa-google"></i>}/>
+                                    <Button text={<i className="fa-brands fa-apple"></i>}  className='mx-1'/>
+                                    <Button text={<i className="fa-brands fa-linkedin"></i>
+    }/>
+                                      
+                                  </span>
+                                </div>
                                   
-                              </span>
                             </div>
-                               
-                        </div>
-                       
-                    </Form>
-                </Card>
+                          
+                        </Form>
+              </Card>
             </div>
             
 

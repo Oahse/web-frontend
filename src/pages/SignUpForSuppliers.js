@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Col, Form, Row,Checkbox, message} from 'antd';
-
-import Card from '../components/ui/Card/Card'
+import { Col, Form, Row,Checkbox, message, Card} from 'antd';
 
 import procurement from '../assets/suppliersimg.jpeg'
 import FormInput from '../components/ui/FormInput/FormInput';
