@@ -1,7 +1,7 @@
-import { Breadcrumb, Card, Col, Layout, Row} from "antd"
-import Meta from "antd/es/card/Meta";
-import LineChart from "../../components/ui/Charts/Line/Line";
-
+import { Breadcrumb, Col, Layout, Row} from "antd";
+import LineChart from "../../components/ui/Charts/Line";
+import Text from "../../components/ui/Typography/Text";
+import Card from "../../components/ui/Card/Card";
 const { Content } = Layout;
 const AdminDashBoard = ({API_URL,Companyname,isMobile }) => {
     
@@ -49,40 +49,37 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile }) => {
                         <Col span={24}>
                             <Row gutter={[16, 16]}>
                                 <Col span={6}>
-                                    <Card variant="borderless" size="small" className="bg-gray" style={{height:'5rem'}}>
-                                        <Meta
-                                            className="mb-2"
-                                            title={<small className="fw-400">Overtime Sessions</small>}
-                                            description={<span className="text-success ">100 visitors</span>}
-                                        />
-                                    </Card>
+                                    <Card 
+                                        className="bg-gray" 
+                                        style={{height:'5rem'}} 
+                                        title={<Text tag='small' className="fw-400">Overtime Sessions</Text>} 
+                                        description={<Text tag='span' className="text-success">100 visitors</Text>} 
+                                    />
                                 </Col>
                                 <Col span={6}>
-                                    <Card variant="borderless" size="small" className="bg-gray" style={{height:'5rem'}}>
-                                        <Meta
-                                            className="mb-2"
-                                            title={<small className="fw-400">Total Sales</small>}
-                                            description={<span className="text-dark fw-500">CA$0 _</span>}
-                                        />
-                                    </Card>
+                                    <Card 
+                                        className="bg-gray" 
+                                        style={{height:'5rem'}} 
+                                        title={<Text tag='small' className="fw-400">Total Sales</Text>} 
+                                        description={<Text tag='span' className="text-dark fw-500">CA$0 _</Text>} 
+                                    />
                                 </Col>
                                 <Col span={6}>
-                                    <Card variant="borderless" size="small" className="bg-gray" style={{height:'5rem'}}>
-                                        <Meta
-                                            className="mb-2"
-                                            title={<small className="fw-400">Orders</small>}
-                                            description={<span className="text-dark fw-500">0 _</span>}
-                                        />
-                                    </Card>
+                                    <Card 
+                                        className="bg-gray" 
+                                        style={{height:'5rem'}} 
+                                        title={<Text tag='small' className="fw-400">Orders</Text>} 
+                                        description={<Text tag='span' className="text-dark fw-500">0 _</Text>} 
+                                    />
                                 </Col>
                                 <Col span={6}>
-                                    <Card variant="borderless" size="small" className="bg-gray" style={{height:'5rem'}}>
-                                        <Meta
-                                            className="mb-2"
-                                            title={<small className="fw-400">Conversion Rate Over Time</small>}
-                                            description={<span className="text-dark fw-500">0 _</span>}
-                                        />
-                                    </Card>
+                                    <Card 
+                                        className="bg-gray" 
+                                        style={{height:'5rem'}} 
+                                        title={<Text tag='small' className="fw-400">Conversion Rate Over Time</Text>} 
+                                        description={<Text tag='span' className="text-dark fw-500">0 _</Text>} 
+                                    />
+                                    
                                 </Col>
                             </Row>
                         </Col>
@@ -158,40 +155,36 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile }) => {
                     <Col span={24}>
                         <Row  gutter={[16, 16]}>
                             <Col span={12}>
-                                <Card variant="borderless" size="small" className="bg-gray" style={{height:'4.5rem'}}>
-                                    <Meta
-                                        className="mb-2"
-                                        title={<small className="fw-400">Overtime Sessions</small>}
-                                        description={<span className="text-success" >100 visitors</span>}
-                                    />
-                                </Card>
+                                <Card 
+                                    className="bg-gray" 
+                                    style={{height:'5rem'}} 
+                                    title={<Text tag='small' className="fw-400">Overtime Sessions</Text>} 
+                                    description={<Text tag='span' className="text-success">100 visitors</Text>} 
+                                />
                             </Col>
                             <Col span={12}>
-                                <Card variant="borderless" size="small" className="bg-gray" style={{height:'4.5rem'}}>
-                                    <Meta
-                                        className="mb-2"
-                                        title={<small className="fw-400">Total Sales</small>}
-                                        description={<span className="text-dark fw-500">CA$0 _</span>}
-                                    />
-                                </Card>
+                                <Card 
+                                    className="bg-gray" 
+                                    style={{height:'5rem'}} 
+                                    title={<Text tag='small' className="fw-400">Total Sales</Text>} 
+                                    description={<Text tag='span' className="text-dark fw-500">CA$0 _</Text>} 
+                                />
                             </Col>
                             <Col span={12}>
-                                <Card variant="borderless" size="small" className="bg-gray" style={{height:'4.5rem'}}>
-                                    <Meta
-                                        className="mb-2"
-                                        title={<small className="fw-400">Orders</small>}
-                                        description={<span className="text-dark fw-500">0 _</span>}
-                                    />
-                                </Card>
+                                <Card 
+                                    className="bg-gray" 
+                                    style={{height:'5rem'}} 
+                                    title={<Text tag='small' className="fw-400">Orders</Text>} 
+                                    description={<Text tag='span' className="text-dark fw-500">0 _</Text>} 
+                                />
                             </Col>
                             <Col span={12}>
-                                <Card variant="borderless" size="small" className="bg-gray" style={{height:'4.5rem'}}>
-                                    <Meta
-                                        className="mb-2"
-                                        title={<small className="fw-400">Conversion Rate Over Time</small>}
-                                        description={<span className="text-dark fw-500">0 _</span>}
-                                    />
-                                </Card>
+                                <Card 
+                                    className="bg-gray" 
+                                    style={{height:'5rem'}} 
+                                    title={<Text tag='small' className="fw-400">Conversion Rate Over Time</Text>} 
+                                    description={<Text tag='span' className="text-dark fw-500">0 _</Text>} 
+                                />
                             </Col>
                         </Row>
                     </Col>

@@ -12,6 +12,7 @@ import { Avatar, Layout } from 'antd';
 import NavLinks from './NavLinks';
 import FormInput from '../FormInput/FormInput';
 import SideNavLinks from './SideNavLinks';
+import SearchInput from '../Input/SearchInput';
 
 
 function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActivePage }) {
@@ -81,7 +82,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
             </Navbar.Brand>
             {(!isMobile && onSearch) && 
                     <div className="d-flex align-items-center mt-3 mx-auto" style={{minWidth:'400px'}} >
-                        <FormInput name='search' placeholder='Search Products' onSearch={onSearch} style={{width:'100%'}} />
+                        <SearchInput placeholder='Search Products' onSearch={onSearch} style={{width:'100%'}} />
                     </div>
                 }
             
@@ -107,13 +108,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
                             zIndex: 10,  // Make sure it appears above other elements
                         }}
                     >
-                        <FormInput
-                            name="search"
-                            placeholder="Search Products"
-                            onSearch={onSearch}
-                            className={' shadow-lg'}
-                            style={{ width: '100%' }}
-                        />
+                        <SearchInput placeholder='Search Products' className={' shadow-lg'} onSearch={onSearch} style={{width:'100%'}} />
                     </div>
                 </div>}
                 <NavLinks isMobile={isMobile} isScrolled={isScrolled} location={location} country={country}/>
