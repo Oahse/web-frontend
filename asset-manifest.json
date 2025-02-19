@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.b29fd2a4.css",
-    "main.js": "/web-frontend/static/js/main.48159e90.js",
+    "main.css": "/web-frontend/static/css/main.d40f33c3.css",
+    "main.js": "/web-frontend/static/js/main.9f84b35e.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
     "static/media/topbar-shop-img.png": "/web-frontend/static/media/topbar-shop-img.ef94055dcab6627e0e86.png",
@@ -14,12 +14,12 @@
     "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
     "static/media/user.svg": "/web-frontend/static/media/user.54a9668c76dc920e538cdd50b152d5b0.svg",
     "index.html": "/web-frontend/index.html",
-    "main.b29fd2a4.css.map": "/web-frontend/static/css/main.b29fd2a4.css.map",
-    "main.48159e90.js.map": "/web-frontend/static/js/main.48159e90.js.map",
+    "main.d40f33c3.css.map": "/web-frontend/static/css/main.d40f33c3.css.map",
+    "main.9f84b35e.js.map": "/web-frontend/static/js/main.9f84b35e.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b29fd2a4.css",
-    "static/js/main.48159e90.js"
+    "static/css/main.d40f33c3.css",
+    "static/js/main.9f84b35e.js"
   ]
 }
