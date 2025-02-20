@@ -4,6 +4,7 @@ import Button from '../Button/Button';
 import { Avatar } from 'antd';
 import CategoryDropDown from './NavLinks/Components/CategoryDropdown';
 import { Link } from 'react-router-dom';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 /**
  * NavLinks Component
@@ -35,25 +36,25 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                   : location.pathname === '/admin/dashboard' ?(
                     <>
                       <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
-                        <i className="fa-light fa-message-lines fs-lg"></i>
+                        <Icon icon="circum:mail" width="25" height="25" />
                       </Link> <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
-                        <i className="fa-light fa-bell fs-lg"></i>
+                        <Icon icon="material-symbols-light:notifications-outline-rounded" width="25" height="25" />
                       </Link> 
                       <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
-                        <i className="fa-light fa-user fs-lg"></i>
+                        <Icon icon="ph:user-light" width="25" height="25" />
                       </Link> 
                     </>
                   ): (
                     <>
                       <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                        <i className="fa-light fa-message-lines fs-lg"></i>
+                        <Icon icon="circum:mail" width="25" height="25" />
                       </Link> 
                       
                       <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                        <i className="fa-light fa-cart-shopping fs-lg"></i>
+                        <Icon icon="hugeicons:shopping-basket-01" width="24" height="24" />
                       </Link> 
                       <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                        <i className="fa-light fa-user fs-lg"></i>
+                        <Icon icon="ph:user-light" width="25" height="25" />
                       </Link> 
                     </>
                   )
@@ -95,12 +96,12 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                     location.pathname === '/admin/dashboard' ?(
                       <>
                         <Link to="/user" className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
-                          <i className="fa-light fa-message-lines fs-lg"></i>
+                          <Icon icon="circum:mail" width="25" height="25" />
                         </Link> <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
-                          <i className="fa-light fa-bell fs-lg"></i>
+                          <Icon icon="material-symbols-light:notifications-outline-rounded" width="25" height="25" />
                         </Link> 
-                        <Link to="/user" className={`mx-2 p-1 text-black`} >
-                          <i className="fa-light fa-user fs-lg"></i>
+                        <Link to="/user" className={`p-1 text-black`} >
+                          <Icon icon="ph:user-light" width="25" height="25" />
                         </Link> 
                       </>
                     ): (
@@ -119,14 +120,14 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                         </span>
                         
                         <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                          <i className="fa-light fa-message-lines fs-lg"></i>
+                          <Icon icon="circum:mail" width="25" height="25" />
                         </Link> 
                         
                         <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                          <i className="fa-light fa-cart-shopping fs-lg"></i>
+                          <Icon icon="hugeicons:shopping-basket-01" width="24" height="24" />
                         </Link> 
                         <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
-                          <i className="fa-light fa-user fs-lg"></i>
+                          <Icon icon="ph:user-light" width="25" height="25" />
                         </Link> 
                           
                       </>

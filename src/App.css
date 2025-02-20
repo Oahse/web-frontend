@@ -655,16 +655,6 @@
   }
 }
 
-.bottomnavbar{
-  border-radius: 32px !important;
-  font-size: 16px;
-  font-weight: 600;
-  height: 58px;
-  bottom: 24px;
-  background-color: var(--background-color) !important;
-  margin-left: 8px;
-  margin-right: 8px;
-}
 
 .nav-icons {
   color: var(--primary-color); /* Default color */
@@ -1113,6 +1103,7 @@
   border-radius: 8px !important;
   padding: 8px !important;
 }
+
 .ant-dropdown-menu-horizontal-item-wrapper .ant-dropdown-menu-horizontal-item .ant-menu-item-active {
     background-color: var(--link-secondary-color-light) !important;
  }

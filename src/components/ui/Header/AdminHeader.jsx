@@ -1,16 +1,14 @@
-import React,{ useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Navbar } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import Logo from '../../../assets/oahse_logo_text_dark.png';
 import Logolight from '../../../assets/oahse_logo_text_light.png';
-
 import Sidebar from '../SideBar/SideBar';
 import './Header.css';
-import { useNavigate,useLocation, Link } from 'react-router-dom';
+import { useNavigate,useLocation} from 'react-router-dom';
 import {useCountryByLocation} from '../../../hooks/useCountry';
-import { Avatar, Layout } from 'antd';
+import { Layout} from 'antd';
 import NavLinks from './NavLinks';
-import FormInput from '../FormInput/FormInput';
 import SideNavLinks from './SideNavLinks';
 import SearchInput from '../Input/SearchInput';
 import { Icon } from '@iconify/react/dist/iconify.js';
@@ -19,6 +17,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActivePage }) {
     const navigate = useNavigate();
     const { country, error } = useCountryByLocation();
+    
     // console.log(country,'=========')
     const location = useLocation(); // Get the current location
     
@@ -113,8 +112,15 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
                     </div>
                 </div>}
                 <NavLinks isMobile={isMobile} isScrolled={isScrolled} location={location} country={country}/>
-                {isMobile?<span className={`p-1 mx-2  ${isScrolled ? 'text-black' : 'text-white '}`}><i className={`fa-light ${sidebarstate.visible?'fa-x':'fa-bars'} m-auto`} style={{ fontSize: '24px' }} onClick={showDrawer}></i></span>:null}
+                {isMobile?<span className={`p-1 mx-2  ${isScrolled ? 'text-black' : 'text-white '}`}>
+                    {sidebarstate.visible?
+                    <Icon icon="iconamoon:close-thin" width="25" height="25" onClick={showDrawer} style={{cursor:'pointer'}} />:
+
+                    <Icon icon="heroicons:bars-3-solid" width="25" height="25" onClick={showDrawer} style={{cursor:'pointer'}} /> }
+                    
+                    </span>:null}
             </div>
+            
             {/* Sidebar component */}
             {isMobile && <Sidebar
                 isMobile={isMobile}

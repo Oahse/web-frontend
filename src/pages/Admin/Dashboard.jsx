@@ -2,6 +2,7 @@ import { Breadcrumb, Col, Layout, Row} from "antd";
 import LineChart from "../../components/ui/Charts/Line";
 import Text from "../../components/ui/Typography/Text";
 import Card from "../../components/ui/Card/Card";
+import { Icon } from "@iconify/react/dist/iconify.js";
 const { Content } = Layout;
 const AdminDashBoard = ({API_URL,Companyname,isMobile }) => {
     
@@ -29,7 +30,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile }) => {
                         ]}
                     />
                     <span className="bg-white p-2" style={{borderRadius: '8px', cursor:'pointer'}}>
-                        <i className="fa-solid fa-calendar"></i> <span className="ms-1">Last 30 days</span>
+                        <Icon icon="uit:calender" width="20" height="20" /> <span className="m-auto">Last 30 days</span>
                     </span>
                 </div>
             

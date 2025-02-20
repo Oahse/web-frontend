@@ -3,6 +3,7 @@ import { Avatar, Drawer, Layout,Menu} from 'antd';
 import './SideBar.css';
 import Text from '../Typography/Text';
 import Button from '../Button/Button'
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const { Sider } = Layout;
 
@@ -51,7 +52,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
                   className='fw-500 m-auto w-100'
                   href={'/login'}
                   onClick={() => console.log('Button clicked')}
-                  startIcon={<i className="fa-light fa-gear"></i>}
+                  startIcon={<Icon icon="arcticons:settings" width="25" height="25" />}
                 />
               </span>
               {!user?.isloggedin?
@@ -63,7 +64,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
                   className='fw-500 m-auto w-100'
                   href={'/login'}
                   onClick={() => console.log('Button clicked')}
-                  startIcon={<i className="fa-light fa-right-to-bracket"></i>}
+                  startIcon={<Icon icon="material-symbols-light:login-outline-rounded" width="25" height="25" />}
                 />
               </span>
               :
@@ -83,7 +84,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
               ))}
           </div> */}
           {/* Menu */}
-            <Menu theme="light" mode='vertical' className="sidebar-menu" defaultSelectedKeys={['0']}>
+            <Menu theme="light" mode='vertical' className="sidebar-menu" defaultSelectedKeys={['0']} >
               {items && items.map((item, index) => (
                 <Menu.Item key={index} onClick={()=>handleActivePage(item, index)}>{item}</Menu.Item>
               ))}
@@ -119,7 +120,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
                     className="fw-500 w-100"
                     href="/login"
                     onClick={() => console.log('Button clicked')}
-                    startIcon={<i className="fa-light fa-gear"></i>}
+                    startIcon={<Icon icon="arcticons:settings" width="25" height="25" />}
                   />
                 </div>
 
@@ -133,7 +134,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
                       className="fw-500 w-100"
                       href="/login"
                       onClick={() => console.log('Button clicked')}
-                      startIcon={<i className="fa-light fa-right-to-bracket"></i>}
+                      startIcon={<Icon icon="material-symbols-light:login-outline-rounded" width="25" height="25" />}
                     />
                   </div>
                 ) : (

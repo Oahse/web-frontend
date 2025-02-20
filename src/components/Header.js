@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar, Container } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom'; // useLocation to detect URL changes
 
-import BottomNavbar from './BottomNavBar';
+import BottomNavbar from './ui/BottomNavBar/BottomNavBar';
 import { isDesktop, isMobile, isTablet } from 'react-device-detect';
 import { Avatar, Drawer, Dropdown, Menu } from 'antd';
 import Button from './ui/Button/Button';

@@ -1,4 +1,5 @@
-import { Col, Layout, Row } from "antd"
+import React,{ useState,useEffect } from 'react';
+import { Avatar, Col, Dropdown, Layout, Menu, Row } from "antd"
 import Logo from '../../assets/oahse_logo_text_dark.png';
 import useDeviceType from "../../hooks/useDeviceType";
 import { useAuth } from "../../services/auth";
@@ -8,9 +9,8 @@ import oahselogo from '../../assets/oahse-logo.png';
 import useIsScrolled from "../../hooks/useIsScrolled";
 import Sidebar from "../../components/ui/SideBar/SideBar";
 import SideNavLinks from "../../components/ui/Header/SideNavLinks";
-import { useState } from "react";
 import { useCountryByLocation } from "../../hooks/useCountry";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AdminHeader from "../../components/ui/Header/AdminHeader";
 import AdminDashBoard from "./Dashboard";
 import AdminOrders from "./Orders";
@@ -21,6 +21,8 @@ import AdminAnalytics from './Customers';
 import AdminDiscount from './Discount';
 import AdminMarketing from './Marketing';
 import AdminPlatform from './Platform';
+import { Footer } from "antd/es/layout/layout";
+import BottomNavbar from '../../components/ui/BottomNavBar/BottomNavBar';
 
 const Admin = ({API_URL,Companyname }) => {
     const { isMobile, isTablet} = useDeviceType();
@@ -37,7 +39,8 @@ const Admin = ({API_URL,Companyname }) => {
         console.log('Current URL is /shop');
         // Perform actions specific to the /shop route
     }
-    const sidebarlinks = SideNavLinks({ location, isScrolled, country });
+    const linklabels =false
+    const sidebarlinks = SideNavLinks({ location, isScrolled, country, linklabels });
     const [sidebarstate, setSidebarState] = useState({ 
         visible: false, 
         placement: 'left', 
@@ -73,6 +76,9 @@ const Admin = ({API_URL,Companyname }) => {
                 return <AdminDashBoard isMobile={isMobile} />;
         }
     }
+    
+    
+    
     if (loading) {
         return (
           <ImageLoader
@@ -83,7 +89,6 @@ const Admin = ({API_URL,Companyname }) => {
           />
         );
       }
-    
     return (
         <>
         {!isMobile ? 
@@ -105,21 +110,15 @@ const Admin = ({API_URL,Companyname }) => {
                 </Layout>
             </Layout> 
             :
-            <Row>
-                <Col span={24} >
+            <Layout>
+                <Layout>
                     <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={isMobile} user={userDetails} onSearch={handleSearch} onActivePage={(item, index)=>handleActivePage(item, index)}/>
-                </Col>
-                <Col span={24}>
-                    <Row>
-                        <Col span={24}>
-                        
-                            <Layout >
-                                {renderContent()}
-                            </Layout>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>}
+                    
+                    {renderContent()}
+                </Layout>
+                {isMobile && <BottomNavbar items={sidebarstate.items}
+                user={userDetails} />}
+            </Layout>}
         </>
         
     )

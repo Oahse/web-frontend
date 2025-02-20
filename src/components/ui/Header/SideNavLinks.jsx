@@ -1,10 +1,10 @@
 import React from 'react';
 import Globe from '../../icons/globe'; // Adjust import path as necessary
 import { Avatar } from 'antd'; // Assuming Avatar is from Ant Design
-import { Link } from 'react-router-dom';
 import Button from '../Button/Button';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
-const SideNavLinks = ({ location, isScrolled, country }) => {
+const SideNavLinks = ({ location, isScrolled, country, label }) => {
     // console.log(location,isScrolled, country?.country,'+++++++')
   // Initialize an array to hold the JSX elements
   const links = [];
@@ -57,47 +57,52 @@ const SideNavLinks = ({ location, isScrolled, country }) => {
       links.push(
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="bi bi-grid-1x2 fs-lg"></i> <span className='ms-2'>Dashboard</span>
+                <Icon icon="bi:grid-1x2" width="16" height="16" /> <span className='ms-1'>{label && 'Dashboard'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="fa-light fa-file-pen fs-lg"></i> <span className='ms-2'>Orders</span>
+                <Icon icon="lsicon:order-edit-outline" width="22" height="22" strokeWidth={1} /><span className='ms-1'>{label && 'Orders'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="bi bi-archive fs-lg"></i> <span className='ms-2'>Products</span>
+                <Icon icon="bi:archive" width="16" height="16" /> <span className='ms-1'>{label && 'Products'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="fa-light fa-users fs-lg"></i> <span className='ms-2'>Customers</span>
+                <Icon icon="ph:user-list-light" width="25" height="25" /> <span className='ms-1'>{label && 'Customers'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="fa-light fa-money-bill fs-lg"></i> <span className='ms-2'>Finance</span>
+                <Icon icon="mingcute:content-ai-line" width="25" height="25" strokeWidth={0.5}  /> <span className='ms-1'>{label && 'Content'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="bi bi-pie-chart fs-lg"></i> <span className='ms-2'>Analytics</span>
+                <Icon icon="map:finance" width="25" height="25" /> <span className='ms-1'>{label && 'Finance'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="fa-light fa-percent fs-lg" ></i> <span className='ms-2'>Discount</span>
+            <Icon icon="arcticons:google-analytics" width="25" height="25" strokeWidth={2} /><span className='ms-2'>{label && 'Analytics'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="fa-light fa-megaphone fs-lg"></i> <span className='ms-2'>Marketing</span>
+                <Icon icon="streamline:discount-percent-circle" width="24" height="24" strokeWidth={0.5} />  <span className='ms-2'>{label && 'Discount'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="fa-light fa-tv fs-lg"></i> <span className='ms-2'>Platform</span>
+                <i className="fa-light fa-megaphone fs-lg"></i> <span className='ms-2'>{label && 'Marketing'}</span>
+            </span>
+        </span>,
+        <span className={`p-1 text-black`}>
+            <span className="m-1 fw-bold">
+                <i className="fa-light fa-tv fs-lg"></i> <span className='ms-2'>{label && 'Platform'}</span>
             </span>
         </span>
       )

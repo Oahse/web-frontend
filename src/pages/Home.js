@@ -2,8 +2,7 @@ import React,{useEffect, useState} from 'react';
 import Header from '../components/ui/Header/Header';
 import Grid from '../components/ui/Grid/Grid';
 import Button from '../components/ui/Button/Button';
-import Card from '../components/ui/Card/Card';
-import { Avatar, Modal } from 'antd';
+import { Avatar, Modal} from 'antd';
 import User from '../assets/icons/user.svg';
 import Footer from '../components/ui/Footer/Footer';
 import useDeviceType from '../hooks/useDeviceType';
@@ -16,6 +15,7 @@ import Clients from '../components/ui/HomePage/Clients/Clients';
 import Manufacturers from '../components/ui/HomePage/Manufacturers/Manufacturers';
 import useIsScrolled from '../hooks/useIsScrolled';
 import { SearchInput } from '../components/ui/Input/Input';
+import Tile from '../components/ui/Tile/Tile';
 
 
 function Homepage({ Companyname }) {
@@ -146,10 +146,10 @@ function Homepage({ Companyname }) {
           </Modal>
         </div>
         
-        <div className='card-container p-auto d-flex align-items-center'>
+        <div className='tile-container p-auto d-flex align-items-center'>
             <Grid>
                 {featureItems.map((item, index) => (
-                <Card
+                <Tile
                   key={index}
                   onClick={() => console.log(`Clicked: ${item.header}`)}
                   header={item.header}

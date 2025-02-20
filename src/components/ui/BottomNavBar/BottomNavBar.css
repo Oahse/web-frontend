@@ -1,0 +1,25 @@
+.bottomnavbar{
+    border-radius: 0px !important;
+    font-size: 16px;
+    font-weight: 600;
+    position: fixed;
+    top:auto;
+    height: 58px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    z-index: 1000;
+    background-color: var(--white) !important;
+    margin-top:calc(100vh - 58px);
+  }
+  
+.drawer {
+    height: 300px;
+
+}
+.drawer-open{
+    visibility: visible;
+}
+.drawer-close{
+    visibility: hidden;
+}
