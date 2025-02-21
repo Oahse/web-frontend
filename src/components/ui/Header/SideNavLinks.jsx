@@ -4,7 +4,7 @@ import { Avatar } from 'antd'; // Assuming Avatar is from Ant Design
 import Button from '../Button/Button';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
-const SideNavLinks = ({ location, isScrolled, country, label }) => {
+const SideNavLinks = ({ location, isScrolled, country, isMobile }) => {
     // console.log(location,isScrolled, country?.country,'+++++++')
   // Initialize an array to hold the JSX elements
   const links = [];
@@ -57,52 +57,52 @@ const SideNavLinks = ({ location, isScrolled, country, label }) => {
       links.push(
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <Icon icon="bi:grid-1x2" width="16" height="16" /> <span className='ms-1'>{label && 'Dashboard'}</span>
+                <Icon icon="bi:grid-1x2" width="16" height="16" /> <span className='ms-1'>{!isMobile && 'Dashboard'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <Icon icon="lsicon:order-edit-outline" width="22" height="22" strokeWidth={1} /><span className='ms-1'>{label && 'Orders'}</span>
+                <Icon icon="lsicon:order-edit-outline" width="22" height="22" strokeWidth={1} /><span className='ms-1'>{!isMobile && 'Orders'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <Icon icon="bi:archive" width="16" height="16" /> <span className='ms-1'>{label && 'Products'}</span>
+                <Icon icon="bi:archive" width="16" height="16" /> <span className='ms-1'>{!isMobile && 'Products'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <Icon icon="ph:user-list-light" width="25" height="25" /> <span className='ms-1'>{label && 'Customers'}</span>
+                <Icon icon="ph:user-list-light" width="25" height="25" /> <span className='ms-1'>{!isMobile && 'Customers'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <Icon icon="mingcute:content-ai-line" width="25" height="25" strokeWidth={0.5}  /> <span className='ms-1'>{label && 'Content'}</span>
+                <Icon icon="mingcute:content-ai-line" width="25" height="25" strokeWidth={0.5}  /> <span className='ms-1'>{!isMobile && 'Content'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <Icon icon="map:finance" width="25" height="25" /> <span className='ms-1'>{label && 'Finance'}</span>
+                <Icon icon="map:finance" width="25" height="25" /> <span className='ms-1'>{!isMobile && 'Finance'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-            <Icon icon="arcticons:google-analytics" width="25" height="25" strokeWidth={2} /><span className='ms-2'>{label && 'Analytics'}</span>
+            <Icon icon="arcticons:google-analytics" width="25" height="25" strokeWidth={2} /><span className='ms-2'>{!isMobile && 'Analytics'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <Icon icon="streamline:discount-percent-circle" width="24" height="24" strokeWidth={0.5} />  <span className='ms-2'>{label && 'Discount'}</span>
+                <Icon icon="streamline:discount-percent-circle" width="24" height="24" strokeWidth={0.5} />  <span className='ms-2'>{!isMobile && 'Discount'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="fa-light fa-megaphone fs-lg"></i> <span className='ms-2'>{label && 'Marketing'}</span>
+                <i className="fa-light fa-megaphone fs-lg"></i> <span className='ms-2'>{!isMobile && 'Marketing'}</span>
             </span>
         </span>,
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">
-                <i className="fa-light fa-tv fs-lg"></i> <span className='ms-2'>{label && 'Platform'}</span>
+                <i className="fa-light fa-tv fs-lg"></i> <span className='ms-2'>{!isMobile && 'Platform'}</span>
             </span>
         </span>
       )

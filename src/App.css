@@ -102,7 +102,37 @@
 .bg-white {
   background-color: var(--white); 
 }
+.bg-light {
+  background-color: var(--primary-color-light); 
+}
+.rounded-sm {
+  border-radius: 4px;
+}
+.rounded-md {
+  border-radius: 8px;
+}
+.rounded-lg {
+  border-radius: 16px;
+}
+/* Custom Border Width Classes */
+.border-1 {
+  border-width: 1rem; /* Sets the border width to 1rem */
+}
 
+.border-2 {
+  border-width: 2rem; /* Sets the border width to 2rem */
+}
+
+.border-3 {
+  border-width: 3rem; /* Sets the border width to 3rem */
+}
+
+.border-4 {
+  border-width: 4rem; /* Sets the border width to 4rem */
+}
+.border-dark {
+  border-color: var(--background-color);
+}
 .chat-pop {
   z-index: 2;
   position: fixed; /* Absolute positioning within homepage-content */

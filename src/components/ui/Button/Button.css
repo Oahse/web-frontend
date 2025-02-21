@@ -39,7 +39,7 @@
   .button-contained-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    color: var(--dark);
+    color: var(--black);
   }
   .button-contained-primary:hover,
   .button-contained-secondary:hover {
@@ -235,6 +235,7 @@
   }
   .button-link-contained-primary:hover {
     background-color: var(--link-primary-color-light);
+    color: var(--alternate-text-color);
   }
   
   .button-link-contained-primary:focus {

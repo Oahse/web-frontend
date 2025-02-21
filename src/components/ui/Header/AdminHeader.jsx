@@ -24,6 +24,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
       const [isVisible, setIsVisible] = useState(false); // State to toggle visibility
 
       const handleSearchClick = () => {
+        console.log(!isVisible)
           setIsVisible(!isVisible); // Toggle visibility when search icon is clicked
       };
       const sidebarlinks = SideNavLinks({ location, isScrolled, country });
@@ -34,13 +35,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
         items: sidebarlinks
  
       });
-      const showDrawer = () => {
-        // console.log(sidebarstate)
-        setSidebarState((prevState) => ({
-            ...prevState, // spread previous state
-            visible: true, // update only the `visible` property
-          }));
-      };
+      
     
     const onClose = () => {
         setSidebarState((prevState) => ({
@@ -49,13 +44,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
           }));
       };
     
-    const onChange = e => {
-        setSidebarState((prevState) => ({
-            ...prevState, // spread previous state
-            placement: e.target.value,
-          }));
-        
-      };
+    
     const handleActivePage = (item, index)=>{
         onActivePage(item, index);
     }
@@ -92,33 +81,27 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
                 {(isMobile && onSearch) && 
                 <div className="d-flex flex-row align-items-right">
                     <span className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white'}`}  onClick={handleSearchClick} style={{cursor:'pointer'}}>
-                        <Icon icon="iconamoon:search-thin" width="24" height="24"onClick={handleSearchClick}/>                
+                        <Icon icon="iconamoon:search-thin" width="24" height="24" onClick={handleSearchClick}/>                
                     </span> 
                     <div 
                         className="d-flex align-items-center " 
                         style={{
                             position: 'absolute',  // Position input absolutely
-                            top: '100%',  // Position below the icon
+                            top: '66px',  // Position below the icon
                             left: 0,
                             right: 0,
                             padding:'8px',
                             visibility: isVisible ? 'visible' : 'hidden',  // Toggle visibility
                             opacity: isVisible ? 1 : 0,  // Fade in/out effect
                             transition: 'visibility 0.3s, opacity 0.3s',  // Smooth transition for visibility
-                            zIndex: 10,  // Make sure it appears above other elements
+                            zIndex: 100,  // Make sure it appears above other elements
                         }}
                     >
                         <SearchInput placeholder='Search Products' className={' shadow-lg'} onSearch={onSearch} style={{width:'100%'}} />
                     </div>
                 </div>}
                 <NavLinks isMobile={isMobile} isScrolled={isScrolled} location={location} country={country}/>
-                {isMobile?<span className={`p-1 mx-2  ${isScrolled ? 'text-black' : 'text-white '}`}>
-                    {sidebarstate.visible?
-                    <Icon icon="iconamoon:close-thin" width="25" height="25" onClick={showDrawer} style={{cursor:'pointer'}} />:
-
-                    <Icon icon="heroicons:bars-3-solid" width="25" height="25" onClick={showDrawer} style={{cursor:'pointer'}} /> }
-                    
-                    </span>:null}
+                
             </div>
             
             {/* Sidebar component */}

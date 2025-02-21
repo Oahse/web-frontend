@@ -4,7 +4,7 @@ import React from "react";
 
 const { Content } = Layout;
 
-const AdminCustomers = ({ isMobile }) => {
+const AdminContents = ({ isMobile }) => {
     return (
         <Content style={{ margin: '6px' }}>
             <div className="d-flex justify-content-between align-items-center p-2">
@@ -14,7 +14,7 @@ const AdminCustomers = ({ isMobile }) => {
                             title: <a href="/">Home</a>,
                         },
                         {
-                            title: 'Customers',
+                            title: 'Contents',
                         },
                     ]}
                 />
@@ -30,11 +30,11 @@ const AdminCustomers = ({ isMobile }) => {
                     backgroundColor: 'white',
                 }}
             >
-                <h3>Customers Section</h3>
+                <h3>Contents Section</h3>
                 <p>Here you can manage and view customer details.</p>
             </div>
         </Content>
     );
 };
 
-export default AdminCustomers;
+export default AdminContents;
