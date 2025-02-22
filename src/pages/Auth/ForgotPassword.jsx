@@ -1,13 +1,11 @@
 import React from 'react';
 import { Col, Form, Row } from 'antd';
-import ImageLoader from '../components/Loader';
-import oahseicon from '../assets/oahse-icon.png';
-import oahselogo from '../assets/oahse-logo.png';
-import FormInput from '../components/ui/FormInput/FormInput'
-import Title from 'antd/es/typography/Title';
-import Header from '../components/Header';
-import Button from '../components/ui/Button/Button';
-import Card from '../components/ui/Card/Card';
+import ImageLoader from '../../components/Loader';
+import oahseicon from '../../assets/oahse-icon.png';
+import oahselogo from '../../assets/oahse-logo.png';
+import FormInput from '../../components/ui/FormInput/FormInput';
+import Button from '../../components/ui/Button/Button';
+import Card from '../../components/ui/Card/Card';
 
 
 

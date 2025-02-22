@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Form, Radio, message, Checkbox, Card} from 'antd';
-import ImageLoader from '../components/Loader';
-import oahseicon from '../assets/oahse-icon.png';
-import oahselogo from '../assets/oahse-logo.png';
-import FormInput from '../components/ui/FormInput/FormInput';
-import FormSelect from '../components/ui/FormInput/FormSelect'
-// import FormCheckBox from '../components/ui/FormInput/FormCheckBox';
-import { Link, useNavigate } from 'react-router-dom';
-import Button from '../components/ui/Button/Button';
-import { useRegister } from '../services/auth';
-// import procurement from '../assets/procurement3.jpg'
+import { Row, Col, Form, Radio, message, Card} from 'antd';
+import ImageLoader from '../../components/Loader';
+import oahseicon from '../../assets/oahse-icon.png';
+import oahselogo from '../../assets/oahse-logo.png';
+import FormInput from '../../components/ui/FormInput/FormInput';
+import FormSelect from '../../components/ui/FormInput/FormSelect'
+import FormCheckBox from '../../components/ui/FormInput/FormCheckBox';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../components/ui/Button/Button';
+import { useRegister } from '../../services/auth';
+// import procurement from '../../assets/procurement3.jpg'
 // import axios from 'axios'
-import {useCountries} from '../hooks/useCountry';
+import {useCountries} from '../../hooks/useCountry';
 
 function Signup({ API_URL }) {
   const [redirectToHome, setRedirectToHome] = useState(false);
@@ -20,20 +20,8 @@ function Signup({ API_URL }) {
   const { register, loading, error, user } = useRegister(); // Use the register hook
   
   const countries = useCountries();
-  console.log('----sdsd', countries)
-    const [selectedCountry, setSelectedCountry] = useState('')
-  const [open, setOpen] = useState(false);
-
-  const showModal = () => {
-    setOpen(true);
-  };
-  const handleOk = () => {
-    setOpen(false);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  };
+  // console.log('----sdsd', countries)
+  
 
   console.log(user)
   // Handle form submission
@@ -79,32 +67,13 @@ function Signup({ API_URL }) {
   };
   useEffect(() => {
     // Check if we should redirect after login
+    setUserType('')
     if (redirectToHome) {
       navigate('/verify-email-otp'); // Redirect on successful login
     }
 
   }, [redirectToHome, navigate]);
 
-
-  // Handle change in selected user type
-  
-  
-        
-      const customFilterOption = (input, option) => {
-        return option.label.toLowerCase().includes(input.toLowerCase());
-      };
-
-  const handleUserTypeChange = (e) => {
-    setUserType(e.target.value);
-  };
-
-  
-
-//   const handleCountryChange = (event) => {
-//     const selectedName = event.target.value;
-//     const country = countries.find((c) => c.name === selectedName);
-//     setSelectedCountry(country);
-//   };
 
 
   if (loading) {
@@ -146,8 +115,11 @@ function Signup({ API_URL }) {
                                 label='Select a Country'
                                 name='Country'
                                 placeholder='Please select a country'
-                                options={countries}
-                                filterOption={customFilterOption}
+                                options={countries.map(country => ({
+                                  label: country.name,   // rename 'name' to 'label'
+                                  icon: country.flag,    // rename 'flag' to 'icon'
+                                  code:country.code
+                                }))}
                             />
                            
                           <Form.Item label='Trade Role'>
@@ -207,20 +179,16 @@ function Signup({ API_URL }) {
                                 ]}
                             />
 
-                            <Form.Item>
-                                <Checkbox>  
+                            <FormCheckBox>  
                                     I agree to a) Free Membership Agreement, 
                                     b)Terms of Use, and c) Privacy Policy
-                                </Checkbox>
-                            </Form.Item>
+                                </FormCheckBox>
                             
 
-                            <Form.Item>
-                                <Checkbox>  
+                            <FormCheckBox>  
                                     I would like to receive your newsletter and promotional updates 
                                     from Oahse about its products and services.
-                                </Checkbox>
-                            </Form.Item>
+                            </FormCheckBox>
                             
                             <Form.Item>
                                 <Button type="primary" htmlType="submit" text="Register" className='' style={{width: '100%',}}/>

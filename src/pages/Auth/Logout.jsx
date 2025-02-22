@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useLogout } from '../services/auth'; // Assuming the hook is in services/auth.js
+import { useLogout } from '../../services/auth'; // Assuming the hook is in services/auth.js
 
 const LogoutPage = () => {
     const navigate = useNavigate();

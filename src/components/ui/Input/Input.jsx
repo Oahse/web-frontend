@@ -3,7 +3,7 @@ import { Input, Drawer, DatePicker, Space } from 'antd';
 import PropTypes from 'prop-types';
 // import { Html5QrcodeScanner } from 'html5-qrcode'; // Barcode Scanner library
 import InputNumber from './InputNumber';
-import DropDown from '../../DropDown';
+import Select from '../../Select';
 import dayjs from 'dayjs';
 import './Input.css'; // Ensure the CSS file is properly linked
 
@@ -138,7 +138,7 @@ const FilterDrawer = ({ onSearch, onChangeDrawer, name, categoryoptions, minpric
         />
         
         <span>Category</span>
-        <DropDown
+        <Select
           options={categoryoptions||[]}
           iscategoryLoading={iscategoryLoading}
           onChange={handleCategoryChange}

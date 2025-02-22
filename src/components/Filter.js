@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Space, DatePicker, Drawer } from 'antd';
 import dayjs from 'dayjs';
-import DropDown from './DropDown';
+import Select from './Select';
 import InputNumber from '../components/ui/Input/InputNumber';
 
 const FilterComponent = ({ onSearch,onChangeDrawer, name, categoryoptions, minprice, maxprice, drawervisible,iscategoryLoading }) => {
@@ -137,7 +137,7 @@ const FilterComponent = ({ onSearch,onChangeDrawer, name, categoryoptions, minpr
                     <InputNumber min={minPrice} max={maxPrice} placeholder="Max Price" value={maxPrice} onChange={handleMaxPriceChange}
                         style={{ width: '100%' }}  />
                     <span>Category</span>
-                    <DropDown options={categoryoptions} iscategoryLoading={iscategoryLoading}  onChange={handleCategoryChange} style={{ width: '100%' }}/>
+                    <Select options={categoryoptions} iscategoryLoading={iscategoryLoading}  onChange={handleCategoryChange} style={{ width: '100%' }}/>
                 </Space>
             </Drawer>
         </div>

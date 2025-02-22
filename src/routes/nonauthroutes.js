@@ -1,11 +1,11 @@
 import React from 'react';
 import Home from '../pages/Home';
 import About from '../pages/About';
-import Signup from '../pages/SignUp';
-import SignUpForSuppliers from '../pages/SignUpForSuppliers'
-import Login from '../pages/Login';
-import Loginfingerprint from '../pages/Login-fingerprint';
-import ForgotPassword from '../pages/ForgotPassword';
+import Signup from '../pages/Auth/SignUp';
+import SignUpForSuppliers from '../pages/Auth/SignUpForSuppliers'
+import Login from '../pages/Auth/Login';
+import Loginfingerprint from '../pages/Auth/Login-fingerprint';
+import ForgotPassword from '../pages/Auth/ForgotPassword';
 import Marketplace from '../pages/MarketPlace'; // Import your Marketplace component
 import Map from '../pages/Map'; // Import your Map component
 import Cart from '../pages/Cart'; // Import your Cart component
@@ -18,7 +18,7 @@ import VerifyMail from '../pages/VerifyMail';
 import VerifyMailConfirmation from '../pages/VerifyMailConfirmation';
 import PasswordReset from '../pages/PasswordReset';
 import ProductPage from '../pages/ProductItem';
-import LogoutPage from '../pages/Logout';
+import LogoutPage from '../pages/Auth/Logout';
 import Test from '../pages/TestingPage';
 
 

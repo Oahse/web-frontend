@@ -1,13 +1,12 @@
-import React from 'react'
-// import './FormInput.css'
-import { ConfigProvider, Form, Select, } from 'antd'
-
-const {Option} = Select
+import React from 'react';
+import { Form} from 'antd'
+import Select from '../../Select';
 
 const FormSelect = ({
-    label, type, placeholder, value, name, rules, options=[],
-    onChange, required = false, errorMessage, className, filterOption, style = {}, 
+    label, placeholder, name, rules, options=[],
+    onChange, required = false, errorMessage, className, 
 }) => {
+    
     return (
 
         <div style={{marginBottom: '1rem', }}>
@@ -17,21 +16,13 @@ const FormSelect = ({
                 rules={rules}
                 className={`${className}`}
             >
-                <Select type={type}
-                    placeholder={placeholder}
-                    showSearch
-                    filterOption={filterOption} // Apply custom filtering
-                    optionFilterProp="label" // Use the label property for default filtering
-                    value={value}
+                <Select
+                    options={options}
                     onChange={onChange}
-                    
-                > 
-                    {options.map((option) => (
-                        <Option key={option.value || option.name} value={option.value || option.name} label={option.label}>
-                            {option.label}
-                        </Option>
-                    ))}
-                </Select>
+                    placeholder={placeholder}
+                    optionFilterProp="label" // Use the label property for default filtering
+                    />
+                
 
                 {errorMessage && (
                     <p 

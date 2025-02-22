@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import { Col, Form, Row,Checkbox, message, Card} from 'antd';
+import { Col, Form, Row,message, Card} from 'antd';
 
-import procurement from '../assets/suppliersimg.jpeg'
-import FormInput from '../components/ui/FormInput/FormInput';
-import FormSelect from '../components/ui/FormInput/FormSelect'
+import procurement from '../../assets/suppliersimg.jpeg'
+import FormInput from '../../components/ui/FormInput/FormInput';
+import FormSelect from '../../components/ui/FormInput/FormSelect'
 
-import Button from '../components/ui/Button/Button';
+import Button from '../../components/ui/Button/Button';
 
-import useDeviceType from '../hooks/useDeviceType';
-import './Login.css';
+import useDeviceType from '../../hooks/useDeviceType';
+import './Auth.css';
+import FormCheckBox from '../../components/ui/FormInput/FormCheckBox';
 
 function SignUpForSuppliers() {
     const { isMobile, isTablet} = useDeviceType();
@@ -146,20 +147,16 @@ function SignUpForSuppliers() {
                                 ]}
                             />
 
-                            <Form.Item>
-                                <Checkbox>  
+                            <FormCheckBox>  
                                     I agree to a) Free Membership Agreement, 
                                     b)Terms of Use, and c) Privacy Policy
-                                </Checkbox>
-                            </Form.Item>
+                            </FormCheckBox>
                             
-
-                            <Form.Item>
-                                <Checkbox>  
-                                    I agree to receive your newsletter and promotional updates 
-                                    from Oahse's products and services.
-                                </Checkbox>
-                            </Form.Item>
+                            <FormCheckBox>  
+                            I agree to receive your newsletter and promotional updates 
+                            from Oahse's products and services.
+                            </FormCheckBox>
+                            
                     <Form.Item>
                     <Button type="primary" htmlType="submit" text="Create Account" className='' style={{width: '100%',}}/>
                     </Form.Item>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { Card, Form} from 'antd';
-import ImageLoader from '../components/Loader';
-import oahseicon from '../assets/oahse-icon.png';
-import oahselogo from '../assets/oahse-logo.png';
+import ImageLoader from '../../components/Loader';
+import oahseicon from '../../assets/oahse-icon.png';
+import oahselogo from '../../assets/oahse-logo.png';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as FingerprintIcon } from '../assets/icons/fingerprint.svg';
+import { ReactComponent as FingerprintIcon } from '../../assets/icons/fingerprint.svg';
 
 
 function Loginfingerprint({ API_URL }) {
