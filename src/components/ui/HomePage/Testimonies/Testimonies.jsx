@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar } from 'antd';
+import { Avatar} from 'antd';
 
 import Text from '../../Typography/Text';
-import Card from '../../Card/Card';
 import {truncateText} from '../../../../utils/helper';
 import './Testimonies.css';
+import Tile from '../../Tile/Tile';
 const HomepageTestimonies = ({ isMobile,isTablet }) => {
   // Array of testimonies (just as an example)
   const testimonies = [
@@ -129,7 +129,7 @@ const HomepageTestimonies = ({ isMobile,isTablet }) => {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeave}>
           {testimonies.map((testimony, index) => (
-            <Card
+            <Tile
               key={index}
               className="homepage-testimonies row m-auto"
               cardBodyClass="row m-auto"
@@ -159,12 +159,12 @@ const HomepageTestimonies = ({ isMobile,isTablet }) => {
                   </Text>
                 </div>
               </div>
-            </Card>
+            </Tile>
           ))}
       </div>
  : 
       <div className="p-2 mb-4">
-        <Card className="homepage-testimonies row m-auto" cardBodyClass="row m-auto">
+        <Tile className="homepage-testimonies row m-auto" cardBodyClass="row m-auto">
           <div className="col-12 col-md-6  p-3">
             <div className="homepage-testimonies-content d-flex flex-row align-items-center">
               <Avatar
@@ -191,7 +191,7 @@ const HomepageTestimonies = ({ isMobile,isTablet }) => {
               </Text>
             </div>
           </div>
-        </Card>
+        </Tile>
 
         {/* Navigation Buttons */}
         <div className="navigation-buttons d-flex justify-content-between">

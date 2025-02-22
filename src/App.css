@@ -133,6 +133,9 @@
 .border-dark {
   border-color: var(--background-color);
 }
+.border-gray {
+  border-color: var(--primary-color-light);
+}
 .chat-pop {
   z-index: 2;
   position: fixed; /* Absolute positioning within homepage-content */
@@ -472,9 +475,7 @@
 .ant-checkbox-indeterminate:hover .ant-checkbox-inner {
   border-color: var(--secondary-color) !important;
 }
-.ant-card-body{
-  padding: 8px !important;
-}
+
 
 .ant-btn{
   background-color: var(--primary-button-background-color) !important;
@@ -1154,9 +1155,7 @@
   text-decoration: none !important;
   color: black !important;
 }
-.ant-row {
-  align-items: center !important;
-}
+
 .ant-menu {
   border: none !important;
 }

@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { Input, Drawer, DatePicker, Space } from 'antd';
 import PropTypes from 'prop-types';
-import { Html5QrcodeScanner } from 'html5-qrcode'; // Barcode Scanner library
+// import { Html5QrcodeScanner } from 'html5-qrcode'; // Barcode Scanner library
 import InputNumber from './InputNumber';
 import DropDown from '../../DropDown';
 import dayjs from 'dayjs';
 import './Input.css'; // Ensure the CSS file is properly linked
 
 // Define the barcode scanner logic
-const startBarcodeScan = () => {
-  const html5QrCode = new Html5QrcodeScanner('qr-reader', { fps: 10, qrbox: 250 });
-  html5QrCode.render(
-    (qrCodeMessage) => {
-      console.log('QR Code Detected: ', qrCodeMessage);
-      alert(`Scanned Barcode: ${qrCodeMessage}`);
-      html5QrCode.stop(); // Stop the scanning after a successful scan
-    },
-    (errorMessage) => {
-      console.log('Error:', errorMessage);
-    }
-  );
-};
+// const startBarcodeScan = () => {
+//   const html5QrCode = new Html5QrcodeScanner('qr-reader', { fps: 10, qrbox: 250 });
+//   html5QrCode.render(
+//     (qrCodeMessage) => {
+//       console.log('QR Code Detected: ', qrCodeMessage);
+//       alert(`Scanned Barcode: ${qrCodeMessage}`);
+//       html5QrCode.stop(); // Stop the scanning after a successful scan
+//     },
+//     (errorMessage) => {
+//       console.log('Error:', errorMessage);
+//     }
+//   );
+// };
 
 // Define the filter drawer
 const FilterDrawer = ({ onSearch, onChangeDrawer, name, categoryoptions, minprice, maxprice, drawervisible, iscategoryLoading }) => {

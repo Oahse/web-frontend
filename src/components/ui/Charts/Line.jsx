@@ -79,7 +79,7 @@ const LineChart = ({title, yaxis, xaxis,isMobile}) => {
   };
 
   return (
-    <div style={{ position: 'relative', marginBottom:'1.5rem', height:`${isMobile ?'300px':'500px'}`  }}> {/* Set relative container height */}
+    <div style={{ position: 'relative', marginBottom:'16px', height:`${isMobile ?'300px':'500px'}`  }}> {/* Set relative container height */}
       <Line data={data} options={options} />
     </div>
   );

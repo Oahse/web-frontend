@@ -23,6 +23,7 @@ import AdminMarketing from './Marketing';
 import AdminPlatform from './Platform';
 import BottomNavbar from '../../components/ui/BottomNavBar/BottomNavBar';
 import AdminContents from './Content';
+import { Footer } from 'antd/es/layout/layout';
 
 const Admin = ({API_URL,Companyname }) => {
     const { isMobile, isTablet} = useDeviceType();
@@ -43,13 +44,13 @@ const Admin = ({API_URL,Companyname }) => {
     const sidebarlinks = SideNavLinks({ location, isScrolled, country,isMobile});
     const draweritems = SideNavLinks({ location, isScrolled, country, isTablet });
     const bottombarlinks = SideNavLinks({ location, isScrolled, country, isMobile });
-    const [sidebarstate, setSidebarState] = useState({ 
+    const sidebarstate = { 
         visible: false, 
         placement: 'left', 
         title: 'Oahse', 
         items: sidebarlinks
  
-      });
+      };
     const [activepage, setActivePage] = useState(0)
     const handleActivePage = (item, index)=>{
         setActivePage(index);
@@ -57,27 +58,29 @@ const Admin = ({API_URL,Companyname }) => {
     const renderContent =() => {
         switch (activepage) {
             case 0:
-                return <AdminDashBoard isMobile={isMobile} />;
+                return <AdminDashBoard isMobile={isMobile} isTablet={isTablet} />;
             case 1:
-                return <AdminOrders isMobile={isMobile} />;
+                return <AdminOrders isMobile={isMobile} isTablet={isTablet} />;
             case 2:
-                return <AdminProducts isMobile={isMobile} />;
+                return <AdminProducts isMobile={isMobile} isTablet={isTablet} />;
             case 3:
-                return <AdminCustomers isMobile={isMobile} />;
+                return <AdminCustomers isMobile={isMobile} isTablet={isTablet} />;
             case 4:
-                return <AdminContents isMobile={isMobile} />;
+                return <AdminContents isMobile={isMobile} isTablet={isTablet} />;
             case 5:
-                return <AdminFinance isMobile={isMobile} />;
+                return <AdminFinance isMobile={isMobile} isTablet={isTablet} />;
             case 6:
-                return <AdminAnalytics isMobile={isMobile} />;
+                return <AdminAnalytics isMobile={isMobile} isTablet={isTablet} />;
             case 7:
-                return <AdminDiscount isMobile={isMobile} />;
+                return <AdminDiscount isMobile={isMobile} isTablet={isTablet} />;
             case 8:
-                return <AdminMarketing isMobile={isMobile} />;
+                return <AdminMarketing isMobile={isMobile} isTablet={isTablet} />;
             case 9:
-                return <AdminPlatform isMobile={isMobile} />;
+                return <AdminPlatform isMobile={isMobile} isTablet={isTablet} />;
+            case 10:
+                return <AdminPlatform isMobile={isMobile} isTablet={isTablet} />; //profile page view and edit
             default:
-                return <AdminDashBoard isMobile={isMobile} />;
+                return <AdminDashBoard isMobile={isMobile} isTablet={isTablet} />;
         }
     }
     
@@ -112,6 +115,7 @@ const Admin = ({API_URL,Companyname }) => {
                         />
                     {renderContent()}
                 </Layout>
+                <Footer>--</Footer>
             </Layout> 
             :
             <Layout>
@@ -120,6 +124,7 @@ const Admin = ({API_URL,Companyname }) => {
                     
                     {renderContent()}
                 </Layout>
+                <Footer>--</Footer>
                 {isMobile && <BottomNavbar items={bottombarlinks} onActivePage={(item, index)=>handleActivePage(item, index)}
                 user={userDetails} draweritems={draweritems} />}
             </Layout>}

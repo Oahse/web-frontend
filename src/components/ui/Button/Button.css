@@ -7,11 +7,10 @@
     padding: 4px;
     padding-left: 18px;
     padding-right: 18px;
-    /* min-width: 40px; */
-    height: 40px;
+    max-height: 34px;
     font-size: 14px;
     font-weight: 500;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     text-align: center;
     transition: all 0.3s ease;
