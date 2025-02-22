@@ -18,17 +18,17 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
         {!isMobile ? 
             <Content style={{
                 // margin: '6px',
-                overflowY: 'auto',  // Makes the content scrollable
-                height: '100vh',  // Ensures it takes full height of the viewport
+                // overflowY: 'auto',  // Makes the content scrollable
+                height: 'calc(100vh - 152px)',  // Ensures it takes full height of the viewport
                 scrollbarWidth: 'none',  // Firefox
                 msOverflowStyle: 'none',  // Internet Explorer
             }}>
                 
-                <div className="d-flex justify-content-between align-items-center p-3">
+                <div className="d-flex justify-content-between align-items-center p-3 mb-3">
                     <Breadcrumb
                         items={[
                             {
-                                title: <a href="/">Home</a>,
+                                title: <a href="/web-frontend">Home</a>,
                             },
                             {
                                 title: 'DashBoard',
@@ -47,7 +47,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
                         marginTop:'-16px',
                         borderRadius: '8px',
                         // backgroundColor:'white',
-                        maxHeight: 'calc(100vh - 152px)',  // 72px is an example for header and padding height, adjust if needed
+                        maxHeight: 'calc(100vh - 192px)',  // 72px is an example for header and padding height, adjust if needed
                         overflowY: 'auto',  // Enables scroll when content overflows
                         scrollbarWidth: 'none',  // Firefox
                         msOverflowStyle: 'none',  // Internet Explorer
@@ -192,18 +192,18 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
             :
             <Content style={{
                 // margin: '6px',
-                overflowY: 'auto',  // Makes the content scrollable
-                height: '100vh',  // Ensures it takes full height of the viewport
+                // overflowY: 'auto',  // Makes the content scrollable
+                height: 'calc(100vh - 152px)',  // Ensures it takes full height of the viewport
                 scrollbarWidth: 'none',  // Firefox
                 msOverflowStyle: 'none',  // Internet Explorer
             }}>
             
-            <div className="d-flex justify-content-between align-items-center p-3">
+            <div className="d-flex justify-content-between align-items-center p-3 mb-3">
                 <Breadcrumb
                 
                     items={[
                         {
-                            title: <a href="/">Home</a>,
+                            title: <a href="/web-frontend">Home</a>,
                         },
                         {
                             title: 'DashBoard',
@@ -219,9 +219,8 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
                 padding: '18px 18px',
                 // margin: '8px',
                 marginTop:'-16px',
-                minHeight: '100vh',
                 // backgroundColor:'white',
-                maxHeight: 'calc(100vh - 152px)',  // 72px is an example for header and padding height, adjust if needed
+                maxHeight: 'calc(100vh - 192px)',  // 72px is an example for header and padding height, adjust if needed
                 overflowY: 'auto',  // Enables scroll when content overflows
                 scrollbarWidth: 'none',  // Firefox
                 msOverflowStyle: 'none',  // Internet Explorer

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Col, Form, Row } from 'antd';
-import ImageLoader from '../components/Loader';
+import ImageLoader from '../components/ui/Loader/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import { useNavigate } from 'react-router-dom';

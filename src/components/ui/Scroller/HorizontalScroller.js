@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import { Avatar, Card, Col, message, Row, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { CurrencyConverter } from '../utils/helper';
-import Button from './ui/Button/Button';
+import { CurrencyConverter } from '../../../utils/helper';
+import Button from '../../ui/Button/Button';
 
 const { Title } = Typography;
 

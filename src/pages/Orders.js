@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Typography, Divider, List, Button } from 'antd';
 import Header from '../components/Header'; // Your custom header component
-import FilterComponent from '../components/Filter'; // Importing the existing filter component
+import FilterComponent from '../components/ui/Filter/Filter'; // Importing the existing filter component
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/ui/Footer/Footer';
 

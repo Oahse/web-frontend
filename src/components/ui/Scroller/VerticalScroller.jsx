@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, Card, Col, Row, Typography, Pagination } from 'antd';
 import { Link } from 'react-router-dom';
-import { CurrencyConverter } from '../utils/helper';
+import { CurrencyConverter } from '../../../utils/helper';
 
 const { Title } = Typography;
 

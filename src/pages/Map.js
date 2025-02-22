@@ -1,8 +1,8 @@
 // src/pages/Map.js
 import React, {useState, useEffect} from 'react';
-import ImageLoader from '../components/Loader';
+import ImageLoader from '../components/ui/Loader/Loader';
 import Header from '../components/Header';
-import FilterComponent from '../components/Filter';
+import FilterComponent from '../components/ui/Filter/Filter';
 import { Container } from 'react-bootstrap';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';

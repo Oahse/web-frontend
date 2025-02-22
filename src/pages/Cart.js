@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Table,Row, Col, Divider, Avatar, message, Modal, Radio, Breadcrumb } from 'antd';
 import Header from '../components/ui/Header/Header';
 import Footer from '../components/ui/Footer/Footer';
-import ImageLoader from '../components/Loader';
+import ImageLoader from '../components/ui/Loader/Loader';
 import InputNumber from '../components/ui/Input/InputNumber';
 import { Container } from 'react-bootstrap';
 import oahseicon from '../assets/oahse-icon.png';

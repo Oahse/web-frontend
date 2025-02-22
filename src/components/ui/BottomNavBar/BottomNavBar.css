@@ -3,6 +3,7 @@
     font-size: 16px;
     font-weight: 600;
     position: fixed;
+    flex-shrink: 0;   /* Prevent it from shrinking */
     top:auto;
     height: 58px;
     bottom: 0px;

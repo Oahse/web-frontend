@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ImageLoader from '../components/Loader';
+import ImageLoader from '../components/ui/Loader/Loader';
 
 import { Row, Col, Card, Avatar, Typography, Descriptions } from 'antd';
 import { Link, Navigate } from 'react-router-dom';

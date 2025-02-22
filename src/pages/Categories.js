@@ -1,9 +1,9 @@
 import React,{useState, useEffect} from 'react';
 import { Container } from 'react-bootstrap';
-import ImageLoader from '../components/Loader';
+import ImageLoader from '../components/ui/Loader/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
-import {BottomHorizontalScroller, MiddleHorizontalScroller, TopHorizontalScroller} from '../components/HorizontalScroller';
+import {BottomHorizontalScroller, MiddleHorizontalScroller, TopHorizontalScroller} from '../components/ui/Scroller/HorizontalScroller';
 import useDeviceType from '../hooks/useDeviceType';
 import { useAuth } from '../services/auth';
 import useIsScrolled from '../hooks/useIsScrolled';
@@ -15,7 +15,7 @@ import { Breadcrumb } from 'antd';
 import { SearchInput } from '../components/ui/Input/Input';
 import Button from '../components/ui/Button/Button';
 import dayjs from 'dayjs';
-import { MiddleVerticalScroller } from '../components/VerticalScroller';
+import { MiddleVerticalScroller } from '../components/ui/Scroller/VerticalScroller';
 import Footer from '../components/ui/Footer/Footer';
 import Header from '../components/ui/Header/Header';
 

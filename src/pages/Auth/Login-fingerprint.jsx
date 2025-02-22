@@ -1,7 +1,7 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { Card, Form} from 'antd';
-import ImageLoader from '../../components/Loader';
+import ImageLoader from '../../components/ui/Loader/Loader';
 import oahseicon from '../../assets/oahse-icon.png';
 import oahselogo from '../../assets/oahse-logo.png';
 import { useNavigate } from 'react-router-dom';

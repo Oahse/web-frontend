@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import FormInput from "../FormInput/FormInput";
+import FormInput from "../../ui/Input/FormInput/FormInput";
 
 const SearchInput = ({ onSearch, style, placeholder,className }) => {
     return (

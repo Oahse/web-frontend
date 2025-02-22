@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Form, notification, Row, Card } from 'antd';
-import ImageLoader from '../../components/Loader';
-import FormInput from '../../components/ui/FormInput/FormInput'
+import ImageLoader from '../../components/ui/Loader/Loader';
+import FormInput from '../../components/ui/Input/FormInput/FormInput'
 import oahseicon from '../../assets/oahse-icon.png';
 import oahselogo from '../../assets/oahse-logo.png';
 import procurement from '../../assets/procurement.jpg';

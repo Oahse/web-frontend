@@ -1,12 +1,12 @@
 import React,{useState, useEffect} from 'react';
 import { Container } from 'react-bootstrap';
 import { Breadcrumb } from 'antd';
-import ImageLoader from '../components/Loader';
+import ImageLoader from '../components/ui/Loader/Loader';
 import oahseicon from '../assets/oahse-icon.png';
 import oahselogo from '../assets/oahse-logo.png';
 import Header from '../components/ui/Header/Header';
-import {BottomHorizontalScroller, MiddleHorizontalScroller, TopHorizontalScroller, } from '../components/HorizontalScroller';
-import { MiddleVerticalScroller } from '../components/VerticalScroller';
+import {BottomHorizontalScroller, MiddleHorizontalScroller, TopHorizontalScroller, } from '../components/ui/Scroller/HorizontalScroller';
+import { MiddleVerticalScroller } from '../components/ui/Scroller/VerticalScroller';
 import { getProducts, useCategories, } from '../services/api';
 import { useAuth } from '../services/auth';
 import config from '../services/config';

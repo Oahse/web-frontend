@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Input, Space, DatePicker, Drawer } from 'antd';
 import dayjs from 'dayjs';
-import Select from './Select';
-import InputNumber from '../components/ui/Input/InputNumber';
+import Select from '../Select/Select';
+import InputNumber from '../Input/InputNumber';
 
 const FilterComponent = ({ onSearch,onChangeDrawer, name, categoryoptions, minprice, maxprice, drawervisible,iscategoryLoading }) => {
     const MAX_PRICE = 9999999999999999; // Max price limit

@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Col, Form, Row,message, Card} from 'antd';
 
 import procurement from '../../assets/suppliersimg.jpeg'
-import FormInput from '../../components/ui/FormInput/FormInput';
-import FormSelect from '../../components/ui/FormInput/FormSelect'
+import FormInput from '../../components/ui/Input/FormInput/FormInput';
+import FormSelect from '../../components/ui/Input/FormInput/FormSelect'
 
 import Button from '../../components/ui/Button/Button';
 
 import useDeviceType from '../../hooks/useDeviceType';
 import './Auth.css';
-import FormCheckBox from '../../components/ui/FormInput/FormCheckBox';
+import FormCheckBox from '../../components/ui/Input/FormInput/FormCheckBox';
 
 function SignUpForSuppliers() {
     const { isMobile, isTablet} = useDeviceType();

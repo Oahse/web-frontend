@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form} from 'antd'
-import Select from '../../Select';
+import Select from '../../Select/Select';
 
 const FormSelect = ({
     label, placeholder, name, rules, options=[],

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Form, Radio, message, Card} from 'antd';
-import ImageLoader from '../../components/Loader';
+import ImageLoader from '../../components/ui/Loader/Loader';
 import oahseicon from '../../assets/oahse-icon.png';
 import oahselogo from '../../assets/oahse-logo.png';
-import FormInput from '../../components/ui/FormInput/FormInput';
-import FormSelect from '../../components/ui/FormInput/FormSelect'
-import FormCheckBox from '../../components/ui/FormInput/FormCheckBox';
+import FormInput from '../../components/ui/Input/FormInput/FormInput';
+import FormSelect from '../../components/ui/Input/FormInput/FormSelect'
+import FormCheckBox from '../../components/ui/Input/FormInput/FormCheckBox';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/ui/Button/Button';
 import { useRegister } from '../../services/auth';

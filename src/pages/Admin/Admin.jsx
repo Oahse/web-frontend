@@ -3,7 +3,7 @@ import { Layout} from "antd"
 import Logo from '../../assets/oahse_logo_text_dark.png';
 import useDeviceType from "../../hooks/useDeviceType";
 import { useAuth } from "../../services/auth";
-import ImageLoader from "../../components/Loader";
+import ImageLoader from "../../components/ui/Loader/Loader";
 import oahseicon from '../../assets/oahse-icon.png';
 import oahselogo from '../../assets/oahse-logo.png';
 import useIsScrolled from "../../hooks/useIsScrolled";

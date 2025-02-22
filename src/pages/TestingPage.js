@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react'
-import FormInput from '../components/ui/FormInput/FormInput'
-import FormSelect from '../components/ui/FormInput/FormSelect'
+import FormInput from '../components/ui/Input/FormInput/FormInput'
+import FormSelect from '../components/ui/Input/FormInput/FormSelect'
 import { Form, message } from 'antd'
 import axios from 'axios'
 
