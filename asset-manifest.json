@@ -1,11 +1,15 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.a06f892d.css",
-    "main.js": "/web-frontend/static/js/main.e8aee4a3.js",
+    "main.css": "/web-frontend/static/css/main.4772f88f.css",
+    "main.js": "/web-frontend/static/js/main.139262a3.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
     "static/media/topbar-shop-img.png": "/web-frontend/static/media/topbar-shop-img.ef94055dcab6627e0e86.png",
+    "static/media/customers-dashboardreport.svg": "/web-frontend/static/media/customers-dashboardreport.899b5c37e60eb7e60f3bd32f6c4c752e.svg",
+    "static/media/youtube.svg": "/web-frontend/static/media/youtube.a2813c01e6dfb04e35a2e605d372b13f.svg",
+    "static/media/customers-dashboardads.svg": "/web-frontend/static/media/customers-dashboardads.e459771f7c706a7083e15fd569d3ec75.svg",
     "static/media/CIPAC_cover_photo.jpg": "/web-frontend/static/media/CIPAC_cover_photo.c9896af6b416cad75641.jpg",
+    "static/media/productsreviews.svg": "/web-frontend/static/media/productsreviews.988c7de6363fc785a05e3b1f9283ec31.svg",
     "static/media/oahse-logo.png": "/web-frontend/static/media/oahse-logo.abeea64afabf7d674fef.png",
     "static/media/procurement.jpg": "/web-frontend/static/media/procurement.2a81563ca7744373eebd.jpg",
     "static/media/oahse-icon.png": "/web-frontend/static/media/oahse-icon.c628d4a92daa1c19dd6a.png",
@@ -13,12 +17,12 @@
     "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
     "static/media/user.svg": "/web-frontend/static/media/user.54a9668c76dc920e538cdd50b152d5b0.svg",
     "index.html": "/web-frontend/index.html",
-    "main.a06f892d.css.map": "/web-frontend/static/css/main.a06f892d.css.map",
-    "main.e8aee4a3.js.map": "/web-frontend/static/js/main.e8aee4a3.js.map",
+    "main.4772f88f.css.map": "/web-frontend/static/css/main.4772f88f.css.map",
+    "main.139262a3.js.map": "/web-frontend/static/js/main.139262a3.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a06f892d.css",
-    "static/js/main.e8aee4a3.js"
+    "static/css/main.4772f88f.css",
+    "static/js/main.139262a3.js"
   ]
 }
