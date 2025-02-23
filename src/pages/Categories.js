@@ -12,7 +12,7 @@ import config from '../services/config';
 import { Link } from 'react-router-dom';
 import Text from '../components/ui/Typography/Text';
 import { Breadcrumb } from 'antd';
-import { SearchInput } from '../components/ui/Input/Input';
+import SearchInput from '../components/ui/Input/SearchInput';
 import Button from '../components/ui/Button/Button';
 import dayjs from 'dayjs';
 import { MiddleVerticalScroller } from '../components/ui/Scroller/VerticalScroller';

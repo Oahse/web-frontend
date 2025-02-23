@@ -38,31 +38,28 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                     
                     <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
                       <Badge dot={true} size='small'>
-                        <Icon icon="circum:mail" width="25" height="25"  className='bg-light rounded-sm border-1' />
+                        <Icon icon="circum:mail" width="25" height="25" />
                       </Badge>
                     </Link> 
                     
                     <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
                       <Badge dot={true} size='small'>
-                        <Icon icon="material-symbols-light:notifications-outline-rounded" width="25" height="25" className='bg-light rounded-sm border-1' />
+                        <Icon icon="material-symbols-light:notifications-outline-rounded" width="25" height="25" />
                       </Badge>
                     </Link>
-                      
-                      
                     </>
                   ): (
                     <>
                       <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
                         <Badge dot={true} size='small'>
-                          <Icon icon="circum:mail" width="25" height="25"  className='bg-light rounded-sm border-1' />
+                          <Icon icon="circum:mail" width="25" height="25" />
                         </Badge>
                       </Link> 
                       
                       <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
                         <Badge dot={true} size='small'>
-                            <Icon icon="hugeicons:shopping-basket-01" width="24" height="24" className='bg-light rounded-sm border-1'  />
+                            <Icon icon="hugeicons:shopping-basket-01" width="24" height="24" />
                         </Badge>
-                        
                       </Link> 
                     </>
                   )
@@ -105,11 +102,11 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                       <>
                         <Link to="/user" className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
                           <Badge dot={true} size='small'>
-                            <Icon icon="circum:mail" width="25" height="25"  className='bg-light rounded-sm border-1' />
+                            <Icon icon="circum:mail" width="25" height="25" />
                           </Badge>
                         </Link> <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
                           <Badge dot={true} size='small'>
-                            <Icon icon="material-symbols-light:notifications-outline-rounded" width="25" height="25" className='bg-light rounded-sm border-1' />
+                            <Icon icon="material-symbols-light:notifications-outline-rounded" width="25" height="25"/>
                           </Badge>
                         </Link> 
                         <Link to="/user" className={`p-1 text-black`} >
@@ -133,13 +130,13 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                         
                         <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
                           <Badge dot={true} size='small'>
-                              <Icon icon="circum:mail" width="25" height="25"  className='bg-light rounded-sm border-1' />
+                              <Icon icon="circum:mail" width="25" height="25" />
                           </Badge>
                         </Link> 
                         
                         <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
                           <Badge dot={true} size='small'>
-                              <Icon icon="hugeicons:shopping-basket-01" width="24" height="24" className='bg-light rounded-sm border-1'  />
+                              <Icon icon="hugeicons:shopping-basket-01" width="24" height="24" />
                           </Badge>
                         </Link> 
                         <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >

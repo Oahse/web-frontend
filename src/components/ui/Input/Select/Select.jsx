@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, Select as AntdSelect } from 'antd';
-
+import './Select.css';
 const Select = ({ placeholder,options, onChange, style, iscategoryLoading, ...props }) => {
-    console.log(options)
     const Options =options.map((option,index) => ({
         key :option.id ||index,
         value: option.label, // Use id for the value
@@ -15,7 +14,6 @@ const Select = ({ placeholder,options, onChange, style, iscategoryLoading, ...pr
         code: option.code,
         title:option.label
     }))
-    console.log(Options,'===')
     const [selectedvalue, setSelectedValue] = useState({ value: Options[0]?.value, label: Options[0]?.label });
     const handleChange = (option)=>{
         setSelectedValue(option);

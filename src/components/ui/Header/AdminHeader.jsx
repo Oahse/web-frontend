@@ -14,7 +14,7 @@ import SearchInput from '../Input/SearchInput';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
 
-function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActivePage }) {
+function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,isFilter,onActivePage }) {
     const navigate = useNavigate();
     const { country, error } = useCountryByLocation();
     
@@ -71,7 +71,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
             </Navbar.Brand>
             {(!isMobile && onSearch) && 
                     <div className="d-flex align-items-center mt-3 mx-auto" style={{minWidth:'400px'}} >
-                        <SearchInput placeholder='Search Products' onSearch={onSearch} style={{width:'100%'}} />
+                        <SearchInput placeholder='Search Products' onSearch={onSearch} isFilter={isFilter} style={{width:'100%'}} />
                     </div>
                 }
             
@@ -97,7 +97,7 @@ function AdminHeader({ Companyname, isScrolled,isMobile, user,onSearch,onActiveP
                             zIndex: 100,  // Make sure it appears above other elements
                         }}
                     >
-                        <SearchInput placeholder='Search Products' className={' shadow-lg'} onSearch={onSearch} style={{width:'100%'}} />
+                        <SearchInput placeholder='Search Products' className={' shadow-lg'} onSearch={onSearch} isFilter={isFilter} style={{width:'100%'}} />
                     </div>
                 </div>}
                 <NavLinks isMobile={isMobile} isScrolled={isScrolled} location={location} country={country}/>

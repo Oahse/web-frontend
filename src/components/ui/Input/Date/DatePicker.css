@@ -1,0 +1,39 @@
+.ant-picker,
+.ant-picker-outlined {
+    color: var(--alternate-text-color) !important;
+    border-radius: 8px !important;
+    padding: 3px 8px !important;
+    height: 36px !important;
+    border: 1px solid #f0f4f7 !important;
+    background-color: #f0f4f7 !important;
+    transition: all 0.3s ease;
+    outline: none !important; /* Remove default blue outline */
+    box-shadow: none !important;
+}
+.ant-picker-focused,
+.ant-picker-outlined-focused {
+    border-color: var(--background-color) !important;
+    background-color: white !important;
+    outline: none !important;
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner{
+  border: 1px solid var(--background-color) !important;
+  background-color: var(--primary-color-light) !important;
+  color: var(--background-color) !important;
+  cursor: pointer !important;
+  
+}
+.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: 1px solid transparent !important;
+}
+.ant-picker-cell-today .ant-picker-cell-inner {
+  border: 1px solid var(--background-color) !important;
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+.ant-picker-now .ant-picker-now-btn {
+  color: var(--background-color) !important;
+}
+
+

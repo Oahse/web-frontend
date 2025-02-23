@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import Footer from '../components/ui/Footer/Footer';
 import useDeviceType from '../hooks/useDeviceType';
 import useIsScrolled from '../hooks/useIsScrolled';
-import { SearchInput } from '../components/ui/Input/Input';
+import SearchInput from '../components/ui/Input/SearchInput';
 import Button from '../components/ui/Button/Button';
 import Text from '../components/ui/Typography/Text';
 import { Link } from 'react-router-dom';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Space, DatePicker, Drawer } from 'antd';
 import dayjs from 'dayjs';
-import Select from '../Select/Select';
+import Select from '../Input/Select/Select';
 import InputNumber from '../Input/InputNumber';
 
 const FilterComponent = ({ onSearch,onChangeDrawer, name, categoryoptions, minprice, maxprice, drawervisible,iscategoryLoading }) => {
