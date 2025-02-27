@@ -13,7 +13,7 @@ import { useCountryByLocation } from "../../hooks/useCountry";
 import { useLocation } from "react-router-dom";
 import AdminHeader from "../../components/ui/Header/AdminHeader";
 import AdminDashBoard from "./Dashboard";
-import AdminOrders from "./Orders";
+import AdminOrders from "./Orders/Orders";
 import AdminProducts from './Products';
 import AdminCustomers from './Customers';
 import AdminFinance from './Finance';

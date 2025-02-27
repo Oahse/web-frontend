@@ -1,14 +1,14 @@
 import { Breadcrumb, Col, Layout, Row} from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { ReactComponent as PaidBasket }  from '../../assets/paid_basket.svg';
-import { ReactComponent as FailedBasket }  from '../../assets/failed_basket.svg';
-import Tabs from "../../components/ui/Tabs/Tabs";
-import Table from "../../components/ui/Table/Table";
+import { ReactComponent as PaidBasket }  from '../../../assets/paid_basket.svg';
+import { ReactComponent as FailedBasket }  from '../../../assets/failed_basket.svg';
+import Tabs from "../../../components/ui/Tabs/Tabs";
+import Table from "../../../components/ui/Table/Table";
 import { useState } from "react";
 
 const { Content } = Layout;
 
-const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
+const AdminOrderItem = ({ API_URL, Companyname, isMobile, isTablet, item }) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
     const renderTableContent = (items) => {
         // Columns for the Antd Table
@@ -320,4 +320,4 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
     );
 };
 
-export default AdminOrders;
+export default AdminOrderItem;
