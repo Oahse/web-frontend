@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Table as AntdTable } from 'antd';
 import PropTypes from 'prop-types';  // Import PropTypes
+import './Table.css';
 
 const Table = ({
     items = [], 

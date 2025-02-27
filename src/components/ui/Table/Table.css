@@ -1,0 +1,21 @@
+.ant-table {
+    border-radius: 0px 0px 0 0 !important;
+    font-size: 13px !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.ant-table-row :hover {
+    cursor: pointer  !important;
+}
+.ant-table-thead .ant-table-cell {
+    color: var(--secondary-color) !important;
+    font-size: 13px !important;
+}
+.ant-table-cell {
+    border-radius: 0px 0px 0 0 !important;
+    background-color: RGB(244,244,244) !important;
+    padding: 8px !important;
+    font-size: 13px !important;
+    font-weight: 500px !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}

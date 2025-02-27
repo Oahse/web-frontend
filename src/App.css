@@ -1118,3 +1118,6 @@
 .ant-drawer-close {
   outline: none !important;
 }
+.iconify {
+  cursor: pointer;
+}

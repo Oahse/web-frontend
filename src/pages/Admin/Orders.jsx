@@ -1,17 +1,178 @@
 import { Breadcrumb, Col, Layout, Row} from "antd";
-import LineChart from "../../components/ui/Charts/Line";
-import Text from "../../components/ui/Typography/Text";
-import Card from "../../components/ui/Card/Card";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import Button from "../../components/ui/Button/Button";
-import { ReactComponent as CustomersDashboardReport }  from '../../assets/customers-dashboardreport.svg';
-import { ReactComponent as CustomersDashboardAds }  from '../../assets/customers-dashboardads.svg';
-import { ReactComponent as YouTube }  from '../../assets/youtube.svg';
-import { ReactComponent as ProductReviews }  from '../../assets/productsreviews.svg';
+import { ReactComponent as PaidBasket }  from '../../assets/paid_basket.svg';
+import { ReactComponent as FailedBasket }  from '../../assets/failed_basket.svg';
+import Tabs from "../../components/ui/Tabs/Tabs";
+import Table from "../../components/ui/Table/Table";
+import { useState } from "react";
 
 const { Content } = Layout;
 
-const AdminOrders = ({API_URL,Companyname,isMobile,isTablet }) => {
+const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
+    const renderTableContent = (items) => {
+        // Columns for the Antd Table
+        const columns = [
+          {
+            title: 'Order',
+            dataIndex: 'id',
+            key: 'id',
+          },
+          {
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date',
+            render: (date) => date.toLocaleDateString(), // Format date properly
+          },
+          {
+            title: 'Customer',
+            dataIndex: 'customer',
+            key: 'customer',
+          },
+          {
+            title: 'Brand',
+            dataIndex: 'brand',
+            key: 'brand',
+          },
+          {
+            title: 'Total',
+            dataIndex: 'total', // You can calculate total in the render function
+            key: 'total',
+            render: (_, record) => `$${(record.price * record.quantity).toFixed(2)}`,
+          },
+          {
+            title: 'Payment Status',
+            dataIndex: 'payment_status',
+            key: 'payment_status',
+            render: (_, record) => (
+                <>
+                  {record.payment_status} {(record.payment_status === false || record.payment_status==='Failed')?<FailedBasket />:<PaidBasket />}
+                </>
+              ),
+          },
+          {
+            title: 'Fulfillment Status',
+            dataIndex: 'fulfillment_status',
+            key: 'fulfillment_status',
+          },
+          {
+            title: 'Qty',
+            dataIndex: 'quantity',
+            key: 'quantity',
+          },
+          {
+            title: 'Delivery Status',
+            dataIndex: 'delivery_status',
+            key: 'delivery_status',
+          },
+        ];
+    
+        return (<Table
+                        columns={columns}
+                        items={items}
+                        onSelectedRowKeys={(selectedRowKeys)=>(setSelectedRowKeys(selectedRowKeys))}
+                      />)
+      }
+    const initialItems = [
+      {
+        label: 'All',
+        children: renderTableContent([
+          {
+            id: 1,
+            date: new Date(),
+            customer: 'John Doe',
+            brand: 'Brand A',
+            price: 50,
+            quantity: 2,
+            payment_status: 'Paid',
+            fulfillment_status: 'Fulfilled',
+            delivery_status: 'Delivered'
+          },
+          {
+            id: 2,
+            date: new Date(),
+            customer: 'Jane Smith',
+            brand: 'Brand B',
+            price: 30,
+            quantity: 1,
+            payment_status: 'Pending',
+            fulfillment_status: 'Pending',
+            delivery_status: 'In Progress'
+          },
+          {
+            id: 3,
+            date: new Date(),
+            customer: 'George Brown',
+            brand: 'Brand C',
+            price: 20,
+            quantity: 3,
+            payment_status: 'Failed',
+            fulfillment_status: 'Fulfilled',
+            delivery_status: 'Delivered'
+          },
+          {
+            id: 4,
+            date: new Date(),
+            customer: 'George Brown',
+            brand: 'Brand C',
+            price: 20,
+            quantity: 3,
+            payment_status: 'Failed',
+            fulfillment_status: 'Fulfilled',
+            delivery_status: 'Delivered'
+          },
+          {
+            id: 5,
+            date: new Date(),
+            customer: 'George Brown',
+            brand: 'Brand C',
+            price: 20,
+            quantity: 3,
+            payment_status: 'Failed',
+            fulfillment_status: 'Fulfilled',
+            delivery_status: 'Delivered'
+          },
+          {
+            id: 6,
+            date: new Date(),
+            customer: 'George Brown',
+            brand: 'Brand C',
+            price: 20,
+            quantity: 3,
+            payment_status: 'Failed',
+            fulfillment_status: 'Fulfilled',
+            delivery_status: 'Delivered'
+          },
+          // Add more items as needed...
+        ]),
+        key: '1',
+      },
+      {
+        label: 'Unfullfilled',
+        children: 'Content of Tab 2',
+        key: '2',
+      },
+      {
+        label: 'UnPaid',
+        children: 'Content of Tab 3',
+        key: '3',
+        closable: false,
+      },
+      {
+        label: 'Open',
+        children: 'Content of Tab 3',
+        key: '4',
+        closable: false,
+      },
+      {
+        label: 'Archive',
+        children: 'Content of Tab 3',
+        key: '5',
+        closable: false,
+      },
+    ];
+  
+    
     return (
         <Content style={{
             // margin: '6px',
@@ -39,7 +200,7 @@ const AdminOrders = ({API_URL,Companyname,isMobile,isTablet }) => {
         
             <div
                 style={{
-                    padding: '18px 18px',
+                    padding: '1px 18px',
                     // margin: '8px',
                     marginTop:'-16px',
                     borderRadius: '8px',
@@ -53,10 +214,14 @@ const AdminOrders = ({API_URL,Companyname,isMobile,isTablet }) => {
                 
                 <Row gutter={[16, 16]} >
                     
-                    <Col span={24} style={{padding: '8px'}}>
-                        <div>
-                            
-                        </div>
+                    <Col span={24} style={{paddingLeft: '8px', paddingRight:'8px'}}>
+                        <Tabs 
+                            initialItems={initialItems} 
+                            tabBarExtraContent={<div style={{display:'flex',justifyContent:'space-around', alignContent:'center',gap:'10px'}}>
+                                <Icon icon="fluent:filter-20-regular" width="25" height="25" />
+                                <Icon icon="ph:arrows-down-up-light" width="25" height="25" />
+                            </div>}
+                        />
                     </Col>
                     {/* <Col span={24} >
                         <YouTube style={{width:'100%', cursor:'pointer'}}/>

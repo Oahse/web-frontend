@@ -42,7 +42,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
             
                 <div
                     style={{
-                        padding: '18px 18px',
+                        padding: '1px 18px',
                         // margin: '8px',
                         marginTop:'-16px',
                         borderRadius: '8px',
@@ -56,7 +56,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
                     
                     <Row gutter={[16, 16]} >
                         
-                        <Col span={24} style={{padding: '8px'}}>
+                        <Col span={24} style={{paddingLeft: '8px', paddingRight:'8px'}}>
                             <Row gutter={[16, 16]}>
                                 <Col span={6}>
                                     <Card 
@@ -216,7 +216,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
             </div>
             <div
                 style={{
-                padding: '18px 18px',
+                padding: '1px 18px',
                 // margin: '8px',
                 marginTop:'-16px',
                 // backgroundColor:'white',

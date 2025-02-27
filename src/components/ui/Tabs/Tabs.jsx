@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Tabs as AntdTabs } from 'antd';
 import PropTypes from 'prop-types';  // Import PropTypes
+import './Tabs.css';
 
 const Tabs = ({ 
     initialItems = [], 
@@ -10,7 +11,8 @@ const Tabs = ({
     alignValue = 'center', 
     tabPosition = 'top', 
     onTabClick, 
-    onTabScroll 
+    onTabScroll,
+    tabBarExtraContent 
 }) => {
     const [activeKey, setActiveKey] = useState(initialItems[0]?.key || '1');
     const [items, setItems] = useState(initialItems);
@@ -73,6 +75,7 @@ const Tabs = ({
             onTabClick={onTabClick}
             onTabScroll={onTabScroll}
             animated={{ inkBar: true, tabPane: true }}
+            tabBarExtraContent={tabBarExtraContent}
         />
     );
 };
@@ -94,6 +97,7 @@ Tabs.propTypes = {
     tabPosition: PropTypes.oneOf(['top', 'left', 'bottom', 'right']),  // Allowed values for tabPosition
     onTabClick: PropTypes.func,  // onTabClick should be a function
     onTabScroll: PropTypes.func,  // onTabScroll should be a function
+    tabBarExtraContent:PropTypes.any
 };
 
 // Default props
@@ -103,6 +107,7 @@ Tabs.defaultProps = {
     size: 'small',
     alignValue: 'center',
     tabPosition: 'top',
+    tabBarExtraContent: null
 };
 
 export default Tabs;
