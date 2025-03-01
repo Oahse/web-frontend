@@ -13,6 +13,11 @@ const Table = ({
     onShowSizeChange,
     onPaginationChange,
     onSelectedRowKeys,
+    onRowClick,
+    onRowDoubleClick,
+    onRowContextMenu,
+    onRowMouseEnter,
+    onRowMouseLeave,
     ...props
 }) => {
 
@@ -65,6 +70,15 @@ const Table = ({
                 pageSizeOptions: showSizeChanger && pageSizeOptions,
                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
             }}
+            onRow={(record, rowIndex) => {
+                return {
+                  onClick: (event) => onRowClick(event,record, rowIndex), // click row
+                  onDoubleClick: (event) => onRowDoubleClick(event,record, rowIndex), // double click row
+                //   onContextMenu: (event) => onRowContextMenu(event,record, rowIndex), // right button click row
+                //   onMouseEnter: (event) => onRowMouseEnter(event,record, rowIndex), // mouse enter row
+                //   onMouseLeave: (event) => onRowMouseLeave(event,record, rowIndex), // mouse leave row
+                };
+              }}
             scroll={{ x: 'max-content' }} // Enable horizontal scrolling
             rowSelection={rowSelection} // Enable row selection
             {...props}

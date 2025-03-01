@@ -42,5 +42,35 @@ const CurrencyConverter = ({ amount, fromCurrency, toCurrency }) => {
         <span>{toCurrency} {convertedAmount} </span>
     );
 };
-
-export {CurrencyConverter, truncateText}
+const updateURL = (url, state, replace = false) =>
+    replace
+      ? window.history.replaceState(state, '', url)
+      : window.history.pushState(state, '', url);
+  
+const getPathFromActivePage = (activePage) => {
+    switch (activePage) {
+      case 0:
+        return '/admin/dashboard';
+      case 1:
+        return '/admin/orders';
+      case 2:
+        return '/admin/products';
+      case 3:
+        return '/admin/customers';
+      case 4:
+        return '/admin/contents';
+      case 5:
+        return '/admin/finance';
+      case 6:
+        return '/admin/analytics';
+      case 7:
+        return '/admin/discount';
+      case 8:
+        return '/admin/marketing';
+      case 9:
+        return '/admin/platform';
+      default:
+        return '/admin/dashboard'; // Default path if none of the cases match
+    }
+  };
+export {CurrencyConverter, truncateText,getPathFromActivePage,updateURL}

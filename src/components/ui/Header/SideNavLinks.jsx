@@ -53,7 +53,7 @@ const SideNavLinks = ({ location, isScrolled, country, isMobile }) => {
         </span>
     );
   }
-  if (location.pathname === '/admin/dashboard') {
+  if (location.pathname.includes('/admin')) {
       links.push(
         <span className={`p-1 text-black`}>
             <span className="m-1 fw-bold">

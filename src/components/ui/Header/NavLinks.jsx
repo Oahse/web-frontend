@@ -16,7 +16,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
  */
 
 const NavLinks = ({ isMobile, isScrolled, location, country }) => {
-    // console.log(isMobile, isScrolled, location, country)
+    // console.log(isMobile, isScrolled, location, location.pathname.includes('/admin'))
     return (
         <span className="d-flex flex-row align-items-center">
             {isMobile ? (
@@ -33,7 +33,7 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                   </span>
                   )
 
-                  : location.pathname === '/admin/dashboard' ?(
+                  : location.pathname.includes('/admin')?(
                     <>
                     
                     <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
@@ -98,7 +98,7 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                 ):
                 
                   
-                    location.pathname === '/admin/dashboard' ?(
+                  location.pathname.includes('/admin') ?(
                       <>
                         <Link to="/user" className={`p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
                           <Badge dot={true} size='small'>

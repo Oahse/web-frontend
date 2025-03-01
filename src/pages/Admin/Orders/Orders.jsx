@@ -5,11 +5,30 @@ import { ReactComponent as FailedBasket }  from '../../../assets/failed_basket.s
 import Tabs from "../../../components/ui/Tabs/Tabs";
 import Table from "../../../components/ui/Table/Table";
 import { useState } from "react";
+import AdminContent from "../AdminContent";
+import { updateURL } from "../../../utils/helper";
 
 const { Content } = Layout;
 
 const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
+    let breadCrumbItems = [
+      {title:'Orders'}
+    ]
+    const handleOrderItem =(event,record, rowIndex) =>{
+      const url = `http://localhost:3000/web-frontend/admin/orders/${record.id}`
+      updateURL(url, {
+        
+      });
+      breadCrumbItems = [
+        {
+          title: <a href="/web-frontend">Orders</a>,
+        },
+        {title:record.id},
+      ]
+      console.log(record.id, breadCrumbItems)
+    }
+    
     const renderTableContent = (items) => {
         // Columns for the Antd Table
         const columns = [
@@ -71,6 +90,7 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
                         columns={columns}
                         items={items}
                         onSelectedRowKeys={(selectedRowKeys)=>(setSelectedRowKeys(selectedRowKeys))}
+                        onRowClick={(event,record, rowIndex) => handleOrderItem(event,record, rowIndex)}
                       />)
       }
     const initialItems = [
@@ -174,45 +194,12 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
   
     
     return (
-        <Content style={{
-            // margin: '6px',
-            // overflowY: 'auto',  // Makes the content scrollable
-            height: 'calc(100vh - 152px)',  // Ensures it takes full height of the viewport
-            scrollbarWidth: 'none',  // Firefox
-            msOverflowStyle: 'none',  // Internet Explorer
-        }}>
-            
-            <div className="d-flex justify-content-between align-items-center p-3 mb-3">
-                <Breadcrumb
-                    items={[
-                        {
-                            title: <a href="/web-frontend">Home</a>,
-                        },
-                        {
-                            title: 'Orders',
-                        },
-                    ]}
-                />
-                <span className="bg-white p-2" style={{borderRadius: '8px', cursor:'pointer'}}>
-                    <Icon icon="uit:calender" width="20" height="20" /> <span className="m-auto">Last 30 days</span>
-                </span>
-            </div>
-        
-            <div
-                style={{
-                    padding: '1px 18px',
-                    // margin: '8px',
-                    marginTop:'-16px',
-                    borderRadius: '8px',
-                    // backgroundColor:'white',
-                    maxHeight: 'calc(100vh - 192px)',  // 72px is an example for header and padding height, adjust if needed
-                    overflowY: 'auto',  // Enables scroll when content overflows
-                    scrollbarWidth: 'none',  // Firefox
-                    msOverflowStyle: 'none',  // Internet Explorer
-                }}
-            >
-                
-                <Row gutter={[16, 16]} >
+        <AdminContent 
+          API_URL ={API_URL}
+          Companyname={Companyname}
+          breadCrumbItems={breadCrumbItems}
+          >
+            <Row gutter={[16, 16]} >
                     
                     <Col span={24} style={{paddingLeft: '8px', paddingRight:'8px'}}>
                         <Tabs 
@@ -315,8 +302,9 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
                         </Row>
                     </Col> */}
                 </Row>
-            </div>
-        </Content>
+        </AdminContent>
+              
+              
     );
 };
 

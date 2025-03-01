@@ -4,13 +4,22 @@ import './SideBar.css';
 import Text from '../Typography/Text';
 import Button from '../Button/Button'
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { useLocation } from 'react-router-dom';
+import { getPathFromActivePage, updateURL } from '../../../utils/helper';
 
 const { Sider } = Layout;
 
-const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,onActivePage }) => {
+const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,activePage,onActivePage }) => {
   const [collapsed, setCollapsed] = useState(false);
+  
   const handleActivePage = (item, index)=>{
     onActivePage && onActivePage(item, index);
+    
+    const url = `http://localhost:3000/web-frontend${getPathFromActivePage(index)}`
+    updateURL(url, {
+      
+    });
+    // console.log(url)
   }
     // Disable scrolling when drawer is visible
   useEffect(() => {
@@ -84,7 +93,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
               ))}
           </div> */}
           {/* Menu */}
-            <Menu theme="light" mode='vertical' className="sidebar-menu" defaultSelectedKeys={['0']} >
+            <Menu theme="light" mode='vertical' className="sidebar-menu" defaultSelectedKeys={[`${activePage}`]} >
               {items && items.map((item, index) => (
                 <Menu.Item key={index} onClick={()=>handleActivePage(item, index)}>{item}</Menu.Item>
               ))}
@@ -103,7 +112,7 @@ const Sidebar = ({ isMobile,logo, visible, onClose, placement, title,items,user,
           >
             <div className="d-flex flex-column" style={{minHeight:'90%'}}>
               {/* Menu */}
-              <Menu theme="light" mode='vertical' className="sidebar-menu" defaultSelectedKeys={['0']}>
+              <Menu theme="light" mode='vertical' className="sidebar-menu" defaultSelectedKeys={[`${activePage}`]}>
                 {items && items.map((item, index) => (
                   <Menu.Item key={index} onClick={()=>handleActivePage(item, index)}>{item}</Menu.Item>
                 ))}

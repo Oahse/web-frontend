@@ -24,8 +24,9 @@ import AdminPlatform from './Platform';
 import BottomNavbar from '../../components/ui/BottomNavBar/BottomNavBar';
 import AdminContents from './Content';
 import { Footer } from 'antd/es/layout/layout';
+import AdminOrderItem from './Orders/OrderItem';
 
-const Admin = ({API_URL,Companyname }) => {
+const Admin = ({API_URL,Companyname,activePage=0 }) => {
     const { isMobile, isTablet} = useDeviceType();
     const isScrolled = useIsScrolled();
     const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();
@@ -51,7 +52,7 @@ const Admin = ({API_URL,Companyname }) => {
         items: sidebarlinks
  
       };
-    const [activepage, setActivePage] = useState(0)
+    const [activepage, setActivePage] = useState(activePage||0)
     const handleActivePage = (item, index)=>{
         setActivePage(index);
     }
@@ -78,12 +79,11 @@ const Admin = ({API_URL,Companyname }) => {
             case 9:
                 return <AdminPlatform isMobile={isMobile} isTablet={isTablet} />;
             case 10:
-                return <AdminPlatform isMobile={isMobile} isTablet={isTablet} />; //profile page view and edit
+                return <AdminOrderItem isMobile={isMobile} isTablet={isTablet} />; //profile page view and edit
             default:
                 return <AdminDashBoard isMobile={isMobile} isTablet={isTablet} />;
         }
     }
-    
     
     
     if (loading) {
@@ -111,6 +111,7 @@ const Admin = ({API_URL,Companyname }) => {
                             title={sidebarstate.title}
                             items={sidebarstate.items}
                             user={userDetails}
+                            activePage={activePage}
                             onActivePage={(item, index)=>handleActivePage(item, index)}
                         />
                     {renderContent()}
