@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.681e553f.css",
-    "main.js": "/web-frontend/static/js/main.1e9db331.js",
+    "main.css": "/web-frontend/static/css/main.d63bbd4a.css",
+    "main.js": "/web-frontend/static/js/main.21b664c2.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
     "static/media/topbar-shop-img.png": "/web-frontend/static/media/topbar-shop-img.ef94055dcab6627e0e86.png",
@@ -17,12 +17,14 @@
     "static/media/fingerprint.svg": "/web-frontend/static/media/fingerprint.e8fce3dff077b98162be969f3c9dcbd7.svg",
     "static/media/user.svg": "/web-frontend/static/media/user.54a9668c76dc920e538cdd50b152d5b0.svg",
     "index.html": "/web-frontend/index.html",
-    "main.681e553f.css.map": "/web-frontend/static/css/main.681e553f.css.map",
-    "main.1e9db331.js.map": "/web-frontend/static/js/main.1e9db331.js.map",
+    "static/media/failed_basket.svg": "/web-frontend/static/media/failed_basket.080bc7d0019c9aa1e741acab768b5372.svg",
+    "static/media/paid_basket.svg": "/web-frontend/static/media/paid_basket.4903ad6369ececfd0f44033e4f62ec32.svg",
+    "main.d63bbd4a.css.map": "/web-frontend/static/css/main.d63bbd4a.css.map",
+    "main.21b664c2.js.map": "/web-frontend/static/js/main.21b664c2.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.681e553f.css",
-    "static/js/main.1e9db331.js"
+    "static/css/main.d63bbd4a.css",
+    "static/js/main.21b664c2.js"
   ]
 }
