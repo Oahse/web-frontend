@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.d63bbd4a.css",
-    "main.js": "/web-frontend/static/js/main.21b664c2.js",
+    "main.css": "/web-frontend/static/css/main.c3555fc9.css",
+    "main.js": "/web-frontend/static/js/main.9b392de8.js",
     "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
     "static/media/topbar-shop-img.png": "/web-frontend/static/media/topbar-shop-img.ef94055dcab6627e0e86.png",
@@ -19,12 +19,12 @@
     "index.html": "/web-frontend/index.html",
     "static/media/failed_basket.svg": "/web-frontend/static/media/failed_basket.080bc7d0019c9aa1e741acab768b5372.svg",
     "static/media/paid_basket.svg": "/web-frontend/static/media/paid_basket.4903ad6369ececfd0f44033e4f62ec32.svg",
-    "main.d63bbd4a.css.map": "/web-frontend/static/css/main.d63bbd4a.css.map",
-    "main.21b664c2.js.map": "/web-frontend/static/js/main.21b664c2.js.map",
+    "main.c3555fc9.css.map": "/web-frontend/static/css/main.c3555fc9.css.map",
+    "main.9b392de8.js.map": "/web-frontend/static/js/main.9b392de8.js.map",
     "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d63bbd4a.css",
-    "static/js/main.21b664c2.js"
+    "static/css/main.c3555fc9.css",
+    "static/js/main.9b392de8.js"
   ]
 }
