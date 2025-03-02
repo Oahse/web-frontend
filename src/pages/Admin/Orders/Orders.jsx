@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { Avatar, Breadcrumb, Col, Layout, Row } from "antd";
+import React, { useEffect, useState } from "react";
+import { Avatar, Breadcrumb, Col, Layout, Row} from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { ReactComponent as PaidBasket } from "../../../assets/paid_basket.svg";
 import { ReactComponent as FailedBasket } from "../../../assets/failed_basket.svg";
 import Tabs from "../../../components/ui/Tabs/Tabs";
 import Table from "../../../components/ui/Table/Table";
+import Select from "../../../components/ui/Input/Select/Select";
 import AdminContent from "../AdminContent";
-import { updateURL } from "../../../utils/helper";
+import { exportToExcel, genHtmlPdf, updateURL } from "../../../utils/helper";
 import AdminOrderItem from "./OrderItem";
 import Button from "../../../components/ui/Button/Button";
 import List from "../../../components/ui/List/List";
@@ -17,6 +18,112 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
   const [selecteditems, setSelectedItems] = useState([])
   const [breadCrumbItems, setBreadCrumbItems] = useState([{ title: "Orders" }]); // Breadcrumb state
+  const [currentitems, setCurrentItems] = useState([
+    {
+      id: 1,
+      date: new Date(),
+      customer: 'John Doe',
+      brand: 'Brand A',
+      name: 'iPhone 12 Pro Max',
+      price: 50,
+      currency: '$',
+      quantity: 2,
+      payment_status: 'Paid',
+      fulfillment_status: 'Fulfilled',
+      delivery_status: 'Delivered',
+    },
+    {
+      id: 2,
+      date: new Date(),
+      customer: 'Jane Smith',
+      brand: 'Brand B',
+      name: 'Samsung Galaxy S21',
+      price: 30,
+      currency: '$',
+      quantity: 1,
+      payment_status: 'Pending',
+      fulfillment_status: 'Pending',
+      delivery_status: 'In Progress',
+    },
+    {
+      id: 3,
+      date: new Date(),
+      customer: 'George Brown',
+      brand: 'Brand C',
+      name: 'MacBook Pro M1',
+      price: 20,
+      currency: '$',
+      quantity: 3,
+      payment_status: 'Failed',
+      fulfillment_status: 'Fulfilled',
+      delivery_status: 'Delivered',
+    },
+    {
+      id: 4,
+      date: new Date(),
+      customer: 'Anna Lee',
+      brand: 'Brand D',
+      name: 'iPad Pro 2021',
+      price: 40,
+      currency: '$',
+      quantity: 1,
+      payment_status: 'Paid',
+      fulfillment_status: 'Fulfilled',
+      delivery_status: 'Shipped',
+    },
+    {
+      id: 5,
+      date: new Date(),
+      customer: 'David Wright',
+      brand: 'Brand E',
+      name: 'AirPods Pro',
+      price: 70,
+      currency: '$',
+      quantity: 4,
+      payment_status: 'Failed',
+      fulfillment_status: 'Pending',
+      delivery_status: 'Not Shipped',
+    },
+    {
+      id: 6,
+      date: new Date(),
+      customer: 'Linda Harris',
+      brand: 'Brand F',
+      name: 'OnePlus 9',
+      price: 25,
+      currency: '$',
+      quantity: 2,
+      payment_status: 'Paid',
+      fulfillment_status: 'Fulfilled',
+      delivery_status: 'Delivered',
+    },
+    {
+      id: 7,
+      date: new Date(),
+      customer: 'James Scott',
+      brand: 'Brand G',
+      name: 'Google Pixel 5',
+      price: 60,
+      currency: '$',
+      quantity: 3,
+      payment_status: 'Pending',
+      fulfillment_status: 'Fulfilled',
+      delivery_status: 'In Progress',
+    },
+    {
+      id: 8,
+      date: new Date(),
+      customer: 'Mary Adams',
+      brand: 'Brand H',
+      name: 'Sony WH-1000XM4',
+      price: 100,
+      currency: '$',
+      quantity: 2,
+      payment_status: 'Paid',
+      fulfillment_status: 'Fulfilled',
+      delivery_status: 'Delivered',
+    },
+  ])
   // console.log(window.location,'location')
   const handleOrder = () => {
     console.log("=====ppp");
@@ -123,19 +230,20 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
         key: "delivery_status",
       },
     ];
-
+    
     return (
       <>
         {isMobile?
-        <List items={items} onSelectedItems={handleSelectedItems} onRowClick={handleOrderItem}/>
+        <List id='orders-table' items={items} onSelectedItems={handleSelectedItems} onRowClick={handleOrderItem}/>
         :
         <Table
-        columns={columns}
-        items={items}
-        onSelectedRowKeys={(selectedRowKeys) => setSelectedRowKeys(selectedRowKeys)}
-        onSelectedItems={handleSelectedItems}
-        onRowClick={handleOrderItem}
-      />}
+          id='orders-table'
+          columns={columns}
+          items={items}
+          onSelectedRowKeys={(selectedRowKeys) => setSelectedRowKeys(selectedRowKeys)}
+          onSelectedItems={handleSelectedItems}
+          onRowClick={handleOrderItem}
+        />}
       </>
     );
   };
@@ -698,11 +806,17 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
   ];
 
 
-
+  const options =[
+    {icon:<Icon icon="catppuccin:pdf" width="25" height="25" onClick={() => genHtmlPdf({ contentid: "#orders-table", pdfname: 'Orders' })} />, label:'Pdf'},
+    {icon:<Icon icon="vscode-icons:file-type-excel2"  width="25" height="25" onClick={() => exportToExcel({ json_data: currentitems, fileName: 'Orders' })} />, label:'Excel'}
+  ]
   const suffix = (
     <div className="d-flex gap-2">
-      
-      <Button variant="outlined" text={isMobile?<Icon icon="ph:export-thin" width="25" height="25" />:'Export'}/>
+      {/* <Select options={options}/> */}
+      <Button variant='outlined' text={isMobile?
+          <Icon icon="catppuccin:pdf" width="25" height="25" />
+          :
+          'Export to Pdf'} onClick={() => genHtmlPdf({ contentid: "#orders-table", pdfname: 'Orders' })} />
       <Button 
       color={selecteditems?.length>0?'danger':'primary'} 
       text={selecteditems?.length>0?
@@ -741,7 +855,7 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet }) => {
       );
     }
   };
-
+  
   return (
     <AdminContent API_URL={API_URL} Companyname={Companyname} breadCrumbItems={breadCrumbItems} suffix={suffix}>
       {renderChild({ item })}

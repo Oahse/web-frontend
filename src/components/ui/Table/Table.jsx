@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';  // Import PropTypes
 import './Table.css';
 
 const Table = ({
+    id='',
     items = [], 
     columns,
     pageSize = 20,
@@ -68,35 +69,39 @@ const Table = ({
         onRowClick && onRowClick(record);
     }
     return (
-        <AntdTable
-            columns={columns}
-            dataSource={items.slice((currentPage - 1) * tablePageSize, currentPage * tablePageSize)}
-            rowKey="id"
-            pagination={pagination && {
-                current: currentPage,
-                total: items.length,
-                pageSize: tablePageSize,
-                onChange: handlePaginationChange,
-                onShowSizeChange: handleShowSizeChange, // Track page size change
-                showSizeChanger: showSizeChanger,
-                pageSizeOptions: showSizeChanger && pageSizeOptions,
-                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
-            }}
-            onRow={(record, rowIndex) => {
-                return {
-                  onClick: (event) => handleRowClick(record), // click row
-                  onDoubleClick: (event) => onRowDoubleClick(record), // double click row
-                };
-              }}
-            scroll={{ x: 'max-content' }} // Enable horizontal scrolling
-            rowSelection={rowSelection} // Enable row selection
-            {...props}
-        />
+        <div id={id}>
+            <AntdTable
+            
+                columns={columns}
+                dataSource={items.slice((currentPage - 1) * tablePageSize, currentPage * tablePageSize)}
+                rowKey="id"
+                pagination={pagination && {
+                    current: currentPage,
+                    total: items.length,
+                    pageSize: tablePageSize,
+                    onChange: handlePaginationChange,
+                    onShowSizeChange: handleShowSizeChange, // Track page size change
+                    showSizeChanger: showSizeChanger,
+                    pageSizeOptions: showSizeChanger && pageSizeOptions,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+                }}
+                onRow={(record, rowIndex) => {
+                    return {
+                    onClick: (event) => handleRowClick(record), // click row
+                    onDoubleClick: (event) => onRowDoubleClick(record), // double click row
+                    };
+                }}
+                scroll={{ x: 'max-content' }} // Enable horizontal scrolling
+                rowSelection={rowSelection} // Enable row selection
+                {...props}
+            />
+        </div>
     );
 };
 
 // Add PropTypes validation
 Table.propTypes = {
+    tableid: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.object), // Array of objects for data source
     columns: PropTypes.arrayOf(PropTypes.object).isRequired, // Columns should be an array of objects
     pageSize: PropTypes.number, // Page size should be a number

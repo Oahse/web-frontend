@@ -1,6 +1,46 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx';
+
+const exportToExcel = ({json_data, fileName = 'data'}) => {
+  const ws = XLSX.utils.json_to_sheet(json_data); // Convert JSON data to sheet format
+  const wb = XLSX.utils.book_new(); // Create a new workbook
+  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // Append the sheet to the workbook
+
+  // Generate Excel file and trigger download
+  XLSX.writeFile(wb, `${fileName}.xlsx`);
+};
+const genHtmlPdf = ({ contentid = '', pdfname = 'page', pdf = true }) => {
+  const element = document.querySelector(contentid); // Select the HTML element
+
+  if (element) {
+    
+    // Use html2canvas to capture the wrapper (with padding)
+    html2canvas(element).then((canvas) => {
+      if (pdf) {
+        // If pdf flag is true, generate a PDF
+        const pdf = new jsPDF();
+        const imgData = canvas.toDataURL('image/png'); // Get image data from the canvas
+
+        // Add the image to the PDF (set position and dimensions)
+        pdf.addImage(imgData, 'PNG', 10, 10, canvas.width * 0.08, canvas.height * 0.08); // Adjust size to fit in the page
+        pdf.save(`${pdfname}.pdf`); // Save the PDF with the specified filename
+      } else {
+        // Otherwise, download the content as an image (PNG)
+        const imageUrl = canvas.toDataURL(); // Convert the canvas to base64-encoded image (PNG)
+        const link = document.createElement("a");
+        link.href = imageUrl;
+        link.download = `${pdfname}.png`; // Save the image with the specified filename
+        link.click();
+      }
+    });
+  } else {
+    console.log(`Element with selector ${contentid} not found.${element}`);
+  }
+};
+
 
 const truncateText = ({ text, charLimit }) => {
     /**
@@ -73,4 +113,4 @@ const getPathFromActivePage = (activePage) => {
         return '/admin/dashboard'; // Default path if none of the cases match
     }
   };
-export {CurrencyConverter, truncateText,getPathFromActivePage,updateURL}
+export {CurrencyConverter, truncateText, getPathFromActivePage, updateURL, genHtmlPdf,exportToExcel }

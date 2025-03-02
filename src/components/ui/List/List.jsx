@@ -4,6 +4,7 @@ import Text from '../Typography/Text';
 import './List.css';
 
 const List = ({ 
+    id = '',
     items = [], 
     pageSize = 20,
     selectable = true, 
@@ -96,7 +97,8 @@ const List = ({
     const paginatedItems = items.slice((currentPage - 1) * listPageSize, currentPage * listPageSize);
 
     return (
-        <AntdList
+        <div  id={id}>
+            <AntdList
             className="mb-4"
             pagination={pagination && {
                 current: currentPage,
@@ -163,6 +165,7 @@ const List = ({
                 </AntdList.Item>
             )}
         />
+        </div>
     );
 };
 
