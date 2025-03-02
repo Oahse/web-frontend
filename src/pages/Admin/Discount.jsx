@@ -1,39 +1,22 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Breadcrumb, Layout } from "antd";
+import { Layout } from "antd";
 import React from "react";
+import AdminContent from "./AdminContent";
 
-const { Content } = Layout;
 
-const AdminDiscount = ({ isMobile }) => {
+const AdminDiscount = ({ API_URL, Companyname,isMobile }) => {
+    let breadCrumbItems = [
+        {title:'Discount'}
+      ]
     return (
-        <Content style={{ margin: '6px' }}>
-            <div className="d-flex justify-content-between align-items-center p-2">
-                <Breadcrumb
-                    items={[
-                        {
-                            title: <a href="/">Home</a>,
-                        },
-                        {
-                            title: 'Discount',
-                        },
-                    ]}
-                />
-                <span className="bg-white p-2" style={{borderRadius: '8px', cursor:'pointer'}}>
-                    <Icon icon="uit:calender" width="20" height="20" /> <span className="m-auto">Last 30 days</span>
-                </span>
-            </div>
-            <div
-                style={{
-                    padding: '6px 18px',
-                    margin: '8px',
-                    minHeight: '100vh',
-                    backgroundColor: 'white',
-                }}
-            >
+        <AdminContent 
+          API_URL ={API_URL}
+          Companyname={Companyname}
+          breadCrumbItems={breadCrumbItems}
+          >
                 <h3>Discount Section</h3>
                 <p>Manage and set discounts for various products and services.</p>
-            </div>
-        </Content>
+            </AdminContent>
     );
 };
 

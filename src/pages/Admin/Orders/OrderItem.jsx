@@ -69,10 +69,10 @@ const AdminOrderItem = ({ API_URL, Companyname, isMobile, isTablet, item }) => {
         ];
     
         return (<Table
-                        columns={columns}
-                        items={items}
-                        onSelectedRowKeys={(selectedRowKeys)=>(setSelectedRowKeys(selectedRowKeys))}
-                      />)
+                    columns={columns}
+                    items={items}
+                    onSelectedRowKeys={(selectedRowKeys)=>(setSelectedRowKeys(selectedRowKeys))}
+                  />)
       }
     const initialItems = [
       {
@@ -174,119 +174,32 @@ const AdminOrderItem = ({ API_URL, Companyname, isMobile, isTablet, item }) => {
     ];
   
     const breadCrumbItems = [
-      {title:'Orders'},
+      {title:<a href="/web-frontend">Orders</a>},
       {title:item?.name || 'test13'}
     ]
+    const suffix = (
+      <span className="bg-white p-2" style={{ borderRadius: '8px', cursor: 'pointer' }}>
+        <Icon icon="uit:calender" width="20" height="20" />
+        <span className="m-auto">Last 30 days</span>
+      </span>
+    );
+    
     return (
-      <AdminContent
-        API_URL ={API_URL}
-        Companyname={Companyname}
-        breadCrumbItems={breadCrumbItems}
-        >
-          <Row gutter={[16, 16]} >
-                  
-                  <Col span={24} style={{paddingLeft: '8px', paddingRight:'8px'}}>
-                      <Tabs 
-                          initialItems={initialItems} 
-                          tabBarExtraContent={<div style={{display:'flex',justifyContent:'space-around', alignContent:'center',gap:'10px'}}>
-                              <Icon icon="fluent:filter-20-regular" width="25" height="25" />
-                              <Icon icon="ph:arrows-down-up-light" width="25" height="25" />
-                          </div>}
-                      />
-                  </Col>
-                  {/* <Col span={24} >
-                      <YouTube style={{width:'100%', cursor:'pointer'}}/>
-                  </Col>
-                  <Col span={24} >
-                      <Row gutter={[16, 16]}>
-                          <Col  xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
-                              <Card 
-                                  variant="border" 
-                                  description={
-                                      <Row gutter={[8, 8]} justify="center" style={{ width: '100%' }}>
-                                              <Col span={24}  style={{ display: 'flex', justifyContent: 'center'}}>
-                                                  {<CustomersDashboardReport />}
-                                              </Col>
-                                              <Col span={24}  style={{ display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems:'center'}}>
-                                                  <Text >Understand requirements of your customers</Text>
-                                                  <Text tag='p' fontWeight="fw-400">Analyze our customers with the Recency, Frequency, and Monetary (RFM). Understand their ratings and reviews on your products and identify problems .</Text>
-                                              </Col>
-                                              <Col span={24} style={{ display: 'flex', justifyContent: 'center'}}>
-                                                  <Button variant="outlined" color="secondary" text="View Report" />
-                                              </Col>
-                                          </Row>
-
-                                  } 
-                                  style={{boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',cursor:'pointer',height:'430px'}} 
-                                  />
-                          </Col>
-                          <Col  xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
-                              <Card 
-                                  variant="border" 
-                                  description={
-                                      <Row gutter={[8, 8]} justify="center" style={{ width: '100%' }}>
-                                              <Col span={24}  style={{ display: 'flex', justifyContent: 'center'}}>
-                                                  {<CustomersDashboardAds />}
-                                              </Col>
-                                              <Col span={24}  style={{ display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems:'center'}}>
-                                                  <Text >Increase sales and attract customers</Text>
-                                                  <Text tag='p' fontWeight="fw-400">What’s New? Attract customer’s interest to your products and increase demands on your products. Explore our paid Ads on our platform.</Text>
-                                              </Col>
-                                              <Col span={24} style={{ display: 'flex', justifyContent: 'center'}}>
-                                                  <Button variant="outlined" color="secondary" text="Explore Paid Ads" />
-                                              </Col>
-                                          </Row>
-
-                                  } 
-                                  style={{boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',cursor:'pointer',height:'430px'}} 
-                                  />
-                              
-                          </Col>
-                          <Col span={24}>
-                              <Card 
-                                  variant="border" 
-                                  description={
-                                  (isMobile || isTablet) ?
-                                  <Row gutter={[8, 8]} justify="center" style={{ width: '100%' }}>
-                                      <Col span={24}  style={{ display: 'flex', justifyContent: 'center', padding:'auto'}}>
-                                          {<ProductReviews style={{height:'200px'}} />}
-                                      </Col>
-                                      <Col span={24} style={{ display: 'flex', justifyContent: 'center', padding:'auto'}} >
-                                          <Row gutter={[8, 8]}>
-                                              <Col span={24}  style={{ display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems:'center'}}>
-                                                  <Text >Show product reviews</Text>
-                                                  <Text tag='p' fontWeight="fw-400">See how products are rated. Understand how customers feels about the products and what they have to say about the products. Customers first and they are always right! Explore their opinions!</Text>
-                                              </Col>
-                                              <Col span={24} style={{ display: 'flex', justifyContent: 'center'}}>
-                                                  <Button variant="outlined" color="secondary" text="View Reviews" />
-                                              </Col>
-                                          </Row>
-                                      </Col>
-                                      
-                                  </Row>:
-                                  <Row gutter={[8, 8]} justify="center" style={{ width: '100%' }}>
-                                      <Col xxl={16} xl={16} lg={16} md={24} sm={24} xs={24} style={{ display: 'flex', justifyContent: 'center', padding:'16px'}} >
-                                          <Row gutter={[8, 8]} >
-                                              <Col span={24}  style={{ display: 'flex', flexDirection:'column', justifyContent: 'start'}}>
-                                                  <Text >Show product reviews</Text>
-                                                  <Text tag='p' fontWeight="fw-400">See how products are rated. Understand how customers feels about the products and what they have to say about the products. Customers first and they are always right! Explore their opinions!</Text>
-                                              </Col>
-                                              <Col span={24} style={{ display: 'flex', justifyContent: 'start'}}>
-                                                  <Button variant="outlined" color="secondary" text="View Reviews" />
-                                              </Col>
-                                          </Row>
-                                      </Col>
-                                      <Col xxl={8} xl={8} lg={8} md={24} sm={24} xs={24}  style={{ display: 'flex', justifyContent: 'center', padding:'auto'}}>
-                                          {<ProductReviews  style={{height:'200px'}}  />}
-                                      </Col>
-                                      
-                                  </Row>} 
-                                  style={{boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', cursor:'pointer',height:`${(isMobile || isTablet)?'430px' :'200px'}`}}/>
-                          </Col>
-                      </Row>
-                  </Col> */}
-              </Row>
-      </AdminContent>
+      <Row gutter={[16, 16]} >
+          <Col span={24} style={{paddingLeft: '8px', paddingRight:'8px'}}>
+            <Row gutter={[16, 16]} >
+              <Col  xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+                  dfdf
+              </Col>
+            </Row>
+          </Col>
+          <Col span={24} style={{paddingLeft: '8px', paddingRight:'8px'}}>
+              dfdf
+          </Col>
+          <Col span={24} style={{paddingLeft: '8px', paddingRight:'8px'}}>
+              dfdf
+          </Col>
+      </Row>
           
     );
 };

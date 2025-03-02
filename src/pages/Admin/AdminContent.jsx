@@ -10,7 +10,7 @@ import { ReactComponent as YouTube }  from '../../assets/youtube.svg';
 import { ReactComponent as ProductReviews }  from '../../assets/productsreviews.svg';
 
 const { Content } = Layout;
-const AdminContent = ({API_URL,Companyname,isMobile,isTablet, breadCrumbItems=[], children, content }) => {
+const AdminContent = ({API_URL,Companyname,isMobile,isTablet, breadCrumbItems=[],suffix, children, content }) => {
     
     
     return (
@@ -22,7 +22,8 @@ const AdminContent = ({API_URL,Companyname,isMobile,isTablet, breadCrumbItems=[]
             msOverflowStyle: 'none',  // Internet Explorer
         }}>
             
-            <div className="d-flex justify-content-between align-items-center p-3 mb-3">
+            <div className="d-flex justify-content-between align-items-center mb-3" style={{
+                    padding: '6px',}}>
                 <Breadcrumb
                     items={[
                         {
@@ -31,14 +32,12 @@ const AdminContent = ({API_URL,Companyname,isMobile,isTablet, breadCrumbItems=[]
                         ...breadCrumbItems,
                     ]}
                 />
-                <span className="bg-white p-2" style={{borderRadius: '8px', cursor:'pointer'}}>
-                    <Icon icon="uit:calender" width="20" height="20" /> <span className="m-auto">Last 30 days</span>
-                </span>
+                {suffix}
             </div>
         
             <div
                 style={{
-                    padding: '1px 18px',
+                    padding: '6px',
                     // margin: '8px',
                     marginTop:'-16px',
                     borderRadius: '8px',

@@ -13,18 +13,19 @@ const Table = ({
     onShowSizeChange,
     onPaginationChange,
     onSelectedRowKeys,
-    onRowClick,
-    onRowDoubleClick,
-    onRowContextMenu,
-    onRowMouseEnter,
-    onRowMouseLeave,
+    onSelectedItems,
+    onRowClick , // Default to an empty function
+    onRowDoubleClick, // Default to an empty function
+    onRowContextMenu, // Default to an empty function
+    onRowMouseEnter, // Default to an empty function
+    onRowMouseLeave, // Default to an empty function
     ...props
 }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [tablePageSize, setTablePageSize] = useState(pageSize); // Default page size
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
-
+    const [selectedItems, setSelectedItems] = useState([]); // State to track selected items
     // Handle page size change
     const handleShowSizeChange = (current, size) => {
         setTablePageSize(size); // Update the page size in state
@@ -47,6 +48,14 @@ const Table = ({
         setSelectedRowKeys(selectedRowKeys);
         if (onSelectedRowKeys) {
             onSelectedRowKeys(selectedRowKeys);
+            
+        }
+
+        // Filter data based on selectedRowKeys
+        const filteredData = items.filter((item) => selectedRowKeys.includes(item.id));
+        setSelectedItems(filteredData); // Remove item from selected items
+        if (onSelectedItems) {
+            onSelectedItems(filteredData);
         }
     };
 
@@ -54,7 +63,10 @@ const Table = ({
         selectedRowKeys,
         onChange: onSelectChange,
     };
-
+    const handleRowClick = (record) => {
+        // console.log(record)
+        onRowClick && onRowClick(record);
+    }
     return (
         <AntdTable
             columns={columns}
@@ -72,11 +84,8 @@ const Table = ({
             }}
             onRow={(record, rowIndex) => {
                 return {
-                  onClick: (event) => onRowClick(event,record, rowIndex), // click row
-                  onDoubleClick: (event) => onRowDoubleClick(event,record, rowIndex), // double click row
-                //   onContextMenu: (event) => onRowContextMenu(event,record, rowIndex), // right button click row
-                //   onMouseEnter: (event) => onRowMouseEnter(event,record, rowIndex), // mouse enter row
-                //   onMouseLeave: (event) => onRowMouseLeave(event,record, rowIndex), // mouse leave row
+                  onClick: (event) => handleRowClick(record), // click row
+                  onDoubleClick: (event) => onRowDoubleClick(record), // double click row
                 };
               }}
             scroll={{ x: 'max-content' }} // Enable horizontal scrolling
@@ -97,10 +106,15 @@ Table.propTypes = {
     onShowSizeChange: PropTypes.func, // onShowSizeChange should be a function
     onPaginationChange: PropTypes.func, // onPaginationChange should be a function
     onSelectedRowKeys: PropTypes.func, // onSelectedRowKeys should be a function
+    onRowClick: PropTypes.func, // onRowClick should be a function
+    onRowDoubleClick: PropTypes.func, // onRowDoubleClick should be a function
+    onRowContextMenu: PropTypes.func, // onRowContextMenu should be a function
+    onRowMouseEnter: PropTypes.func, // onRowMouseEnter should be a function
+    onRowMouseLeave: PropTypes.func, // onRowMouseLeave should be a function
 };
 
 // Default props
-Table.defaultProps = {
+Table.default = {
     items: [],
     pageSize: 20,
     pagination: true,

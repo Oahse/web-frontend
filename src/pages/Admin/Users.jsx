@@ -2,9 +2,9 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React from "react";
 import AdminContent from "./AdminContent";
 
-const AdminProfile = ({ API_URL, Companyname,isMobile }) => {
+const AdminUsers = ({ API_URL, Companyname,isMobile }) => {
     let breadCrumbItems = [
-        {title:'Profile'}
+        {title:'Users'}
       ]
     return (
         <AdminContent 
@@ -12,10 +12,10 @@ const AdminProfile = ({ API_URL, Companyname,isMobile }) => {
           Companyname={Companyname}
           breadCrumbItems={breadCrumbItems}
           >
-                <h3>Profile Section</h3>
-                <p>Here you can manage and view all Profile.</p>
+                <h3>Users Section</h3>
+                <p>Here you can manage and view all Users.</p>
             </AdminContent>
     );
 };
 
-export default AdminProfile;
+export default AdminUsers;

@@ -101,7 +101,7 @@ Tabs.propTypes = {
 };
 
 // Default props
-Tabs.defaultProps = {
+Tabs.default = {
     initialItems: [],
     editable: false,
     size: 'small',
