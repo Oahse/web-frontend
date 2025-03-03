@@ -8,6 +8,7 @@ import OrderResult from '../pages/OrderResultPage';
 import OrdersList from '../pages/Orders';
 import Admin from '../pages/Admin/Admin';
 
+
 const AuthRoutes = ({ API_URL,Companyname }) => [
   
   {
@@ -43,6 +44,31 @@ const AuthRoutes = ({ API_URL,Companyname }) => [
     path: "/admin/orders",
     element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={1}/>,
     title: "admin-orders"
+  },
+  {
+    path: "/admin/orders/:id",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={1}/>,
+    title: "admin-orders"
+  },
+  {
+    path: "/admin/orders/add",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={1} add />,
+    title: "admin-orders-add"
+  },
+  {
+    path: "/admin/customers",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={3}/>,
+    title: "admin-customers"
+  },
+  {
+    path: "/admin/customers/:id",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={3}/>,
+    title: "admin-customers"
+  },
+  {
+    path: "/admin/customers/add",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={3} add />,
+    title: "admin-customers-add"
   },
 ];
 

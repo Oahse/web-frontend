@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'; // Link component for anchor tags (if needed)
 import './Button.css';
+
 const Button = ({
   type = 'button', // Default is button
   variant = 'contained', // Default is contained button
@@ -28,7 +29,7 @@ const Button = ({
 
   // Render a loading spinner if the button is loading
   const renderLoadingSpinner = () => {
-    return isLoading && <div className="spinner-border" role="status"></div>;
+    return isLoading && <div className="button-spinner-border" role="status"></div>;
   };
 
   // Render button contents with icons and text

@@ -15,7 +15,7 @@ import AdminHeader from "../../components/ui/Header/AdminHeader";
 import AdminDashBoard from "./Dashboard";
 import AdminOrders from "./Orders/Orders";
 import AdminProducts from './Products';
-import AdminCustomers from './Customers';
+import AdminCustomers from './Customers/Customers';
 import AdminFinance from './Finance';
 import AdminAnalytics from './Analytics';
 import AdminDiscount from './Discount';
@@ -26,7 +26,7 @@ import AdminContents from './Content';
 import { Footer } from 'antd/es/layout/layout';
 import AdminOrderItem from './Orders/OrderItem';
 
-const Admin = ({API_URL,Companyname,activePage=0 }) => {
+const Admin = ({API_URL,Companyname,activePage=0, add=false }) => {
     const { isMobile, isTablet} = useDeviceType();
     const isScrolled = useIsScrolled();
     const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();
@@ -61,27 +61,27 @@ const Admin = ({API_URL,Companyname,activePage=0 }) => {
             case 0:
                 return <AdminDashBoard isMobile={isMobile} isTablet={isTablet} />;
             case 1:
-                return <AdminOrders isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminOrders isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 2:
-                return <AdminProducts isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminProducts isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 3:
-                return <AdminCustomers isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminCustomers isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 4:
-                return <AdminContents isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminContents isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 5:
-                return <AdminFinance isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminFinance isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 6:
-                return <AdminAnalytics isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminAnalytics isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 7:
-                return <AdminDiscount isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminDiscount isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 8:
-                return <AdminMarketing isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminMarketing isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 9:
-                return <AdminPlatform isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminPlatform isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 10:
-                return <AdminOrderItem isMobile={isMobile} isTablet={isTablet} />; //profile page view and edit
+                return <AdminOrderItem isMobile={isMobile} isTablet={isTablet} add={add} />; //profile page view and edit
             default:
-                return <AdminDashBoard isMobile={isMobile} isTablet={isTablet} />;
+                return <AdminDashBoard isMobile={isMobile} isTablet={isTablet} add={add} />;
         }
     }
     

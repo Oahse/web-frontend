@@ -5,7 +5,7 @@ import NonAuthRoutes from './nonauthroutes';  // Import non-authenticated routes
 import AuthRoutes from './authroutes';  // Import authenticated routes
 
 const Router = ({ API_URL,basename, Companyname }) => {
-
+  
   // Generate non-authenticated routes using the API_URL prop
   const nonauthroutes = NonAuthRoutes({ API_URL, Companyname });
 

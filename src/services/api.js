@@ -144,5 +144,13 @@ const useCategories = (url) => {
 const getProducts = async (url, params) => {
     return fetchData(`${url}api/products/`, params);
 };
-
-export { getProducts,getCategories, useCategories, useNewArrivalsProducts, useProducts, useTrendingProducts };
+const getProduct = async (url, productId) => {
+    return fetchData(`${url}api/products/${productId}`);
+};
+const getUsers = async (url, params) => {
+    return fetchData(`${url}api/users/`, params);
+};
+const getUser = async (url, userId) => {
+    return fetchData(`${url}api/users/${userId}`);
+};
+export { getProducts,getCategories, useCategories, useNewArrivalsProducts, useProducts, useTrendingProducts,getUsers,getUser,getProduct };

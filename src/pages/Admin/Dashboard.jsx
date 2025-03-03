@@ -87,7 +87,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
                                 style={{boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',cursor:'pointer',height:'430px'}} 
                                 />
                         </Col>
-                        <Col  xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+                        <Col  xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
                             <Card 
                                 variant="border" 
                                 description={
@@ -132,7 +132,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     
                                 </Row>:
                                 <Row gutter={[8, 8]} justify="center" style={{ width: '100%' }}>
-                                    <Col xxl={16} xl={16} lg={16} md={24} sm={24} xs={24} style={{ display: 'flex', justifyContent: 'center', padding:'16px'}} >
+                                    <Col xxl={16} xl={16} lg={16} md={12} sm={24} xs={24} style={{ display: 'flex', justifyContent: 'center', padding:'16px'}} >
                                         <Row gutter={[8, 8]} >
                                             <Col span={24}  style={{ display: 'flex', flexDirection:'column', justifyContent: 'start'}}>
                                                 <Text >Show product reviews</Text>
@@ -143,7 +143,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
                                             </Col>
                                         </Row>
                                     </Col>
-                                    <Col xxl={8} xl={8} lg={8} md={24} sm={24} xs={24}  style={{ display: 'flex', justifyContent: 'center', padding:'auto'}}>
+                                    <Col xxl={8} xl={8} lg={8} md={12} sm={24} xs={24} style={{ display: 'flex', justifyContent: 'center', padding:'auto'}}>
                                         {<ProductReviews  style={{height:'200px'}}  />}
                                     </Col>
                                     
@@ -198,7 +198,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
                     </Col>
                     <Col span={24} >
                         <Row gutter={[16, 16]}>
-                            <Col  xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+                            <Col  xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
                                 <Card 
                                     variant="border" 
                                     description={
@@ -219,7 +219,7 @@ const AdminDashBoard = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     style={{boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',cursor:'pointer',height:'430px'}} 
                                     />
                             </Col>
-                            <Col  xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+                            <Col  xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
                                 <Card 
                                     variant="border" 
                                     description={

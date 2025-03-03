@@ -233,7 +233,7 @@
   color: var(--black);
 }
 .text-link {
-  color: var(--link-primary-color);
+  color: var(--link-secondary-color);
   text-decoration: none;
 }
 .start-btn-class {

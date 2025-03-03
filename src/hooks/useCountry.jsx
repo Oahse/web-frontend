@@ -9,39 +9,45 @@ import axios from 'axios';
 const useCountries = () => {
     // State to store the fetched countries
     const [countries, setCountries] = useState([]);
-
+  
     useEffect(() => {
-        /**
-         * Fetch countries and flags from the REST API.
-         * 
-         * - Uses the REST Countries API to fetch a list of all countries.
-         * - Transforms the data to extract necessary fields (`name`, `flag`, `code`).
-         * - Sorts the countries alphabetically by name.
-         * - Updates the state with the processed list.
-         */
-        axios
-          .get("https://restcountries.com/v3.1/all") // API endpoint to fetch country data
-          .then((response) => {
-            // Process and sort the data
-            const countryData = response.data.map((country) => ({
+      /**
+       * Fetch countries and flags from the REST API.
+       * 
+       * - Uses the REST Countries API to fetch a list of all countries.
+       * - Transforms the data to extract necessary fields (`name`, `flag`, `code`).
+       * - Sorts the countries alphabetically by name.
+       * - Updates the state with the processed list.
+       */
+      axios
+        .get("https://restcountries.com/v3.1/all") // API endpoint to fetch country data
+        .then((response) => {
+          // Process and sort the data
+          const countryData = response.data.map((country) => {
+            const idd = country.idd?.suffixes || [];
+            return {
               name: country.name.common, // Common name of the country
               flag: country.flags.svg, // URL of the country's flag image
               code: country.cca2, // ISO 3166-1 alpha-2 country code
-            }))
-            .sort((a, b) => a.name.localeCompare(b.name)); // Sort countries alphabetically by name
-            
-            // Update the state with the fetched and sorted country data
-            setCountries(countryData);
-          })
-          .catch((error) => {
-            // Log any errors that occur during the API call
-            console.error("Error fetching countries:", error);
+              idd: idd.length > 0 ? idd.map(suffix => `${country.idd.root}${suffix}`) : [] // Handle the suffixes safely
+            };
           });
-      }, []); // Empty dependency array ensures this effect runs only once when the component mounts
-
+  
+          // Sort countries alphabetically by name
+          countryData.sort((a, b) => a.name.localeCompare(b.name));
+  
+          // Update the state with the fetched and sorted country data
+          setCountries(countryData);
+        })
+        .catch((error) => {
+          // Log any errors that occur during the API call
+          console.error("Error fetching countries:", error);
+        });
+    }, []); // Empty dependency array ensures this effect runs only once when the component mounts
+  
     // Return the countries array (or null if not yet fetched)
     return countries;
-};
+  };
 
 // ===================================÷===
 
