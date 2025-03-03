@@ -16,13 +16,13 @@ import AdminDashBoard from "./Dashboard";
 import AdminOrders from "./Orders/Orders";
 import AdminProducts from './Products';
 import AdminCustomers from './Customers/Customers';
-import AdminFinance from './Finance';
+import AdminFinance from './Finance/Finance';
 import AdminAnalytics from './Analytics';
 import AdminDiscount from './Discount';
 import AdminMarketing from './Marketing';
 import AdminPlatform from './Platform';
 import BottomNavbar from '../../components/ui/BottomNavBar/BottomNavBar';
-import AdminContents from './Content';
+import AdminContents from './Contents/Contents';
 import { Footer } from 'antd/es/layout/layout';
 import AdminOrderItem from './Orders/OrderItem';
 

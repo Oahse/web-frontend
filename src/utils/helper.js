@@ -3,14 +3,31 @@ import axios from 'axios';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver'; // Import the FileSaver module
+
+const handleDownloadContent = (file_name,picturecontent) => {
+    const fileUrl = picturecontent; // URL of the file you want to download
+    const fileName = file_name; // Extract the file name from the URL
+
+    // If the file URL is valid, we proceed with the download
+    if (fileUrl) {
+        fetch(fileUrl)
+            .then(response => response.blob()) // Convert the file to a Blob
+            .then(blob => saveAs(blob, fileName)) // Save the file using FileSaver.js
+            .catch(error => console.error('Download failed:', error)); // Handle errors
+    } else {
+        console.error('No file found at this URL');
+    }
+};
+
 
 const exportToExcel = ({json_data, fileName = 'data'}) => {
-  const ws = XLSX.utils.json_to_sheet(json_data); // Convert JSON data to sheet format
-  const wb = XLSX.utils.book_new(); // Create a new workbook
-  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // Append the sheet to the workbook
+    const ws = XLSX.utils.json_to_sheet(json_data); // Convert JSON data to sheet format
+    const wb = XLSX.utils.book_new(); // Create a new workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // Append the sheet to the workbook
 
-  // Generate Excel file and trigger download
-  XLSX.writeFile(wb, `${fileName}.xlsx`);
+    // Generate Excel file and trigger download
+    XLSX.writeFile(wb, `${fileName}.xlsx`);
 };
 const genHtmlPdf = ({ contentid = '', pdfname = 'page', pdf = true }) => {
   const element = document.querySelector(contentid); // Select the HTML element
@@ -113,4 +130,4 @@ const getPathFromActivePage = (activePage) => {
         return '/admin/dashboard'; // Default path if none of the cases match
     }
   };
-export {CurrencyConverter, truncateText, getPathFromActivePage, updateURL, genHtmlPdf,exportToExcel }
+export {CurrencyConverter, truncateText, getPathFromActivePage, updateURL, genHtmlPdf,exportToExcel,handleDownloadContent }
