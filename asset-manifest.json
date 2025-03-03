@@ -1,10 +1,10 @@
 {
   "files": {
     "main.css": "/web-frontend/static/css/main.c4675c15.css",
-    "main.js": "/web-frontend/static/js/main.edc58e58.js",
-    "static/js/977.cf1aaaf6.chunk.js": "/web-frontend/static/js/977.cf1aaaf6.chunk.js",
-    "static/js/667.f4eb7ebf.chunk.js": "/web-frontend/static/js/667.f4eb7ebf.chunk.js",
-    "static/js/453.59bc6b9d.chunk.js": "/web-frontend/static/js/453.59bc6b9d.chunk.js",
+    "main.js": "/web-frontend/static/js/main.4488ab19.js",
+    "static/js/977.b87b023d.chunk.js": "/web-frontend/static/js/977.b87b023d.chunk.js",
+    "static/js/667.d92c1f66.chunk.js": "/web-frontend/static/js/667.d92c1f66.chunk.js",
+    "static/js/453.bb4811d2.chunk.js": "/web-frontend/static/js/453.bb4811d2.chunk.js",
     "static/media/notfound.jpg": "/web-frontend/static/media/notfound.145a23422784955a850d.jpg",
     "static/media/topbar-shop-img.png": "/web-frontend/static/media/topbar-shop-img.ef94055dcab6627e0e86.png",
     "static/media/customers-dashboardreport.svg": "/web-frontend/static/media/customers-dashboardreport.899b5c37e60eb7e60f3bd32f6c4c752e.svg",
@@ -23,12 +23,12 @@
     "static/media/failed_basket.svg": "/web-frontend/static/media/failed_basket.080bc7d0019c9aa1e741acab768b5372.svg",
     "static/media/paid_basket.svg": "/web-frontend/static/media/paid_basket.4903ad6369ececfd0f44033e4f62ec32.svg",
     "main.c4675c15.css.map": "/web-frontend/static/css/main.c4675c15.css.map",
-    "main.edc58e58.js.map": "/web-frontend/static/js/main.edc58e58.js.map",
-    "667.f4eb7ebf.chunk.js.map": "/web-frontend/static/js/667.f4eb7ebf.chunk.js.map",
-    "453.59bc6b9d.chunk.js.map": "/web-frontend/static/js/453.59bc6b9d.chunk.js.map"
+    "main.4488ab19.js.map": "/web-frontend/static/js/main.4488ab19.js.map",
+    "667.d92c1f66.chunk.js.map": "/web-frontend/static/js/667.d92c1f66.chunk.js.map",
+    "453.bb4811d2.chunk.js.map": "/web-frontend/static/js/453.bb4811d2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c4675c15.css",
-    "static/js/main.edc58e58.js"
+    "static/js/main.4488ab19.js"
   ]
 }
