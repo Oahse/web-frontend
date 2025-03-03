@@ -253,7 +253,15 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,add=
     return (
       <>
         {isMobile?
-        <List id='orders-table' items={items} onSelectedItems={handleSelectedItems} onRowClick={handleOrderItem}/>
+        <List id='orders-table' 
+              items={items} 
+              onSelectedItems={handleSelectedItems} 
+              onRowClick={handleOrderItem} 
+              suffix={
+                  <Text tag="small" fontWeight="fw-300">
+                      {item?.currency} {item?.price}
+                  </Text>}
+          />
         :
         <Table
           id='orders-table'

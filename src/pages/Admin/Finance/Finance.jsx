@@ -142,7 +142,15 @@ const AdminFinance = ({ API_URL, Companyname, isMobile, isTablet, itemnumber}) =
     return (
       <>
         {isMobile ? (
-          <List id="finance-table" items={items} onSelectedItems={handleSelectedItems} onRowClick={handleFinanceItem} />
+          <List 
+            id="finance-table" 
+            items={items} 
+            onSelectedItems={handleSelectedItems} 
+            onRowClick={handleFinanceItem}
+            suffix={
+                    <Text tag="small" fontWeight="fw-300">
+                        {item?.currency} {item?.price}
+                    </Text>} />
         ) : (
           <Table
               id='finance-table'

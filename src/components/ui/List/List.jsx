@@ -9,6 +9,7 @@ const List = ({
     pageSize = 20,
     selectable = true, 
     pagination = true,
+    suffix = null,
     showSizeChanger = true,
     pageSizeOptions = ['5', '10', '20', '50', '100'], 
     onShowSizeChange,
@@ -154,9 +155,7 @@ const List = ({
                             </div>
                         }
                     />
-                    <Text tag="small" fontWeight="fw-300">
-                        {item.currency} {item.price}
-                    </Text>
+                    {suffix}
                 </AntdList.Item>
             )}
             renderSkeleton={() => (

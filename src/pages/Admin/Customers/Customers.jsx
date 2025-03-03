@@ -168,7 +168,9 @@ const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,a
     return (
       <>
         {isMobile ? (
-          <List id="orders-table" items={items} onSelectedItems={handleSelectedItems} onRowClick={handleCustomerItem} />
+          <List id="orders-table" items={items} onSelectedItems={handleSelectedItems} onRowClick={handleCustomerItem} suffix={<Text tag="small" fontWeight="fw-300">
+                                          {item?.currency} {item?.price}
+                                      </Text>} />
         ) : (
           <Table
               id='customers-table'
