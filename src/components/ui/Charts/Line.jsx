@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = ({title, yaxis, xaxis,isMobile}) => {
+const LineChart = ({title, yaxis, xaxis,isMobile, height}) => {
   // Sample data for the chart
   const data = {
     labels: xaxis || [
@@ -79,7 +79,7 @@ const LineChart = ({title, yaxis, xaxis,isMobile}) => {
   };
 
   return (
-    <div style={{ position: 'relative', marginBottom:'16px', height:`${isMobile ?'300px':'500px'}`  }}> {/* Set relative container height */}
+    <div style={{ position: 'relative', marginBottom:'16px', height:`${isMobile ?height || '300px':height || '500px'}`  }}> {/* Set relative container height */}
       <Line data={data} options={options} />
     </div>
   );

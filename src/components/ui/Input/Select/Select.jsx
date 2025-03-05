@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, Select as AntdSelect } from 'antd';
 import './Select.css';
-const Select = ({ placeholder,options, onChange, style, iscategoryLoading, ...props }) => {
+const Select = ({ placeholder,options=[], onChange, style, iscategoryLoading, ...props }) => {
     const Options =options.map((option,index) => ({
         key :option.id ||index,
         value: option.label, // Use id for the value

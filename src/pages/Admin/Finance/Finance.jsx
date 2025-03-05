@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Col, Row, Tag, Modal } from "antd";
+import { Avatar, Col, Row, Tag, Modal, Form, Radio } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Table from "../../../components/ui/Table/Table";
 import AdminContent from "../AdminContent";
@@ -10,12 +10,18 @@ import Text from "../../../components/ui/Typography/Text";
 import SearchInput from "../../../components/ui/Input/SearchInput";
 import AdminFinanceItem from "./FinanceItem";
 import { useParams } from "react-router-dom";
+import FormSelect from "../../../components/ui/Input/FormInput/FormSelect";
+import FormInput from "../../../components/ui/Input/FormInput/FormInput";
+import FormCheckBox from "../../../components/ui/Input/FormInput/FormCheckBox";
+import Select from "../../../components/ui/Input/Select/Select";
+import { Line } from "react-chartjs-2";
+import LineChart from "../../../components/ui/Charts/Line";
 
 const AdminFinance = ({ API_URL, Companyname, isMobile, isTablet, itemnumber}) => {
   const { id } = useParams(); // Get the `id` from the URL
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
   const [selecteditems, setSelectedItems] = useState([]);
-  const [breadCrumbItems, setBreadCrumbItems] = useState([{ title: "Customers" }]); // Breadcrumb state
+  const [breadCrumbItems, setBreadCrumbItems] = useState([{ title: "Finance" }]); // Breadcrumb state
   const [currentitems, setCurrentItems] = useState([
     {
       id: 1,
@@ -63,17 +69,7 @@ const AdminFinance = ({ API_URL, Companyname, isMobile, isTablet, itemnumber}) =
   };
   
   
-  const handleDeleteItems = (items) => {
-    Modal.confirm({
-      title: 'Are you sure you want to delete these finance details?',
-      onOk: () => {
-        const updatedItems = currentitems.filter((currentItem) => 
-          !items.some(item => item.id === currentItem.id)
-        );
-        setCurrentItems(updatedItems);
-      },
-    });
-  };
+  
   
   const handleFinanceItem = (record) => {
       const url = `${window.location.origin}/web-frontend/admin/finance/${record.id}`;
@@ -165,96 +161,222 @@ const AdminFinance = ({ API_URL, Companyname, isMobile, isTablet, itemnumber}) =
     );
   };
 
-  const options = [
-    {
-      icon: (
-        <Icon
-          icon="catppuccin:pdf"
-          width="25"
-          height="25"
-          onClick={() => genHtmlPdf({ contentid: "#orders-table", pdfname: "Orders" })}
-        />
-      ),
-      label: "Pdf",
-    },
-    {
-      icon: (
-        <Icon
-          icon="vscode-icons:file-type-excel2"
-          width="25"
-          height="25"
-          onClick={() => exportToExcel({ json_data: currentitems, fileName: "Orders" })}
-        />
-      ),
-      label: "Excel",
-    },
+  const dateFilters = [
+    // ----- Recent Time Filters (Up to the past month) -----
+    { label: 'Yesterday', value: 'yesterday' },
+    { label: 'Last 3 Days', value: 'last_3_days' },
+    { label: 'Last 7 Days', value: 'last_7_days' },
+    { label: 'Last 14 Days', value: 'last_14_days' },
+    { label: 'Last 28 Days', value: 'last_28_days' },
+    { label: 'Last 30 Days', value: 'last_30_days' },
+  
+    // ----- Monthly Time Filters (Past 1 month to 6 months) -----
+    { label: 'Last 1 Month', value: 'last_1_month' },
+    { label: 'Last 3 Months', value: 'last_3_months' },
+    { label: 'Last 6 Months', value: 'last_6_months' },
+  
+    // ----- Longer-Term Filters (Beyond 6 months) -----
+    { label: 'Last 9 Months', value: 'last_9_months' },
+    { label: 'Last Year', value: 'last_year' }
   ];
-
+  
+  
+  
   const suffix = (
     <div className="d-flex gap-2">
-      <Button
-        variant="outlined"
-        text={isMobile ? (
-          <Icon icon="catppuccin:pdf" width="25" height="25" />
-        ) : (
-          "Export to Pdf"
-        )}
-        onClick={() => genHtmlPdf({ contentid: "#finance-table", pdfname: "Finance" })}
-      />
-      <Button
-        color={selecteditems?.length > 0 ? "danger" : "primary"}
-        text={
-          selecteditems?.length > 0
-            ? isMobile
-              ? <Icon icon="material-symbols-light:delete-outline-rounded" width="25" height="25" />
-              : "Delete"
-            : isMobile
-            ? <Icon icon="material-symbols-light:add-rounded" width="25" height="25" />
-            : "Add"
-        }
-        onClick={(e)=>(handleDeleteItems(selecteditems))}
-      />
+      
+      <Select
+        options={dateFilters.map(date => ({
+                      label: date.label,   // rename 'name' to 'label'
+                      code: date.value
+                  }))}
+        // onChange={onChange}
+        placeholder='Filter by'
+        optionFilterProp="label" // Use the label property for default filtering
+        />
+      
     </div>
   );
 
-  const handleSearch = (e) => {
-    console.log(e);
-  };
-
-  const content = renderTableContent(currentitems);
-
+  const data = [
+    {
+      id: 1,
+      date: new Date('2025-03-01'),
+      description: "Purchase of office supplies",
+      account: "Office Expense",
+      amount: 150.75,
+    },
+    {
+      id: 2,
+      date: new Date('2025-03-02'),
+      description: "Payment for services rendered",
+      account: "Service Revenue",
+      amount: 300.00,
+    },
+    {
+      id: 3,
+      date: new Date('2025-03-03'),
+      description: "Employee salary",
+      account: "Salaries and Wages",
+      amount: 5000.00,
+    },
+    {
+      id: 4,
+      date: new Date('2025-03-04'),
+      description: "Utility bill payment",
+      account: "Utility Expenses",
+      amount: 120.50,
+    },
+    {
+      id: 5,
+      date: new Date('2025-03-05'),
+      description: "Purchase of software subscription",
+      account: "Software Expense",
+      amount: 250.00,
+    },
+    {
+      id: 6,
+      date: new Date('2025-03-06'),
+      description: "Office rent payment",
+      account: "Rent Expense",
+      amount: 1500.00,
+    },
+    {
+      id: 7,
+      date: new Date('2025-03-07'),
+      description: "Travel expenses",
+      account: "Travel Expense",
+      amount: 450.00,
+    },
+  ];
+  
+  const columns = [
+    {
+      title: "Order",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (date) => date.toLocaleDateString(), // Format date properly
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description"
+    },
+    {
+      title: "Account",
+      dataIndex: "account",
+      key: "account",
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+    },
+  ];
+  
+  // Use this data and columns in a table component (e.g., Ant Design's Table)
+  
+  
   const renderChild = ({ item }) => {
     if (item) {
       return <AdminFinanceItem API_URL={API_URL} Companyname={Companyname} item={item} handleGoBack={handleFinance}/>;
     }else{
       return (
-        <Text tag="p" fontWeight="fw-600">
-            In Progress ...
-        </Text>
-        // <Row gutter={[16, 0]}>
-        //   <Col span={24} style={{ paddingLeft: "8px", paddingRight: "8px" }}>
-        //     <div
-        //       className="custom-tabs"
-        //       style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
-        //     >
-        //       <div className="p-2" style={{ width: "100%", marginBottom: "-16px" }}>
-        //         <SearchInput
-        //           placeholder="Search Finances"
-        //           onSearch={handleSearch}
-        //           style={{ width: "100%" }}
-        //         />
-        //       </div>
-        //       <div className="p-2" style={{ display: "flex", gap: "10px", justifyContent: "center", alignItems: "center" }}>
-        //         <Icon icon="fluent:filter-20-regular" width="25" height="25" />
-        //         <Icon icon="ph:arrows-down-up-light" width="25" height="25" />
-        //       </div>
-        //     </div>
-        //   </Col>
-
-        //   <Col span={24} style={{ paddingLeft: "8px", paddingRight: "8px" }}>
-        //     {content}
-        //   </Col>
-        // </Row>
+        <Row gutter={[16, 16]}  style={{padding:'8px'}}>
+            <Col xxl={16} xl={16} lg={16} md={16} sm={24} xs={24} >
+                <Row gutter={[16, 16]} >
+                    <Col span={24} className="col-item" >
+                        <Row gutter={[16, 16]} style={{padding:'8px'}}>
+                            <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+                                <div className="container-fluid d-flex justify-content-space-between align-items-center gap-3">
+                                    <Text tag="p" fontWeight="fw-400">
+                                        Total Sales
+                                    </Text>
+                                    <Text tag="p" fontWeight="fw-600 fs-5">
+                                        CA $16 _
+                                    </Text>
+                                </div>
+                            </Col>
+                            <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+                                <div className="container-fluid d-flex justify-content-space-between align-items-center gap-3">
+                                    <Text tag="p" fontWeight="fw-400">
+                                        Payouts
+                                    </Text>
+                                    <Text tag="p" fontWeight="fw-600 fs-5">
+                                        CA $14.95
+                                    </Text>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col span={24} className="col-item" >
+                          <Row gutter={[16, 16]} >
+                                <Col span={24}>
+                                    <Text tag="p" fontWeight="fw-600">
+                                        Recent Transactions
+                                    </Text>
+                                </Col>
+                                <Col span={24}>
+                                    <Table
+                                        id='orders-table'
+                                        columns={columns}
+                                        items={data}
+                                        onSelectedRowKeys={(selectedRowKeys) => setSelectedRowKeys(selectedRowKeys)}
+                                        onSelectedItems={handleSelectedItems}
+                                        onRowClick={handleFinanceItem}
+                                      />
+                                </Col>
+                            </Row>
+                    </Col>
+                </Row>
+            </Col>
+            
+            <Col xxl={8} xl={8} lg={8} md={8} sm={24} xs={24}>
+            {/* style={{padding:'8px'}} */}
+                <Row gutter={[16, 16]}  style={{paddingLeft:'4px',paddingRight:'4px'}}> 
+                    <Col span={24}  className="col-item border-1 ms-auto border" >
+                        <div className="d-flex flex-column justify-content-start align-items-start ">
+                            <Text tag="p" fontWeight="fw-600">
+                                Taxes
+                            </Text>
+                            <Text
+                                fontColor="text-link"
+                                fontSize="fs-md"
+                                fontWeight="fw-400"
+                                className="mt-3 mb-1 text-break border-1 border rounded-sm p-2 w-100"
+                            >No tag given
+                                {/* {customer?.tags?customer?.tags:'No tag given'} */}
+                            </Text>
+                        </div>
+                    </Col>
+                    <Col span={24}  className="col-item border-1 ms-auto border" >
+                        <div className="d-flex flex-column justify-content-start align-items-start ">
+                            <Text tag="p" fontWeight="fw-600">
+                                Amount
+                            </Text>
+                            <Text
+                                  fontColor="text-link"
+                                  fontSize="fs-md"
+                                  fontWeight="fw-600"
+                                  className="mt-3 mb-1 text-break border-1 border rounded-sm p-2 w-100"
+                              >
+                                <span className="d-flex justify-content-space-between align-items-center ">
+                                    <Icon icon="material-symbols-light:download-rounded" width="25" height="25" /> Payouts
+                                </span>
+                                <Text tag="p" fontWeight="fw-600" fontColor="text-success" fontSize="fs-lg">
+                                    - $12.35
+                                </Text>
+                            </Text>
+                        </div>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
       );
     } 
   };
