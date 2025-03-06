@@ -16,7 +16,6 @@ const AdminDiscountItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=
     const [loading, setLoading] = useState(true);
     // const [error, setError] = useState(null);
 
-   
     useEffect(() => {
       const fetchUser = async () => {
           try {
