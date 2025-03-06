@@ -270,7 +270,7 @@
 .fs-xl{
   font-size: 24px;
 }
-.fs-lg{
+.bg{
   font-size: 20px;
 }
 .fs-md-lg{
@@ -1120,4 +1120,10 @@
 }
 .iconify {
   cursor: pointer;
+}
+.scrollable-div {
+  width: 100%; /* or set a fixed width like 500px */
+  overflow-x: auto; /* Enables horizontal scrolling */
+  white-space: nowrap; /* Prevents the content from wrapping */
+  border: 1px solid #ccc; /* Optional: just to see the div's boundaries */
 }
