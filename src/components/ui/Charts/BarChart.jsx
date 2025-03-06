@@ -35,7 +35,13 @@ const BarChart = ({label}) => {
     scales: {
       y: {
         beginAtZero: true, // Ensure the y-axis starts from zero
+        grid: {
+          display: false, // Optional: keep the horizontal grid lines if you need them
+        },
+        
+      
       },
+      
     },
     onHover: (event, chartElement) => {
       if (chartElement.length > 0) {
@@ -47,8 +53,8 @@ const BarChart = ({label}) => {
   };
 
   return (
-    <div className="scrollable-div">
-        <Bar data={data} options={options} />
+    <div style={{ width: '100%',height: 250, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Bar data={data} options={options}/>
     </div>
   );
 };

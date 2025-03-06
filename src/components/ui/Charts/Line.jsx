@@ -26,8 +26,9 @@ const LineChart = ({title, yaxis, xaxis,isMobile, height}) => {
   // Sample data for the chart
   const data = {
     labels: xaxis || [
-      'Jan 1, 2025', 'Feb 1, 2025', 'Mar 1, 2025', 'Apr 1, 2025', 'May 1, 2025', 'Jun 1, 2025'
-    ], // X-axis labels (dates)
+      'Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025'
+    ]
+    , // X-axis labels (dates)
     datasets: [
       {
         label: title || '',
@@ -79,7 +80,7 @@ const LineChart = ({title, yaxis, xaxis,isMobile, height}) => {
   };
 
   return (
-    <div style={{ position: 'relative', marginBottom:'16px', height:`${isMobile ?height || '300px':height || '500px'}`  }}> {/* Set relative container height */}
+    <div style={{ position: 'relative', marginBottom:'16px', height:`${isMobile ?height?height:'300px':height?height:'500px'}`  }}> {/* Set relative container height */}
       <Line data={data} options={options} />
     </div>
   );

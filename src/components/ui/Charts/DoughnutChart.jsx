@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 // Register necessary chart components
@@ -56,7 +56,7 @@ const generateShades = (baseColor, dataLength) => {
   
 
 
-const PieChart = () => {
+const DoughnutChart = () => {
   const data = [
     { name: 'Item 1', value: 400 },
     { name: 'Item 2', value: 300 },
@@ -101,9 +101,9 @@ const PieChart = () => {
 
   return (
     <div style={{ width: '100%', height: 250, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <Pie data={chartData} options={options}/>
+      <Doughnut data={chartData} options={options}/>
     </div>
   );
 };
 
-export default PieChart;
+export default DoughnutChart;

@@ -4,7 +4,9 @@ import Text from "../../../components/ui/Typography/Text";
 import Card from "../../../components/ui/Card/Card";
 import AdminContent from "../AdminContent";
 import BarChart from "../../../components/ui/Charts/BarChart";
-import PieChart from "../../../components/ui/Charts/PieChart";
+import PieChart from "../../../components/ui/Charts/DoughnutChart";
+import HorizontalBarChart from "../../../components/ui/Charts/HorizontalBarChart";
+import DoughnutChart from "../../../components/ui/Charts/DoughnutChart";
 
 
 const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
@@ -12,6 +14,12 @@ const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
     const breadCrumbItems = [
         {title:'Analytics'}
     ]
+    const data = [
+        { location: 'Nigeria', sessions: 14 },
+        { location: 'United Kingdom', sessions: 4 },
+        { location: 'Canada', sessions: 1 },
+        { location: 'United States of America', sessions: 1 },
+      ];
     return (
         <AdminContent 
             API_URL ={API_URL}
@@ -150,6 +158,7 @@ const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     <Text tag="p" fontWeight="fw-600">
                                         Average Order Value over time
                                     </Text>
+                                    <LineChart isMobile={isMobile} height={'250px'} xaxis={['1/25', '2/25', '3/25', '4/25', '5/25', '6/25']}/>
                                 </div>
                                 
                             </Col>
@@ -158,6 +167,7 @@ const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     <Text tag="p" fontWeight="fw-600">
                                         Total says by product
                                     </Text>
+                                    <LineChart isMobile={isMobile} height={'250px'} xaxis={['1/25', '2/25', '3/25', '4/25', '5/25', '6/25']}/>
                                 </div>
                             </Col>
                             <Col xxl={8} xl={8} lg={8} md={24} sm={24} xs={24} >
@@ -165,6 +175,7 @@ const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     <Text tag="p" fontWeight="fw-600">
                                         Sessions over time
                                     </Text>
+                                    <LineChart isMobile={isMobile} height={'250px'} xaxis={['1/25', '2/25', '3/25', '4/25', '5/25', '6/25']}/>
                                 </div>
                                 
                             </Col>
@@ -186,6 +197,11 @@ const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     <Text tag="p" fontWeight="fw-600">
                                         Conversion rate brakedown
                                     </Text>
+                                    <div style={{ width: '100%', height: 250, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text tag="small" fontWeight="fw-300">
+                                            There is no information for this data range
+                                        </Text>
+                                    </div>
                                 </div>
                                 
                             </Col>
@@ -194,7 +210,7 @@ const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     <Text tag="p" fontWeight="fw-600">
                                         Sessions by device type
                                     </Text>
-                                    <PieChart />
+                                    <DoughnutChart />
                                 </div>
                                 
                             </Col>
@@ -207,6 +223,7 @@ const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     <Text tag="p" fontWeight="fw-600">
                                         Sessions by Location
                                     </Text>
+                                    <HorizontalBarChart data={data} />
                                 </div>
                                 
                             </Col>
@@ -215,6 +232,8 @@ const AdminAnalytics = ({API_URL,Companyname,isMobile,isTablet }) => {
                                     <Text tag="p" fontWeight="fw-600">
                                         Top referrers by sessions
                                     </Text>
+                                    
+                                    <HorizontalBarChart data={data} />
                                 </div>
                                 
                             </Col>
