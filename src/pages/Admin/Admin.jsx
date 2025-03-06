@@ -18,7 +18,7 @@ import AdminProducts from './Products';
 import AdminCustomers from './Customers/Customers';
 import AdminFinance from './Finance/Finance';
 import AdminAnalytics from './Analytics/Analytics';
-import AdminDiscount from './Discount';
+import AdminDiscount from './Discounts/Discounts';
 import AdminMarketing from './Marketing';
 import AdminPlatform from './Platform';
 import BottomNavbar from '../../components/ui/BottomNavBar/BottomNavBar';
