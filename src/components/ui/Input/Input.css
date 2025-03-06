@@ -1,7 +1,7 @@
 /* Customize the form item wrapper */
- input,
- .ant-input,
- .ant-input-outlined {
+input,
+.ant-input,
+.ant-input-outlined {
     color: var(--alternate-text-color) !important;
     border-radius: 8px;
     padding: 3px 8px;
@@ -12,9 +12,9 @@
     transition: all 0.3s ease;
     outline: none !important; /* Remove default blue outline */
     box-shadow: none !important;
-  }
+}
   
-input:focus,
+/* input:focus,
 input:hover,
 .ant-input:hover,
 .ant-input-outlined:hover, 
@@ -25,10 +25,23 @@ input:hover,
     border-color: var(--background-color);
     background-color: white;
     outline: none;
-  }
+} */
+
+input:focus:not([disabled]),
+input:hover:not([disabled]),
+.ant-input:not([disabled]):hover,
+.ant-input-outlined:not([disabled]):hover, 
+.ant-input-outlined:not([disabled]):focus,
+.ant-input-outlined-focused:not([disabled]), 
+.ant-input-outlined-active:not([disabled]),
+.ant-input-outlined:not([disabled]):active {
+    border-color: var(--background-color);
+    background-color: white;
+    outline: none;
+}
 /* Merged styles for regular and outlined input fields */
 .ant-input-wrapper {
-  padding: 8px !important;
+    padding: 8px !important;
 }
 
 .ant-input-group-addon {

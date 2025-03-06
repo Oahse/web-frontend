@@ -9,6 +9,7 @@ const Input = ({
     onChange, 
     required = false, 
     className, 
+    disabled=false,
     style = {}, 
     onSearch,
     isFilter 
@@ -21,6 +22,7 @@ const Input = ({
             onChange={onChange}
             className={className}
             required={required}
+            disabled={disabled}
             style={{
                 paddingRight: isFilter 
                 ? `calc(30px + ${(type === 'password' || onSearch) ? '30px' : '0px'})`  // If filter is true, 30px + 30px if password or onSearch
@@ -40,6 +42,7 @@ Input.propTypes = {
     value: PropTypes.string.isRequired,  // The value of the input (required)
     onChange: PropTypes.func.isRequired,  // The change handler for the input (required)
     required: PropTypes.bool,      // Whether the input is required (default: false)
+    disabled: PropTypes.bool,
     className: PropTypes.string,   // Custom class name for the input
     style: PropTypes.object,       // Inline styles to apply to the input
     onSearch: PropTypes.func,       // Optional function for search functionality (if relevant)
@@ -47,9 +50,10 @@ Input.propTypes = {
 };
 
 // Define default props for the Input component
-Input.defaultProps = {
+Input.default = {
     type: 'text',  // Default input type is text
     required: false, // Default is not required
+    disabled:false,
     style: {},      // Default is no custom styles
     onSearch: null, // Default is no onSearch handler
     isFilter: false, // Default is no isFilter: handler

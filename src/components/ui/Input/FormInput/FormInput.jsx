@@ -6,7 +6,7 @@ import Input from '../Input';
 
 const FormInput = ({
     label, type, placeholder, value, name, rules,
-    onChange, required = false, className, style = {}, onSearch,isFilter,onFilter
+    onChange, required = false, className, style = {}, onSearch,isFilter,onFilter, disabled=false
 }) => {
 
     const [typevalue, setTypeValue] = useState(type || 'text');
@@ -37,8 +37,9 @@ const FormInput = ({
                 name={name}
                 rules={rules}
                 className={className}
+                
             >
-                <Input type={typevalue} placeholder={placeholder} value={value} onChange={onChange} onSearch={onSearch} isFilter={isFilter}/>
+                <Input disabled={disabled} type={typevalue} placeholder={placeholder} value={value} onChange={onChange} onSearch={onSearch} isFilter={isFilter}/>
                 {type === 'password' && (
                     
                     <Icon icon={`ph:eye-${typevalue === 'password' ? 'thin' : 'slash-thin'}`} 

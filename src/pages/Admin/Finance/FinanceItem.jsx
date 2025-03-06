@@ -134,7 +134,7 @@ const AdminFinanceItem = ({ API_URL, Companyname, isMobile, isTablet, item, hand
     
     return (
         <Row gutter={[16, 16]}  style={{padding:'8px'}}>
-            <Col span={16}>
+            <Col xxl={16} xl={16} lg={16} md={16} sm={24} xs={24}>
                 <Row gutter={[16, 16]} >
                     <Col span={24}>
                         <div className="d-flex flex-column justify-content-start align-items-start">
@@ -155,147 +155,192 @@ const AdminFinanceItem = ({ API_URL, Companyname, isMobile, isTablet, item, hand
                                     Finance Details
                                 </Text>
                             </Col>
-                            <Col span={24} >
-                                <Form 
+                            <Col span={24}>
+                                <Form
                                     name="finance-details"
-                                    // layout="vertical"
-                                    onFinish={onFinish}
-                                    initialValues={{
-                                    newsletter: true, // Default checkbox to checked
-                                    }}
-                                    style={{style:'100%'}}
-                                >
-                                    <FormSelect
-                                        label='Select a Country'
-                                        name='Country'
-                                        placeholder='Please select a country'
-                                        options={countries.map(country => ({
-                                        label: country.name,   // rename 'name' to 'label'
-                                        icon: country.flag,    // rename 'flag' to 'icon'
-                                        code:country.code
-                                        }))}
-                                    />
-                                
-                                    <Form.Item label='Trade Role'>
-                                        <Radio.Group >
-                                                <Radio value={1}>Buyer</Radio>
-                                                <Radio value={2}>Seller</Radio>
-                                                <Radio value={3}>Both</Radio>
-                                            </Radio.Group>
-                                    </Form.Item>
-                                    <Row gutter={16} >
-                                        <Col span={12} >
-                                            {/* <Form.Item> */}
-                                                <FormInput name='name' placeholder='First name' 
-                                                    rules={[{ required: true, message: 'Please enter your name' }]}
-                                                />
-                                            {/* </Form.Item> */}
-                                        </Col>
-
-                                        <Col span={12}>
-                                            {/* <Form.Item> */}
-                                                <FormInput name='name' placeholder='Last name' 
-                                                    rules={[{ required: true, message: 'Please enter your name' }]}
-                                                />
-                                            {/* </Form.Item> */}
-                                        </Col>
-                                    </Row>
-            
+                                    style={{ width: '100%' }}
+                                    >
+                                    {/* Transaction Type */}
                                     <FormInput
-                                        name="email"
-                                        placeholder="Email"
-                                        rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
+                                        name="Transaction Type"
+                                        label="Transaction Type"
+                                        placeholder="Deposit" // Same as value
+                                        value="Deposit" // Replace with dynamic value
+                                        disabled
                                     />
-                                    <Row gutter={16} >
-                                        <Col span={5} >
-                                            <FormSelect
-                                                name='Phone'
-                                                placeholder='Please select a Code'
-                                                options={countries.map(country => ({
-                                                            label: country.idd,   // rename 'name' to 'label'
-                                                            icon: country.flag,    // rename 'flag' to 'icon'
-                                                            code:country.code,
-                                                            idd:country.name
-                                                        }))}
-                                            />
-                                        </Col>
 
-                                        <Col span={19}>
-                                            <FormInput name='phone_number' placeholder='Phone Number' 
-                                                rules={[{ required: true, message: 'Please enter your phone number' }]}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <FormCheckBox>  
-                                        Finances agree to receiving marketing emails
-                                    </FormCheckBox>
-                                    <FormCheckBox>  
-                                        Finances agree to receiving marketing SMS messages
-                                    </FormCheckBox>
-
-                                    <Row gutter={16} >
-                                        <Col span={5} >
-                                            <FormSelect
-                                                name='country'
-                                                placeholder='Country/Region'
-                                                options={countries.map(country => ({
-                                                            label: country.name,   // rename 'name' to 'label'
-                                                            icon: country.flag,    // rename 'flag' to 'icon'
-                                                            code:country.code,
-                                                            // idd:country.name
-                                                        }))}
-                                            />
-                                        </Col>
-
-                                        <Col span={19}>
-                                            <SearchInput
-                                                placeholder="Search Address"
-                                                onSearch={handleSearch}
-                                                style={{ width: "100%" }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                                        
+                                    {/* Account Type */}
                                     <FormInput
-                                        name="Apartment/ suite, unit"
-                                        placeholder="Apartment/ suite, unit"
-                                        rules={[{ required: true, message: 'Please enter your Apartment/ suite, unit' }]}
+                                        name="Account Type"
+                                        label="Account Type"
+                                        placeholder="Checking" // Same as value
+                                        value="Checking" // Replace with dynamic value
+                                        disabled
                                     />
 
-                                    <Row gutter={16} >
-                                        <Col span={12} >
-                                            {/* <Form.Item> */}
-                                                <FormInput name='City' placeholder='First City' 
-                                                    rules={[{ required: true, message: 'Please enter your City' }]}
-                                                />
-                                            {/* </Form.Item> */}
-                                        </Col>
-
-                                        <Col span={12}>
-                                            {/* <Form.Item> */}
-                                                <FormInput name='State/Province' placeholder='State/Province' 
-                                                    rules={[{ required: true, message: 'Please enter your State/Province' }]}
-                                                />
-                                            {/* </Form.Item> */}
-                                        </Col>
-                                    </Row>
-
-                                    <FormInput name='Postal Code' placeholder='Postal Code' 
-                                        rules={[{ required: true, message: 'Please enter your Postal Code' }]}
+                                    {/* Transaction Description */}
+                                    <FormInput
+                                        name="Transaction Description"
+                                        label="Transaction Description"
+                                        placeholder="Payment for services rendered" // Same as value
+                                        value="Payment for services rendered" // Replace with dynamic value
+                                        disabled
                                     />
-                                    
-                                    <Form.Item className="d-flex flex-column justify-content-start align-items-end">
-                                        <Button type="primary" htmlType="submit" text="Save" />
-                                        {/* <Button type="primary" onClick={showModal} text='OTP'/>  */}
-                                    </Form.Item>
+
+                                    {/* Transaction Date */}
+                                    <FormInput
+                                        name="Transaction Date"
+                                        label="Transaction Date"
+                                        placeholder="March 1, 2025" // Same as value
+                                        value="March 1, 2025" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Payment Method */}
+                                    <FormInput
+                                        name="Payment Method"
+                                        label="Payment Method"
+                                        placeholder="Credit Card" // Same as value
+                                        value="Credit Card" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Billing Street */}
+                                    <FormInput
+                                        name="Billing Street"
+                                        label="Billing Street"
+                                        placeholder="123 Main Street" // Same as value
+                                        value="123 Main Street" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Billing City */}
+                                    <FormInput
+                                        name="Billing City"
+                                        label="Billing City"
+                                        placeholder="New York" // Same as value
+                                        value="New York" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Postal Code */}
+                                    <FormInput
+                                        name="Postal Code"
+                                        label="Postal Code"
+                                        placeholder="10001" // Same as value
+                                        value="10001" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Country */}
+                                    <FormInput
+                                        name="Country"
+                                        label="Country"
+                                        placeholder="USA" // Same as value
+                                        value="USA" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Additional Financial Details */}
+
+                                    {/* Bank Account Number */}
+                                    <FormInput
+                                        name="Bank Account Number"
+                                        label="Bank Account Number"
+                                        placeholder="987654321" // Same as value
+                                        value="987654321" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Routing Number */}
+                                    <FormInput
+                                        name="Routing Number"
+                                        label="Routing Number"
+                                        placeholder="123456789" // Same as value
+                                        value="123456789" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* SWIFT Code */}
+                                    <FormInput
+                                        name="SWIFT Code"
+                                        label="SWIFT Code"
+                                        placeholder="SWIFT123" // Same as value
+                                        value="SWIFT123" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Account Holder Name */}
+                                    <FormInput
+                                        name="Account Holder Name"
+                                        label="Account Holder Name"
+                                        placeholder="John Doe" // Same as value
+                                        value="John Doe" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Bank Name */}
+                                    <FormInput
+                                        name="Bank Name"
+                                        label="Bank Name"
+                                        placeholder="XYZ Bank" // Same as value
+                                        value="XYZ Bank" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* IBAN (International Bank Account Number) */}
+                                    <FormInput
+                                        name="IBAN"
+                                        label="IBAN"
+                                        placeholder="GB29XABC10161234567801" // Same as value
+                                        value="GB29XABC10161234567801" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Account Balance */}
+                                    <FormInput
+                                        name="Account Balance"
+                                        label="Account Balance"
+                                        placeholder="$1,250.75" // Same as value
+                                        value="$1,250.75" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Credit Limit */}
+                                    <FormInput
+                                        name="Credit Limit"
+                                        label="Credit Limit"
+                                        placeholder="$5,000.00" // Same as value
+                                        value="$5,000.00" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Transaction ID */}
+                                    <FormInput
+                                        name="Transaction ID"
+                                        label="Transaction ID"
+                                        placeholder="TXN1234567890" // Same as value
+                                        value="TXN1234567890" // Replace with dynamic value
+                                        disabled
+                                    />
+
+                                    {/* Last Transaction Date */}
+                                    <FormInput
+                                        name="Last Transaction Date"
+                                        label="Last Transaction Date"
+                                        placeholder="February 28, 2025" // Same as value
+                                        value="February 28, 2025" // Replace with dynamic value
+                                        disabled
+                                    />
                                 </Form>
+
                             </Col>
                         </Row>
                         
                     </Col>
                 </Row>
             </Col>
-            <Col span={8} >
+            <Col xxl={8} xl={8} lg={8} md={8} sm={24} xs={24} >
                 <Row gutter={[16, 16]} style={{padding:'8px'}}>
                     <Col span={24}  className="col-item" >
                         <div className="d-flex flex-column justify-content-start align-items-start">

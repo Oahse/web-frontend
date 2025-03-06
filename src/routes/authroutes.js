@@ -80,6 +80,11 @@ const AuthRoutes = ({ API_URL,Companyname }) => [
     element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={5}/>,
     title: "admin-finance"
   },
+  {
+    path: "/admin/finance/:id",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={5}/>,
+    title: "admin-finance"
+  },
 ];
 
 export default AuthRoutes;
