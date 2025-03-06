@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/web-frontend/static/css/main.c4675c15.css",
-    "main.js": "/web-frontend/static/js/main.3eea3c21.js",
+    "main.css": "/web-frontend/static/css/main.4878e595.css",
+    "main.js": "/web-frontend/static/js/main.c726d3d2.js",
     "static/js/977.b87b023d.chunk.js": "/web-frontend/static/js/977.b87b023d.chunk.js",
     "static/js/667.d92c1f66.chunk.js": "/web-frontend/static/js/667.d92c1f66.chunk.js",
     "static/js/453.bb4811d2.chunk.js": "/web-frontend/static/js/453.bb4811d2.chunk.js",
@@ -22,13 +22,13 @@
     "index.html": "/web-frontend/index.html",
     "static/media/failed_basket.svg": "/web-frontend/static/media/failed_basket.080bc7d0019c9aa1e741acab768b5372.svg",
     "static/media/paid_basket.svg": "/web-frontend/static/media/paid_basket.4903ad6369ececfd0f44033e4f62ec32.svg",
-    "main.c4675c15.css.map": "/web-frontend/static/css/main.c4675c15.css.map",
-    "main.3eea3c21.js.map": "/web-frontend/static/js/main.3eea3c21.js.map",
+    "main.4878e595.css.map": "/web-frontend/static/css/main.4878e595.css.map",
+    "main.c726d3d2.js.map": "/web-frontend/static/js/main.c726d3d2.js.map",
     "667.d92c1f66.chunk.js.map": "/web-frontend/static/js/667.d92c1f66.chunk.js.map",
     "453.bb4811d2.chunk.js.map": "/web-frontend/static/js/453.bb4811d2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c4675c15.css",
-    "static/js/main.3eea3c21.js"
+    "static/css/main.4878e595.css",
+    "static/js/main.c726d3d2.js"
   ]
 }
