@@ -68,6 +68,13 @@ const HorizontalBarChart = ({ data, label }) => {
         },
       },
     },
+    onHover: (event, chartElement) => {
+      if (chartElement.length > 0) {
+        document.body.style.cursor = 'pointer'; // Change cursor on hover
+      } else {
+        document.body.style.cursor = 'default'; // Reset cursor when not hovering over any slice
+      }
+    },
   };
 
   return (

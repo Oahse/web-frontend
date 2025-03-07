@@ -10,7 +10,7 @@ import useIsScrolled from "../../hooks/useIsScrolled";
 import Sidebar from "../../components/ui/SideBar/SideBar";
 import SideNavLinks from "../../components/ui/Header/SideNavLinks";
 import { useCountryByLocation } from "../../hooks/useCountry";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AdminHeader from "../../components/ui/Header/AdminHeader";
 import AdminDashBoard from "./Dashboard";
 import AdminOrders from "./Orders/Orders";
@@ -19,7 +19,7 @@ import AdminCustomers from './Customers/Customers';
 import AdminFinance from './Finance/Finance';
 import AdminAnalytics from './Analytics/Analytics';
 import AdminDiscount from './Discounts/Discounts';
-import AdminMarketing from './Marketing';
+import AdminMarketing from './Marketing/Marketing';
 import AdminPlatform from './Platform';
 import BottomNavbar from '../../components/ui/BottomNavBar/BottomNavBar';
 import AdminContents from './Contents/Contents';
@@ -27,6 +27,7 @@ import { Footer } from 'antd/es/layout/layout';
 import AdminOrderItem from './Orders/OrderItem';
 
 const Admin = ({API_URL,Companyname,activePage=0, add=false }) => {
+    const navigate = useNavigate();
     const { isMobile, isTablet} = useDeviceType();
     const isScrolled = useIsScrolled();
     const { isLoggedIn:isloggedIn, userDetails, loading } = useAuth();
@@ -77,9 +78,8 @@ const Admin = ({API_URL,Companyname,activePage=0, add=false }) => {
             case 8:
                 return <AdminMarketing isMobile={isMobile} isTablet={isTablet} add={add} />;
             case 9:
-                return <AdminPlatform isMobile={isMobile} isTablet={isTablet} add={add} />;
-            case 10:
-                return <AdminOrderItem isMobile={isMobile} isTablet={isTablet} add={add} />; //profile page view and edit
+                navigate('/shop');
+                break
             default:
                 return <AdminDashBoard isMobile={isMobile} isTablet={isTablet} add={add} />;
         }
@@ -98,37 +98,38 @@ const Admin = ({API_URL,Companyname,activePage=0, add=false }) => {
       }
     return (
         <>
-        {!isMobile ? 
-            <Layout style={{ minHeight: '100vh' }}>
-                <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={false} user={userDetails} onSearch={handleSearch} onActivePage={(item, index)=>handleActivePage(item, index)}/>
-                
-                <Layout>
-                    <Sidebar
-                            isAdmin={true}
-                            logo={Logo}
-                            visible={true}
-                            placement={sidebarstate?.placement}
-                            title={sidebarstate.title}
-                            items={sidebarstate.items}
-                            user={userDetails}
-                            activePage={activePage}
-                            onActivePage={(item, index)=>handleActivePage(item, index)}
-                        />
-                    {renderContent()}
-                </Layout>
-                <Footer>--</Footer>
-            </Layout> 
-            :
-            <Layout>
-                <Layout>
-                    <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={isMobile} user={userDetails} onSearch={handleSearch} onActivePage={(item, index)=>handleActivePage(item, index)}/>
+            {!isMobile ? 
+                <Layout style={{ minHeight: '100vh' }}>
+                    <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={false} user={userDetails} onSearch={handleSearch} onActivePage={(item, index)=>handleActivePage(item, index)}/>
                     
-                    {renderContent()}
+                    <Layout>
+                        <Sidebar
+                                isAdmin={true}
+                                logo={Logo}
+                                visible={true}
+                                placement={sidebarstate?.placement}
+                                title={sidebarstate.title}
+                                items={sidebarstate.items}
+                                user={userDetails}
+                                activePage={activePage}
+                                onActivePage={(item, index)=>handleActivePage(item, index)}
+                            />
+                        {renderContent()}
+                    </Layout>
+                    <Footer>--</Footer>
+                </Layout> 
+                :
+                <Layout>
+                    <Layout>
+                        <AdminHeader Companyname={Companyname} isScrolled={true} isMobile={isMobile} user={userDetails} onSearch={handleSearch} onActivePage={(item, index)=>handleActivePage(item, index)}/>
+                        
+                        {renderContent()}
+                    </Layout>
+                    <Footer>--</Footer>
+                    {isMobile && <BottomNavbar items={bottombarlinks} onActivePage={(item, index)=>handleActivePage(item, index)}
+                    user={userDetails} draweritems={draweritems} />}
                 </Layout>
-                <Footer>--</Footer>
-                {isMobile && <BottomNavbar items={bottombarlinks} onActivePage={(item, index)=>handleActivePage(item, index)}
-                user={userDetails} draweritems={draweritems} />}
-            </Layout>}
+            }
         </>
         
     )

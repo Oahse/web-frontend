@@ -11,7 +11,7 @@ import SearchInput from "../../../components/ui/Input/SearchInput";
 import AdminCustomerItem from "./CustomersItem";
 import { useParams } from "react-router-dom";
 
-const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,add=false }) => {
+const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber, add = false }) => {
   const { id } = useParams(); // Get the `id` from the URL
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
   const [selecteditems, setSelectedItems] = useState([]);
@@ -51,29 +51,31 @@ const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,a
     // More items...
   ]);
 
+  const [filteredItems, setFilteredItems] = useState(currentitems); // Filtered items based on search
   const [item, setItem] = useState(id ? currentitems.find((item) => item.id.toString() === id) : null);
 
   const handleCustomer = () => {
-      const url = `${window.location.origin}/web-frontend/admin/customers`;
-      updateURL(url, {});
-      
-      setBreadCrumbItems([
-        { title: "Customers" }
-      ]);
-      setItem(null);
-      setAdd(false);
+    const url = `${window.location.origin}/web-frontend/admin/customers`;
+    updateURL(url, {});
+
+    setBreadCrumbItems([
+      { title: "Customers" }
+    ]);
+    setItem(null);
+    setAdd(false);
   };
-  const handleAddItem = (e) =>{
-      const url = `${window.location.origin}/web-frontend/admin/customers/add`;
-      updateURL(url, {});
-      
-      setBreadCrumbItems([
-        { title: <a onClick={handleCustomer} style={{ cursor: 'pointer' }}>Customers</a> },
-        { title: 'Add'}
-      ]);
-      setAdd(true);
-  }
-  
+
+  const handleAddItem = (e) => {
+    const url = `${window.location.origin}/web-frontend/admin/customers/add`;
+    updateURL(url, {});
+
+    setBreadCrumbItems([
+      { title: <a onClick={handleCustomer} style={{ cursor: 'pointer' }}>Customers</a> },
+      { title: 'Add' }
+    ]);
+    setAdd(true);
+  };
+
   const handleDeleteItems = (items) => {
     Modal.confirm({
       title: 'Are you sure you want to delete these customers?',
@@ -82,21 +84,22 @@ const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,a
           !items.some(item => item.id === currentItem.id)
         );
         setCurrentItems(updatedItems);
+        setFilteredItems(updatedItems); // Also update the filtered list
       },
     });
   };
-  
+
   const handleCustomerItem = (record) => {
-      const url = `${window.location.origin}/web-frontend/admin/customers/${record.id}`;
-      updateURL(url, {});
-      
-      setBreadCrumbItems([
-        { title: <a onClick={handleCustomer} style={{ cursor: 'pointer' }}>Customers</a> },
-        { title: record.id }
-      ]);
-    
-      setItem(record);
-      setAdd(false);
+    const url = `${window.location.origin}/web-frontend/admin/customers/${record.id}`;
+    updateURL(url, {});
+
+    setBreadCrumbItems([
+      { title: <a onClick={handleCustomer} style={{ cursor: 'pointer' }}>Customers</a> },
+      { title: record.id }
+    ]);
+
+    setItem(record);
+    setAdd(false);
   };
 
   const handleSelectedItems = (items) => {
@@ -164,21 +167,27 @@ const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,a
         render: (_, record) => `$${record.amount_spent.toFixed(2)}`,
       },
     ];
-    
+
     return (
       <>
         {isMobile ? (
-          <List id="orders-table" items={items} onSelectedItems={handleSelectedItems} onRowClick={handleCustomerItem} suffix={<Text tag="small" fontWeight="fw-300">
-                                          {item?.currency} {item?.price}
-                                      </Text>} />
+          <List
+            id="orders-table"
+            items={items}
+            onSelectedItems={handleSelectedItems}
+            onRowClick={handleCustomerItem}
+            suffix={<Text tag="small" fontWeight="fw-300">
+                      {item?.currency} {item?.price}
+                    </Text>}
+          />
         ) : (
           <Table
-              id='customers-table'
-              columns={columns}
-              items={items}
-              onSelectedRowKeys={(selectedRowKeys) => setSelectedRowKeys(selectedRowKeys)}
-              onSelectedItems={handleSelectedItems}
-              onRowClick={handleCustomerItem}
+            id="customers-table"
+            columns={columns}
+            items={items}
+            onSelectedRowKeys={(selectedRowKeys) => setSelectedRowKeys(selectedRowKeys)}
+            onSelectedItems={handleSelectedItems}
+            onRowClick={handleCustomerItem}
           />
         )}
       </>
@@ -232,24 +241,26 @@ const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,a
             ? <Icon icon="material-symbols-light:add-rounded" width="25" height="25" />
             : "Add"
         }
-        onClick={(e)=>(selecteditems?.length > 0?handleDeleteItems(selecteditems):handleAddItem)}
+        onClick={(e) => (selecteditems?.length > 0 ? handleDeleteItems(selecteditems) : handleAddItem())}
       />
     </div>
   );
 
-  const handleSearch = (e) => {
-    console.log(e);
+  const handleSearch = (searchTerm) => {
+    // Filter current items based on search term
+    const filtered = currentitems.filter((item) => item.customer.toLowerCase().includes(searchTerm.toLowerCase()));
+    setFilteredItems(filtered);
   };
 
-  const content = renderTableContent(currentitems);
+  const content = renderTableContent(filteredItems);
 
   const renderChild = ({ item }) => {
     if (isAdd) {
-      return <AdminCustomerItem API_URL={API_URL} Companyname={Companyname} add={isAdd} handleGoBack={handleCustomer}/>;
+      return <AdminCustomerItem API_URL={API_URL} Companyname={Companyname} add={isAdd} handleGoBack={handleCustomer} />;
     } else {
       if (item) {
-        return <AdminCustomerItem API_URL={API_URL} Companyname={Companyname} item={item} handleGoBack={handleCustomer}/>;
-      }else{
+        return <AdminCustomerItem API_URL={API_URL} Companyname={Companyname} item={item} handleGoBack={handleCustomer} />;
+      } else {
         return (
           <Row gutter={[16, 0]}>
             <Col span={24} style={{ paddingLeft: "8px", paddingRight: "8px" }}>
@@ -270,13 +281,12 @@ const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,a
                 </div>
               </div>
             </Col>
-  
             <Col span={24} style={{ paddingLeft: "8px", paddingRight: "8px" }}>
               {content}
             </Col>
           </Row>
         );
-      } 
+      }
     }
   };
 
@@ -287,12 +297,13 @@ const AdminCustomers = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,a
         handleCustomerItem(selectedItem);
       }
     }
-  
+    if (item) {
+      handleCustomerItem(item);
+    }
     if (add) {
       handleAddItem();
     }
   }, [id, add, currentitems]);
-  
 
   return (
     <AdminContent API_URL={API_URL} Companyname={Companyname} breadCrumbItems={breadCrumbItems} suffix={suffix}>

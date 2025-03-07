@@ -844,22 +844,18 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,add=
           <Icon icon="catppuccin:pdf" width="25" height="25" />
           :
           'Export to Pdf'} onClick={() => genHtmlPdf({ contentid: "#orders-table", pdfname: 'Orders' })} />
-      <Button 
-        color={selecteditems?.length>0?'danger':'primary'} 
-        text={
+      
+        {
             selecteditems?.length>0?
-              isMobile?
+            <Button 
+              color={selecteditems?.length>0?'danger':'primary'} 
+              text={isMobile?
                 <Icon icon="material-symbols-light:delete-outline-rounded" width="25" height="25" />
                 :
-                'Delete'
-            :
-              isMobile?
-              <Icon icon="material-symbols-light:add-rounded" width="25" height="25" />
-              :
-              'Create'
+                'Delete'}
+              onClick={(e)=>(handleDeleteItems(selecteditems))}
+            />:null
           }
-        onClick={(e)=>(selecteditems?.length > 0?handleDeleteItems(selecteditems):handleAddItem)}
-        />
     </div>
   );
 
@@ -896,7 +892,9 @@ const AdminOrders = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,add=
           handleOrderItem(selectedItem);
         }
       }
-    
+      // if (item) {
+      //   handleOrderItem(item);
+      // }
       if (add) {
         handleAddItem();
       }

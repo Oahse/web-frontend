@@ -105,6 +105,11 @@ const AuthRoutes = ({ API_URL,Companyname }) => [
     element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={7} add />,
     title: "admin-discounts-add"
   },
+  {
+    path: "/admin/marketing",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={8}/>,
+    title: "admin-marketing"
+  },
 ];
 
 export default AuthRoutes;

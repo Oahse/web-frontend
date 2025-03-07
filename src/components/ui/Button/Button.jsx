@@ -29,7 +29,7 @@ const Button = ({
 
   // Render a loading spinner if the button is loading
   const renderLoadingSpinner = () => {
-    return isLoading && <div className="button-spinner-border" role="status"></div>;
+    return isLoading && <div className="ms-1 button-spinner-border" role="status"></div>;
   };
 
   // Render button contents with icons and text
