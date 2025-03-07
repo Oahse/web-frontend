@@ -213,20 +213,20 @@ const Cart = ({ API_URL, Companyname }) => {
         <div className={`homepage-content`}>
             
             <div className='mt-4'>
-                <Breadcrumb items={Breadcrumbitems} />
+                <Breadcrumb items={Breadcrumbitems}/>
                 <SearchInput onSearch={filterItems} 
                     drawervisible={drawerVisible}
                     categoryoptions={engineeringcategories}
                     iscategoryLoading = {iscategoryLoading}
                     minprice={0}
-                    maxprice ={1000000}/>
+                    maxprice ={1000000}  className='m-2'/>
                 
             </div>
         </div>
       </span>
       <Container fluid>
         <Row>
-          <Col span={24}>
+          <Col span={24} className='mt-2'>
             <Table
               columns={columns}
               items={filteredItems}

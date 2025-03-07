@@ -36,29 +36,29 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                   : location.pathname.includes('/admin')?(
                     <>
                     
-                    <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
+                    <Link to="/user" className={`mx-2 p-1 `} >
                       <Badge dot={true} size='small'>
-                        <Icon icon="circum:mail" width="25" height="25" />
+                        <Icon icon="circum:mail" width="25" height="25" className={`${isScrolled ? 'text-black' : 'text-white'}`} />
                       </Badge>
                     </Link> 
                     
-                    <Link to="/user" className={`mx-2 p-1 ${isScrolled ? 'text-black' : 'text-white '}`} >
+                    <Link to="/user" className={`mx-2 p-1 `} >
                       <Badge dot={true} size='small'>
-                        <Icon icon="material-symbols-light:notifications-outline-rounded" width="25" height="25" />
+                        <Icon icon="material-symbols-light:notifications-outline-rounded" width="25" height="25" className={`${isScrolled ? 'text-black' : 'text-white'}`} />
                       </Badge>
                     </Link>
                     </>
                   ): (
                     <>
-                      <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                      <Link to="/message" className={`mx-3 p-1`} >
                         <Badge dot={true} size='small'>
-                          <Icon icon="circum:mail" width="25" height="25" />
+                          <Icon icon="circum:mail" width="25" height="25" className={`${isScrolled ? 'text-black' : 'text-white'}`} />
                         </Badge>
                       </Link> 
                       
-                      <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                      <Link to="/cart" className={`mx-3 p-1`} >
                         <Badge dot={true} size='small'>
-                            <Icon icon="hugeicons:shopping-basket-01" width="24" height="24" />
+                            <Icon icon="hugeicons:shopping-basket-01" width="25" height="25" className={`${isScrolled ? 'text-black' : 'text-white'}`} />
                         </Badge>
                       </Link> 
                     </>
@@ -118,25 +118,25 @@ const NavLinks = ({ isMobile, isScrolled, location, country }) => {
                         <CategoryDropDown isScrolled={isScrolled} />
                         
                         <span className={`mx-3 disabled p-1`}>
-                          <span className='m-1 fw-bold d-flex flex-row align-items-center'>
+                          <span className={`m-1 fw-bold d-flex flex-row align-items-center ${isScrolled ? 'text-black' : 'text-white'}`}>
                             {country?.country}
                             <Avatar className='fs-lg ms-1' shape='square' src={country?.flag} size={18} />
                           </span>
                         </span>
-                        <span className={`mx-3 p-1 disabled `}>
-                          <Globe width={22} height={22} className='disabled' />
+                        <span className={`mx-3 p-1 disabled ${isScrolled ? 'text-black' : 'text-white'}`}>
+                          <Globe width={22} height={22}/>
                           <span className='m-1 fw-bold'>English</span>
                         </span>
                         
-                        <Link to="/message" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                        <Link to="/message" className={`mx-3 p-1`} >
                           <Badge dot={true} size='small'>
-                              <Icon icon="circum:mail" width="25" height="25" />
+                              <Icon icon="circum:mail" width="25" height="25"  className={`${isScrolled ? 'text-black' : 'text-white'}`} />
                           </Badge>
                         </Link> 
                         
-                        <Link to="/cart" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >
+                        <Link to="/cart" className={`mx-3 p-1`} >
                           <Badge dot={true} size='small'>
-                              <Icon icon="hugeicons:shopping-basket-01" width="24" height="24" />
+                              <Icon icon="hugeicons:shopping-basket-01" width="25" height="25" className={`${isScrolled ? 'text-black' : 'text-white'}`} />
                           </Badge>
                         </Link> 
                         <Link to="/user" className={`mx-3 p-1 ${isScrolled ? 'text-black' : 'text-white'}`} >

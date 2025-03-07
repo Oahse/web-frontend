@@ -17,7 +17,7 @@ code {
 
 :root{
   --primary-color: #979797; /* Example primary color */
-  --primary-color-light: #d1d1d1;
+  --primary-color-light: #efefef;
   --secondary-color: #50555C; /* Example secondary color */
   --secondary-color-light:#919ba8;
   --danger-color:#DC3545;

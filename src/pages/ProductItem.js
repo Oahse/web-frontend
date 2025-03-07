@@ -60,13 +60,13 @@ const ProductPage = ({API_URL,Companyname }) => {
       <span className='d-flex flex-column topbar'>
           <Header Companyname={Companyname} isScrolled={isScrolled} isMobile={isMobile} user={userDetails}/>
           <div className={``}>
-              <div className='mt-4'>
+              <div className='m-2'>
                   <Breadcrumb items={Breadcrumbitems} />
               </div>
           </div>
       </span>
       <Container  fluid className='body-container'>
-        <Row gutter={[16, 16]} style={{ padding: '20px'}} >
+        <Row gutter={[16, 16]} style={{ padding: '8px'}} >
         {/* Product Images & Videos */}
             <Col xs={24} md={12}>
                 <Carousel autoplay >
@@ -118,21 +118,22 @@ const ProductPage = ({API_URL,Companyname }) => {
                 </div>
                 {/* Product Tabs for Description, Specifications, and Reviews */}
                 <Tabs defaultActiveKey="1" style={{ marginTop: '20px' }}>
-                <TabPane tab="Description" key="1">
-                    <p>{product.description}</p>
-                </TabPane>
-                <TabPane tab="Specifications" key="2">
-                    <Descriptions bordered column={1} size='small'>
-                    {Object.entries(product.specifications).map(([key, value]) => (
-                        <Descriptions.Item label={key} key={key}>
-                        {value}
-                        </Descriptions.Item>
-                    ))}
-                    </Descriptions>
-                </TabPane>
-                <TabPane tab="Reviews" key="3">
-                    <p>Customer reviews go here...</p>
-                </TabPane>
+                  <TabPane tab="Description" key="1">
+                      <p className='bg-white p-2'>{product.description}</p>
+                  </TabPane>
+                  <TabPane tab="Specifications" key="2">
+                      
+                      <Descriptions bordered column={1} size='small' className='bg-white p-2'>
+                      {Object.entries(product.specifications).map(([key, value]) => (
+                          <Descriptions.Item label={key} key={key}>
+                          {value}
+                          </Descriptions.Item>
+                      ))}
+                      </Descriptions>
+                  </TabPane>
+                  <TabPane tab="Reviews" key="3">
+                      <p className='bg-white p-2'>Customer reviews go here...</p>
+                  </TabPane>
                 </Tabs>
             </Col>
         </Row>

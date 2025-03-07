@@ -43,8 +43,8 @@ const FormInput = ({
                 {type === 'password' && (
                     
                     <Icon icon={`ph:eye-${typevalue === 'password' ? 'thin' : 'slash-thin'}`} 
-                        width="24" 
-                        height="24" 
+                        width="20" 
+                        height="20" 
                         style={{
                             position: 'absolute',
                             right: isFilter ?'40px':'10px',    // Position the icon on the right

@@ -15,7 +15,7 @@ import SideNavLinks from './SideNavLinks';
 function Header({ Companyname, isScrolled,isMobile, user}) {
     const navigate = useNavigate();
     const { country, error } = useCountryByLocation();
-    // console.log(country,'=========')
+    console.log(country,'=========')
     const location = useLocation(); // Get the current location
     if (location.pathname === '/shop') {
         console.log('Current URL is /shop');
