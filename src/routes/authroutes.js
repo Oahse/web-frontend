@@ -56,6 +56,21 @@ const AuthRoutes = ({ API_URL,Companyname }) => [
     title: "admin-orders-add"
   },
   {
+    path: "/admin/products",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={2}/>,
+    title: "admin-products"
+  },
+  {
+    path: "/admin/products/:id",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={2}/>,
+    title: "admin-products"
+  },
+  {
+    path: "/admin/products/add",
+    element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={2} add />,
+    title: "admin-products-add"
+  },
+  {
     path: "/admin/customers",
     element: <Admin API_URL={API_URL} Companyname={Companyname} activePage={3}/>,
     title: "admin-customers"

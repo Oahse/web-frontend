@@ -14,17 +14,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AdminHeader from "../../components/ui/Header/AdminHeader";
 import AdminDashBoard from "./Dashboard";
 import AdminOrders from "./Orders/Orders";
-import AdminProducts from './Products';
+import AdminProducts from './Products/Products';
 import AdminCustomers from './Customers/Customers';
 import AdminFinance from './Finance/Finance';
 import AdminAnalytics from './Analytics/Analytics';
 import AdminDiscount from './Discounts/Discounts';
 import AdminMarketing from './Marketing/Marketing';
-import AdminPlatform from './Platform';
 import BottomNavbar from '../../components/ui/BottomNavBar/BottomNavBar';
 import AdminContents from './Contents/Contents';
 import { Footer } from 'antd/es/layout/layout';
-import AdminOrderItem from './Orders/OrderItem';
 
 const Admin = ({API_URL,Companyname,activePage=0, add=false }) => {
     const navigate = useNavigate();
