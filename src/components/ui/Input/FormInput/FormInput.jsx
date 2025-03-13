@@ -31,7 +31,7 @@ const FormInput = ({
     }
 
     return (
-        <div style={style || { marginBottom: '1rem'}}>
+        <div style={style}>
             <Form.Item
                 label={label}
                 name={name}

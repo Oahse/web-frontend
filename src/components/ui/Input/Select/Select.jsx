@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, Select as AntdSelect } from 'antd';
 import './Select.css';
-const Select = ({ placeholder,options=[], onChange, style, iscategoryLoading, ...props }) => {
+const Select = ({ defaultValue = null, placeholder,options=[], onChange, style, iscategoryLoading,disabled=false, ...props }) => {
     const Options =options.map((option,index) => ({
         key :option.id ||index,
         value: option.label, // Use id for the value
@@ -59,13 +59,14 @@ const Select = ({ placeholder,options=[], onChange, style, iscategoryLoading, ..
     return <AntdSelect
         labelInValue
         showSearch
-        value={selectedvalue}  // Ensuring the default option is shown when no value is selected
+        value={defaultValue || selectedvalue}  // Ensuring the default option is shown when no value is selected
         loading={iscategoryLoading}
         placeholder={placeholder}
         onSelect={handleChange}  // Callback to handle changes
         filterOption={filterOptions}
         options={Options}
         style={style}
+        disabled={disabled}
         {...props}
     />
     };

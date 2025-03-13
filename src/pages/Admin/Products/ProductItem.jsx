@@ -1,20 +1,90 @@
-import { Col, Row, Skeleton, Tag, Carousel, Avatar} from "antd";
+import { Col, Row, Skeleton, Tag, Carousel, Avatar, Modal} from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import { ReactComponent as Chip } from "../../../assets/chip.svg";
 import Text from "../../../components/ui/Typography/Text";
 import './Product.css';
-import { getProduct, getUser } from "../../../services/api";
+import FormInput from "../../../components/ui/Input/FormInput/FormInput";
+import FormTextArea from "../../../components/ui/Input/FormInput/FormTextArea";
+import FormSelect from "../../../components/ui/Input/FormInput/FormSelect";
+import { useCountries } from "../../../hooks/useCountry";
+import Table from "../../../components/ui/Table/Table";
+import Button from "../../../components/ui/Button/Button";
+import Input from "../../../components/ui/Input/Input";
+import { getUser } from "../../../services/api";
 
 const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=false,handleGoBack }) => {
     
     const [customer, setCustomer] = useState(null);
     const [product, setProduct] = useState(item||null)
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState([]);
+    const countries = useCountries();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-   
+   const statuses = [{name:'Live', value:'Live'}, {name:'Dead',value:'Dead'}]
+    const [selectedVariants, setSelectedVariants] = useState([])
+   const [productVariants, setProductVariants] = useState([
+    // Sample product variants data
+    {
+      id: 1,
+      features: 'Variant 1',
+      price: '$20.00',
+      quantity: 100,
+      picture: '', // Placeholder image if no picture
+    },
+    {
+      id: 2,
+      features: 'Variant 2',
+      price: '$25.00',
+      quantity: 50,
+      picture: '', // Placeholder image if no picture
+    },
+  ]);
+  const [currentVariants, setCurrentVariants] = useState(productVariants)
+   const productVariantsColumns = [
+      {
+        title: "Variant",
+        dataIndex: "features",
+        key: "features",
+          render:(_,record) =>(<div className="d-flex justify-content-start align-items-start" style={{gap:'0.5rem'}}>
+            <Avatar src={record?.picture || `https://picsum.photos/200/300?random=${record.id}`} shape='square' size={'small'} />
+            <Text tag="p" fontWeight="fw-300">
+                {record.features}
+            </Text>
+        </div>)
+      },
+      {
+        title: "Price",
+        dataIndex: "price",
+        key: "price",
+        render:(_,record) =>(<Input disabled={add} placeholder={record?.price} value={record?.price} />)
+      },
+      {
+        title: "Qty",
+        dataIndex: "quantity",
+        key: "quantity",
+        render:(_,record) =>(<Input disabled={add} placeholder={record?.quantity} value={record?.quantity} />)
+      },
+   ]
+   const handleAddVariant = (e) =>{
+      e.preventDefault()
+   }
+   const handleSelectedVariants =(Variants)=>{
+        // console.log(items,'|||')
+        setSelectedVariants(Variants)
+    }
+    const handleDeleteVariants = (items) => {
+      Modal.confirm({
+        title: 'Are you sure you want to delete these orders?',
+        onOk: () => {
+          const updatedItems = currentVariants.filter((currentItem) => 
+            !items.some(item => item.id === currentItem.id)
+          );
+          setCurrentVariants(updatedItems);
+        },
+      });
+    };
     useEffect(() => {
       const fetchUser = async () => {
           try {
@@ -108,7 +178,7 @@ const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=f
           </Col>
           <Col span={24}>
               <Row gutter={[16, 16]} style={{padding:'8px'}}>
-                <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24} >
+                <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} >
                   <Row gutter={[8, 8]}>
                     <Col span={24}  className="col-item-img">
                       
@@ -135,145 +205,124 @@ const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=f
                   </Row>
                     
                 </Col>
-                <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+                <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
                   <Row gutter={[8, 8]}>
                     <Col span={24} className="col-item" >
                         <div className="d-flex flex-column justify-content-start align-items-start">
-                            <Tag color="#198754">
-                                {product?.inventory}
-                            </Tag>
-                            <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" className={'mt-1'}>
-                                {product?.markets}
-                            </Text>
                             <Text tag="p" fontWeight="fw-600">
-                                {product?.id}
+                                Title
                             </Text>
-                            <Text fontColor='text-light' fontSize="fs-md" fontWeight="fw-400" className={'mt-1 mb-1 text-break'}>
-                                {product?.sales_channels || 'sdsdsdsddssdsdsdsddssdsdsdsddssdsdsdsddssdsdsdsddssdsdsdsddssdsdsdsdds'}
-                                {'sdsdsdsddssdsdsdsddssdsdsdsddssdsdsdsddssdsdsdsddssdsdsdsdds'}
-                            </Text>
-                            
+                            <FormInput disabled={add}  placeholder={product?.name} value={product?.name} className={'mt-1'} style={{width:'100%'}}/>
                         </div>
-                        <div className="d-flex justify-content-between align-items-center mt-1">
-                            <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" >
-                                {product?.currency}{product?.price} x {product?.quantity} 
-                            </Text>
-                            <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" >
-                                {product?.currency}{product?.price * product?.quantity}
-                            </Text>
-                        </div>
-                    </Col>
-                    <Col span={24} className="col-item">
-                        <Row gutter={[8, 8]}>
-                            {products.map((product, index)=>(
-                                  <Col key={index} span={24} className="d-flex justify-content-between align-items-center mt-1">
-                                      <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" >
-                                          SubTotal
-                                      </Text>
-                                      <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" >
-                                          {product.name} 
-                                      </Text>
-                                      <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" >
-                                          {product.currency}{product.price}
-                                      </Text>
-                                  </Col>
-                                ))} 
-                            
-                            <Col span={24} className="d-flex justify-content-between align-items-center mt-1">
-                                <Text fontSize="fs-md" fontColor='text-black' fontWeight="fw-600" >
-                                    Total
-                                </Text>
-                                <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" >
-                                    {product?.quantity}{' '} products
-                                </Text>
-                                <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" >
-                                {product?.currency}{product?.price * product?.quantity}
-                                </Text>
-                            </Col>
-                            <Col span={24} className="d-flex justify-content-between align-items-center mt-1 border-1 border rounded-sm p-1">
-                                <Tag color="#198754">
-                                    {product?.payment_status}
-                                </Tag>
-                                <Text fontSize="fs-md" fontColor='text-light' fontWeight="fw-400" >
-                                    {product?.currency}{product?.price * product?.quantity}
-                                </Text>
-                            </Col>
-                            
-                        </Row>
-                        
                     </Col>
                     <Col span={24} className="col-item" >
                         <div className="d-flex flex-column justify-content-start align-items-start">
                             <Text tag="p" fontWeight="fw-600">
-                                Shipping Address
+                                Description
                             </Text>
-                            <Text
-                                  fontColor="text-link"
-                                  fontSize="fs-md"
-                                  fontWeight="fw-400"
-                                  className="mt-1 mb-1 text-break"
-                              >
-                                  {product?.shipping_address?product?.shipping_address:'No address given'}
-                              </Text>
+                            <FormTextArea disabled={add} placeholder={product?.name} value={product?.name} className={'mt-1'} style={{width:'100%'}}/>
                         </div>
-                        
+                    </Col>
+                    <Col span={24} className="col-item" >
+                        <div className="d-flex flex-column justify-content-start align-items-start">
+                            <Text tag="p" fontWeight="fw-600">
+                                Category
+                            </Text>
+                            <FormSelect
+                                  name='Category'
+                                  disabled={add} 
+                                  defaultValue={countries[0]}
+                                  placeholder='Please select a Category'
+                                  className={'mt-1'} 
+                                  options={countries.map(country => ({
+                                    label: country.name,   // rename 'name' to 'label'
+                                    icon: country.flag,    // rename 'flag' to 'icon'
+                                    code:country.code
+                                  }))}
+                                  style={{width:'100%'}}
+                              />
+                        </div>
                     </Col>
                   </Row>
                 </Col>
               </Row>
           </Col>
           <Col span={24} style={{padding:'8px'}}>
-          <Row gutter={[16, 16]} style={{padding:'8px'}}>
-                <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24} >
+              <Row gutter={[16, 16]} style={{padding:'8px'}}>
+                <Col xxl={15} xl={15} lg={15} md={15} sm={24} xs={24} >
                   <Row gutter={[8, 8]}>
                     <Col span={24} className="col-item" >
-                        <div className="d-flex flex-column justify-content-start align-items-start">
+                        <div className="d-flex justify-content-between align-items-center">
                             <Text tag="p" fontWeight="fw-600">
-                                Contact Information
+                                Variant
                             </Text>
-                            <Text
-                                  fontColor="text-link"
-                                  fontSize="fs-md"
-                                  fontWeight="fw-400"
-                                  className="mt-1 mb-1 text-break"
-                              >
-                                  {customer?.firstname}{' '}{customer?.lastname}
-                                  {customer?.email}
-                                  {customer?.phone_numberpre}-{customer?.phone_number}
-                              </Text>
-                              <Text
-                                  fontColor="text-link"
-                                  fontSize="fs-md"
-                                  fontWeight="fw-400"
-                                  className="mt-1 mb-1 text-break"
-                              >
-                                  {customer?.totalproducts || 0} products
-                              </Text>
+                            <div className="d-flex justify-content-between align-items-center">
+                                
+                                {
+                                            selectedVariants?.length>0?
+                                            <Button 
+                                              color={"danger"} 
+                                              className="mx-2"
+                                              text={isMobile?
+                                                <Icon icon="material-symbols-light:delete-outline-rounded" width="25" height="25" />
+                                                :
+                                                'Delete Variant'}
+                                              onClick={(e)=>(handleDeleteVariants(selectedVariants))}
+                                            />:null
+                                          }
+                                <Button text='Add Variant' onClick={handleAddVariant}/>
+                            </div>
                         </div>
+                        
+                        <Table className='mt-2' columns={productVariantsColumns} items={currentVariants} onSelectedItems={handleSelectedVariants} />
+                        
                     </Col>
                   </Row>
                     
                 </Col>
-                <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+                <Col xxl={9} xl={9} lg={9} md={9} sm={24} xs={24}>
                   <Row gutter={[8, 8]}>
                     
-                  <Col span={24} className="col-item" >
-                        <div className="d-flex flex-column justify-content-start align-items-start">
-                            
-                              <Text tag="p" fontWeight="fw-600">
-                                Billing Address
-                              </Text>
-                              <Text
-                                    fontColor="text-link"
-                                    fontSize="fs-md"
-                                    fontWeight="fw-400"
-                                    className="mt-1 mb-1 text-break"
-                                >
-                                    {product?.billing_address?product?.billing_address:'No address given'}
-                              </Text>
-                        </div>
-                        
-                    </Col>
+                    <Col span={24} className="col-item" >
+                          <div className="d-flex flex-column justify-content-start align-items-start">
+                              
+                                <Text tag="p" fontWeight="fw-600">
+                                  Status
+                                </Text>
+                                <FormSelect
+                                  name='Status'
+                                  disabled={add} 
+                                  placeholder='Please select a Status'
+                                  className={'mt-3'} 
+                                  options={statuses.map(status => ({
+                                    label: status.name,   // rename 'name' to 'label'
+                                    code:status.value
+                                  }))}
+                                  style={{width:'100%'}}
+                              />
+                          </div>
+                          
+                      </Col>
+                      <Col span={24} className="col-item" >
+                          <div className="d-flex flex-column justify-content-start align-items-start">
+                                <Text tag="p" fontWeight="fw-600">
+                                    Product Organisation
+                                </Text>
+                                <Text tag="small" fontWeight="fw-300" className={'mt-1'}>
+                                    Type
+                                </Text>
+                                <FormInput disabled={add} placeholder={product?.name} value={product?.name} className={'mt-1'} style={{width:'100%'}}/>
+                                <Text tag="small" fontWeight="fw-300" className={'mt-1'}>
+                                    Collections
+                                </Text>
+                                <FormInput disabled={add} placeholder={product?.name} value={product?.name} className={'mt-1'} style={{width:'100%'}}/>
+                                <Text tag="small" fontWeight="fw-300" className={'mt-1'}>
+                                    Tags
+                                </Text>
+                                <FormInput disabled={add} placeholder={product?.name} value={product?.name} className={'mt-1'} style={{width:'100%'}}/>
+                          </div>
+                          
+                      </Col>
                   </Row>
                 </Col>
               </Row>

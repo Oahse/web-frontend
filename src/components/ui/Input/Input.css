@@ -14,18 +14,27 @@ input,
     box-shadow: none !important;
 }
   
-/* input:focus,
-input:hover,
-.ant-input:hover,
-.ant-input-outlined:hover, 
-.ant-input-outlined:focus,
-.ant-input-outlined-focused, 
-.ant-input-outlined-active,
-.ant-input-outlined:active  {
-    border-color: var(--background-color);
-    background-color: white;
-    outline: none;
-} */
+/* Styling for the TextArea component */
+textarea {
+    box-sizing: border-box;
+    resize: both; /* Allows users to resize the textarea */
+    color: var(--alternate-text-color) !important;
+    border-radius: 8px;
+    padding: 3px 8px;
+    width: 100%;
+    border: 1px solid #f0f4f7;
+    background-color: #f0f4f7;
+    transition: all 0.3s ease;
+    outline: none !important; /* Remove default blue outline */
+    box-shadow: none !important;
+}
+
+/* Styling for the textarea when it's disabled */
+textarea:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    border-color: #ddd;
+}
 
 input:focus:not([disabled]),
 input:hover:not([disabled]),
@@ -34,7 +43,9 @@ input:hover:not([disabled]),
 .ant-input-outlined:not([disabled]):focus,
 .ant-input-outlined-focused:not([disabled]), 
 .ant-input-outlined-active:not([disabled]),
-.ant-input-outlined:not([disabled]):active {
+.ant-input-outlined:not([disabled]):active,
+textarea:focus:not([disabled]),
+textarea:hover:not([disabled]) {
     border-color: var(--background-color);
     background-color: white;
     outline: none;
@@ -59,3 +70,7 @@ input:hover:not([disabled]),
     border-bottom-right-radius: 0px !important;
     
 }
+/* Input.css */
+
+
+

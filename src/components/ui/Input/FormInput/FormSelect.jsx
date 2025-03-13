@@ -3,13 +3,13 @@ import { Form} from 'antd'
 import Select from '../Select/Select';
 
 const FormSelect = ({
-    label, placeholder, name, rules, options=[],
-    onChange, required = false, errorMessage, className, 
+    label, placeholder,defaultValue, name, rules, options=[],
+    onChange,disabled=false, required = false, errorMessage, className, style
 }) => {
     
     return (
 
-        <div style={{marginBottom: '1rem', }}>
+        <div style={style}>
             <Form.Item
                 label={label}
                 name={name}
@@ -18,9 +18,11 @@ const FormSelect = ({
             >
                 <Select
                     options={options}
+                    defaultValue={defaultValue}
                     onChange={onChange}
                     placeholder={placeholder}
                     optionFilterProp="label" // Use the label property for default filtering
+                    disabled={disabled}
                     />
                 
 
@@ -38,8 +40,6 @@ const FormSelect = ({
                 )}
             </Form.Item>
         </div>
-        
-        
     )
 }
 

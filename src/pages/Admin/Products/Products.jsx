@@ -370,10 +370,10 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
 
     const renderChild = ({ item }) => {
         if (isAdd) {
-        return <AdminProductItem API_URL={API_URL} Companyname={Companyname} add={isAdd} handleGoBack={handleProduct}/>;
+        return <AdminProductItem API_URL={API_URL} Companyname={Companyname} handleGoBack={handleProduct}/>;
         } else {
         if (item) {
-            return <AdminProductItem API_URL={API_URL} Companyname={Companyname} item={item}  handleGoBack={handleProduct}/>;
+            return <AdminProductItem API_URL={API_URL} Companyname={Companyname} item={item} add={true}  handleGoBack={handleProduct}/>;
         } else {
             return (
             <Row gutter={[16, 16]}>
