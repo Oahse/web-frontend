@@ -160,10 +160,10 @@ const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=f
                                 {product?.id}
                             </Text>
                             <Tag color="#979797">
-                              {product?.status}
+                                {product?.stock_quantity}-{product?.stock_status}
                             </Tag>
                             <Tag color="#979797">
-                                {product?.type}
+                                {product?.subcategory}
                             </Tag>
                         </>}
                         
@@ -171,6 +171,9 @@ const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=f
                       <Text tag="small" fontWeight="fw-300" className={'mt-1'}>
                           {product?.vendor}
                       </Text>
+                      <Tag color="#979797">
+                          {product?.condition}
+                      </Tag>
                       
                   </div>
               </Col>
@@ -201,6 +204,24 @@ const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=f
                           </div>
                         ))}
                       </Carousel>
+                    </Col>
+                    <Col span={24} className="col-item" >
+                        <div className="d-flex flex-column justify-content-start align-items-start">
+                            <Text tag="p" fontWeight="fw-600">
+                                Price <Tag color="#979797">
+                                          {product?.discount}
+                                      </Tag>
+                            </Text>
+                            <Text tag="p" fontWeight="fw-600">
+                                <div className="d-flex flex-column justify-content-start align-items-start">
+                                  {`${product?.currency} ${product?.price}`} 
+                                      <Tag color="#979797">
+                                          {product?.discount}
+                                      </Tag>
+                                </div>
+                                {product?.final_price}
+                            </Text>
+                        </div>
                     </Col>
                   </Row>
                     
@@ -252,6 +273,31 @@ const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=f
                 <Col xxl={15} xl={15} lg={15} md={15} sm={24} xs={24} >
                   <Row gutter={[8, 8]}>
                     <Col span={24} className="col-item" >
+                        <div className="d-flex flex-column justify-content-start align-items-start">
+                            <Text tag="p" fontWeight="fw-600">
+                                Weight-{product?.weight}
+                            </Text>
+                            <Text tag="p" fontWeight="fw-600">
+                                Dimensions-{product?.dimensions}
+                            </Text>
+                            <Text tag="p" fontWeight="fw-600">
+                                Shipping Method-{product?.shipping_method}
+                            </Text>
+                            <Text tag="p" fontWeight="fw-600">
+                                Free Shipping-{product?.free_shipping?
+                                              <Tag color='#198754'>
+                                                  True
+                                              </Tag>:
+                                              <Tag color='#DC3545'>
+                                                  {product?.shipping_price}
+                                              </Tag>}
+                            </Text>
+                            <Text tag="p" fontWeight="fw-600">
+                                Vendor Price-{product?.vendor_price}
+                            </Text>
+                        </div>
+                    </Col>
+                    <Col span={24} className="col-item" >
                         <div className="d-flex justify-content-between align-items-center">
                             <Text tag="p" fontWeight="fw-600">
                                 Variant
@@ -287,7 +333,7 @@ const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=f
                           <div className="d-flex flex-column justify-content-start align-items-start">
                               
                                 <Text tag="p" fontWeight="fw-600">
-                                  Status
+                                  Reviews/Ratings
                                 </Text>
                                 <FormSelect
                                   name='Status'
@@ -309,15 +355,15 @@ const AdminProductItem = ({ API_URL, Companyname, isMobile, isTablet, item,add=f
                                     Product Organisation
                                 </Text>
                                 <Text tag="small" fontWeight="fw-300" className={'mt-1'}>
-                                    Type
+                                    Type/SubCategory
                                 </Text>
                                 <FormInput disabled={add} placeholder={product?.name} value={product?.name} className={'mt-1'} style={{width:'100%'}}/>
                                 <Text tag="small" fontWeight="fw-300" className={'mt-1'}>
-                                    Collections
+                                    Brand
                                 </Text>
                                 <FormInput disabled={add} placeholder={product?.name} value={product?.name} className={'mt-1'} style={{width:'100%'}}/>
                                 <Text tag="small" fontWeight="fw-300" className={'mt-1'}>
-                                    Tags
+                                    Date Added
                                 </Text>
                                 <FormInput disabled={add} placeholder={product?.name} value={product?.name} className={'mt-1'} style={{width:'100%'}}/>
                           </div>

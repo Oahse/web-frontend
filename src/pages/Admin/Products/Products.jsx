@@ -24,8 +24,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 50,
       status: 'live',
       markets: 2,
-      sales_channels: 3,
-      type: 'Electronics',
+      subcategory: 'Electronics',
       vendor: 'Vendor A'
     },
     {
@@ -35,8 +34,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 30,
       status: 'dead',
       markets: 1,
-      sales_channels: 1,
-      type: 'Clothing',
+      subcategory: 'Clothing',
       vendor: 'Vendor B'
     },
     {
@@ -46,8 +44,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 100,
       status: 'live',
       markets: 3,
-      sales_channels: 2,
-      type: 'Food',
+      subcategory: 'Food',
       vendor: 'Vendor C'
     },
     {
@@ -57,8 +54,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 80,
       status: 'live',
       markets: 4,
-      sales_channels: 5,
-      type: 'Furniture',
+      subcategory: 'Furniture',
       vendor: 'Vendor D'
     },
     {
@@ -68,8 +64,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 120,
       status: 'dead',
       markets: 2,
-      sales_channels: 4,
-      type: 'Toys',
+      subcategory: 'Toys',
       vendor: 'Vendor E'
     },
     {
@@ -79,8 +74,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 60,
       status: 'live',
       markets: 3,
-      sales_channels: 2,
-      type: 'Books',
+      subcategory: 'Books',
       vendor: 'Vendor F'
     },
     {
@@ -90,8 +84,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 90,
       status: 'dead',
       markets: 5,
-      sales_channels: 3,
-      type: 'Electronics',
+      subcategory: 'Electronics',
       vendor: 'Vendor G'
     },
     {
@@ -101,8 +94,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 200,
       status: 'live',
       markets: 6,
-      sales_channels: 7,
-      type: 'Clothing',
+      subcategory: 'Clothing',
       vendor: 'Vendor H'
     },
     {
@@ -112,8 +104,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 150,
       status: 'live',
       markets: 2,
-      sales_channels: 4,
-      type: 'Food',
+      subcategory: 'Food',
       vendor: 'Vendor I'
     },
     {
@@ -123,8 +114,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 110,
       status: 'dead',
       markets: 3,
-      sales_channels: 5,
-      type: 'Furniture',
+      subcategory: 'Furniture',
       vendor: 'Vendor J'
     },
     {
@@ -134,8 +124,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 60,
       status: 'live',
       markets: 1,
-      sales_channels: 2,
-      type: 'Toys',
+      subcategory: 'Toys',
       vendor: 'Vendor K'
     },
     {
@@ -145,8 +134,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 40,
       status: 'live',
       markets: 4,
-      sales_channels: 3,
-      type: 'Books',
+      subcategory: 'Books',
       vendor: 'Vendor L'
     },
     {
@@ -156,8 +144,7 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
       inventory: 75,
       status: 'dead',
       markets: 2,
-      sales_channels: 1,
-      type: 'Electronics',
+      subcategory: 'Electronics',
       vendor: 'Vendor M'
     }
   ])
@@ -252,14 +239,9 @@ const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,ad
           key: 'markets',
         },
         {
-          title: 'Sales Channels', // Column title for sales channels
-          dataIndex: 'sales_channels', // Key in the data that corresponds to sales channels count
-          key: 'sales_channels',
-        },
-        {
           title: 'Type', // Column title for product type
-          dataIndex: 'type', // Key in the data that corresponds to product type (e.g., Electronics)
-          key: 'type',
+          dataIndex: 'subcategory', // Key in the data that corresponds to product type (e.g., Electronics)
+          key: 'subcategory',
         },
         {
           title: 'Vendor', // Column title for vendor name
