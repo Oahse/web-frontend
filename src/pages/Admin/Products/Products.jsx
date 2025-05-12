@@ -1,401 +1,286 @@
-import React, { useEffect, useState } from "react";
-import { Avatar, Col,Modal,Row, Tag} from "antd";
-import { Icon } from "@iconify/react/dist/iconify.js";
-import Tabs from "../../../components/ui/Tabs/Tabs";
-import Table from "../../../components/ui/Table/Table";
-import AdminContent from "../AdminContent";
-import { exportToExcel, genHtmlPdf, updateURL } from "../../../utils/helper";
-import AdminProductItem from "./ProductItem";
-import Button from "../../../components/ui/Button/Button";
-import List from "../../../components/ui/List/List";
-import Text from "../../../components/ui/Typography/Text";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Preloader from "@/components/admin/PreLoader";
+import SideBar from "@/components/admin/SideBar";
+import AdminHeader from "@/components/admin/toolbar/header";
+import AdminFooter from "@/components/admin/toolbar/footer";
+import { fetchProducts, deleteProduct  } from "@/services/api/products";
+import Breadcrumbs from "@/components/admin/breadcrumbs";
+import AdminTable from "@/components/admin/table";
+import img1 from '@/assets/images/products/product-1.jpg';
+import img2 from '@/assets/images/products/product-2.jpg';
+import img3 from '@/assets/images/products/product-3.jpg';
+import img4 from '@/assets/images/products/product-4.jpg';
+import img5 from '@/assets/images/products/product-5.jpg';
+import img6 from '@/assets/images/products/product-6.jpg';
+import img7 from '@/assets/images/products/product-7.jpg';
+import useAdminStyles from '@/hooks/useAdminStyles';
 
-const AdminProducts = ({ API_URL, Companyname, isMobile, isTablet, itemnumber,add=false }) => {
-  const { id } = useParams(); // Get the `id` from the URL
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // State for selected row keys
-  const [selectedItems, setSelectedItems] = useState([])
-  const [breadCrumbItems, setBreadCrumbItems] = useState([{ title: <span className="text-light">Products</span> }]); // Breadcrumb state
-  const [currentitems, setCurrentItems] = useState([
+const defaultProductList = [
     {
       id: 1,
-      name: 'Product 1',
-      picture: 'https://example.com/product1.jpg',
-      inventory: 50,
-      status: 'live',
-      markets: 2,
-      subcategory: 'Electronics',
-      vendor: 'Vendor A'
+      name: "Dog Food, Chicken & Chicken Liver Recipe...",
+      image: [img1],
+      code: "#7712309",
+      price: "$1,452.500",
+      salePrice: "$1,199.99",
+      description: "Premium dog food with real chicken and liver for optimal health.",
+      brand: "HealthyPet",
+      color: "Brown",
+      size: "5kg",
+      sku: "HP-DOG-001",
+      stock: '8880',
+      tags: ["dog", "food", "chicken", "premium"],
+      sales: '1638',
+      date: "08/24/2024",
+      category: "Dog Food"
     },
     {
       id: 2,
-      name: 'Product 2',
-      picture: 'https://example.com/product2.jpg',
-      inventory: 30,
-      status: 'dead',
-      markets: 1,
-      subcategory: 'Clothing',
-      vendor: 'Vendor B'
+      name: "Cat Litter, Natural Pine Scent",
+      image: [img2],
+      code: "#7712310",
+      price: "$300.00",
+      salePrice: "$250.00",
+      description: "All-natural pine-scented cat litter for odor control.",
+      brand: "EcoPaws",
+      color: "Red",
+      size: "10L",
+      sku: "EP-CAT-002",
+      stock: 80,
+      tags: ["cat", "litter", "eco-friendly"],
+      sales: 845,
+      date: "09/01/2024",
+      category: "Cat Supplies"
     },
     {
       id: 3,
-      name: 'Product 3',
-      picture: 'https://example.com/product3.jpg',
-      inventory: 100,
-      status: 'live',
-      markets: 3,
-      subcategory: 'Food',
-      vendor: 'Vendor C'
+      name: "Tough Chew Toy for Aggressive Dogs",
+      image: [img3],
+      code: "#7712311",
+      price: "$75.00",
+      salePrice: "$59.99",
+      description: "Durable rubber chew toy for heavy chewers.",
+      brand: "PawStrong",
+      color: "Red",
+      size: "Medium",
+      sku: "PS-TOY-003",
+      stock: 120,
+      tags: ["dog", "toy", "chew"],
+      sales: 526,
+      date: "09/10/2024",
+      category: "Dog Toys"
     },
     {
       id: 4,
-      name: 'Product 4',
-      picture: 'https://example.com/product4.jpg',
-      inventory: 80,
-      status: 'live',
-      markets: 4,
-      subcategory: 'Furniture',
-      vendor: 'Vendor D'
+      name: "Fish Flakes for Tropical Fish",
+      image: [img4],
+      code: "#7712312",
+      price: "$40.00",
+      salePrice: "$32.00",
+      description: "Nutritious food flakes for all tropical aquarium fish.",
+      brand: "AquaLife",
+      color: "Multi",
+      size: "200g",
+      sku: "AL-FISH-004",
+      stock: 300,
+      tags: ["fish", "flakes", "aquarium"],
+      sales: 1093,
+      date: "07/15/2024",
+      category: "Fish Food"
     },
     {
       id: 5,
-      name: 'Product 5',
-      picture: 'https://example.com/product5.jpg',
-      inventory: 120,
-      status: 'dead',
-      markets: 2,
-      subcategory: 'Toys',
-      vendor: 'Vendor E'
+      name: "Small Pet Bedding, Lavender Scent",
+      image: [img5],
+      code: "#7712313",
+      price: "$90.00",
+      salePrice: "$75.00",
+      description: "Soft, absorbent bedding for hamsters, guinea pigs, and more.",
+      brand: "SnuggleNest",
+      color: "Purple",
+      size: "20L",
+      sku: "SN-BED-005",
+      stock: 45,
+      tags: ["small pets", "bedding", "lavender"],
+      sales: 410,
+      date: "10/05/2024",
+      category: "Small Pet Supplies"
     },
     {
       id: 6,
-      name: 'Product 6',
-      picture: 'https://example.com/product6.jpg',
-      inventory: 60,
-      status: 'live',
-      markets: 3,
-      subcategory: 'Books',
-      vendor: 'Vendor F'
+      name: "Bird Cage Cleaner Spray",
+      image: [img6],
+      code: "#7712314",
+      price: "$60.00",
+      salePrice: "$49.99",
+      description: "Non-toxic spray for cleaning bird cages safely.",
+      brand: "FeatherFresh",
+      color: "Clear",
+      size: "500ml",
+      sku: "FF-CLN-006",
+      stock: 210,
+      tags: ["bird", "cleaner", "spray"],
+      sales: 623,
+      date: "06/18/2024",
+      category: "Bird Care"
     },
     {
       id: 7,
-      name: 'Product 7',
-      picture: 'https://example.com/product7.jpg',
-      inventory: 90,
-      status: 'dead',
-      markets: 5,
-      subcategory: 'Electronics',
-      vendor: 'Vendor G'
-    },
-    {
-      id: 8,
-      name: 'Product 8',
-      picture: 'https://example.com/product8.jpg',
-      inventory: 200,
-      status: 'live',
-      markets: 6,
-      subcategory: 'Clothing',
-      vendor: 'Vendor H'
-    },
-    {
-      id: 9,
-      name: 'Product 9',
-      picture: 'https://example.com/product9.jpg',
-      inventory: 150,
-      status: 'live',
-      markets: 2,
-      subcategory: 'Food',
-      vendor: 'Vendor I'
-    },
-    {
-      id: 10,
-      name: 'Product 10',
-      picture: 'https://example.com/product10.jpg',
-      inventory: 110,
-      status: 'dead',
-      markets: 3,
-      subcategory: 'Furniture',
-      vendor: 'Vendor J'
-    },
-    {
-      id: 11,
-      name: 'Product 11',
-      picture: 'https://example.com/product11.jpg',
-      inventory: 60,
-      status: 'live',
-      markets: 1,
-      subcategory: 'Toys',
-      vendor: 'Vendor K'
-    },
-    {
-      id: 12,
-      name: 'Product 12',
-      picture: 'https://example.com/product12.jpg',
-      inventory: 40,
-      status: 'live',
-      markets: 4,
-      subcategory: 'Books',
-      vendor: 'Vendor L'
-    },
-    {
-      id: 13,
-      name: 'Product 13',
-      picture: 'https://example.com/product13.jpg',
-      inventory: 75,
-      status: 'dead',
-      markets: 2,
-      subcategory: 'Electronics',
-      vendor: 'Vendor M'
+      name: "Reptile Heat Lamp Bulb 100W",
+      image: [img7],
+      code: "#7712315",
+      price: "$110.00",
+      salePrice: "$89.00",
+      description: "Heat lamp for reptiles to maintain optimal basking temperatures.",
+      brand: "HeatZone",
+      color: "White",
+      size: "100W",
+      sku: "HZ-LAMP-007",
+      stock: 75,
+      tags: ["reptile", "heat", "lamp"],
+      sales: 312,
+      date: "05/30/2024",
+      category: "Reptile Accessories"
     }
-  ])
-  const [isAdd, setAdd] = useState(add);
-  const [item, setItem] = useState(id ? currentitems.find((item) => item.id.toString() === id) : null);
-  
-  // console.log(window.location,'location')
-  const handleProduct = () => {
-    // console.log("=====ppp");
-    const url = `${window.location.origin}/web-frontend/admin/products`;
-    updateURL(url, {});
-    
-    setBreadCrumbItems([
-      { title: 'Products' }
-    ]);
-    setItem(null);
-    setAdd(false);
-  };
-  
-  const handleProductItem = (record) => {
-    // console.log(record,"=====");
-    const url = `${window.location.origin}/web-frontend/admin/products/${record.id}`;
-    updateURL(url, {});
-    
-    setBreadCrumbItems([
-      { title: <a onClick={handleProduct} style={{ cursor: 'pointer' }}>Products</a> },
-      { title: <span className="text-light">{record.id}</span> }
-    ]);
-    setItem(record);
-    setAdd(false);
-  };
+  ];
 
-    const handleSelectedItems =(items)=>{
-        // console.log(items,'|||')
-        setSelectedItems(items)
-    }
-    const handleAddItem = (e) =>{
-        console.log('is adding---')
-            const url = `${window.location.origin}/web-frontend/admin/products/add`;
-            updateURL(url, {});
-            
-            setBreadCrumbItems([
-            { title: <a onClick={handleProduct} style={{ cursor: 'pointer' }}>Products</a> },
-            { title: <span className="text-light">Add</span>}
-            ]);
-            setAdd(true);
+const AdminProducts = ({API_URL ,Companyname, isLoggedIn, user })=>{
+  useAdminStyles(); // ✅ dynamically manages admin styles
+    const [loading, setLoading] = useState(false);
+    const [isHeaderFullWidth, setIsHeaderFullWidth] = useState(false);
+
+    const showHideMenu = (e) => {
+        e.preventDefault()
+        // Find the layout-wrap element
+    
+        var layoutWrap = document.getElementById('layout-wrap');
+      
+        // Toggle the full-width class based on the state
+        if (isHeaderFullWidth) {
+          layoutWrap.classList.remove('full-width');
+          
+        } else {
+          layoutWrap.classList.add('full-width');
         }
-    
-    const handleDeleteItems = (items) => {
-        Modal.confirm({
-        title: 'Are you sure you want to delete these products?',
-        onOk: () => {
-            const updatedItems = currentitems.filter((currentItem) => 
-            !items.some(item => item.id === currentItem.id)
-            );
-            setCurrentItems(updatedItems);
-        },
-        });
-    };
-    const columns = [
-        {
-          title: 'Product', // Column title for the product name
-          dataIndex: 'name', // Key in the data that corresponds to product name
-          key: 'name',
-          render:(_,record) =>(<div className="d-flex justify-content-start align-items-start" style={{gap:'0.5rem'}}>
-                <Avatar src={`https://picsum.photos/200/300?random=${record.id}`} shape='square' size={'small'} />
-                <Text tag="p" fontWeight="fw-300">
-                    {record.name}
-                </Text>
-            </div>)
-        },
-        {
-          title: 'Inventory', // Column title for inventory count
-          dataIndex: 'inventory', // Key in the data that corresponds to inventory count
-          key: 'inventory',
-        },
-        {
-          title: 'Status', // Column title for product status
-          dataIndex: 'status', // Key in the data that corresponds to status (e.g., 'live' or 'dead')
-          key: 'status',
-          render:(_,record) =>(record.status === 'live'?
-                <Tag color='#198754'>
-                    {record.status}
-                </Tag>:
-                <Tag color='#DC3545'>
-                    {record.status}
-                </Tag>)
-        },
-        {
-          title: 'Markets', // Column title for number of markets
-          dataIndex: 'markets', // Key in the data that corresponds to the markets count
-          key: 'markets',
-        },
-        {
-          title: 'Type', // Column title for product type
-          dataIndex: 'subcategory', // Key in the data that corresponds to product type (e.g., Electronics)
-          key: 'subcategory',
-        },
-        {
-          title: 'Vendor', // Column title for vendor name
-          dataIndex: 'vendor', // Key in the data that corresponds to vendor
-          key: 'vendor',
-        },
-      ];
-    const renderTableContent = (products) => {
-
-    const items = products.map(product => ({
-        id: product.id,
-        name: product.name,
-        picture: product.picture,
-        inventory: product.inventory,
-        status: product.status,
-        markets: product.markets,
-        sales_channels: product.sales_channels,
-        type: product.type,
-        vendor: product.vendor
-        }));
-    
-    return (
-        <>
-            {isMobile?
-            <List id='products-table' 
-                items={items} 
-                onSelectedItems={handleSelectedItems} 
-                onRowClick={handleProductItem} 
-                suffix={
-                    <Text tag="small" fontWeight="fw-300">
-                        {item?.currency} {item?.price}
-                    </Text>}
-            />
-            :
-            <Table
-            id='products-table'
-            columns={columns}
-            items={items}
-            onSelectedRowKeys={(selectedRowKeys) => setSelectedRowKeys(selectedRowKeys)}
-            onSelectedItems={handleSelectedItems}
-            onRowClick={handleProductItem}
-            />}
-        </>
-        );
-    };
-
-    // Now let's define initialItems with data for each tab
-    
-    // Initial items based on categories (with dynamically filtered content)
-    const initialItems = [
-        {
-            label: 'All',
-            children: renderTableContent(currentitems),
-            key: '1',
-        },
-        {
-            label: 'Electronics',
-            children: renderTableContent(currentitems.filter(product => product.type === 'Electronics')),
-            key: '2',
-        },
-        {
-            label: 'Clothing',
-            children: renderTableContent(currentitems.filter(product => product.type === 'Clothing')),
-            key: '3',
-        },
-        {
-            label: 'Food',
-            children: renderTableContent(currentitems.filter(product => product.type === 'Food')),
-            key: '4',
-        },
-        {
-            label: 'Furniture',
-            children: renderTableContent(currentitems.filter(product => product.type === 'Furniture')),
-            key: '5',
-        },
-        {
-            label: 'Toys',
-            children: renderTableContent(currentitems.filter(product => product.type === 'Toys')),
-            key: '6',
-        },
-        {
-            label: 'Books',
-            children: renderTableContent(currentitems.filter(product => product.type === 'Books')),
-            key: '7',
-        },
-    ];
-  
-
-
-    const options =[
-        {icon:<Icon icon="catppuccin:pdf" width="25" height="25" onClick={() => genHtmlPdf({ contentid: "#products-table", pdfname: 'Products' })} />, label:'Pdf'},
-        {icon:<Icon icon="vscode-icons:file-type-excel2"  width="25" height="25" onClick={() => exportToExcel({ json_data: currentitems, fileName: 'Products' })} />, label:'Excel'}
-    ]
-    const suffix = (
-        <div className="d-flex gap-2">
-        {/* <Select options={options}/> */}
-        <Button variant='outlined' text={isMobile?
-            <Icon icon="catppuccin:pdf" width="25" height="25" />
-            :
-            'Export to Pdf'} onClick={() => genHtmlPdf({ contentid: "#products-table", pdfname: 'Products' })} />
+      
+        // Toggle the state of the full-width flag
+        setIsHeaderFullWidth(!isHeaderFullWidth);
         
-            <Button
-                    color={selectedItems?.length > 0 ? 'danger' : 'primary'}
-                    text={selectedItems?.length > 0 ? isMobile ? <Icon icon="material-symbols-light:delete-outline-rounded" width="25" height="25" /> : 'Delete' : isMobile ? <Icon icon="material-symbols-light:add-rounded" width="25" height="25" /> : 'Add'}
-                    onClick={() => (selectedItems?.length > 0 ? handleDeleteItems(selectedItems) : handleAddItem())} />
-        </div>
-    );
+      };
 
-    const renderChild = ({ item }) => {
-        if (isAdd) {
-        return <AdminProductItem API_URL={API_URL} Companyname={Companyname} handleGoBack={handleProduct}/>;
-        } else {
-        if (item) {
-            return <AdminProductItem API_URL={API_URL} Companyname={Companyname} item={item} add={true}  handleGoBack={handleProduct}/>;
-        } else {
-            return (
-            <Row gutter={[16, 16]}>
-                <Col span={24} style={{ paddingLeft: "8px", paddingRight: "8px" }}>
-                <Tabs
-                    initialItems={initialItems}
-                    tabBarExtraContent={
-                    <div className="ms-2" style={{ display: "flex", justifyContent: "space-around", alignContent: "center", gap: "10px" }}>
-                        <Icon icon="fluent:filter-20-regular" width="25" height="25" />
-                        <Icon icon="ph:arrows-down-up-light" width="25" height="25" />
-                    </div>
+    
+    const [productList, setProductList] = useState(defaultProductList||null);
+    
+        useEffect(() => {
+            const loadCategories = async () => {
+                if (!productList || productList.length === 0) {
+                    setLoading(true);
+                    const result = await fetchProducts({});
+                    if (!result.error && result.data) {
+                    setProductList(result.data); // assumes API returns an array of categories
+                    } else {
+                    // fallback to static list if API fails
+                    setProductList(defaultProductList);
                     }
-                />
-                </Col>
-            </Row>
-            );
-        }
-        }
+                    setLoading(false);
+                }
+            };
         
-    };
-    useEffect(() => {
-        if (id && !item) {
-            const selectedItem = currentitems.find(item => item.id.toString() === id);
-            if (selectedItem) {
-            handleProductItem(selectedItem);
-            }
-        }
-        // if (item) {
-        //   handleProductItem(item);
-        // }
-        if (add) {
-            handleAddItem();
-        }
-        }, [id, add, currentitems]);
+            loadCategories();
+          }, [productList]);
+        
+          const handleEdit = (product) => {
+            console.log('Edit product', product);
+            // Logic to handle editing
+          };
+        
+          const handleDelete = (product) => {
+            console.log('Delete product', product);
+            // Logic to handle deleting
+          };
+        
+          // Columns configuration
+          const columns = [
+            { title: 'Product', field: 'name' },
+            { title: 'Category', field: 'category' },
+            { title: 'Price', field: 'price' },
+            { title: 'Sale Price', field: 'salePrice' },
+            { title: 'Stock', field: 'stock' },
+            // { title: 'Sales', field: 'sales' },
+            // { title: 'SKU', field: 'sku' },
+            // { title: 'Code', field: 'code' },
+            // { title: 'Brand', field: 'brand' },
+            // { title: 'Color', field: 'color' },
+            // { title: 'Size', field: 'size' },
+            // { title: 'Tags', field: 'tags' },
+            // { title: 'Description', field: 'description' },
+            { title: 'Date Added', field: 'date' }
+          ];
+          
+        
+          
     
-    return (
-        <AdminContent API_URL={API_URL} Companyname={Companyname} breadCrumbItems={breadCrumbItems} suffix={suffix}>
-        {renderChild({ item })}
-        </AdminContent>
-    );
-};
+    return(
+        <div id="wrapper">
+            {/* <!-- #page --> */}
+            <div id="page" className="">
+                {/* <!-- layout-wrap --> */}
+                <div id="layout-wrap" className="layout-wrap">
+                    {/* <!-- preload --> */}
+                    {loading && <Preloader />} 
+                    {/* <!-- /preload --> */}
+                    {/* <!-- section-menu-left --> */}
+                    <SideBar activeMenu={1}  onshowHideMenu={showHideMenu} />
+                    {/* <!-- /section-menu-left --> */}
+                    <div className="section-content-right">
+                        {/* <!-- header-dashboard --> */}
+                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={user}  />
+                        {/* <!-- /header-dashboard --> */}
+                        {/* <!-- main-content --> */}
+                        <div className="main-content">
+                        {/* <!-- main-content-wrap --> */}
+                        <div className="main-content-inner">
+                            {/* <!-- main-content-wrap --> */}
+                            <div className="main-content-wrap">
+                                <div className="flex items-center flex-wrap justify-between gap20 mb-30">
+                                    <h3>All Products</h3>
+                                    <Breadcrumbs
+                                        items={[
+                                            { label: 'Dashboard', href: '/admin' },
+                                            { label: 'Product', href: 'javascript:void(0);' },
+                                            { label: 'All Products' }
+                                        ]}
+                                    />
 
+                                </div>
+                                {/* <!-- product-list --> */}
+                                <div className="wg-box">
+                                    <AdminTable
+                                        items={productList}
+                                        handleEdit={handleEdit}
+                                        handleDelete={handleDelete}
+                                        linkUrl={'/admin/products/'}
+                                        columns={columns} // Pass the columns configuration
+                                        deletecaller = {deleteProduct}
+                                    />
+                                </div>
+                                {/* <!-- /product-list --> */}
+                            </div>
+                            {/* <!-- /main-content-wrap --> */}
+                        </div>
+                        {/* <!-- /main-content-wrap --> */}
+                        {/* <!-- bottom-page --> */}
+                        <AdminFooter />
+                            {/* <!-- /bottom-page --> */}
+                    </div>
+                        {/* <!-- /main-content --> */}
+                    </div>
+
+                </div>
+                {/* <!-- /layout-wrap --> */}
+            </div>
+            {/* <!-- /#page --> */}
+        </div>
+    )
+}
 export default AdminProducts;
