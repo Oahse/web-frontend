@@ -87,7 +87,7 @@ const Header =()=>{
                                   <li className="nav-search"><a href="#canvasSearch" data-bs-toggle="offcanvas"
                                           aria-controls="offcanvasLeft" className="nav-icon-item"><i
                                               className="icon icon-search"></i></a></li>
-                                    <li className="nav-account"><Link to="/admin/"
+                                    <li className="nav-account cart-lg"><Link to="/admin/"
                                           className="text-decoratio-none nav-icon-item align-items-center gap-10"><i
                                               className="icon icon-account"></i> <span className="text">Admin</span></Link></li>
                                   <li className="nav-account"><a href="#login" data-bs-toggle="modal"

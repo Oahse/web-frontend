@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AdminFooter = () => {
   const currentYear = new Date().getFullYear(); // Get current year
@@ -6,7 +7,7 @@ const AdminFooter = () => {
   return (
     <div className="bottom-page">
       <div className="body-text">
-        Copyright © {currentYear} <a href="../index.html">Ecomus</a>. Design by Themesflat. All rights reserved.
+        Copyright © {currentYear} <Link to="/">Banwe</Link>. Design by Themesflat. All rights reserved.
       </div>
     </div>
   );

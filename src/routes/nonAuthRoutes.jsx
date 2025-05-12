@@ -2,6 +2,8 @@ import React from 'react';
 import Home from '@/pages/home';
 import Products from '@/pages/products'; // assuming Bookings component exists
 import SignUp from '@/pages/auth/signup'; // assuming SignUp component exists
+import Login from '@/pages/auth/login'; // assuming SignUp component exists
+import ResetPassword from '@/pages/auth/reset-password';
 import Account from '@/pages/auth/account'; // assuming Account component exists
 import Cart from '@/pages/cart';
 import ProductDetails from '@/pages/productdetails'; // assuming ProductDetails component exists
@@ -195,8 +197,13 @@ const NonAuthRoutes = ({ API_URL, Companyname, isLoggedIn, user, header, footer,
   },
   {
     path: "/login",
-    element: <Account API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Login API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
     title: "login"
+  },
+  {
+    path: "/resetpassword",
+    element: <ResetPassword API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    title: "resetpassword"
   },
   {
     path: "/register",

@@ -3,6 +3,7 @@ import Modal from '@/components/modal'
 import Login from '@/components/form/Login'
 import ForgotPassword from '@/components/form/ForgotPassword'
 import Register from '@/components/form/Register'
+import { Link } from 'react-router-dom'
 
 const Extras  =()=>{
     return(
@@ -869,7 +870,9 @@ const Extras  =()=>{
                         </div>
                     </div>
                     <div className="mb-bottom">
-                        <a href="login.html" className="site-nav-icon"><i className="icon icon-account"></i>Login</a>
+                        <Link to="/login/" className="site-nav-icon"><i className="icon icon-account"></i>Login</Link>
+                        <span className='ms-2'></span>
+                        <Link to="/admin/" className="site-nav-icon"><i className="icon icon-account"></i>Admin</Link>
                         <div className="bottom-bar-language">
                             <div className="tf-currencies">
                                 <select className="image-select center style-default type-currencies">
