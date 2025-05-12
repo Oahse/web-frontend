@@ -124,7 +124,7 @@ const Footer = () => {
             <div className="row">
               <div className="col-12">
                 <div className="footer-bottom-wrap d-flex gap-20 flex-wrap justify-content-between align-items-center">
-                  <div className="footer-menu_item">© 2025 Ecomus Store. All Rights Reserved</div>
+                  <div className="footer-menu_item">© 2025 Banwe Store. All Rights Reserved</div>
                   <div className="tf-payment">
                     <img src={visa} alt="Visa" />
                     <img src={img1} alt="Payment 1" />
