@@ -1,12 +1,12 @@
-import useDeviceType from '@/hooks/useDeviceType'
+// import useDeviceType from '@/hooks/useDeviceType'
 import { useState } from "react";
 import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
-
+import Extras from '@/components/extra'
 const Payment =()=>{
-    const { isMobile} = useDeviceType();
+    // const { isMobile} = useDeviceType();
     const [loading, setLoading] = useState(false);
     const [issuccess, SetIsuccess] = useState(true);
     return(

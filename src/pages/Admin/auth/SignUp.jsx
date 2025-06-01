@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from "@/services/api/Users"; // ← You should have a createUser API call
+import { registerUser } from "@/services/api/users"; // ← You should have a createUser API call
 import { ToastContainer, toast } from 'react-toastify';
 import Toast from "@/components/Toast";
 import SignUpimg from '@/assets/images/images-section/signup.avif';

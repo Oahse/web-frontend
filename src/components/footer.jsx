@@ -13,6 +13,7 @@ import countryDE from '@/assets/images/country/de.svg';
 import countryUS from '@/assets/images/country/us.svg';
 import countryVN from '@/assets/images/country/vn.svg';
 import Subscribe from '@/components/form/Subscribe';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -24,28 +25,28 @@ const Footer = () => {
               <div className="col-xl-3 col-md-6 col-12">
                 <div className="footer-infor">
                   <div className="footer-logo">
-                    <a href="index-2.html">
+                    <Link to="/">
                       <img src={logo} alt="Logo" style={{width:'140px'}}/>
-                    </a>
+                    </Link>
                   </div>
                   <ul>
                     <li>
                       <p>Address: 1234 Fashion Street, Suite 567, <br /> New York, NY 10001</p>
                     </li>
                     <li>
-                      <p>Email: <a href="#">info@fashionshop.com</a></p>
+                      <p>Email: <Link to="#">info@fashionshop.com</Link></p>
                     </li>
                     <li>
-                      <p>Phone: <a href="#">(212) 555-1234</a></p>
+                      <p>Phone: <Link to="#">(212) 555-1234</Link></p>
                     </li>
                   </ul>
-                  <a href="contact-1.html" className="tf-btn btn-line">Get direction<i className="icon icon-arrow1-top-left"></i></a>
+                  <Link to="contact-1.html" className="tf-btn btn-line">Get direction<i className="icon icon-arrow1-top-left"></i></Link>
                   <ul className="tf-social-icon d-flex gap-10">
-                    <li><a href="#" className="box-icon w_34 round social-facebook social-line"><i className="icon fs-14 icon-fb"></i></a></li>
-                    <li><a href="#" className="box-icon w_34 round social-twiter social-line"><i className="icon fs-12 icon-Icon-x"></i></a></li>
-                    <li><a href="#" className="box-icon w_34 round social-instagram social-line"><i className="icon fs-14 icon-instagram"></i></a></li>
-                    <li><a href="#" className="box-icon w_34 round social-tiktok social-line"><i className="icon fs-14 icon-tiktok"></i></a></li>
-                    <li><a href="#" className="box-icon w_34 round social-pinterest social-line"><i className="icon fs-14 icon-pinterest-1"></i></a></li>
+                    <li><Link to="#" className="box-icon w_34 round social-facebook social-line"><i className="icon fs-14 icon-fb"></i></Link></li>
+                    <li><Link to="#" className="box-icon w_34 round social-twiter social-line"><i className="icon fs-12 icon-Icon-x"></i></Link></li>
+                    <li><Link to="#" className="box-icon w_34 round social-instagram social-line"><i className="icon fs-14 icon-instagram"></i></Link></li>
+                    <li><Link to="#" className="box-icon w_34 round social-tiktok social-line"><i className="icon fs-14 icon-tiktok"></i></Link></li>
+                    <li><Link to="#" className="box-icon w_34 round social-pinterest social-line"><i className="icon fs-14 icon-pinterest-1"></i></Link></li>
                   </ul>
                 </div>
               </div>
@@ -58,13 +59,12 @@ const Footer = () => {
                   <h6>Help</h6>
                 </div>
                 <ul className="footer-menu-list tf-collapse-content">
-                  <li><a href="privacy-policy.html" className="footer-menu_item">Privacy Policy</a></li>
-                  <li><a href="delivery-return.html" className="footer-menu_item">Returns + Exchanges</a></li>
-                  <li><a href="shipping-delivery.html" className="footer-menu_item">Shipping</a></li>
-                  <li><a href="terms-conditions.html" className="footer-menu_item">Terms &amp; Conditions</a></li>
-                  <li><a href="faq-1.html" className="footer-menu_item">FAQ’s</a></li>
-                  <li><a href="compare.html" className="footer-menu_item">Compare</a></li>
-                  <li><a href="wishlist.html" className="footer-menu_item">My Wishlist</a></li>
+                  <li><Link to="/privacy-policy" className="footer-menu_item">Privacy Policy</Link></li>
+                  <li><Link to="/refund-policy" className="footer-menu_item">Returns + Exchanges</Link></li>
+                  <li><Link to="/shipping" className="footer-menu_item">Shipping</Link></li>
+                  <li><Link to="/terms" className="footer-menu_item">Terms &amp; Conditions</Link></li>
+                  <li><Link to="/faq" className="footer-menu_item">FAQ’s</Link></li>
+                  <li><Link href="/account/wishlist" className="footer-menu_item">My Wishlist</Link></li>
                 </ul>
               </div>
 
@@ -76,10 +76,9 @@ const Footer = () => {
                   <h6>About us</h6>
                 </div>
                 <ul className="footer-menu-list tf-collapse-content">
-                  <li><a href="about-us.html" className="footer-menu_item">Our Story</a></li>
-                  <li><a href="our-store.html" className="footer-menu_item">Visit Our Store</a></li>
-                  <li><a href="contact-1.html" className="footer-menu_item">Contact Us</a></li>
-                  <li><a href="login.html" className="footer-menu_item">Account</a></li>
+                  <li><Link to="/about" className="footer-menu_item">Our Story</Link></li>
+                  <li><Link to="/contact" className="footer-menu_item">Contact Us</Link></li>
+                  <li><Link to="/login" className="footer-menu_item">Account</Link></li>
                 </ul>
               </div>
 

@@ -4,7 +4,7 @@ import Preloader from "@/components/admin/PreLoader";
 import SideBar from "@/components/admin/SideBar";
 import AdminHeader from "@/components/admin/toolbar/header";
 import AdminFooter from "@/components/admin/toolbar/footer";
-import { fetchUsers, deleteUser  } from "@/services/api/Users";
+import { fetchUsers, deleteUser  } from "@/services/api/users";
 import Breadcrumbs from "@/components/admin/breadcrumbs";
 import AdminTable from "@/components/admin/table";
 import img1 from '@/assets/images/brand/brand-01.png';

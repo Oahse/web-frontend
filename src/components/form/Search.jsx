@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import Button from '../Button/Button';
 import Icon from '../Button/Icon';
 
 const Search = ({ action = 'https://themesflat.co/html/ecomus/home-search.html', results = [],onSearch = () => {}}) => {

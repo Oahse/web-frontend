@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const TopHeader  =()=>{
     return (
@@ -8,13 +9,13 @@ const TopHeader  =()=>{
                       <div className="tf-top-bar_left">
                           <ul className="d-flex gap-20">
                               <li>
-                                  <a href="contact-1.html" className="fw-5">Contact</a>
+                                  <Link to="/contact" className="fw-5">Contact</Link>
                               </li>
                               <li>
-                                  <a href="blog-grid.html" className="fw-5">Blog</a>
+                                  <Link to="/blog" className="fw-5">Blog</Link>
                               </li>
                               <li>
-                                  <a href="order-tracking.html" className="fw-5">Order Tracking</a>
+                                  <Link to="/account/orders" className="fw-5">Orders</Link>
                               </li>
                           </ul>
                       </div>

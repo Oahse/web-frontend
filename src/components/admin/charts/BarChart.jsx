@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-
+import ApexCharts from 'apexcharts';
 const BarLineChart = () => {
   const chartRef = useRef(null);
   
@@ -54,7 +54,7 @@ const BarLineChart = () => {
         legend: {
           show: false,
         },
-        colors: ['#FF7433', '#8F77F3'], // Color for the bar and line charts
+        colors: ['#31A56D', '#8F77F3'], // Color for the bar and line charts
         stroke: {
           width: [0, 3], // Line chart stroke width
           curve: 'smooth', // Smooth curve for the line chart
@@ -97,7 +97,7 @@ const BarLineChart = () => {
       };
 
       // Initialize the chart using plain JavaScript
-      const chart = new window.ApexCharts(chartRef.current, options);
+      const chart = new ApexCharts(chartRef.current, options);
       chart.render();
 
       // Cleanup the chart on component unmount

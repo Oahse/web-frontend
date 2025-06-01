@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUser  } from "@/services/api/Users";
+import { loginUser  } from "@/services/api/users";
 import SignUpimg from '@/assets/images/images-section/signin.jpg';
 import { ToastContainer, toast } from 'react-toastify';
 import Toast from "@/components/Toast";

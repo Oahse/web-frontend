@@ -353,7 +353,7 @@ const DashBoard = ({API_URL , Companyname, isLoggedIn, user })=>{
                                                         { label: "Website", value: 4.432 },
                                                         { label: "Store", value: 5.432 }
                                                     ]}/>
-                                                <div className="flex gap20">
+                                                {/* <div className="flex gap20">
                                                     <div className="block-legend style-1 w-full">
                                                         <div className="dot t4"></div>
                                                         <div className="text-tiny">Social Media</div>
@@ -366,7 +366,7 @@ const DashBoard = ({API_URL , Companyname, isLoggedIn, user })=>{
                                                         <div className="dot t3"></div>
                                                         <div className="text-tiny">Store</div>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </div>
                                             {/* <!-- /top-product --> */}
                                             {/* <!-- top-countries --> */}

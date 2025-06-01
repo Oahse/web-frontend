@@ -5,7 +5,7 @@
     --Heading: #0A0A0C;
     --Body-Text: #575864;
     --22-c-55-e: #22C55E;
-    --Style:#FF5200;
+    --Style:#31A56D;
     --Palette-Green-500: #22C55E;
     --Palette-Blue-Gray-300: #CBD5E1;
     --Palette-Blue-Gray-200: #E2E8F0;
@@ -23,7 +23,7 @@
     --bg-table: #f6f8fbcc;
     --bg-table-1: #F7FAFC;
     --Main-Dark: #0A0A0C;
-    --Secondary: #FF7433;
+    --Secondary: #31A56D;
     --Surface: #C3C1CF;
     --Surface-2: #545454;
     --Surface-3: #F6F6F6;
@@ -1665,7 +1665,7 @@
     background-color: #D3E4FE;
   }
   .block-legend .dot.t3 {
-    background-color: #FF9E70;
+    background-color: var(--Secondary);
   }
   .block-legend .dot.t4 {
     background-color: #8F77F3;
@@ -1674,7 +1674,7 @@
     background-color: #8D79F6;
   }
   .block-legend .dot.t6 {
-    background-color: #FF7433;
+    background-color: var(--Secondary);
   }
   .block-legend .dot.t7 {
     background-color: var(--Secondary);
@@ -1705,7 +1705,7 @@
     border: 4px solid #8F77F3;
   }
   .block-legend.style-1 .dot.t4 {
-    border: 4px solid #FF7433;
+    border: 4px solid var(--Secondary);
   }
   .block-legend.style-1 .dot.t5 {
     border: 4px solid #FFE99A;
@@ -1890,7 +1890,7 @@
     cursor: pointer;
   }
   .list-icon-function .item.eye {
-    color: #FF7433;
+    color: var(--Secondary);
   }
   .list-icon-function .item.edit {
     color: #22C55E;

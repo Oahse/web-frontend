@@ -4,7 +4,7 @@ import SideBar from "@/components/admin/SideBar";
 import AdminHeader from "@/components/admin/toolbar/header";
 import AdminFooter from "@/components/admin/toolbar/footer";
 import Breadcrumbs from "@/components/admin/breadcrumbs";
-import { createUser  } from "@/services/api/Users";
+import { createUser  } from "@/services/api/users";
 import { convertImageToBase64 } from '@/services/helper';
 import { ToastContainer, toast } from 'react-toastify';
 import Toast from "@/components/Toast";

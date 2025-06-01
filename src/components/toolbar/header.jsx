@@ -1,15 +1,51 @@
 import React from 'react';
 
 import logo from '@/assets/images/logo/banwe_logo_text_green.png';
-import Search from '@/components/form/search';
+import Search from '@/components/form/Search';
 import searchImg1 from '@/assets/images/item/search-grocey1.jpg';
 import searchImg2 from '@/assets/images/item/search-grocey2.jpg';
 import searchImg3 from '@/assets/images/item/search-grocey3.jpg';
 import searchImg4 from '@/assets/images/item/search-grocey4.jpg';
 import searchImg5 from '@/assets/images/item/search-grocey5.jpg';
 import { Link } from 'react-router-dom';
+import cerealImage from '@/assets/images/collections/cereals.jpg';
+import legumesImage from '@/assets/images/collections/legumes.jpg';
+import fruitsVegImage from "@/assets/images/collections/vegetable.png"
+import oilseedsImage from '@/assets/images/collections/oilseeds.jpg';
+import fibersImage from '@/assets/images/collections/fibres.webp';
+import spicesHerbsImage from '@/assets/images/collections/spicesherbs.jpg';
+import meatFishSweetenersImage from "@/assets/images/collections/meat.jpg";
+import nutsFlowersBeveragesImage from '@/assets/images/collections/nuts.jpg';
+import brandsImage from '@/assets/images/logo/banwe_logo_green.png';
+import brand1Image from '@/assets/images/brand/asos.png';
+import brand2Image from '@/assets/images/brand/asos.png';
+import brand3Image from '@/assets/images/brand/asos.png';
+
+const categories = [
+    { name: 'Cereal Crops', image: cerealImage },
+    { 
+      name: 'Brands', 
+      image: brandsImage, 
+      items: [
+        { name: 'Brand1', image: brand1Image },
+        { name: 'Brand2', image: brand2Image },
+        { name: 'Brand3', image: brand3Image }
+      ] 
+    },
+    { name: 'Legumes', image: legumesImage },
+    { name: 'Fruits & Vegetables', image: fruitsVegImage },
+    { name: 'Oilseeds', image: oilseedsImage },
+    { name: 'Fibers', image: fibersImage },
+    { name: 'Spices and Herbs', image: spicesHerbsImage },
+    { name: 'Meat, Fish & Sweeteners', image: meatFishSweetenersImage },
+    { name: 'Nuts, Flowers & Beverages', image: nutsFlowersBeveragesImage }
+  ];
+  
+  
+  
 
 const Header =()=>{
+    const isLoggedIn =false;
     const searchResults = [
         {
           img: searchImg1,
@@ -70,7 +106,7 @@ const Header =()=>{
                           </div>
                           <div className="col-md-4 col-6">
                               <a href="index-2.html" className="logo-header">
-                                  <img src={logo} alt="logo" className="logo"/>
+                                  <img src={logo} alt="logo" className="logo" height={4}/>
                               </a>
                           </div>
                           <div className="col-md-4 col-6 tf-md-hidden">
@@ -87,21 +123,24 @@ const Header =()=>{
                                   <li className="nav-search"><a href="#canvasSearch" data-bs-toggle="offcanvas"
                                           aria-controls="offcanvasLeft" className="nav-icon-item"><i
                                               className="icon icon-search"></i></a></li>
-                                    <li className="nav-account cart-lg"><Link to="/admin/"
-                                          className="text-decoratio-none nav-icon-item align-items-center gap-10"><i
-                                              className="icon icon-account"></i> <span className="text">Admin</span></Link></li>
-                                  <li className="nav-account"><a href="#login" data-bs-toggle="modal"
+                                  
+                                  {isLoggedIn ?<li className="nav-account"><a href="/login" 
                                           className="nav-icon-item align-items-center gap-10"><i
-                                              className="icon icon-account"></i> <span className="text">Login</span></a></li>
-                                  <li className="nav-compare"><a href="compare.html"
+                                              className="icon icon-account"></i> <span className="text">Log Out</span></a></li>: <li className="nav-account"><a href="#login" data-bs-toggle="modal"
                                           className="nav-icon-item align-items-center gap-10"><i
-                                              className="icon icon-compare"></i><span className="text">Compare</span></a></li>
-                                  <li className="nav-wishlist"><a href="wishlist.html"
-                                          className="nav-icon-item  align-items-center gap-10"><i
-                                              className="icon icon-heart"></i><span className="text">Wishlist</span></a></li>
-                                  <li className="nav-cart cart-lg"><a href="#shoppingCart" data-bs-toggle="modal"
-                                          className="nav-icon-item"><i className="icon icon-bag"></i><span
-                                              className="count-box">6</span></a></li>
+                                              className="icon icon-account"></i> <span className="text">Login</span></a></li>}
+                                  {isLoggedIn && <li className="nav-account cart-lg"><Link to="/admin/"
+                                          className="nav-icon-item align-items-center gap-10"><i
+                                              className="icon icon-account"></i> <span className="text">Admin</span></Link></li>}
+                                  <li className="nav-wishlist">
+                                              <Link to="/account/wishlist"
+                                          className="nav-icon-item align-items-center gap-10"><i
+                                              className="icon icon-heart"></i> <span className="text">WishList</span></Link></li>
+                                  <li className="nav-cart cart-lg">
+                                              <Link to="/account/cart"
+                                          className="nav-icon-item align-items-center gap-10"><i
+                                              className="icon icon-bag"></i> <span
+                                              className="count-box">6</span></Link></li>
                               </ul>
                           </div>
                       </div>
@@ -122,212 +161,44 @@ const Header =()=>{
                                       Browse All Categories
                                   </a>
                                   <div className="list-categories-inner toolbar-shop-mobile">
-                                      <ul className="nav-ul-mb" id="wrapper-menu-navigation">
-                                          <li className="nav-mb-item">
-                                              <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate1.jpg" alt=""/>
-                                                  </div>
-                                                  <span className="link">Accessories</span>
-                                              </a>
-                                          </li>
-                                          <li className="nav-mb-item">
-                                              <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate2.jpg" alt=""/>
-                                                  </div>
-                                                  <span className="link">Dog</span>
-                                              </a>
-                                          </li>
-                                          <li className="nav-mb-item">
-                                              <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate3.jpg" alt=""/>
-                                                  </div>
-                                                  <span className="link">Grocery</span>
-                                              </a>
-                                          </li>
-                                          <li className="nav-mb-item">
-                                              <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate4.png" alt=""/>
-                                                  </div>
-                                                  <span className="link">Handbag</span>
-                                              </a>
-                                          </li>
-                                          <li className="nav-mb-item">
-                                              <a href="#cate-menu-one"
-                                                  className="tf-category-link has-children collapsed mb-menu-link"
-                                                  data-bs-toggle="collapse" aria-expanded="true"
-                                                  aria-controls="cate-menu-one">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate5.jpg" alt=""/>
-                                                  </div>
-                                                  <span className="link">Fashion</span>
-                                                  <span className="btn-open-sub"></span>
-                                              </a>
-                                              <div id="cate-menu-one" className="collapse list-cate">
-                                                  <ul className="sub-nav-menu" id="cate-menu-navigation">
-                                                      <li>
-                                                          <a href="#cate-shop-one"
-                                                              className="tf-category-link has-children sub-nav-link collapsed"
-                                                              data-bs-toggle="collapse" aria-expanded="true"
-                                                              aria-controls="cate-shop-one">
-                                                              <div className="image">
-                                                                  <img src="images/shop/cate/cate6.jpg" alt=""/>
-                                                              </div>
-                                                              <span>Mens</span>
-                                                              <span className="btn-open-sub"></span>
-                                                          </a>
-                                                          <div id="cate-shop-one" className="collapse">
-                                                              <ul className="sub-nav-menu sub-menu-level-2">
-                                                                  <li>
-                                                                      <a href="shop-default.html"
-                                                                          className="tf-category-link sub-nav-link">
-                                                                          <div className="image">
-                                                                              <img src="images/shop/cate/cate1.jpg"
-                                                                                  alt=""/>
-                                                                          </div>
-                                                                          <span>Accessories</span>
-                                                                      </a>
-                                                                  </li>
-                                                                  <li>
-                                                                      <a href="shop-default.html"
-                                                                          className="tf-category-link sub-nav-link">
-                                                                          <div className="image">
-                                                                              <img src="images/shop/cate/cate8.jpg"
-                                                                                  alt=""/>
-                                                                          </div>
-                                                                          <span>Shoes</span>
-                                                                      </a>
-                                                                  </li>
-                                                              </ul>
-                                                          </div>
-                                                      </li>
-                                                      <li>
-                                                          <a href="#cate-shop-two"
-                                                              className="tf-category-link has-children sub-nav-link collapsed"
-                                                              data-bs-toggle="collapse" aria-expanded="true"
-                                                              aria-controls="cate-shop-two">
-                                                              <div className="image">
-                                                                  <img src="images/shop/cate/cate9.jpg" alt=""/>
-                                                              </div>
-                                                              <span>Womens</span>
-                                                              <span className="btn-open-sub"></span>
-                                                          </a>
-                                                          <div id="cate-shop-two" className="collapse">
-                                                              <ul className="sub-nav-menu sub-menu-level-2">
-                                                                  <li>
-                                                                      <a href="shop-default.html"
-                                                                          className="tf-category-link sub-nav-link">
-                                                                          <div className="image">
-                                                                              <img src="images/shop/cate/cate4.png"
-                                                                                  alt=""/>
-                                                                          </div>
-                                                                          <span>Handbag</span>
-                                                                      </a>
-                                                                  </li>
-                                                                  <li>
-                                                                      <a href="shop-default.html"
-                                                                          className="tf-category-link sub-nav-link">
-                                                                          <div className="image">
-                                                                              <img src="images/shop/cate/cate7.jpg"
-                                                                                  alt=""/>
-                                                                          </div>
-                                                                          <span>Tee</span>
-                                                                      </a>
-                                                                  </li>
-                                                              </ul>
-                                                          </div>
-                                                      </li>
-                                                  </ul>
-                                              </div>
-                                          </li>
-                                          <li className="nav-mb-item">
-                                              <a href="#cate-menu-two"
-                                                  className="tf-category-link has-children collapsed mb-menu-link"
-                                                  data-bs-toggle="collapse" aria-expanded="true"
-                                                  aria-controls="cate-menu-two">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate6.jpg" alt=""/>
-                                                  </div>
-                                                  <span className="link">Men</span>
-                                                  <span className="btn-open-sub"></span>
-                                              </a>
-                                              <div id="cate-menu-two" className="collapse list-cate">
-                                                  <ul className="sub-nav-menu" id="cate-menu-navigation1">
-                                                      <li>
-                                                          <a href="shop-default.html"
-                                                              className="tf-category-link sub-nav-link">
-                                                              <div className="image">
-                                                                  <img src="images/shop/cate/cate1.jpg" alt=""/>
-                                                              </div>
-                                                              <span>Accessories</span>
-                                                          </a>
-                                                      </li>
-                                                      <li>
-                                                          <a href="shop-default.html"
-                                                              className="tf-category-link sub-nav-link">
-                                                              <div className="image">
-                                                                  <img src="images/shop/cate/cate8.jpg" alt=""/>
-                                                              </div>
-                                                              <span>Shoes</span>
-                                                          </a>
-                                                      </li>
-                                                  </ul>
-                                              </div>
-                                          </li>
-                                          <li className="nav-mb-item">
-                                              <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate7.jpg" alt=""/>
-                                                  </div>
-                                                  <span className="link">Tee</span>
-                                              </a>
-                                          </li>
-                                          <li className="nav-mb-item">
-                                              <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate8.jpg" alt=""/>
-                                                  </div>
-                                                  <span className="link">Shoes</span>
-                                              </a>
-                                          </li>
-                                          <li className="nav-mb-item">
-                                              <a href="#cate-menu-three"
-                                                  className="tf-category-link has-children collapsed mb-menu-link"
-                                                  data-bs-toggle="collapse" aria-expanded="true"
-                                                  aria-controls="cate-menu-three">
-                                                  <div className="image">
-                                                      <img src="images/shop/cate/cate9.jpg" alt=""/>
-                                                  </div>
-                                                  <span className="link">Women</span>
-                                                  <span className="btn-open-sub"></span>
-                                              </a>
-                                              <div id="cate-menu-three" className="collapse list-cate">
-                                                  <ul className="sub-nav-menu" id="cate-menu-navigation2">
-                                                      <li>
-                                                          <a href="shop-default.html"
-                                                              className="tf-category-link sub-nav-link">
-                                                              <div className="image">
-                                                                  <img src="images/shop/cate/cate4.png" alt=""/>
-                                                              </div>
-                                                              <span>Handbag</span>
-                                                          </a>
-                                                      </li>
-                                                      <li>
-                                                          <a href="shop-default.html"
-                                                              className="tf-category-link sub-nav-link">
-                                                              <div className="image">
-                                                                  <img src="images/shop/cate/cate7.jpg" alt=""/>
-                                                              </div>
-                                                              <span>Tee</span>
-                                                          </a>
-                                                      </li>
-                                                  </ul>
-                                              </div>
-                                          </li>
-                                      </ul>
+                                    <ul className="nav-ul-mb" id="wrapper-menu-navigation">
+                                        {categories.map((category, index) => (
+                                            <li key={index} className="nav-mb-item">
+                                            <Link 
+                                                to={category.items ? `#cate-menu-${category.name}` : "/products"} 
+                                                className={`tf-category-link ${category.items ? 'has-children' : ''} collapsed mb-menu-link`} 
+                                                data-bs-toggle={category.items ? "collapse" : undefined} 
+                                                aria-expanded="false" 
+                                                aria-controls={category.items ? `cate-menu-${category.name}` : undefined}
+                                            >
+                                                <div className="image">
+                                                <img src={category.image} alt={category.name} />
+                                                </div>
+                                                <span className="link">{category.name}</span>
+                                                {category.items && <span className="btn-open-sub"></span>}
+                                            </Link>
+
+                                            {category.items && (
+                                                <div id={`cate-menu-${category.name}`} className="collapse list-cate">
+                                                <ul className="sub-nav-menu">
+                                                    {category.items.map((item, itemIndex) => (
+                                                    <li key={itemIndex}>
+                                                        <Link to="/products/2" 
+                                                        className="tf-category-link sub-nav-link"
+                                                        >
+                                                        <div className="image">
+                                                            <img src={item.image} alt={item.name} />
+                                                        </div>
+                                                        <span>{item.name}</span>
+                                                        </Link>
+                                                    </li>
+                                                    ))}
+                                                </ul>
+                                                </div>
+                                            )}
+                                            </li>
+                                        ))}
+                                        </ul>
                                       <div className="categories-bottom">
                                           <a href="shop-collection-sub.html"
                                               className="tf-btn btn-line collection-other-link"><span>View all
@@ -488,736 +359,24 @@ const Header =()=>{
                                               </div>
                                           </div>
                                       </li>
-                                      <li className="menu-item">
-                                          <a href="#" className="item-link">Shop<i className="icon icon-arrow-down"></i></a>
-                                          <div className="sub-menu mega-menu">
-                                              <div className="container">
-                                                  <div className="row">
-                                                      <div className="col-lg-2">
-                                                          <div className="mega-menu-item">
-                                                              <div className="menu-heading">Shop layouts</div>
-                                                              <ul className="menu-list">
-                                                                  <li><a href="shop-default.html"
-                                                                          className="menu-link-text link">Default</a></li>
-                                                                  <li><a href="shop-left-sidebar.html"
-                                                                          className="menu-link-text link">Left sidebar</a>
-                                                                  </li>
-                                                                  <li><a href="shop-right-sidebar.html"
-                                                                          className="menu-link-text link">Right sidebar</a>
-                                                                  </li>
-                                                                  <li><a href="shop-fullwidth.html"
-                                                                          className="menu-link-text link">Fullwidth</a></li>
-                                                                  <li><a href="shop-collection-sub.html"
-                                                                          className="menu-link-text link">Sub collection</a>
-                                                                  </li>
-                                                                  <li><a href="shop-collection-list.html"
-                                                                          className="menu-link-text link">Collections list</a>
-                                                                  </li>
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-                                                      <div className="col-lg-2">
-                                                          <div className="mega-menu-item">
-                                                              <div className="menu-heading">Features</div>
-                                                              <ul className="menu-list">
-                                                                  <li><a href="shop-link.html"
-                                                                          className="menu-link-text link">Pagination links</a>
-                                                                  </li>
-                                                                  <li><a href="shop-loadmore.html"
-                                                                          className="menu-link-text link">Pagination
-                                                                          loadmore</a></li>
-                                                                  <li><a href="shop-infinite-scrolling.html"
-                                                                          className="menu-link-text link">Pagination infinite
-                                                                          scrolling</a></li>
-                                                                  <li><a href="shop-filter-sidebar.html"
-                                                                          className="menu-link-text link">Filter sidebar</a>
-                                                                  </li>
-                                                                  <li><a href="shop-filter-hidden.html"
-                                                                          className="menu-link-text link">Filter hidden</a>
-                                                                  </li>
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-                                                      <div className="col-lg-2">
-                                                          <div className="mega-menu-item">
-                                                              <div className="menu-heading">Product styles</div>
-                                                              <ul className="menu-list">
-
-                                                                  <li><a href="product-style-01.html"
-                                                                          className="menu-link-text link">Product style 01</a>
-                                                                  </li>
-                                                                  <li><a href="product-style-02.html"
-                                                                          className="menu-link-text link">Product style 02</a>
-                                                                  </li>
-                                                                  <li><a href="product-style-03.html"
-                                                                          className="menu-link-text link">Product style 03</a>
-                                                                  </li>
-                                                                  <li><a href="product-style-04.html"
-                                                                          className="menu-link-text link">Product style 04</a>
-                                                                  </li>
-                                                                  <li><a href="product-style-05.html"
-                                                                          className="menu-link-text link">Product style 05</a>
-                                                                  </li>
-                                                                  <li><a href="product-style-06.html"
-                                                                          className="menu-link-text link">Product style 06</a>
-                                                                  </li>
-                                                                  <li><a href="product-style-07.html"
-                                                                          className="menu-link-text link">Product style 07</a>
-                                                                  </li>
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-                                                      <div className="col-lg-3">
-                                                          <div className="collection-item hover-img">
-                                                              <div className="collection-inner">
-                                                                  <a href="shop-men.html"
-                                                                      className="collection-image img-style">
-                                                                      <img className="lazyload"
-                                                                          data-src="images/collections/collection-1.jpg"
-                                                                          src="images/collections/collection-1.jpg"
-                                                                          alt="collection-demo-1"/>
-                                                                  </a>
-                                                                  <div className="collection-content">
-                                                                      <a href="shop-men.html"
-                                                                          className="tf-btn hover-icon btn-xl collection-title fs-16"><span>Men</span><i
-                                                                              className="icon icon-arrow1-top-left"></i></a>
-
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                      </div>
-                                                      <div className="col-lg-3">
-                                                          <div className="collection-item hover-img">
-                                                              <div className="collection-inner">
-                                                                  <a href="shop-women.html"
-                                                                      className="collection-image img-style">
-                                                                      <img className="lazyload"
-                                                                          data-src="images/collections/collection-2.jpg"
-                                                                          src="images/collections/collection-2.jpg"
-                                                                          alt="collection-demo-1"/>
-                                                                  </a>
-                                                                  <div className="collection-content">
-                                                                      <a href="shop-women.html"
-                                                                          className="tf-btn btn-xl collection-title fs-16 hover-icon"><span>Women</span><i
-                                                                              className="icon icon-arrow1-top-left"></i></a>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </li>
-                                      <li className="menu-item">
-                                          <a href="#" className="item-link">Products<i className="icon icon-arrow-down"></i></a>
-                                          <div className="sub-menu mega-menu">
-                                              <div className="container">
-                                                  <div className="row">
-                                                      <div className="col-lg-2">
-                                                          <div className="mega-menu-item">
-                                                              <div className="menu-heading">Product layouts</div>
-                                                              <ul className="menu-list">
-                                                                  <li><a href="product-detail.html"
-                                                                          className="menu-link-text link">Product default</a>
-                                                                  </li>
-                                                                  <li><a href="product-grid-1.html"
-                                                                          className="menu-link-text link">Product grid 1</a>
-                                                                  </li>
-                                                                  <li><a href="product-grid-2.html"
-                                                                          className="menu-link-text link">Product grid 2</a>
-                                                                  </li>
-                                                                  <li><a href="product-stacked.html"
-                                                                          className="menu-link-text link">Product stacked</a>
-                                                                  </li>
-                                                                  <li><a href="product-right-thumbnails.html"
-                                                                          className="menu-link-text link">Product right
-                                                                          thumbnails</a></li>
-                                                                  <li><a href="product-bottom-thumbnails.html"
-                                                                          className="menu-link-text link">Product bottom
-                                                                          thumbnails</a></li>
-                                                                  <li><a href="product-drawer-sidebar.html"
-                                                                          className="menu-link-text link">Product drawer
-                                                                          sidebar</a></li>
-                                                                  <li><a href="product-description-accordion.html"
-                                                                          className="menu-link-text link">Product description
-                                                                          accordion</a></li>
-                                                                  <li><a href="product-description-list.html"
-                                                                          className="menu-link-text link">Product description
-                                                                          list</a></li>
-                                                                  <li><a href="product-description-vertical.html"
-                                                                          className="menu-link-text link">Product description
-                                                                          vertical</a></li>
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-                                                      <div className="col-lg-2">
-                                                          <div className="mega-menu-item">
-                                                              <div className="menu-heading">Product details</div>
-                                                              <ul className="menu-list">
-                                                                  <li><a href="product-inner-zoom.html"
-                                                                          className="menu-link-text link">Product inner
-                                                                          zoom</a></li>
-                                                                  <li><a href="product-zoom-magnifier.html"
-                                                                          className="menu-link-text link">Product zoom
-                                                                          magnifier</a></li>
-                                                                  <li><a href="product-no-zoom.html"
-                                                                          className="menu-link-text link">Product no zoom</a>
-                                                                  </li>
-                                                                  <li><a href="product-photoswipe-popup.html"
-                                                                          className="menu-link-text link">Product photoswipe
-                                                                          popup</a></li>
-                                                                  <li><a href="product-zoom-popup.html"
-                                                                          className="menu-link-text link">Product external
-                                                                          zoom and photoswipe popup</a></li>
-                                                                  <li><a href="product-video.html"
-                                                                          className="menu-link-text link">Product video</a>
-                                                                  </li>
-                                                                  <li><a href="product-3d.html"
-                                                                          className="menu-link-text link">Product 3D, AR
-                                                                          models</a></li>
-                                                                  <li><a href="product-options-customizer.html"
-                                                                          className="menu-link-text link">Product options &
-                                                                          customizer</a></li>
-                                                                  <li><a href="product-advanced-types.html"
-                                                                          className="menu-link-text link">Advanced product
-                                                                          types</a></li>
-                                                                  <li><a href="product-giftcard.html"
-                                                                          className="menu-link-text link">Recipient
-                                                                          information form for gift card products</a></li>
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-                                                      <div className="col-lg-2">
-                                                          <div className="mega-menu-item">
-                                                              <div className="menu-heading">Product swatchs</div>
-                                                              <ul className="menu-list">
-                                                                  <li><a href="product-color-swatch.html"
-                                                                          className="menu-link-text link">Product color
-                                                                          swatch</a></li>
-                                                                  <li><a href="product-rectangle.html"
-                                                                          className="menu-link-text link">Product
-                                                                          rectangle</a></li>
-                                                                  <li><a href="product-rectangle-color.html"
-                                                                          className="menu-link-text link">Product rectangle
-                                                                          color</a></li>
-                                                                  <li><a href="product-swatch-image.html"
-                                                                          className="menu-link-text link">Product swatch
-                                                                          image</a></li>
-                                                                  <li><a href="product-swatch-image-rounded.html"
-                                                                          className="menu-link-text link">Product swatch image
-                                                                          rounded</a></li>
-                                                                  <li><a href="product-swatch-dropdown.html"
-                                                                          className="menu-link-text link">Product swatch
-                                                                          dropdown</a></li>
-                                                                  <li><a href="product-swatch-dropdown-color.html"
-                                                                          className="menu-link-text link">Product swatch
-                                                                          dropdown color</a></li>
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-                                                      <div className="col-lg-2">
-                                                          <div className="mega-menu-item">
-                                                              <div className="menu-heading">Product features</div>
-                                                              <ul className="menu-list">
-                                                                  <li><a href="product-frequently-bought-together.html"
-                                                                          className="menu-link-text link">Frequently bought
-                                                                          together</a></li>
-                                                                  <li><a href="product-frequently-bought-together-2.html"
-                                                                          className="menu-link-text link">Frequently bought
-                                                                          together 2</a></li>
-                                                                  <li><a href="product-upsell-features.html"
-                                                                          className="menu-link-text link">Product upsell
-                                                                          features</a></li>
-                                                                  <li><a href="product-pre-orders.html"
-                                                                          className="menu-link-text link">Product
-                                                                          pre-orders</a></li>
-                                                                  <li><a href="product-notification.html"
-                                                                          className="menu-link-text link">Back in stock
-                                                                          notification</a></li>
-                                                                  <li><a href="product-pickup.html"
-                                                                          className="menu-link-text link">Product pickup</a>
-                                                                  </li>
-                                                                  <li><a href="product-images-grouped.html"
-                                                                          className="menu-link-text link">Variant images
-                                                                          grouped</a></li>
-                                                                  <li><a href="product-complimentary.html"
-                                                                          className="menu-link-text link">Complimentary
-                                                                          products</a></li>
-                                                                  <li><a href="product-quick-order-list.html"
-                                                                          className="menu-link-text link position-relative">Quick
-                                                                          order list<div className="demo-label"><span
-                                                                                  className="demo-new">New</span></div></a>
-                                                                  </li>
-                                                                  <li><a href="product-detail-volume-discount.html"
-                                                                          className="menu-link-text link position-relative">Volume
-                                                                          Discount<div className="demo-label"><span
-                                                                                  className="demo-new">New</span></div></a>
-                                                                  </li>
-                                                                  <li><a href="product-detail-volume-discount-grid.html"
-                                                                          className="menu-link-text link position-relative">Volume
-                                                                          Discount Grid<div className="demo-label"><span
-                                                                                  className="demo-new">New</span></div></a>
-                                                                  </li>
-                                                                  <li><a href="product-detail-buyx-gety.html"
-                                                                          className="menu-link-text link position-relative">Buy
-                                                                          X Get Y<div className="demo-label"><span
-                                                                                  className="demo-new">New</span></div></a>
-                                                                  </li>
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-                                                      <div className="col-lg-4">
-                                                          <div className="menu-heading">Best seller</div>
-                                                          <div className="hover-sw-nav hover-sw-2">
-                                                              <div dir="ltr" className="swiper tf-product-header">
-                                                                  <div className="swiper-wrapper">
-                                                                      <div className="swiper-slide" lazy="true">
-                                                                          <div className="card-product">
-                                                                              <div className="card-product-wrapper">
-                                                                                  <a href="#" className="product-img">
-                                                                                      <img className="lazyload img-product"
-                                                                                          data-src="images/products/orange-1.jpg"
-                                                                                          src="images/products/orange-1.jpg"
-                                                                                          alt="image-product"/>
-                                                                                      <img className="lazyload img-hover"
-                                                                                          data-src="images/products/white-1.jpg"
-                                                                                          src="images/products/white-1.jpg"
-                                                                                          alt="image-product"/>
-                                                                                  </a>
-                                                                                  <div
-                                                                                      className="list-product-btn absolute-2">
-                                                                                      <a href="#quick_add"
-                                                                                          data-bs-toggle="modal"
-                                                                                          className="box-icon bg_white quick-add tf-btn-loading">
-                                                                                          <span
-                                                                                              className="icon icon-bag"></span>
-                                                                                          <span className="tooltip">Quick
-                                                                                              Add</span>
-                                                                                      </a>
-                                                                                      <a href="javascript:void(0);"
-                                                                                          className="box-icon bg_white wishlist btn-icon-action">
-                                                                                          <span
-                                                                                              className="icon icon-heart"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              Wishlist</span>
-                                                                                          <span
-                                                                                              className="icon icon-delete"></span>
-                                                                                      </a>
-                                                                                      <a href="#compare"
-                                                                                          data-bs-toggle="offcanvas"
-                                                                                          aria-controls="offcanvasLeft"
-                                                                                          className="box-icon bg_white compare btn-icon-action">
-                                                                                          <span
-                                                                                              className="icon icon-compare"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              Compare</span>
-                                                                                          <span
-                                                                                              className="icon icon-check"></span>
-                                                                                      </a>
-                                                                                      <a href="#quick_view"
-                                                                                          data-bs-toggle="modal"
-                                                                                          className="box-icon bg_white quickview tf-btn-loading">
-                                                                                          <span
-                                                                                              className="icon icon-view"></span>
-                                                                                          <span className="tooltip">Quick
-                                                                                              View</span>
-                                                                                      </a>
-                                                                                  </div>
-                                                                              </div>
-                                                                              <div className="card-product-info">
-                                                                                  <a href="#" className="title link">Ribbed
-                                                                                      Tank Top</a>
-                                                                                  <span className="price">$16.95</span>
-                                                                                  <ul className="list-color-product">
-                                                                                      <li
-                                                                                          className="list-color-item color-swatch active">
-                                                                                          <span
-                                                                                              className="tooltip">Orange</span>
-                                                                                          <span
-                                                                                              className="swatch-value bg_orange-3"></span>
-                                                                                          <img className="lazyload"
-                                                                                              data-src="images/products/orange-1.jpg"
-                                                                                              src="images/products/orange-1.jpg"
-                                                                                              alt="image-product"/>
-                                                                                      </li>
-                                                                                      <li
-                                                                                          className="list-color-item color-swatch">
-                                                                                          <span
-                                                                                              className="tooltip">Black</span>
-                                                                                          <span
-                                                                                              className="swatch-value bg_dark"></span>
-                                                                                          <img className="lazyload"
-                                                                                              data-src="images/products/black-1.jpg"
-                                                                                              src="images/products/black-1.jpg"
-                                                                                              alt="image-product"/>
-                                                                                      </li>
-                                                                                      <li
-                                                                                          className="list-color-item color-swatch">
-                                                                                          <span
-                                                                                              className="tooltip">White</span>
-                                                                                          <span
-                                                                                              className="swatch-value bg_white"></span>
-                                                                                          <img className="lazyload"
-                                                                                              data-src="images/products/white-1.jpg"
-                                                                                              src="images/products/white-1.jpg"
-                                                                                              alt="image-product"/>
-                                                                                      </li>
-                                                                                  </ul>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                      <div className="swiper-slide" lazy="true">
-                                                                          <div className="card-product">
-                                                                              <div className="card-product-wrapper">
-                                                                                  <div className="product-img">
-                                                                                      <img className="lazyload img-product"
-                                                                                          data-src="images/products/white-3.jpg"
-                                                                                          src="images/products/white-3.jpg"
-                                                                                          alt="image-product"/>
-                                                                                      <img className="lazyload img-hover"
-                                                                                          data-src="images/products/white-4.jpg"
-                                                                                          src="images/products/white-4.jpg"
-                                                                                          alt="image-product"/>
-                                                                                  </div>
-                                                                                  <div
-                                                                                      className="list-product-btn absolute-2">
-                                                                                      <a href="#shoppingCart"
-                                                                                          data-bs-toggle="modal"
-                                                                                          className="box-icon bg_white quick-add tf-btn-loading">
-                                                                                          <span
-                                                                                              className="icon icon-bag"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              cart</span>
-                                                                                      </a>
-                                                                                      <a href="javascript:void(0);"
-                                                                                          className="box-icon bg_white wishlist btn-icon-action">
-                                                                                          <span
-                                                                                              className="icon icon-heart"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              Wishlist</span>
-                                                                                          <span
-                                                                                              className="icon icon-delete"></span>
-                                                                                      </a>
-                                                                                      <a href="#compare"
-                                                                                          data-bs-toggle="offcanvas"
-                                                                                          aria-controls="offcanvasLeft"
-                                                                                          className="box-icon bg_white compare btn-icon-action">
-                                                                                          <span
-                                                                                              className="icon icon-compare"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              Compare</span>
-                                                                                          <span
-                                                                                              className="icon icon-check"></span>
-                                                                                      </a>
-                                                                                      <a href="#quick_view"
-                                                                                          data-bs-toggle="modal"
-                                                                                          className="box-icon bg_white quickview tf-btn-loading">
-                                                                                          <span
-                                                                                              className="icon icon-view"></span>
-                                                                                          <span className="tooltip">Quick
-                                                                                              View</span>
-                                                                                      </a>
-                                                                                  </div>
-                                                                              </div>
-                                                                              <div className="card-product-info">
-                                                                                  <a href="#" className="title link">Oversized
-                                                                                      Printed T-shirt</a>
-                                                                                  <span className="price">$10.00</span>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                      <div className="swiper-slide" lazy="true">
-                                                                          <div className="card-product">
-                                                                              <div className="card-product-wrapper">
-                                                                                  <div className="product-img">
-                                                                                      <img className="lazyload img-product"
-                                                                                          data-src="images/products/white-2.jpg"
-                                                                                          src="images/products/white-2.jpg"
-                                                                                          alt="image-product"/>
-                                                                                      <img className="lazyload img-hover"
-                                                                                          data-src="images/products/pink-1.jpg"
-                                                                                          src="images/products/pink-1.jpg"
-                                                                                          alt="image-product"/>
-                                                                                  </div>
-                                                                                  <div className="list-product-btn">
-                                                                                      <a href="#quick_add"
-                                                                                          data-bs-toggle="modal"
-                                                                                          className="box-icon bg_white quick-add tf-btn-loading">
-                                                                                          <span
-                                                                                              className="icon icon-bag"></span>
-                                                                                          <span className="tooltip">Quick
-                                                                                              Add</span>
-                                                                                      </a>
-                                                                                      <a href="javascript:void(0);"
-                                                                                          className="box-icon bg_white wishlist btn-icon-action">
-                                                                                          <span
-                                                                                              className="icon icon-heart"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              Wishlist</span>
-                                                                                          <span
-                                                                                              className="icon icon-delete"></span>
-                                                                                      </a>
-                                                                                      <a href="#compare"
-                                                                                          data-bs-toggle="offcanvas"
-                                                                                          aria-controls="offcanvasLeft"
-                                                                                          className="box-icon bg_white compare btn-icon-action">
-                                                                                          <span
-                                                                                              className="icon icon-compare"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              Compare</span>
-                                                                                          <span
-                                                                                              className="icon icon-check"></span>
-                                                                                      </a>
-                                                                                      <a href="#quick_view"
-                                                                                          data-bs-toggle="modal"
-                                                                                          className="box-icon bg_white quickview tf-btn-loading">
-                                                                                          <span
-                                                                                              className="icon icon-view"></span>
-                                                                                          <span className="tooltip">Quick
-                                                                                              View</span>
-                                                                                      </a>
-                                                                                  </div>
-                                                                                  <div className="size-list">
-                                                                                      <span>S</span>
-                                                                                      <span>M</span>
-                                                                                      <span>L</span>
-                                                                                      <span>XL</span>
-                                                                                  </div>
-                                                                              </div>
-                                                                              <div className="card-product-info">
-                                                                                  <a href="#" className="title">Oversized
-                                                                                      Printed T-shirt</a>
-                                                                                  <span className="price">$16.95</span>
-                                                                                  <ul className="list-color-product">
-                                                                                      <li
-                                                                                          className="list-color-item color-swatch active">
-                                                                                          <span
-                                                                                              className="tooltip">White</span>
-                                                                                          <span
-                                                                                              className="swatch-value bg_white"></span>
-                                                                                          <img className="lazyload"
-                                                                                              data-src="images/products/white-2.jpg"
-                                                                                              src="images/products/white-2.jpg"
-                                                                                              alt="image-product"/>
-                                                                                      </li>
-                                                                                      <li
-                                                                                          className="list-color-item color-swatch">
-                                                                                          <span
-                                                                                              className="tooltip">Pink</span>
-                                                                                          <span
-                                                                                              className="swatch-value bg_purple"></span>
-                                                                                          <img className="lazyload"
-                                                                                              data-src="images/products/pink-1.jpg"
-                                                                                              src="images/products/pink-1.jpg"
-                                                                                              alt="image-product"/>
-                                                                                      </li>
-                                                                                      <li
-                                                                                          className="list-color-item color-swatch">
-                                                                                          <span
-                                                                                              className="tooltip">Black</span>
-                                                                                          <span
-                                                                                              className="swatch-value bg_dark"></span>
-                                                                                          <img className="lazyload"
-                                                                                              data-src="images/products/black-2.jpg"
-                                                                                              src="images/products/black-2.jpg"
-                                                                                              alt="image-product"/>
-                                                                                      </li>
-                                                                                  </ul>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                      <div className="swiper-slide" lazy="true">
-                                                                          <div className="card-product">
-                                                                              <div className="card-product-wrapper">
-                                                                                  <div className="product-img">
-                                                                                      <img className="lazyload img-product"
-                                                                                          data-src="images/products/brown-2.jpg"
-                                                                                          src="images/products/brown-2.jpg"
-                                                                                          alt="image-product"/>
-                                                                                      <img className="lazyload img-hover"
-                                                                                          data-src="images/products/brown-3.jpg"
-                                                                                          src="images/products/brown-3.jpg"
-                                                                                          alt="image-product"/>
-                                                                                  </div>
-                                                                                  <div className="size-list">
-                                                                                      <span>S</span>
-                                                                                      <span>M</span>
-                                                                                      <span>L</span>
-                                                                                      <span>XL</span>
-                                                                                  </div>
-                                                                                  <div className="list-product-btn">
-                                                                                      <a href="#quick_add"
-                                                                                          data-bs-toggle="modal"
-                                                                                          className="box-icon bg_white quick-add tf-btn-loading">
-                                                                                          <span
-                                                                                              className="icon icon-bag"></span>
-                                                                                          <span className="tooltip">Quick
-                                                                                              Add</span>
-                                                                                      </a>
-                                                                                      <a href="javascript:void(0);"
-                                                                                          className="box-icon bg_white wishlist btn-icon-action">
-                                                                                          <span
-                                                                                              className="icon icon-heart"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              Wishlist</span>
-                                                                                          <span
-                                                                                              className="icon icon-delete"></span>
-                                                                                      </a>
-                                                                                      <a href="#compare"
-                                                                                          data-bs-toggle="offcanvas"
-                                                                                          aria-controls="offcanvasLeft"
-                                                                                          className="box-icon bg_white compare btn-icon-action">
-                                                                                          <span
-                                                                                              className="icon icon-compare"></span>
-                                                                                          <span className="tooltip">Add to
-                                                                                              Compare</span>
-                                                                                          <span
-                                                                                              className="icon icon-check"></span>
-                                                                                      </a>
-                                                                                      <a href="#quick_view"
-                                                                                          data-bs-toggle="modal"
-                                                                                          className="box-icon bg_white quickview tf-btn-loading">
-                                                                                          <span
-                                                                                              className="icon icon-view"></span>
-                                                                                          <span className="tooltip">Quick
-                                                                                              View</span>
-                                                                                      </a>
-                                                                                  </div>
-                                                                              </div>
-                                                                              <div className="card-product-info">
-                                                                                  <a href="#" className="title link">V-neck
-                                                                                      linen T-shirt</a>
-                                                                                  <span className="price">$114.95</span>
-                                                                                  <ul className="list-color-product">
-                                                                                      <li
-                                                                                          className="list-color-item color-swatch active">
-                                                                                          <span
-                                                                                              className="tooltip">Brown</span>
-                                                                                          <span
-                                                                                              className="swatch-value bg_brown"></span>
-                                                                                          <img className="lazyload"
-                                                                                              data-src="images/products/brown-2.jpg"
-                                                                                              src="images/products/brown-2.jpg"
-                                                                                              alt="image-product"/>
-                                                                                      </li>
-                                                                                      <li
-                                                                                          className="list-color-item color-swatch">
-                                                                                          <span
-                                                                                              className="tooltip">White</span>
-                                                                                          <span
-                                                                                              className="swatch-value bg_white"></span>
-                                                                                          <img className="lazyload"
-                                                                                              data-src="images/products/white-5.jpg"
-                                                                                              src="images/products/white-5.jpg"
-                                                                                              alt="image-product"/>
-                                                                                      </li>
-                                                                                  </ul>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-                                                              <div
-                                                                  className="nav-sw nav-next-slider nav-next-product-header box-icon w_46 round">
-                                                                  <span className="icon icon-arrow-left"></span>
-                                                              </div>
-                                                              <div
-                                                                  className="nav-sw nav-prev-slider nav-prev-product-header box-icon w_46 round">
-                                                                  <span className="icon icon-arrow-right"></span>
-                                                              </div>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </li>
+                                      
                                       <li className="menu-item position-relative">
                                           <a href="#" className="item-link">Pages<i className="icon icon-arrow-down"></i></a>
                                           <div className="sub-menu submenu-default">
                                               <ul className="menu-list">
                                                   <li>
-                                                      <a href="about-us.html"
-                                                          className="menu-link-text link text_black-2">About us</a>
+                                                      <Link to="/about"
+                                                          className="menu-link-text link text_black-2">About us</Link>
                                                   </li>
-                                                  <li className="menu-item-2">
-                                                      <a href="#" className="menu-link-text link text_black-2">Brands</a>
-                                                      <div className="sub-menu submenu-default">
-                                                          <ul className="menu-list">
-                                                              <li>
-                                                                  <a href="brands.html"
-                                                                      className="menu-link-text link text_black-2 position-relative">Brands
-                                                                      <div className="demo-label"><span
-                                                                              className="demo-new">New</span></div>
-                                                                  </a>
-                                                              </li>
-                                                              <li><a href="brands-v2.html"
-                                                                      className="menu-link-text link text_black-2">Brand
-                                                                      V2</a></li>
-                                                          </ul>
-                                                      </div>
+                                                  
+                                                  <li>
+                                                      <Link to="/contact" className="menu-link-text link text_black-2">Contact</Link>
                                                   </li>
-                                                  <li className="menu-item-2">
-                                                      <a href="#" className="menu-link-text link text_black-2">Contact</a>
-                                                      <div className="sub-menu submenu-default">
-                                                          <ul className="menu-list">
-                                                              <li><a href="contact-1.html"
-                                                                      className="menu-link-text link text_black-2">Contact
-                                                                      1</a></li>
-                                                              <li><a href="contact-2.html"
-                                                                      className="menu-link-text link text_black-2">Contact
-                                                                      2</a></li>
-                                                          </ul>
-                                                      </div>
+                                                  <li>
+                                                      <Link to="/faq" className="menu-link-text link text_black-2">FAQ</Link>
                                                   </li>
-                                                  <li className="menu-item-2">
-                                                      <a href="#" className="menu-link-text link text_black-2">FAQ</a>
-                                                      <div className="sub-menu submenu-default">
-                                                          <ul className="menu-list">
-                                                              <li><a href="faq-1.html"
-                                                                      className="menu-link-text link text_black-2">FAQ 01</a>
-                                                              </li>
-                                                              <li><a href="faq-2.html"
-                                                                      className="menu-link-text link text_black-2">FAQ 02</a>
-                                                              </li>
-                                                          </ul>
-                                                      </div>
-                                                  </li>
-                                                  <li className="menu-item-2">
-                                                      <a href="#" className="menu-link-text link text_black-2">Store</a>
-                                                      <div className="sub-menu submenu-default">
-                                                          <ul className="menu-list">
-                                                              <li><a href="our-store.html"
-                                                                      className="menu-link-text link text_black-2">Our
-                                                                      store</a></li>
-                                                              <li><a href="store-locations.html"
-                                                                      className="menu-link-text link text_black-2">Store
-                                                                      locator</a></li>
-                                                          </ul>
-                                                      </div>
-                                                  </li>
-                                                  <li><a href="timeline.html"
-                                                          className="menu-link-text link text_black-2 position-relative">Timeline
-                                                          <div className="demo-label"><span className="demo-new">New</span></div>
-                                                      </a></li>
-                                                  <li><a href="view-cart.html"
-                                                          className="menu-link-text link text_black-2 position-relative">View
-                                                          cart</a></li>
-                                                  <li><a href="checkout.html"
-                                                          className="menu-link-text link text_black-2 position-relative">Check
-                                                          out</a></li>
-                                                  <li className="menu-item-2">
-                                                      <a href="#" className="menu-link-text link text_black-2">Payment</a>
-                                                      <div className="sub-menu submenu-default">
-                                                          <ul className="menu-list">
-                                                              <li><a href="payment-confirmation.html"
-                                                                      className="menu-link-text link text_black-2">Payment
-                                                                      Confirmation</a></li>
-                                                              <li><a href="payment-failure.html"
-                                                                      className="menu-link-text link text_black-2">Payment
-                                                                      Failure</a></li>
-                                                          </ul>
-                                                      </div>
-                                                  </li>
+                                                  
+                                                  
                                                   <li className="menu-item-2">
                                                       <a href="#" className="menu-link-text link text_black-2">My account</a>
                                                       <div className="sub-menu submenu-default">
@@ -1243,36 +402,14 @@ const Header =()=>{
                                                           </ul>
                                                       </div>
                                                   </li>
-                                                  <li><a href="invoice.html"
-                                                          className="menu-link-text link text_black-2 position-relative">Invoice</a>
-                                                  </li>
-                                                  <li><a href="404.html"
-                                                          className="menu-link-text link text_black-2 position-relative">404</a>
-                                                  </li>
+                                                  
 
                                               </ul>
                                           </div>
                                       </li>
-                                      <li className="menu-item position-relative">
-                                          <a href="#" className="item-link">Blog<i className="icon icon-arrow-down"></i></a>
-                                          <div className="sub-menu submenu-default">
-                                              <ul className="menu-list">
-                                                  <li><a href="blog-grid.html"
-                                                          className="menu-link-text link text_black-2">Grid layout</a></li>
-                                                  <li><a href="blog-sidebar-left.html"
-                                                          className="menu-link-text link text_black-2">Left sidebar</a></li>
-                                                  <li><a href="blog-sidebar-right.html"
-                                                          className="menu-link-text link text_black-2">Right sidebar</a></li>
-                                                  <li><a href="blog-list.html"
-                                                          className="menu-link-text link text_black-2">Blog list</a></li>
-                                                  <li><a href="blog-detail.html"
-                                                          className="menu-link-text link text_black-2">Single Post</a></li>
-                                              </ul>
-                                          </div>
+                                      <li className="menu-item">
+                                          <Link to="/blog" className="item-link">Blog</Link>
                                       </li>
-                                      <li className="menu-item"><a
-                                              href="https://themeforest.net/item/ecomus-ultimate-html5-template/53417990?s_rank=3"
-                                              className="item-link">Buy now</a></li>
                                   </ul>
                               </nav>
                           </div>

@@ -20,7 +20,7 @@ const Link = ({
   const content = children || (
     <>
       {text}
-      {icon && <Icon icon={icon}></Icon>}
+      {icon && <span className='ms-2'><Icon icon={icon}></Icon></span>}
     </>
   );
 

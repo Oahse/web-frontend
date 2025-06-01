@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 // Helper function to handle API calls
-const fetchData = async (method, url, data = null) => {
+const fetchData = async (method, url, data = null, config = {}) => {
     let result = {loading: true, data: null, error: null };
     try {
-        const response = await axios({method, url, data});
+        const response = await axios({method, url, data, ...config});
         if (response.success === true){
             result.data = response.data.data;
             result.error = response.data.message

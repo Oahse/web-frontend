@@ -4,14 +4,12 @@ import Inspect from 'vite-plugin-inspect';
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/web-frontend/',
   plugins: [
     react(),
     Inspect()
   ],
   build: {
     sourcemap: true,  // Disable sourcemaps for production build
-    target: ['chrome58', 'firefox57', 'safari11'], // Add support for older browsers
   },
   css: {
     devSourcemap: false, // disables CSS source map loading in dev

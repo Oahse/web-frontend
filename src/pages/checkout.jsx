@@ -1,13 +1,26 @@
 import useDeviceType from '@/hooks/useDeviceType'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
-
+import Extras from '@/components/extra';
+import { useLocation } from 'react-router-dom';
+import { ToastContainer, notify } from '@/services/notifications/ui';
 const Checkout =()=>{
-    const { isMobile} = useDeviceType();
+    const { isMobile } = useDeviceType();
     const [loading, setLoading] = useState(false);
+    const progressValue = '10.99%';
+    const location = useLocation();
+
+    const { product, amount } = location?.state || {};
+
+    useEffect(() => {
+        if (product && amount) {
+        notify({ text: `${amount} ${product.name} has been added to cart`, type: 'success' });
+        }
+    }, [product, amount]); // run effect when product or amount changes
+
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
             <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
@@ -131,6 +144,7 @@ const Checkout =()=>{
                             <div className="tf-page-cart-footer">
                                 <div className="tf-cart-footer-inner">
                                     <h5 className="fw-5 mb_20">Your order</h5>
+                                    
                                     <form className="tf-page-cart-checkout widget-wrap-checkout">
                                         <ul className="wrap-checkout-product">
                                             <li className="checkout-product-item">

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-
+import ApexCharts from 'apexcharts';
 const LineChart12 = () => {
   useEffect(() => {
     // ApexCharts options and data
@@ -83,7 +83,7 @@ const LineChart12 = () => {
     };
 
     // Create and render the chart when the component mounts
-    const chart = new window.ApexCharts(
+    const chart = new ApexCharts(
       document.querySelector("#line-chart-12"),
       options
     );

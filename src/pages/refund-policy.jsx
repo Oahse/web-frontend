@@ -1,5 +1,9 @@
 import { useState } from "react";
-
+import Loader from "@/components/loader";
+import Header from "@/components/toolbar/header";
+import TopHeader from '@/components/toolbar/topHeader'
+import Footer from "@/components/footer";
+import Extras from '@/components/extra'
 const RefundPolicy =()=>{
     
     const [loading, setLoading] = useState(false);

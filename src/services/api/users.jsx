@@ -26,8 +26,10 @@ export const deleteUser = async ({ baseurl = 'http://localhost:8001', id }) => {
 };
 
 // User login
-export const loginUser = async ({ baseurl = 'http://localhost:8001', credentials }) => {
-    return fetchData('POST', `${baseurl}/api/v1/auth/login`, credentials);
+export const loginUser = async ({ baseurl = 'http://localhost:8001', email, password, token }) => {
+    return fetchData('POST', `${baseurl}/api/v1/auth/login`, { email, password, token }, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
 };
 
 // User register

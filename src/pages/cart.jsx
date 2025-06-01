@@ -1,17 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
+import Extras from '@/components/extra';
+import QuantitySelector from '@/components/quantityselector';
+import { Link } from "react-router-dom";
+import { fetchCartByUser } from "@/services/api/carts";
 
-const Cart =()=>{
+const Cart =({userId=null})=>{
     const [loading, setLoading] = useState(false);
     const [isempty, setIsEmpty] = useState(false);
+    const [error, setError] = useState(false);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const loadCartProducts = async () => {
+            const response = await fetchCartByUser({ userId });
+            // Assuming your response contains products in response.data or similar
+            // console.log(response,'---')
+            if (response.data.length > 0 ){
+                setProducts(response.data || []);
+                setIsEmpty(false);
+            }else{
+                setIsEmpty(true);
+            }
+            setError(response.error);
+            setLoading(response.loading);
+        };
+
+        if (userId) {
+        loadCartProducts();
+        }
+    }, [userId]);
+    
+    // Initialize quantities: { [productId]: quantity }
+    const [quantities, setQuantities] = useState(() => {
+        const initial = {};
+        products?.forEach(p => {
+            initial[p.id] = p.amount || 1; // or default 1
+        });
+        return initial;
+    });
+    const getDiscountPrice = (price, discount) => {
+        return (price-(price * (discount / 100))).toFixed(2);
+    };
+    const [shippingThreshold, setShippingThreshold]= useState(100);
+    const [total, setTotal] = useState(0);
+    const [currency, setCurrency] = useState('$');
+    const [totalstring, setTotalString] = useState('$0');
+
+    useEffect(() => {
+        // calculate total whenever quantities or products change
+        const newTotal = products?.reduce((sum, product) => {
+            const qty = quantities[product?.id] || 1;
+            setCurrency(product?.currency);
+            return sum + getDiscountPrice(product?.price,product?.discount) * qty;
+        }, 0);
+
+        setTotal(newTotal||0);
+        setTotalString(`${currency}${newTotal||0}`)
+    }, [quantities, products,currency]);
+
+    const handleQuantityChange = (productId, newQuantity) => {
+        setQuantities(prev => ({
+            ...prev,
+            [productId]: newQuantity < 1 ? 1 : newQuantity, // minimum 1
+        }));
+    };
+    
       
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
-            
             {loading && <Loader />} 
             
             <div id="wrapper">
@@ -27,10 +87,10 @@ const Cart =()=>{
                 <section className="flat-spacing-11">
                     <div className="container">
                         {isempty?
-                            <div className="tf-page-cart text-center mt_140 mb_200">
+                            <div className="tf-page-cart text-center mt_4 mb_20">
                                 <h5 className="mb_24">Your cart is empty</h5>
                                 <p className="mb_24">You may check out all the available products and buy some in the shop</p>
-                                <a href="shop-default.html" className="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn">Return to shop<i className="icon icon-arrow1-top-left"></i></a>
+                                <Link to="/products" className="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn">Return to shop<i className="icon icon-arrow1-top-left"></i></Link>
                             </div>
                         :
                         <>
@@ -59,134 +119,41 @@ const Cart =()=>{
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr className="tf-cart-item file-delete">
-                                                    <td className="tf-cart-item_product">
-                                                        <a href="product-detail.html" className="img-box">
-                                                            <img src="images/products/white-2.jpg" alt="img-product"/>
-                                                        </a>
-                                                        <div className="cart-info">
-                                                            <a href="product-detail.html" className="cart-title link">Oversized Printed
-                                                                T-shirt</a>
-                                                            <div className="cart-meta-variant">White / M</div>
-                                                            <span className="remove-cart link remove">Remove</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="tf-cart-item_price tf-variant-item-price" cart-data-title="Price">
-                                                        <div className="cart-price price">$18.00</div>
-                                                    </td>
-                                                    <td className="tf-cart-item_quantity" cart-data-title="Quantity">
-                                                        <div className="cart-quantity">
-                                                            <div className="wg-quantity">
-                                                                <span className="btn-quantity btndecrease">
-                                                                    <svg className="d-inline-block" width="9" height="1"
-                                                                        viewBox="0 0 9 1" fill="currentColor">
-                                                                        <path
-                                                                            d="M9 1H5.14286H3.85714H0V1.50201e-05H3.85714L5.14286 0L9 1.50201e-05V1Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
-                                                                <input type="text" name="number" value="1"/>
-                                                                <span className="btn-quantity btnincrease">
-                                                                    <svg className="d-inline-block" width="9" height="9"
-                                                                        viewBox="0 0 9 9" fill="currentColor">
-                                                                        <path
-                                                                            d="M9 5.14286H5.14286V9H3.85714V5.14286H0V3.85714H3.85714V0H5.14286V3.85714H9V5.14286Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
+                                                {products?.map((product, index)=>(
+                                                    <tr key={index} className="tf-cart-item file-delete">
+                                                        <td className="tf-cart-item_product">
+                                                            <a href={`/products/${product.id}`} className="img-box">
+                                                                <img src={product.image} alt="img-product"/>
+                                                            </a>
+                                                            <div className="cart-info">
+                                                                <a href={`/products/${product.id}`} className="cart-title link">{product.name}</a>
+                                                                <div className="cart-meta-variant">White / M</div>
+                                                                <span className="remove-cart link remove">Remove</span>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="tf-cart-item_total tf-variant-item-total" cart-data-title="Total">
-                                                        <div className="cart-total price">$18.00</div>
-                                                    </td>
-                                                </tr>
-                                                <tr className="tf-cart-item file-delete">
-                                                    <td className="tf-cart-item_product">
-                                                        <a href="product-detail.html" className="img-box">
-                                                            <img src="images/products/orange-1.jpg" alt="img-product"/>
-                                                        </a>
-                                                        <div className="cart-info">
-                                                            <a href="product-detail.html" className="cart-title link">Ribbed Tank
-                                                                Top</a>
-                                                            <div className="cart-meta-variant">Orange / S</div>
-                                                            <span className="remove-cart link remove">Remove</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="tf-cart-item_price tf-variant-item-price" cart-data-title="Price">
-                                                        <div className="cart-price price">$18.00</div>
-                                                    </td>
-                                                    <td className="tf-cart-item_quantity" cart-data-title="Quantity">
-                                                        <div className="cart-quantity">
-                                                            <div className="wg-quantity">
-                                                                <span className="btn-quantity btndecrease">
-                                                                    <svg className="d-inline-block" width="9" height="1"
-                                                                        viewBox="0 0 9 1" fill="currentColor">
-                                                                        <path
-                                                                            d="M9 1H5.14286H3.85714H0V1.50201e-05H3.85714L5.14286 0L9 1.50201e-05V1Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
-                                                                <input type="text" name="number" value="1"/>
-                                                                <span className="btn-quantity btnincrease">
-                                                                    <svg className="d-inline-block" width="9" height="9"
-                                                                        viewBox="0 0 9 9" fill="currentColor">
-                                                                        <path
-                                                                            d="M9 5.14286H5.14286V9H3.85714V5.14286H0V3.85714H3.85714V0H5.14286V3.85714H9V5.14286Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
+                                                        </td>
+                                                        <td className="tf-cart-item_price tf-variant-item-price" cart-data-title="Price">
+                                                            <div className="cart-price price">
+                                                                {(product?.discountStartDate && product?.discount) ?
+                                                                    <span>{product?.currency}{getDiscountPrice(product?.price, product?.discount)}</span>:
+                                                                    <span>{product?.currency}{product?.price}</span>
+                                                                }
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="tf-cart-item_total tf-variant-item-total" cart-data-title="Total">
-                                                        <div className="cart-total price">$18.00</div>
-                                                    </td>
-                                                </tr>
-                                                <tr className="tf-cart-item file-delete">
-                                                    <td className="tf-cart-item_product">
-                                                        <a href="product-detail.html" className="img-box">
-                                                            <img src="images/products/black-4.jpg" alt="img-product"/>
-                                                        </a>
-                                                        <div className="cart-info">
-                                                            <a href="product-detail.html" className="cart-title link">Regular Fit Oxford
-                                                                Shirt</a>
-                                                            <div className="cart-meta-variant">Black / L</div>
-                                                            <span className="remove-cart link remove">Remove</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="tf-cart-item_price tf-variant-item-price" cart-data-title="Price">
-                                                        <div className="cart-price price">$18.00</div>
-                                                    </td>
-                                                    <td className="tf-cart-item_quantity" cart-data-title="Quantity">
-                                                        <div className="cart-quantity">
-                                                            <div className="wg-quantity">
-                                                                <span className="btn-quantity btndecrease">
-                                                                    <svg className="d-inline-block" width="9" height="1"
-                                                                        viewBox="0 0 9 1" fill="currentColor">
-                                                                        <path
-                                                                            d="M9 1H5.14286H3.85714H0V1.50201e-05H3.85714L5.14286 0L9 1.50201e-05V1Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
-                                                                <input type="text" name="number" value="1"/>
-                                                                <span className="btn-quantity btnincrease">
-                                                                    <svg className="d-inline-block" width="9" height="9"
-                                                                        viewBox="0 0 9 9" fill="currentColor">
-                                                                        <path
-                                                                            d="M9 5.14286H5.14286V9H3.85714V5.14286H0V3.85714H3.85714V0H5.14286V3.85714H9V5.14286Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
+                                                        </td>
+                                                        <td className="tf-cart-item_quantity" cart-data-title="Quantity">
+                                                            <div className="cart-quantity">
+                                                                <QuantitySelector onChange={(quantity)=>handleQuantityChange(product?.id, quantity)}/>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="tf-cart-item_total tf-variant-item-total" cart-data-title="Total">
-                                                        <div className="cart-total price">$18.00</div>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                        <td className="tf-cart-item_total tf-variant-item-total" cart-data-title="Total">
+                                                            <div className="cart-total price">{product?.currency}{quantities[product?.id]}</div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
+                                        <div className="tf-page-cart-note">
+                                            <label for="cart-note">Total: {totalstring || 0}</label>
+                                        </div>
                                         <div className="tf-page-cart-note">
                                             <label for="cart-note">Add Order Note</label>
                                             <textarea name="note" id="cart-note" placeholder="How can we help you?"></textarea>
@@ -197,7 +164,7 @@ const Cart =()=>{
                                     <div className="tf-cart-footer-inner">
                                         <div className="tf-free-shipping-bar">
                                             <div className="tf-progress-bar">
-                                                <span style="width: 50%;">
+                                                <span style={{width:"50%;"}}>
                                                     <div className="progress-car">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="14"
                                                             viewBox="0 0 21 14" fill="currentColor">
@@ -208,10 +175,16 @@ const Cart =()=>{
                                                     </div>
                                                 </span>
                                             </div>
-                                            <div className="tf-progress-msg">
-                                                Buy <span className="price fw-6">$75.00</span> more to enjoy <span className="fw-6">Free
-                                                    Shipping</span>
-                                            </div>
+                                            {(shippingThreshold - total != 0)?
+                                                <div className="tf-progress-msg">
+                                                    Buy <span className="price fw-6">{currency}{(shippingThreshold - total).toFixed(2)}</span> more to enjoy <span className="fw-6">Free
+                                                        Shipping</span>
+                                                </div>
+                                            :
+                                                <div className="tf-progress-msg">
+                                                    <span className="fw-6 text_success">Free Shipping</span>
+                                                </div>
+                                            }
                                         </div>
                                         <div className="tf-page-cart-checkout">
                                             <div className="shipping-calculator">
@@ -298,30 +271,30 @@ const Cart =()=>{
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="cart-checkbox">
+                                            {/* <div className="cart-checkbox">
                                                 <input type="checkbox" className="tf-check" id="cart-gift-checkbox"/>
                                                 <label for="cart-gift-checkbox" className="fw-4">
                                                     <span>Do you want a gift wrap?</span> Only <span className="fw-5">$5.00</span>
                                                 </label>
-                                            </div>
+                                            </div> */}
                                             <div className="tf-cart-totals-discounts">
                                                 <h3>Subtotal</h3>
-                                                <span className="total-value">$18.00 USD</span>
+                                                <span className="total-value">{totalstring}</span>
                                             </div>
                                             <p className="tf-cart-tax">
-                                                Taxes and <a href="shipping-delivery.html">shipping</a> calculated at checkout
+                                                Taxes and <Link to="/shipping">shipping</Link> calculated at checkout
                                             </p>
                                             <div className="cart-checkbox">
                                                 <input type="checkbox" className="tf-check" id="check-agree"/>
                                                 <label for="check-agree" className="fw-4">
-                                                    I agree with the <a href="terms-conditions.html">terms and conditions</a>
+                                                    I agree with the <Link to="/terms">terms and conditions</Link>
                                                 </label>
                                             </div>
                                             <div className="cart-checkout-btn">
-                                                <a href="checkout.html"
+                                                <Link to="/account/orders/checkout"
                                                     className="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center">
                                                     <span>Check out</span>
-                                                </a>
+                                                </Link>
                                             </div>
                                             <div className="tf-page-cart_imgtrust">
                                                 <p className="text-center fw-6">Guarantee Safe Checkout</p>

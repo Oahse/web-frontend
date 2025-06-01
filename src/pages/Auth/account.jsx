@@ -5,7 +5,7 @@ import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import AccountSideBar from './accountsidebar';
-
+import Extras from '@/components/extra'
 const Account =()=>{
     const { isMobile} = useDeviceType();
     const [loading, setLoading] = useState(false);
@@ -44,7 +44,6 @@ const Account =()=>{
       
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
             
             {loading && <Loader />} 
             

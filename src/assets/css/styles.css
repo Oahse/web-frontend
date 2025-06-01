@@ -366,8 +366,23 @@ input[type=email]:focus,
 input[type=url]:focus,
 input[type=search]:focus,
 input[type=tel]:focus,
-input[type=color]:focus {
-  border-color: var(--line);
+input[type=color]:focus,
+textarea:hover,
+input[type=text]:hover,
+input[type=password]:hover,
+input[type=datetime]:hover,
+input[type=datetime-local]:hover,
+input[type=date]:hover,
+input[type=month]:hover,
+input[type=time]:hover,
+input[type=week]:hover,
+input[type=number]:hover,
+input[type=email]:hover,
+input[type=url]:hover,
+input[type=search]:hover,
+input[type=tel]:hover,
+input[type=color]:hover  {
+  border-color: var(--main);
 }
 
 textarea::placeholder,
@@ -4806,6 +4821,7 @@ header.header-bg {
   isolation: isolate;
   overscroll-behavior-y: contain;
   overflow-y: auto;
+  z-index: 99999;
 }
 .tf-dropdown-sort .dropdown-menu::-webkit-scrollbar {
   width: 5px;
@@ -6772,6 +6788,7 @@ header.header-bg {
 #quick_view .tf-product-info-wrap {
   flex: 0 0 auto;
   max-width: 100%;
+  height: auto;
   flex-grow: 1;
 }
 #quick_view .tf-product-info-wrap .tf-product-info-list {
@@ -9550,7 +9567,7 @@ header.header-bg {
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: #eb001b;
+  background-color: var(--success);
   border-radius: 3px;
 }
 .tf-progress-bar .progress-car {
@@ -9560,8 +9577,8 @@ header.header-bg {
   transform: translateY(-50%);
   width: 36px;
   height: 26px;
-  color: #eb001b;
-  border: 1px solid #eb001b;
+  color: var(--success);
+  border: 1px solid var(--success);
   border-radius: 2.5px;
   background-color: var(--white);
   display: flex;
@@ -20590,12 +20607,12 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   .slider-radius .tf-sw-slideshow .heading {
     margin-bottom: 20px;
   }
-  .card-product .countdown-box,
+  /* .card-product .countdown-box,
   .card-product .size-list,
   .card-product .wishlist,
   .card-product .compare {
     display: none;
-  }
+  } */
   .card-product .card-product-wrapper .list-product-btn {
     bottom: 5px;
     left: 5px;
@@ -21487,5 +21504,29 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     right: 0;
   }
 }
+.scroller-wrapper {
+  /* width: auto; */
+  position: relative;
+}
 
+.scroller-container {
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.scroller-container::-webkit-scrollbar {
+  display: none;
+}
+.scroller-item:hover img,
+.scroller-item-active img {
+  border-radius: 8px;
+}
+/* .scroller-item:hover, */
+.scroller-item-active {
+  border: 1px solid black !important;
+  border-radius: 8px;
+}
 /*# sourceMappingURL=styles.css.map */

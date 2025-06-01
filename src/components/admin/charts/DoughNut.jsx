@@ -1,4 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale } from 'chart.js';
+
+// Register Chart.js components
+ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale);
 
 // Generate random hex colors based on data length
 const generateRandomColors = (count) => {
@@ -7,37 +12,37 @@ const generateRandomColors = (count) => {
   );
 };
 
-const DonutChart = ({ data = [] }) => {
-  const chartRef = useRef(null);
+const DonutChart = ({ data = [], title='' }) => {
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: []
+  });
 
   useEffect(() => {
-    if (typeof Morris === 'undefined' || !chartRef.current) return;
+    if (data.length === 0) return;
 
-    // Clear previous chart content (simulate destroy)
-    chartRef.current.innerHTML = '';
-
-    // Generate new colors
+    // Generate random colors based on the length of the data
     const colors = generateRandomColors(data.length);
-
-    // Create the chart
-    new Morris.Donut({
-      element: chartRef.current.id,
-      data: data,
-      resize: true,
-      colors: colors,
-      formatter: (y) => y,
+    
+    setChartData({
+      labels: data.map((item) => item.label), // Assuming each data item has a 'label'
+      datasets: [
+        {
+          label: title,
+          data: data.map((item) => item.value), // Assuming each data item has a 'value'
+          backgroundColor: colors,
+          hoverOffset: 4,
+          hoverBackgroundColor: colors, // Optionally change colors on hover
+        },
+      ],
     });
-
-  }, [data]); // Re-run on data change
+  }, [data,title]); // Re-run when data changes
 
   return (
-    <div className='p-2'>
-      <div
-        id="morris-donut-1"
-        ref={chartRef}
-        className="text-center"
-        style={{ maxWidth: '482px', height: '300px'}}
-      />
+    <div className="p-2">
+      <div className="text-center">
+        <Doughnut data={chartData} options={{ responsive: true, plugins: { tooltip: { callbacks: { label: (context) => `${context.label}: ${context.raw}` } } } }} />
+      </div>
     </div>
   );
 };

@@ -43,11 +43,14 @@ import AdminStoreSetting from '@/pages/admin/onlinestore/settings';
 import AdminReport from '@/pages/admin/reports';
 import AdminFaqs from '@/pages/admin/faq';
 import AdminSetting from '@/pages/admin/settings';
+import AccountDetails from '@/pages/auth/accountdetails';
+import AccountAddress from '@/pages/auth/accountaddress';
+import AccountWishlist from '@/pages/auth/accountwishlist';
 
-const NonAuthRoutes = ({ API_URL, Companyname, isLoggedIn, user, header, footer, bottomheader}) => [
+const NonAuthRoutes = ({ API_URL, Companyname, isLoggedIn, user, header, footer, bottomheader, props}) => [
   {
     path: "/",
-    element: <Home API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Home API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "home"
   },
   {
@@ -108,7 +111,7 @@ const NonAuthRoutes = ({ API_URL, Companyname, isLoggedIn, user, header, footer,
   {
     path: "/admin/orders/:id/track",
     element: <TrackAdminOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
-    title: "adminadd-orders"
+    title: "admintrack-orders"
   },
   {
     path: "/admin/orders/:id",
@@ -162,11 +165,11 @@ const NonAuthRoutes = ({ API_URL, Companyname, isLoggedIn, user, header, footer,
   },
   {
     path: "/products",
-    element: <Products API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Products API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader}  categories={props.categories}/>,
     title: "products"
   },
   {
-    path: "/products/:categoryid",
+    path: "/products/:id",
     element: <ProductDetails API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
     title: "product-details"
   },
@@ -182,11 +185,11 @@ const NonAuthRoutes = ({ API_URL, Companyname, isLoggedIn, user, header, footer,
   },
   {
     path: "/account/wishlist",
-    element: <Account API_URL={API_URL} Companyname={Companyname} index={2} isLoggedIn={isLoggedIn}loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
-    title: "wishlist"
+    element: <AccountWishlist API_URL={API_URL} Companyname={Companyname} index={2} isLoggedIn={isLoggedIn}loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    title: "account-wishlist"
   },
   {
-    path: "/account/orders/:orderId/checkout",
+    path: "/account/orders/checkout",
     element: <Checkout API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
     title: "checkout"
   },
@@ -215,6 +218,17 @@ const NonAuthRoutes = ({ API_URL, Companyname, isLoggedIn, user, header, footer,
     element: <Account API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
     title: "account"
   },
+  {
+    path: "/account/details",
+    element: <AccountDetails API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    title: "account-details"
+  },
+  {
+    path: "/account/address",
+    element: <AccountAddress API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    title: "account-address"
+  },
+  
   {
     path: "/account/settings",
     element: <Account API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,

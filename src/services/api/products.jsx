@@ -9,7 +9,10 @@ export const fetchProducts = async ({ baseurl = 'http://localhost:8001' }) => {
 export const fetchProduct = async ({ baseurl = 'http://localhost:8001', id }) => {
     return fetchData('GET', `${baseurl}/api/v1/products/${id}`);
 };
-
+// Fetch related products
+export const fetchRelatedProducts = async ({ baseurl = 'http://localhost:8001', id  }) => {
+    return fetchData('GET', `${baseurl}/api/v1/products/${id}/related`);
+};
 // Update a product by ID
 export const updateProduct = async ({ baseurl = 'http://localhost:8001', id, productData }) => {
     return fetchData('PUT', `${baseurl}/api/v1/products/${id}`, productData);

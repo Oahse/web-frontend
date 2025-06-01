@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const CategoryCard = ({ img = null, name = null, className = '', ...props }) => {
+const CategoryCard = ({ image = null, name = null, className = '',isMobile=null, ...props }) => {
     return (
       <div
         className={`collection-item-circle has-bg has-bg-2 hover-img ${className}`}
         {...props}
       >
         <a href="shop-default.html" className="collection-image img-style">
-          <img className="lazyload" data-src={img} alt="collection-img" src={img} />
+          <img className="lazyload" data-src={image} alt="collection-img" src={image} style={{minWidth:'70px',height:`${isMobile?'100px':'100px'}`}} />
         </a>
         <div className="collection-content text-center">
-          <a href="shop-default.html" className="link title fw-5">{name}</a>
+          <Link to="/products" className="link title fw-5">{name}</Link>
         </div>
       </div>
     );

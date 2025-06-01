@@ -2,32 +2,32 @@
 const AccountSideBar =({active=0})=>{
     const navLinks = [
             {
-              "href": "my-account-dashboard.html",
+              "href": "/account",
               "active": active===0 ?true:false,
               "name": "Dashboard"
             },
             {
-              "href": "my-account-orders.html",
+              "href": "/account/orders",
               "active": active===1 ?true:false,
               "name": "Orders"
             },
             {
-              "href": "my-account-address.html",
+              "href": "/account/address",
               "active": active===2 ?true:false,
-              "name": "Address"
+              "name": "Account Address"
             },
             {
-              "href": "my-account-edit.html",
+              "href": "/account/details",
               "active": active===3 ?true:false,
               "name": "Account Details"
             },
             {
-              "href": "my-account-wishlist.html",
+              "href": "/account/wishlist",
               "active": active===4 ?true:false,
               "name": "Wishlist"
             },
             {
-              "href": "login.html",
+              "href": "/login",
               "active": active===5 ?true:false,
               "name": "Logout"
             }

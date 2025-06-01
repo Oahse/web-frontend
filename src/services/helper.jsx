@@ -73,3 +73,15 @@ export const generateColorCode = (name = '')=> {
   return colorMap[normalizedName] || "#808080"; // Default to gray if not found
 }
 
+export const generatePaginationBullets = (totalPages, activeIndex,swiperRef,slidesPerView) => {
+  return Array.from({ length: totalPages }, (_, index) => (
+    <span
+      key={index}
+      className={`swiper-pagination-bullet ${activeIndex === index ? 'swiper-pagination-bullet-active' : ''}`}
+      role="button"
+      aria-label={`Go to page ${index + 1}`}
+      tabIndex="0"
+      onClick={() => swiperRef.current.swiper.slideTo(index * slidesPerView)}
+    ></span>
+  ));
+};

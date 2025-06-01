@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-
+import ApexCharts from 'apexcharts';
 const LineChart = ({color='#22C55E'}) => {
   const chartRef = useRef(null);
 
@@ -75,7 +75,7 @@ const LineChart = ({color='#22C55E'}) => {
       };
 
       // Initialize the chart using plain JavaScript
-      const chart = new window.ApexCharts(chartRef.current, options);
+      const chart = new ApexCharts(chartRef.current, options);
       chart.render();
 
       // Cleanup the chart on component unmount

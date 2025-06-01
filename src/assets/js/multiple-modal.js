@@ -1,4 +1,3 @@
-import $ from 'jquery';
 
 (function($, window) {
     'use strict';

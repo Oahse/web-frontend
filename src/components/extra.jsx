@@ -1,14 +1,44 @@
-import BottomToolBar from '@/components/toolbar/Bottom'
-import Modal from '@/components/modal'
-import Login from '@/components/form/Login'
-import ForgotPassword from '@/components/form/ForgotPassword'
-import Register from '@/components/form/Register'
-import { Link } from 'react-router-dom'
+import { useState } from 'react';
+import BottomToolBar from '@/components/toolbar/Bottom';
+import Modal from '@/components/modal';
+import Login from '@/components/form/Login';
+import ForgotPassword from '@/components/form/ForgotPassword';
+import Register from '@/components/form/Register';
+import { Link } from 'react-router-dom';
+import grocery1 from '@/assets/images/products/grocery-1.jpg';
+import grocery2 from '@/assets/images/products/grocery-2.jpg';
+import Scroller3 from '@/components/scroller3';
+import { ToastContainer, notify } from '@/services/notifications/ui';
 
-const Extras  =()=>{
+import QuantitySelector from '@/components/quantityselector';
+import VariantPicker from '@/components/variantpicker';
+
+const Extras  =({categories=[], product=null, amount=1})=>{
+    const items = [
+        { image: grocery1, alt: 'Grocery Item 1' },
+        { image: grocery2, alt: 'Grocery Item 2' },
+        // Add more items as needed
+      ];
+    const addToCart = (product, amount) => {
+    // notify(`${amount} ${product?.name} has been added to cart`)
+    notify({ text: `${amount} ${product?.name} has been added to cart`, type: 'success' });
+    console.log(amount, product?.name,'has been added to cart')
+    };
+
+    const addToWishList = (product, amount) => {
+        notify({ text: `${amount} ${product?.name} has been added to wishlist`, type: 'success' });
+        console.log(amount, product?.name,'has been added to wishlist');
+    };
+
+    const getDiscountPrice = (price, discount) => {
+        return (price-(price * (discount / 100))).toFixed(2);
+    };
+
+    const [quantity, setQuantity] = useState(amount);
+
     return(
         <>
-            <button id="goTop">
+            <button id="goTop" style={{opacity:1}}>
                 <span className="border-progress"></span>
                 <span className="icon icon-arrow-up"></span>
             </button>
@@ -895,6 +925,7 @@ const Extras  =()=>{
                 </div>
             </div>
             {/* <!-- mobile menu --> */}
+            
 
             {/* <!-- canvasSearch --> */}
             <div className="offcanvas offcanvas-end canvas-search" id="canvasSearch">
@@ -994,190 +1025,42 @@ const Extras  =()=>{
                 <div className="mb-canvas-content">
                     <div className="mb-body">
                         <ul className="nav-ul-mb" id="wrapper-menu-navigation">
-                            <li className="nav-mb-item">
-                                <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate1.jpg" alt=""/>
-                                    </div>
-                                    <span>Accessories</span>
-                                </a>
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate2.jpg" alt=""/>
-                                    </div>
-                                    <span>Dog</span>
-                                </a>
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate3.jpg" alt=""/>
-                                    </div>
-                                    <span>Grocery</span>
-                                </a>
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate4.png" alt=""/>
-                                    </div>
-                                    <span>Handbag</span>
-                                </a>
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="#cate-menu-one" className="tf-category-link has-children collapsed mb-menu-link"
-                                    data-bs-toggle="collapse" aria-expanded="true" aria-controls="cate-menu-one">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate5.jpg" alt=""/>
-                                    </div>
-                                    <span>Fashion</span>
-                                    <span className="btn-open-sub"></span>
-                                </a>
-                                <div id="cate-menu-one" className="collapse list-cate">
-                                    <ul className="sub-nav-menu" id="cate-menu-navigation">
-                                        <li>
-                                            <a href="#cate-shop-one"
-                                                className="tf-category-link has-children sub-nav-link collapsed"
-                                                data-bs-toggle="collapse" aria-expanded="true" aria-controls="cate-shop-one">
-                                                <div className="image">
-                                                    <img src="images/shop/cate/cate6.jpg" alt=""/>
-                                                </div>
-                                                <span>Mens</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="cate-shop-one" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li>
-                                                        <a href="shop-default.html" className="tf-category-link sub-nav-link">
-                                                            <div className="image">
-                                                                <img src="images/shop/cate/cate1.jpg" alt=""/>
-                                                            </div>
-                                                            <span>Accessories</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-default.html" className="tf-category-link sub-nav-link">
-                                                            <div className="image">
-                                                                <img src="images/shop/cate/cate8.jpg" alt=""/>
-                                                            </div>
-                                                            <span>Shoes</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#cate-shop-two"
-                                                className="tf-category-link has-children sub-nav-link collapsed"
-                                                data-bs-toggle="collapse" aria-expanded="true" aria-controls="cate-shop-two">
-                                                <div className="image">
-                                                    <img src="images/shop/cate/cate9.jpg" alt=""/>
-                                                </div>
-                                                <span>Womens</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="cate-shop-two" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li>
-                                                        <a href="shop-default.html" className="tf-category-link sub-nav-link">
-                                                            <div className="image">
-                                                                <img src="images/shop/cate/cate4.png" alt=""/>
-                                                            </div>
-                                                            <span>Handbag</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-default.html" className="tf-category-link sub-nav-link">
-                                                            <div className="image">
-                                                                <img src="images/shop/cate/cate7.jpg" alt=""/>
-                                                            </div>
-                                                            <span>Tee</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="#cate-menu-two" className="tf-category-link has-children collapsed mb-menu-link"
-                                    data-bs-toggle="collapse" aria-expanded="true" aria-controls="cate-menu-two">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate6.jpg" alt=""/>
-                                    </div>
-                                    <span>Men</span>
-                                    <span className="btn-open-sub"></span>
-                                </a>
-                                <div id="cate-menu-two" className="collapse list-cate">
-                                    <ul className="sub-nav-menu" id="cate-menu-navigation1">
-                                        <li>
-                                            <a href="shop-default.html" className="tf-category-link sub-nav-link">
-                                                <div className="image">
-                                                    <img src="images/shop/cate/cate1.jpg" alt=""/>
-                                                </div>
-                                                <span>Accessories</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="shop-default.html" className="tf-category-link sub-nav-link">
-                                                <div className="image">
-                                                    <img src="images/shop/cate/cate8.jpg" alt=""/>
-                                                </div>
-                                                <span>Shoes</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate7.jpg" alt=""/>
-                                    </div>
-                                    <span>Tee</span>
-                                </a>
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="shop-default.html" className="tf-category-link mb-menu-link">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate8.jpg" alt=""/>
-                                    </div>
-                                    <span>Shoes</span>
-                                </a>
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="#cate-menu-three" className="tf-category-link has-children collapsed mb-menu-link"
-                                    data-bs-toggle="collapse" aria-expanded="true" aria-controls="cate-menu-three">
-                                    <div className="image">
-                                        <img src="images/shop/cate/cate9.jpg" alt=""/>
-                                    </div>
-                                    <span>Women</span>
-                                    <span className="btn-open-sub"></span>
-                                </a>
-                                <div id="cate-menu-three" className="collapse list-cate">
-                                    <ul className="sub-nav-menu" id="cate-menu-navigation2">
-                                        <li>
-                                            <a href="shop-default.html" className="tf-category-link sub-nav-link">
-                                                <div className="image">
-                                                    <img src="images/shop/cate/cate4.png" alt=""/>
-                                                </div>
-                                                <span>Handbag</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="shop-default.html" className="tf-category-link sub-nav-link">
-                                                <div className="image">
-                                                    <img src="images/shop/cate/cate7.jpg" alt=""/>
-                                                </div>
-                                                <span>Tee</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                            {categories.map((category, index) => (
+                                <li key={index} className="nav-mb-item">
+                                    <Link 
+                                        to={category.items ? `#cate-menu-${category.name}` : "/products"} 
+                                        className={`tf-category-link ${category.items ? 'has-children' : ''} collapsed mb-menu-link`} 
+                                        data-bs-toggle={category.items ? "collapse" : undefined} 
+                                        aria-expanded="false" 
+                                        aria-controls={category.items ? `cate-menu-${category.name}` : undefined}
+                                    >
+                                        <div className="image">
+                                        <img src={category.image} alt={category.name} />
+                                        </div>
+                                        <span className="link">{category.name}</span>
+                                        {category.items && <span className="btn-open-sub"></span>}
+                                    </Link>
+
+                                    {category.items && (
+                                        <div id={`cate-menu-${category.name}`} className="collapse list-cate">
+                                            <ul className="sub-nav-menu">
+                                                {category.items.map((item, itemIndex) => (
+                                                <li key={itemIndex}>
+                                                    <Link to="/products/2" 
+                                                    className="tf-category-link sub-nav-link"
+                                                    >
+                                                    <div className="image">
+                                                        <img src={item.image} alt={item.name} />
+                                                    </div>
+                                                    <span>{item.name}</span>
+                                                    </Link>
+                                                </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     <div className="mb-bottom">
@@ -1190,20 +1073,22 @@ const Extras  =()=>{
             {/* <!-- modal login --> */}
             
             <Modal 
-            id="login" 
-            title='Log in'
-            className='form-sign-in modal-part-content'
-            body={<Login action="https://themesflat.co/html/ecomus/my-account.html"/>} />
+                id="login" 
+                title='Log in'
+                className='form-sign-in modal-part-content'
+                body={<Login />} 
+            />
             <Modal 
-            id="forgotPassword" 
-            title='Reset your password'
-            className='form-sign-in modal-part-content'
-            body={<ForgotPassword />} />
+                id="forgotPassword" 
+                title='Reset your password'
+                className='form-sign-in modal-part-content'
+                body={<ForgotPassword />} 
+            />
             <Modal 
-            id="register" 
-            title='Register'
-            className='form-sign-in modal-part-content'
-            body={<Register />} 
+                id="register" 
+                title='Register'
+                className='form-sign-in modal-part-content'
+                body={<Register />} 
             />
 
         {/* <!-- /modal login --> */}
@@ -1603,87 +1488,45 @@ const Extras  =()=>{
             body={<div className="wrap">
                 <div className="tf-product-info-item">
                     <div className="image">
-                        <img src="images/products/orange-1.jpg" alt=""/>
+                        <img src={product?.image} alt=""/>
                     </div>
                     <div className="content">
-                        <a href="product-detail.html">Ribbed Tank Top</a>
-                        <div className="tf-product-info-price">
-                            {/* <div className="price-on-sale">$8.00</div>
-                            <div className="compare-at-price">$10.00</div>
-                            <div className="badges-on-sale"><span>20</span>% OFF</div> */}
-                            <div className="price">$18.00</div>
-                        </div>
+                        <a href="javascript:void(0);">{product?.name}</a>
+                        {(product?.discountStartDate && product?.discount) ?
+                            <div className="tf-product-info-price">
+                                <div className="price-on-sale">{product?.currency}{getDiscountPrice(product?.price, product?.discount)}</div>
+                                <div className="compare-at-price">{product?.currency}{product?.price}</div>
+                                <div className="badges-on-sale"><span>{product?.discount}</span>% OFF</div>
+                            </div>
+                            :
+                            <div className="tf-product-info-price">
+                                <div className="price-on-sale">{product?.currency}{product?.price}</div>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="tf-product-info-variant-picker mb_15">
                     <div className="variant-picker-item">
                         <div className="variant-picker-label">
-                            Color: <span className="fw-6 variant-picker-label-value">Orange</span>
-                        </div>
-                        <div className="variant-picker-values">
-                            <input id="values-orange" type="radio" name="color" checked/>
-                            <label className="hover-tooltip radius-60" for="values-orange" data-value="Orange">
-                                <span className="btn-checkbox bg-color-orange"></span>
-                                <span className="tooltip">Orange</span>
-                            </label>
-                            <input id="values-black" type="radio" name="color"/>
-                            <label className=" hover-tooltip radius-60" for="values-black" data-value="Black">
-                                <span className="btn-checkbox bg-color-black"></span>
-                                <span className="tooltip">Black</span>
-                            </label>
-                            <input id="values-white" type="radio" name="color"/>
-                            <label className="hover-tooltip radius-60" for="values-white" data-value="White">
-                                <span className="btn-checkbox bg-color-white"></span>
-                                <span className="tooltip">White</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div className="variant-picker-item">
-                        <div className="variant-picker-label">
                             Size: <span className="fw-6 variant-picker-label-value">S</span>
                         </div>
-                        <div className="variant-picker-values">
-                            <input type="radio" name="size" id="values-s" checked/>
-                            <label className="style-text" for="values-s" data-value="S">
-                                <p>S</p>
-                            </label>
-                            <input type="radio" name="size" id="values-m"/>
-                            <label className="style-text" for="values-m" data-value="M">
-                                <p>M</p>
-                            </label>
-                            <input type="radio" name="size" id="values-l"/>
-                            <label className="style-text" for="values-l" data-value="L">
-                                <p>L</p>
-                            </label>
-                            <input type="radio" name="size" id="values-xl"/>
-                            <label className="style-text" for="values-xl" data-value="XL">
-                                <p>XL</p>
-                            </label>
-                        </div>
+                        <VariantPicker sizes={product?.sizes}/>
                     </div>
                 </div>
                 <div className="tf-product-info-quantity mb_15">
                     <div className="quantity-title fw-6">Quantity</div>
-                    <div className="wg-quantity">
-                        <span className="btn-quantity minus-btn">-</span>
-                        <input type="text" name="number" value="1"/>
-                        <span className="btn-quantity plus-btn">+</span>
-                    </div>
+                    <QuantitySelector onChange={setQuantity}/>
                 </div>
                 <div className="tf-product-info-buy-button">
                     <form className="">
                         <a href="javascript:void(0);"
+                            onClick={()=>addToCart(product, quantity)}
                             className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
-                                to cart -&nbsp;</span><span className="tf-qty-price">$18.00</span></a>
+                                to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></a>
                         <div className="tf-product-btn-wishlist btn-icon-action">
-                            <i className="icon-heart"></i>
+                            <i className="icon-heart" onClick={()=>addToWishList(product, quantity)}></i>
                             <i className="icon-delete"></i>
                         </div>
-                        <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                            className="tf-product-btn-wishlist box-icon bg_white compare btn-icon-action">
-                            <span className="icon icon-compare"></span>
-                            <span className="icon icon-check"></span>
-                        </a>
                         <div className="w-100">
                             <a href="#" className="btns-full">Buy with <img src="images/payments/paypal.png" alt=""/></a>
                             <a href="#" className="payment-more-option">More payment options</a>
@@ -1702,27 +1545,12 @@ const Extras  =()=>{
             className='modalDemo'
             body={<div className="wrap">
                 <div className="tf-product-media-wrap">
-                    <div dir="ltr" className="swiper tf-single-slide">
-                        <div className="swiper-wrapper">
-                            <div className="swiper-slide">
-                                <div className="item">
-                                    <img src="images/products/orange-1.jpg" alt=""/>
-                                </div>
-                            </div>
-                            <div className="swiper-slide">
-                                <div className="item">
-                                    <img src="images/products/pink-1.jpg" alt=""/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-button-next button-style-arrow single-slide-prev"></div>
-                        <div className="swiper-button-prev button-style-arrow single-slide-next"></div>
-                    </div>
+                    <Scroller3 className='tf-single-slide' items={items} itemsPerView={1}/>
                 </div>
-                <div className="tf-product-info-wrap position-relative">
+                <div className="tf-product-info-wrap position-relative" style={{minHeight:'480px'}}>
                     <div className="tf-product-info-list">
                         <div className="tf-product-info-title">
-                            <h5><a className="link" href="product-detail.html">Ribbed Tank Top</a></h5>
+                            <h5><a className="link" href="javascript:void(0);">{product?.name}</a></h5>
                         </div>
                         <div className="tf-product-info-badges">
                             <div className="badges text-uppercase">Best seller</div>
@@ -1731,37 +1559,21 @@ const Extras  =()=>{
                                 <p className="fw-6">Selling fast! 48 people have this in their carts.</p>
                             </div>
                         </div>
-                        <div className="tf-product-info-price">
-                            <div className="price">$18.00</div>
-                        </div>
+                        {(product?.discountStartDate && product?.discount) ?
+                            <div className="tf-product-info-price">
+                                <div className="price-on-sale">{product?.currency}{getDiscountPrice(product?.price, product?.discount)}</div>
+                                <div className="compare-at-price">{product?.currency}{product?.price}</div>
+                                <div className="badges-on-sale"><span>{product?.discount}</span>% OFF</div>
+                            </div>
+                            :
+                            <div className="tf-product-info-price">
+                                <div className="price-on-sale">{product?.currency}{product?.price}</div>
+                            </div>
+                        }
                         <div className="tf-product-description">
-                            <p>Nunc arcu faucibus a et lorem eu a mauris adipiscing conubia ac aptent ligula
-                                facilisis a auctor habitant parturient a a.Interdum fermentum.</p>
+                            <p>{product?.description}</p>
                         </div>
                         <div className="tf-product-info-variant-picker">
-                            <div className="variant-picker-item">
-                                <div className="variant-picker-label">
-                                    Color: <span className="fw-6 variant-picker-label-value">Orange</span>
-                                </div>
-                                <div className="variant-picker-values">
-                                    <input id="values-orange-1" type="radio" name="color-1" checked/>
-                                    <label className="hover-tooltip radius-60" for="values-orange-1"
-                                        data-value="Orange">
-                                        <span className="btn-checkbox bg-color-orange"></span>
-                                        <span className="tooltip">Orange</span>
-                                    </label>
-                                    <input id="values-black-1" type="radio" name="color-1"/>
-                                    <label className=" hover-tooltip radius-60" for="values-black-1" data-value="Black">
-                                        <span className="btn-checkbox bg-color-black"></span>
-                                        <span className="tooltip">Black</span>
-                                    </label>
-                                    <input id="values-white-1" type="radio" name="color-1"/>
-                                    <label className="hover-tooltip radius-60" for="values-white-1" data-value="White">
-                                        <span className="btn-checkbox bg-color-white"></span>
-                                        <span className="tooltip">White</span>
-                                    </label>
-                                </div>
-                            </div>
                             <div className="variant-picker-item">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div className="variant-picker-label">
@@ -1769,51 +1581,27 @@ const Extras  =()=>{
                                     </div>
                                     <div className="find-size btn-choose-size fw-6">Find your size</div>
                                 </div>
-                                <div className="variant-picker-values">
-                                    <input type="radio" name="size-1" id="values-s-1" checked/>
-                                    <label className="style-text" for="values-s-1" data-value="S">
-                                        <p>S</p>
-                                    </label>
-                                    <input type="radio" name="size-1" id="values-m-1"/>
-                                    <label className="style-text" for="values-m-1" data-value="M">
-                                        <p>M</p>
-                                    </label>
-                                    <input type="radio" name="size-1" id="values-l-1"/>
-                                    <label className="style-text" for="values-l-1" data-value="L">
-                                        <p>L</p>
-                                    </label>
-                                    <input type="radio" name="size-1" id="values-xl-1"/>
-                                    <label className="style-text" for="values-xl-1" data-value="XL">
-                                        <p>XL</p>
-                                    </label>
-                                </div>
+                                <VariantPicker sizes={product?.sizes}/>
                             </div>
                         </div>
                         <div className="tf-product-info-quantity">
                             <div className="quantity-title fw-6">Quantity</div>
-                            <div className="wg-quantity">
-                                <span className="btn-quantity minus-btn">-</span>
-                                <input type="text" name="number" value="1"/>
-                                <span className="btn-quantity plus-btn">+</span>
-                            </div>
+                            <QuantitySelector onChange={setQuantity}/>
                         </div>
                         <div className="tf-product-info-buy-button">
                             <form className="">
                                 <a href="javascript:void(0);"
+                                    onClick={()=>addToCart(product, quantity)}
                                     className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
-                                        to cart -&nbsp;</span><span className="tf-qty-price">$8.00</span></a>
+                                        to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></a>
                                 <a href="javascript:void(0);"
+                                    onClick={()=>addToWishList(product, quantity)}
                                     className="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action">
                                     <span className="icon icon-heart"></span>
                                     <span className="tooltip">Add to Wishlist</span>
                                     <span className="icon icon-delete"></span>
                                 </a>
-                                <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                    className="tf-product-btn-wishlist hover-tooltip box-icon bg_white compare btn-icon-action">
-                                    <span className="icon icon-compare"></span>
-                                    <span className="tooltip">Add to Compare</span>
-                                    <span className="icon icon-check"></span>
-                                </a>
+                                
                                 <div className="w-100">
                                     <a href="#" className="btns-full">Buy with <img src="images/payments/paypal.png"
                                             alt=""/></a>
@@ -1914,6 +1702,7 @@ const Extras  =()=>{
             </div>} />
         
         {/* <!-- /modal find_size --> */}
+        <ToastContainer />
         </>
     )
 }

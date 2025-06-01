@@ -1,31 +1,31 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 const Modal = ({ id, show = false, onClose, children = null, className = '', centered = true, title, fade = true, closable = true, body = null }) => {
   const modalRef = useRef();
 
-  // Detect outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose(); // call parent-provided close function
+        onClose();
       }
     };
-
+  
+  
     if (show) {
       document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
     }
-
+  
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [show, onClose]);
-
+  
+  
+  
   return (
     <div
-      className={`modal ${show ? 'show' : ''} ${centered ? 'modalCentered' : 'fullRight'} ${fade ? 'fade' : ''} ${className}`}
+      className={`modal ${centered ? 'modalCentered' : 'fullRight'} ${fade ? 'fade' : ''} ${className}`}
       id={id}
     >
       <div
@@ -43,7 +43,7 @@ const Modal = ({ id, show = false, onClose, children = null, className = '', cen
                 {closable && (
                   <span
                     className="icon-close icon-close-popup"
-                    onClick={onClose}
+                    data-bs-dismiss="modal"
                     role="button"
                     aria-label="Close"
                   ></span>

@@ -6,6 +6,8 @@ import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import AccountSideBar from './accountsidebar';
 import Table from '../../components/table';
+import Extras from '@/components/extra';
+import BreadCrumbs from '@/components/breadcrumbs';
 
 const AccountAddress =()=>{
     const [loading, setLoading] = useState(false);
@@ -13,7 +15,6 @@ const AccountAddress =()=>{
       
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
             
             {loading && <Loader />} 
             
@@ -23,6 +24,17 @@ const AccountAddress =()=>{
                 <div className="tf-page-title">
                     <div className="container-full">
                         <div className="heading text-center">Address</div>
+                        <BreadCrumbs
+                            dir='center'
+                            links={[
+                                { name: 'Home', href: '/' },
+                                { name: 'Account', href: '/account' },
+                                { name: 'Address' }
+                            ]}
+                            // prev={{ href: `/products/${product?.id}`, tooltip: 'Previous Product' }}
+                            // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
+                            // back={{ href: '/products', tooltip: 'Back to Products' }}
+                        />
                     </div>
                 </div>
 

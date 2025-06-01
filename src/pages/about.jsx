@@ -3,7 +3,7 @@ import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
-
+import Extras from '@/components/extra'
 const About =()=>{
     const [loading, setLoading] = useState(true);
     return(

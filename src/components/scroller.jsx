@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import CategoryCard from '@/components/card/CategoryCard';
 import BannerCard from '@/components/card/BannerCard';
 
-const Scroller = ({ items = [], child, itemsPerView, pagination =true}) => {
+const Scroller = ({ items = [], child, itemsPerView, pagination =true,isMobile=null,direction="horizontal"}) => {
   const { isTablet, isDesktop } = useDeviceType();
   const swiperRef = useRef(null);
   const paginationRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const slidesPerView = isDesktop ? 6 : isTablet ? 3 : itemsPerView || 2;
+  const slidesPerView = isDesktop ? 5 : isTablet ? 3 : itemsPerView || 2;
   const totalPages = Math.ceil(items.length / slidesPerView);
 
   useEffect(() => {
@@ -49,13 +49,14 @@ const Scroller = ({ items = [], child, itemsPerView, pagination =true}) => {
         autoplay={{ delay: 2000 }}
         speed={1500}
         lazy={true}
+        direction={direction}
         modules={[Pagination]}
-        className="mySwiper"
+        className="tf-sw-mobile"
         pagination={false}
       >
         {items.map((item, index) => (
-          <SwiperSlide key={index}>
-            {child === 'banner'?<BannerCard {...item} />:<CategoryCard {...item} />}
+          <SwiperSlide key={index} style={{minWidth:'100px'}}>
+            {child === 'banner'?<BannerCard {...item} />:<CategoryCard {...item} isMobile={isMobile}/>}
             
           </SwiperSlide>
         ))}
