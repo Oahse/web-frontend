@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "ngrok": "ngrok http 5173",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -24,7 +25,9 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.1",
     "react-toastify": "^11.0.5",
-    "swiper": "^11.2.6"
+    "swiper": "^11.2.6",
+    "wink-eng-lite-web-model": "^1.8.1",
+    "wink-nlp": "^2.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

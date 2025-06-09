@@ -7,8 +7,10 @@ import Footer from "@/components/footer";
 import { Link, useNavigate } from 'react-router-dom';
 import Extras from '@/components/extra';
 import useAuth from '@/hooks/useAuth';
+import BreadCrumbs from '@/components/breadcrumbs';
 import { ToastContainer, notify } from '@/services/notifications/ui';
-const Login = () => {
+
+const Login = ({categories=[]}) => {
     const navigate = useNavigate();
     const { loading, error, user, login, logout } = useAuth();
 
@@ -19,8 +21,13 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();  // Prevent page reload
         login({ email, password });
-        notify({ text: `Successfully logged in as ${user?.firstname} ${user?.lastname}`, type: 'success' });
-        navigate('/', { state: { user } })
+        if (error){
+            notify({ text: `${error}`, type: 'error' });
+        }else{
+            notify({ text: `Successfully logged in as ${user?.firstname} ${user?.lastname}`, type: 'success' });
+        }
+        
+        // navigate('/', { state: { user } })
     };
 
     return (
@@ -34,6 +41,16 @@ const Login = () => {
             <div className="tf-page-title style-2">
             <div className="container-full">
                 <div className="heading text-center">Login</div>
+                <BreadCrumbs
+                            dir='center'
+                            links={[
+                                { name: 'Home', href: '/' },
+                                { name: 'Login' }
+                            ]}
+                            // prev={{ href: `/products/${product?.id}`, tooltip: 'Previous Product' }}
+                            // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
+                            // back={{ href: '/products', tooltip: 'Back to Products' }}
+                        />
                 
             </div>
             </div>
@@ -48,14 +65,14 @@ const Login = () => {
                     <form id="register-form" onSubmit={handleSubmit} acceptCharset="utf-8" data-mailchimp="true">
                     <div className="tf-field style-1 mb_15">
                         <input
-                        className="tf-field-input tf-input"
-                        placeholder=" "
-                        type="email"
-                        id="property3"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
+                            className="tf-field-input tf-input"
+                            placeholder=" "
+                            type="email"
+                            id="property3"
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
                         />
                         <label className="tf-field-label fw-4 text_black-2" htmlFor="property3">Email *</label>
                     </div>
@@ -94,7 +111,7 @@ const Login = () => {
             </section>
             <Footer />
         </div>
-        <Extras />
+        <Extras categories={categories} />
         </div>
     );
 }

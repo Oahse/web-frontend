@@ -55,243 +55,243 @@ const NonAuthRoutes = ({ API_URL, Companyname, isLoggedIn, user, header, footer,
   },
   {
     path:'/admin',
-    element:<DashBoard API_URL={API_URL}  Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user}  />,
+    element:<DashBoard API_URL={API_URL}  Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user}  categories={props.categories} />,
     title:'dashboard'
   },
   {
     path: "/admin/products",
-    element: <AdminProducts API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AdminProducts API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "admin-products"
   },
   {
     path: "/admin/products/add",
-    element: <AddAdminProducts API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AddAdminProducts API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminadd-products"
   },
   {
     path: "/admin/products/:id",
-    element: <ViewAdminProducts API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <ViewAdminProducts API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminview-products"
   },
   {
     path: "/admin/categories",
-    element: <AdminCategories API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AdminCategories API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "admin-categories"
   },
   {
     path: "/admin/categories/add",
-    element: <AddAdminCategory API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AddAdminCategory API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminadd-products"
   },
   {
     path: "/admin/categories/:id",
-    element: <ViewAdminCategory API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <ViewAdminCategory API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminview-categories"
   },
   {
     path: "/admin/attributes",
-    element: <AdminAttributes API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AdminAttributes API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "admin-attributes"
   },
   {
     path: "/admin/attributes/add",
-    element: <AddAdminAttributes API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AddAdminAttributes API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminadd-attributes"
   },
   {
     path: "/admin/attributes/:id",
-    element: <ViewAdminAttributes API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <ViewAdminAttributes API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminview-attributes"
   },
   {
     path: "/admin/orders",
-    element: <AdminOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AdminOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "admin-attributes"
   },
   {
     path: "/admin/orders/:id/track",
-    element: <TrackAdminOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <TrackAdminOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "admintrack-orders"
   },
   {
     path: "/admin/orders/:id",
-    element: <ViewAdminOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <ViewAdminOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminview-orders"
   },
   {
     path: "/admin/users",
-    element: <AdminUsers API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AdminUsers API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminusers"
   },
   {
     path: "/admin/users/:id",
-    element: <ViewAdminUser API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <ViewAdminUser API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminusers-view"
   },
   {
     path: "/admin/users/add",
-    element: <AddAdminUsers API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AddAdminUsers API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminusers-add"
   },
   {
     path: "/admin/login",
-    element: <AdminLogin API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AdminLogin API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminlogin"
   },
   {
     path: "/admin/signup",
-    element: <AdminSignUp API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AdminSignUp API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "adminsignup"
   },
   {
     path: "/admin/storesetting",
-    element: <AdminStoreSetting isLoggedIn={isLoggedIn} loggedInUser={user}/>,
+    element: <AdminStoreSetting isLoggedIn={isLoggedIn} loggedInUser={user} categories={props.categories} />,
     title: "adminstoresetting"
   },
   {
     path: "/admin/report",
-    element: <AdminReport isLoggedIn={isLoggedIn} loggedInUser={user}/>,
+    element: <AdminReport isLoggedIn={isLoggedIn} loggedInUser={user} categories={props.categories} />,
     title: "adminreport"
   },
   {
     path: "/admin/settings",
-    element: <AdminSetting isLoggedIn={isLoggedIn} loggedInUser={user}/>,
+    element: <AdminSetting isLoggedIn={isLoggedIn} loggedInUser={user} categories={props.categories} />,
     title: "adminsettings"
   },
   {
     path: "/admin/faqs",
-    element: <AdminFaqs isLoggedIn={isLoggedIn} loggedInUser={user}/>,
+    element: <AdminFaqs isLoggedIn={isLoggedIn} loggedInUser={user} categories={props.categories} />,
     title: "adminfaqs"
   },
   {
     path: "/products",
-    element: <Products API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader}  categories={props.categories}/>,
+    element: <Products API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader}  categories={props.categories} />,
     title: "products"
   },
   {
     path: "/products/:id",
-    element: <ProductDetails API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <ProductDetails API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "product-details"
   },
   {
-    path: "/products/search?q=term",
-    element: <Account API_URL={API_URL} Companyname={Companyname} index={0} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    path: "/products/search",
+    element: <Products API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader}  categories={props.categories} />,
     title: "search-results"
   },
   {
     path: "/account/cart",
-    element: <Cart API_URL={API_URL} Companyname={Companyname} index={1} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Cart categories={props.categories} />,
     title: "cart"
   },
   {
     path: "/account/wishlist",
-    element: <AccountWishlist API_URL={API_URL} Companyname={Companyname} index={2} isLoggedIn={isLoggedIn}loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AccountWishlist API_URL={API_URL} Companyname={Companyname} index={2} isLoggedIn={isLoggedIn}loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "account-wishlist"
   },
   {
     path: "/account/orders/checkout",
-    element: <Checkout API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Checkout API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "checkout"
   },
   {
     path: "/account/orders/:orderId/payment",
-    element: <Payment API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Payment API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "payment"
   },
   {
     path: "/login",
-    element: <Login API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Login API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "login"
   },
   {
     path: "/resetpassword",
-    element: <ResetPassword API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <ResetPassword API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "resetpassword"
   },
   {
     path: "/register",
-    element: <SignUp API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <SignUp API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "register"
   },
   {
     path: "/account",
-    element: <Account API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Account API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "account"
   },
   {
     path: "/account/details",
-    element: <AccountDetails API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AccountDetails API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "account-details"
   },
   {
     path: "/account/address",
-    element: <AccountAddress API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AccountAddress API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "account-address"
   },
   
   {
     path: "/account/settings",
-    element: <Account API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AccountDetails API_URL={API_URL} Companyname={Companyname} index={3} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "settings"
   },
   {
     path: "/account/orders",
-    element: <AccountOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AccountOrders API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "invoice"
   },
   {
     path: "/account/orders/:orderId",
-    element: <AccountOrdersDetails API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <AccountOrdersDetails API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "invoice"
   },
   {
     path: "/account/orders/:orderId/invoice",
-    element: <Invoice API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Invoice API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "invoice"
   },
   {
     path: "/faq",
-    element: <Faq API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Faq API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "faq"
   },
   {
     path: "/blog",
-    element: <Blog API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Blog API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "blog"
   },
   {
     path: "/blog/:blogtitle",
-    element: <BlogDetail API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <BlogDetail API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "blog-detail"
   },
   {
     path: "/privacy-policy",
-    element: <PrivacyPolicy API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <PrivacyPolicy API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "privacy-policy"
   },
   {
     path: "/terms",
-    element: <Terms API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Terms API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "terms"
   },
   {
     path: "/refund-policy",
-    element: <RefundPolicy API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <RefundPolicy API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "refund-policy"
   },
   {
     path: "/shipping",
-    element: <Shipping API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Shipping API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "shipping"
   },
   {
     path: "/about",
-    element: <About API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <About API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "about"
   },
   {
     path: "/contact",
-    element: <Contact API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} />,
+    element: <Contact API_URL={API_URL} Companyname={Companyname} isLoggedIn={isLoggedIn} loggedInUser={user} header={header} footer={footer} bottomheader={bottomheader} categories={props.categories} />,
     title: "contact"
   },
 ];

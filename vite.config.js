@@ -16,6 +16,7 @@ export default defineConfig({
   },
   server: {
     host: true,  // Useful for accessing the server from other devices
+    allowedHosts :['fc69-2a04-4a43-8eff-f958-6db9-97df-88d0-c5d3.ngrok-free.app'],
   },
   resolve: {
     alias: {

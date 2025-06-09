@@ -89,7 +89,7 @@ const defaultUserList = [
   ];
   
 
-const AdminUsers = ({API_URL ,Companyname, isLoggedIn, user })=>{
+const AdminUsers = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categories=[] })=>{
     useAdminStyles(); // ✅ dynamically manages admin styles
     const [loading, setLoading] = useState(false);
     const [isHeaderFullWidth, setIsHeaderFullWidth] = useState(false);

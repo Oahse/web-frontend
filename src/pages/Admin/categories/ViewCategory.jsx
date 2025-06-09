@@ -15,7 +15,7 @@ import useAdminStyles from '@/hooks/useAdminStyles';
 
 
 
-const ViewAdminCategory = ({ API_URL, Companyname, isLoggedIn, user }) => {
+const ViewAdminCategory = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categories=[]  }) => {
   useAdminStyles(); // ✅ dynamically manages admin styles
   const location = useLocation();
   console.log(location.state)
@@ -125,7 +125,7 @@ const ViewAdminCategory = ({ API_URL, Companyname, isLoggedIn, user }) => {
           {loading && <Preloader />}
           <SideBar  activeMenu={2} onshowHideMenu={showHideMenu} />
           <div className="section-content-right">
-            <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={user} />
+            <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={loggedInUser} />
             <div className="main-content">
               <div className="main-content-inner">
                 <div className="main-content-wrap">

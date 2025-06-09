@@ -7,7 +7,7 @@ import Toast from "@/components/Toast";
 import useAdminStyles from '@/hooks/useAdminStyles';
 
 
-const AdminLogin = ({redirectUrl})=>{
+const AdminLogin = ({redirectUrl,isLoggedIn, loggedInUser,categories=[] })=>{
     useAdminStyles(); // ✅ dynamically manages admin styles
     const navigate = useNavigate();
     const storedUser = JSON.parse(sessionStorage.getItem("app_xyz_admin_user_2025") || localStorage.getItem("app_xyz_admin_user_2025"));

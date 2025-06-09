@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const DropDown = ({ active = 0, items = [], onSelect=() => {} }) => {
   const [selectedIndex, setSelectedIndex] = useState(active);
-
+  const [show, setShow] = useState(false);
   const handleSelect = (item, index) => {
       setSelectedIndex(index);
       if(onSelect){
@@ -13,11 +13,11 @@ const DropDown = ({ active = 0, items = [], onSelect=() => {} }) => {
 
   return (
     <div className="tf-dropdown-sort" data-bs-toggle="dropdown">
-      <div className="btn-select">
+      <div className="btn-select" onClick={()=>setShow(!show)}>
         <span className="text-sort-value">{items[selectedIndex]?.label || "Select"}</span>
         <span className="icon icon-arrow-down"></span>
       </div>
-      <div className="dropdown-menu">
+      <div className={`dropdown-menu ${show && ' show'}`}>
         {items.map((item, index) => (
           <div
             key={index}

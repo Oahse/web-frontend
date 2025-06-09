@@ -1,5 +1,5 @@
 
-const Invoice = ()=>{
+const Invoice = ({categories=[]})=>{
     const invoiceColumns = [
         { key: "description", label: "Description" },
         { key: "price", label: "Price" },

@@ -7,7 +7,7 @@ import Footer from "@/components/footer";
 import { Link } from 'react-router-dom';
 import Extras from '@/components/extra';
 
-const SignUp =()=>{
+const SignUp =({categories=[]})=>{
     const { isMobile} = useDeviceType();
     const [loading, setLoading] = useState(false);
     return(
@@ -70,7 +70,7 @@ const SignUp =()=>{
                 
                 <Footer />
             </div>
-            <Extras />
+            <Extras categories={categories} />
         </div>
     )
 }

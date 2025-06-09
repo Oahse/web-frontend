@@ -3,21 +3,31 @@ import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
-import Extras from '@/components/extra'
-const Contact =()=>{
+import Extras from '@/components/extra';
+import BreadCrumbs from '@/components/breadcrumbs';
+const Contact =({categories=[]})=>{
     const [loading, setLoading] = useState(false);
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
             
             {loading && <Loader />} 
             
             <div id="wrapper">
                 <TopHeader/>
                 <Header/>
-                <div className="tf-page-title style-2">
+                <div className="tf-page-title">
                     <div className="container-full">
                         <div className="heading text-center">Contact Us</div>
+                        <BreadCrumbs
+                            dir='center'
+                            links={[
+                                { name: 'Home', href: '/' },
+                                { name: 'Contact Us' }
+                            ]}
+                            // prev={{ href: `/products/${product?.id}`, tooltip: 'Previous Product' }}
+                            // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
+                            // back={{ href: '/products', tooltip: 'Back to Products' }}
+                        />
                     </div>
                 </div>
                 {/* <!-- map --> */}
@@ -98,7 +108,7 @@ const Contact =()=>{
                 {/* <!-- /form --> */}
                 <Footer />
             </div>
-            <Extras />
+            <Extras  categories={categories} />
         </div>
     )
 }

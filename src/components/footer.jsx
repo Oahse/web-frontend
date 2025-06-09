@@ -42,6 +42,11 @@ const Footer = () => {
                   </ul>
                   <Link to="contact-1.html" className="tf-btn btn-line">Get direction<i className="icon icon-arrow1-top-left"></i></Link>
                   <ul className="tf-social-icon d-flex gap-10">
+                    <li>
+                            <Link to="#" className="box-icon w_34 round social-google social-line">
+                                <img src="https://imagepng.org/wp-content/uploads/2019/08/google-icon-1.png" alt="Google" style={{ width: 16, height: 16 }} />
+                            </Link>
+                        </li>
                     <li><Link to="#" className="box-icon w_34 round social-facebook social-line"><i className="icon fs-14 icon-fb"></i></Link></li>
                     <li><Link to="#" className="box-icon w_34 round social-twiter social-line"><i className="icon fs-12 icon-Icon-x"></i></Link></li>
                     <li><Link to="#" className="box-icon w_34 round social-instagram social-line"><i className="icon fs-14 icon-instagram"></i></Link></li>

@@ -7,7 +7,7 @@ import AccountSideBar from './accountsidebar';
 import Extras from '@/components/extra';
 import BreadCrumbs from '@/components/breadcrumbs';
 
-const AccountOrdersDetails =()=>{
+const AccountOrdersDetails =({categories=[]})=>{
     const [loading, setLoading] = useState(false);
     
     return(
@@ -197,18 +197,8 @@ const AccountOrdersDetails =()=>{
                 </div>
                 <Footer />
             </div>
-            {/* <!-- sidebar account--> */}
-            <div className="offcanvas offcanvas-start canvas-filter canvas-sidebar canvas-sidebar-account" id="mbAccount">
-                <div className="canvas-wrapper">
-                    <header className="canvas-header">
-                        <span className="title">SIDEBAR ACCOUNT</span>
-                        <span className="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
-                    </header>
-                    <div className="canvas-body sidebar-mobile-append"></div>
-                </div>
-            </div>
-            {/* <!-- End sidebar account --> */}
-            <Extras />
+            
+            <Extras categories={categories}  active={1}/>
         </div>
     )
 }

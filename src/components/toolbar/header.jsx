@@ -1,4 +1,3 @@
-import React from 'react';
 
 import logo from '@/assets/images/logo/banwe_logo_text_green.png';
 import Search from '@/components/form/Search';
@@ -124,11 +123,16 @@ const Header =()=>{
                                           aria-controls="offcanvasLeft" className="nav-icon-item"><i
                                               className="icon icon-search"></i></a></li>
                                   
-                                  {isLoggedIn ?<li className="nav-account"><a href="/login" 
+                                  {isLoggedIn ?<li className="nav-account"><Link to="/login" 
                                           className="nav-icon-item align-items-center gap-10"><i
-                                              className="icon icon-account"></i> <span className="text">Log Out</span></a></li>: <li className="nav-account"><a href="#login" data-bs-toggle="modal"
-                                          className="nav-icon-item align-items-center gap-10"><i
-                                              className="icon icon-account"></i> <span className="text">Login</span></a></li>}
+                                              className="icon icon-account"></i> <span className="text">Log Out</span></Link></li>
+                                              : 
+                                              <li className="nav-account">
+                                                    <Link to="/login" className="nav-icon-item align-items-center gap-10">
+                                                            <i className="icon icon-account"></i> 
+                                                            <span className="text">Login</span>
+                                                    </Link>
+                                              </li>}
                                   {isLoggedIn && <li className="nav-account cart-lg"><Link to="/admin/"
                                           className="nav-icon-item align-items-center gap-10"><i
                                               className="icon icon-account"></i> <span className="text">Admin</span></Link></li>}
@@ -146,272 +150,539 @@ const Header =()=>{
                       </div>
                   </div>
               </div>
-              <div className="header-bottom line tf-md-hidden">
-                  <div className="container">
-                      <div className="wrapper-header d-flex justify-content-between align-items-center">
-                          <div className="box-left">
-                              <div className="tf-list-categories">
-                                  <a href="#" className="categories-title">
-                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
-                                          fill="none">
-                                          <path
-                                              d="M4.83416 0H1.61897C0.726277 0 0 0.726277 0 1.61897V4.83416C0 5.72685 0.726277 6.45312 1.61897 6.45312H4.83416C5.72685 6.45312 6.45312 5.72685 6.45312 4.83416V1.61897C6.45312 0.726277 5.72685 0 4.83416 0ZM5.35938 4.83416C5.35938 5.12375 5.12375 5.35938 4.83416 5.35938H1.61897C1.32937 5.35938 1.09375 5.12375 1.09375 4.83416V1.61897C1.09375 1.32937 1.32937 1.09375 1.61897 1.09375H4.83416C5.12375 1.09375 5.35938 1.32937 5.35938 1.61897V4.83416ZM12.3594 0H9.1875C8.28286 0 7.54688 0.735984 7.54688 1.64062V4.8125C7.54688 5.71714 8.28286 6.45312 9.1875 6.45312H12.3594C13.264 6.45312 14 5.71714 14 4.8125V1.64062C14 0.735984 13.264 0 12.3594 0ZM12.9062 4.8125C12.9062 5.11405 12.6609 5.35938 12.3594 5.35938H9.1875C8.88595 5.35938 8.64062 5.11405 8.64062 4.8125V1.64062C8.64062 1.33908 8.88595 1.09375 9.1875 1.09375H12.3594C12.6609 1.09375 12.9062 1.33908 12.9062 1.64062V4.8125ZM4.83416 7.54688H1.61897C0.726277 7.54688 0 8.27315 0 9.16584V12.381C0 13.2737 0.726277 14 1.61897 14H4.83416C5.72685 14 6.45312 13.2737 6.45312 12.381V9.16584C6.45312 8.27315 5.72685 7.54688 4.83416 7.54688ZM5.35938 12.381C5.35938 12.6706 5.12375 12.9062 4.83416 12.9062H1.61897C1.32937 12.9062 1.09375 12.6706 1.09375 12.381V9.16584C1.09375 8.87625 1.32937 8.64062 1.61897 8.64062H4.83416C5.12375 8.64062 5.35938 8.87625 5.35938 9.16584V12.381ZM12.3594 7.54688H9.1875C8.28286 7.54688 7.54688 8.28286 7.54688 9.1875V12.3594C7.54688 13.264 8.28286 14 9.1875 14H12.3594C13.264 14 14 13.264 14 12.3594V9.1875C14 8.28286 13.264 7.54688 12.3594 7.54688ZM12.9062 12.3594C12.9062 12.6609 12.6609 12.9062 12.3594 12.9062H9.1875C8.88595 12.9062 8.64062 12.6609 8.64062 12.3594V9.1875C8.64062 8.88595 8.88595 8.64062 9.1875 8.64062H12.3594C12.6609 8.64062 12.9062 8.88595 12.9062 9.1875V12.3594Z"
-                                              fill="currentColor"></path>
-                                      </svg>
-                                      Browse All Categories
-                                  </a>
-                                  <div className="list-categories-inner toolbar-shop-mobile">
-                                    <ul className="nav-ul-mb" id="wrapper-menu-navigation">
-                                        {categories.map((category, index) => (
-                                            <li key={index} className="nav-mb-item">
-                                            <Link 
-                                                to={category.items ? `#cate-menu-${category.name}` : "/products"} 
-                                                className={`tf-category-link ${category.items ? 'has-children' : ''} collapsed mb-menu-link`} 
-                                                data-bs-toggle={category.items ? "collapse" : undefined} 
-                                                aria-expanded="false" 
-                                                aria-controls={category.items ? `cate-menu-${category.name}` : undefined}
-                                            >
-                                                <div className="image">
-                                                <img src={category.image} alt={category.name} />
-                                                </div>
-                                                <span className="link">{category.name}</span>
-                                                {category.items && <span className="btn-open-sub"></span>}
-                                            </Link>
+                <div className="header-bottom line tf-md-hidden">
+                    <div className="container">
+                        <div className="wrapper-header d-flex justify-content-between align-items-center">
+                            <div className="box-left">
+                                <div className="tf-list-categories">
+                                    <a href="#" className="categories-title">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                            fill="none">
+                                            <path
+                                                d="M4.83416 0H1.61897C0.726277 0 0 0.726277 0 1.61897V4.83416C0 5.72685 0.726277 6.45312 1.61897 6.45312H4.83416C5.72685 6.45312 6.45312 5.72685 6.45312 4.83416V1.61897C6.45312 0.726277 5.72685 0 4.83416 0ZM5.35938 4.83416C5.35938 5.12375 5.12375 5.35938 4.83416 5.35938H1.61897C1.32937 5.35938 1.09375 5.12375 1.09375 4.83416V1.61897C1.09375 1.32937 1.32937 1.09375 1.61897 1.09375H4.83416C5.12375 1.09375 5.35938 1.32937 5.35938 1.61897V4.83416ZM12.3594 0H9.1875C8.28286 0 7.54688 0.735984 7.54688 1.64062V4.8125C7.54688 5.71714 8.28286 6.45312 9.1875 6.45312H12.3594C13.264 6.45312 14 5.71714 14 4.8125V1.64062C14 0.735984 13.264 0 12.3594 0ZM12.9062 4.8125C12.9062 5.11405 12.6609 5.35938 12.3594 5.35938H9.1875C8.88595 5.35938 8.64062 5.11405 8.64062 4.8125V1.64062C8.64062 1.33908 8.88595 1.09375 9.1875 1.09375H12.3594C12.6609 1.09375 12.9062 1.33908 12.9062 1.64062V4.8125ZM4.83416 7.54688H1.61897C0.726277 7.54688 0 8.27315 0 9.16584V12.381C0 13.2737 0.726277 14 1.61897 14H4.83416C5.72685 14 6.45312 13.2737 6.45312 12.381V9.16584C6.45312 8.27315 5.72685 7.54688 4.83416 7.54688ZM5.35938 12.381C5.35938 12.6706 5.12375 12.9062 4.83416 12.9062H1.61897C1.32937 12.9062 1.09375 12.6706 1.09375 12.381V9.16584C1.09375 8.87625 1.32937 8.64062 1.61897 8.64062H4.83416C5.12375 8.64062 5.35938 8.87625 5.35938 9.16584V12.381ZM12.3594 7.54688H9.1875C8.28286 7.54688 7.54688 8.28286 7.54688 9.1875V12.3594C7.54688 13.264 8.28286 14 9.1875 14H12.3594C13.264 14 14 13.264 14 12.3594V9.1875C14 8.28286 13.264 7.54688 12.3594 7.54688ZM12.9062 12.3594C12.9062 12.6609 12.6609 12.9062 12.3594 12.9062H9.1875C8.88595 12.9062 8.64062 12.6609 8.64062 12.3594V9.1875C8.64062 8.88595 8.88595 8.64062 9.1875 8.64062H12.3594C12.6609 8.64062 12.9062 8.88595 12.9062 9.1875V12.3594Z"
+                                                fill="currentColor"></path>
+                                        </svg>
+                                        Browse All Categories
+                                    </a>
+                                    <div className="list-categories-inner toolbar-shop-mobile">
+                                        <ul className="nav-ul-mb" id="wrapper-menu-navigation">
+                                            {categories.map((category, index) => (
+                                                <li key={index} className="nav-mb-item">
+                                                <Link 
+                                                    to={category.items ? `#cate-menu-${category.name}` : "/products"} 
+                                                    className={`tf-category-link ${category.items ? 'has-children' : ''} collapsed mb-menu-link`} 
+                                                    data-bs-toggle={category.items ? "collapse" : undefined} 
+                                                    aria-expanded="false" 
+                                                    aria-controls={category.items ? `cate-menu-${category.name}` : undefined}
+                                                >
+                                                    <div className="image">
+                                                    <img src={category.image} alt={category.name} />
+                                                    </div>
+                                                    <span className="link">{category.name}</span>
+                                                    {category.items && <span className="btn-open-sub"></span>}
+                                                </Link>
 
-                                            {category.items && (
-                                                <div id={`cate-menu-${category.name}`} className="collapse list-cate">
-                                                <ul className="sub-nav-menu">
-                                                    {category.items.map((item, itemIndex) => (
-                                                    <li key={itemIndex}>
-                                                        <Link to="/products/2" 
-                                                        className="tf-category-link sub-nav-link"
-                                                        >
-                                                        <div className="image">
-                                                            <img src={item.image} alt={item.name} />
+                                                {category.items && (
+                                                    <div id={`cate-menu-${category.name}`} className="collapse list-cate">
+                                                    <ul className="sub-nav-menu">
+                                                        {category.items.map((item, itemIndex) => (
+                                                        <li key={itemIndex}>
+                                                            <Link to="/products/2" 
+                                                            className="tf-category-link sub-nav-link"
+                                                            >
+                                                            <div className="image">
+                                                                <img src={item.image} alt={item.name} />
+                                                            </div>
+                                                            <span>{item.name}</span>
+                                                            </Link>
+                                                        </li>
+                                                        ))}
+                                                    </ul>
+                                                    </div>
+                                                )}
+                                                </li>
+                                            ))}
+                                            </ul>
+                                        <div className="categories-bottom">
+                                            <a href="shop-collection-sub.html"
+                                                className="tf-btn btn-line collection-other-link"><span>View all
+                                                    collection</span><i className="icon icon-arrow1-top-left"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <nav className="box-navigation text-center">
+                                    <ul className="box-nav-ul d-flex align-items-center justify-content-center gap-30">
+                                        <li className="menu-item">
+                                           <Link to="/" className="item-link">Home</Link>
+                                        </li>
+                                        {/* <li className="menu-item">
+                                            <a href="#" className="item-link">Today’s Deals<i className="icon icon-arrow-down"></i></a>
+                                            <div className="sub-menu mega-menu">
+                                                <div className="container">
+                                                    <div className="row-demo">
+                                                        <div className="demo-item">
+                                                            <a href="index-2.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-01.jpg"
+                                                                        src="images/demo/home-01.jpg" alt="home-01"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                        <span>Trend</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 01</span>
+                                                            </a>
                                                         </div>
-                                                        <span>{item.name}</span>
-                                                        </Link>
-                                                    </li>
-                                                    ))}
-                                                </ul>
+                                                        <div className="demo-item">
+                                                            <a href="home-multi-brand.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-multi-brand.jpg"
+                                                                        src="images/demo/home-multi-brand.jpg"
+                                                                        alt="home-multi-brand"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                        <span className="demo-hot">Hot</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Multi Brand</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-02.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-02.jpg"
+                                                                        src="images/demo/home-02.jpg" alt="home-02"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-hot">Hot</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 02</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-03.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-03.jpg"
+                                                                        src="images/demo/home-03.jpg" alt="home-03"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 03</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-04.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-04.jpg"
+                                                                        src="images/demo/home-04.jpg" alt="home-04"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 04</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-05.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-05.jpg"
+                                                                        src="images/demo/home-05.jpg" alt="home-05"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 05</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-06.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-06.jpg"
+                                                                        src="images/demo/home-06.jpg" alt="home-06"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 06</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item position-relative">
+                                                            <a href="home-drinkwear.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-drinkwear.png"
+                                                                        src="images/demo/home-drinkwear.png"
+                                                                        alt="home-personalized-pod"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Drinkwear</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item position-relative">
+                                                            <a href="home-supplement.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-supplement.png"
+                                                                        src="images/demo/home-supplement.png"
+                                                                        alt="home-personalized-pod"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Supplement</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-personalized-pod.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-personalized-pod.jpg"
+                                                                        src="images/demo/home-personalized-pod.jpg"
+                                                                        alt="home-personalized-pod"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Personalized Pod</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-pickleball.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-pickleball.png"
+                                                                        src="images/demo/home-pickleball.png"
+                                                                        alt="home-pickleball"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Pickleball</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-ceramic.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-ceramic.png"
+                                                                        src="images/demo/home-ceramic.png" alt="home-ceramic"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Ceramic</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-center view-all-demo">
+                                                        <a href="#modalDemo" data-bs-toggle="modal"
+                                                            className="tf-btn btn-xl btn-fill radius-3 animate-hover-btn fw-6"><span>View
+                                                                all demos (48+)</span><i
+                                                                className="icon icon-arrow-right"></i></a>
+                                                    </div>
                                                 </div>
-                                            )}
-                                            </li>
-                                        ))}
-                                        </ul>
-                                      <div className="categories-bottom">
-                                          <a href="shop-collection-sub.html"
-                                              className="tf-btn btn-line collection-other-link"><span>View all
-                                                  collection</span><i className="icon icon-arrow1-top-left"></i></a>
-                                      </div>
-                                  </div>
-                              </div>
-                              <nav className="box-navigation text-center">
-                                  <ul className="box-nav-ul d-flex align-items-center justify-content-center gap-30">
-                                      <li className="menu-item">
-                                          <a href="#" className="item-link">Home<i className="icon icon-arrow-down"></i></a>
-                                          <div className="sub-menu mega-menu">
-                                              <div className="container">
-                                                  <div className="row-demo">
-                                                      <div className="demo-item">
-                                                          <a href="index-2.html">
-                                                              <div className="demo-image position-relative">
-                                                                  <img className="lazyload" data-src="images/demo/home-01.jpg"
-                                                                      src="images/demo/home-01.jpg" alt="home-01"/>
-                                                                  <div className="demo-label">
-                                                                      <span className="demo-new">New</span>
-                                                                      <span>Trend</span>
-                                                                  </div>
-                                                              </div>
-                                                              <span className="demo-name">Home Fashion 01</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-multi-brand.html">
-                                                              <div className="demo-image position-relative">
-                                                                  <img className="lazyload"
-                                                                      data-src="images/demo/home-multi-brand.jpg"
-                                                                      src="images/demo/home-multi-brand.jpg"
-                                                                      alt="home-multi-brand"/>
-                                                                  <div className="demo-label">
-                                                                      <span className="demo-new">New</span>
-                                                                      <span className="demo-hot">Hot</span>
-                                                                  </div>
-                                                              </div>
-                                                              <span className="demo-name">Home Multi Brand</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-02.html">
-                                                              <div className="demo-image position-relative">
-                                                                  <img className="lazyload" data-src="images/demo/home-02.jpg"
-                                                                      src="images/demo/home-02.jpg" alt="home-02"/>
-                                                                  <div className="demo-label">
-                                                                      <span className="demo-hot">Hot</span>
-                                                                  </div>
-                                                              </div>
-                                                              <span className="demo-name">Home Fashion 02</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-03.html">
-                                                              <div className="demo-image">
-                                                                  <img className="lazyload" data-src="images/demo/home-03.jpg"
-                                                                      src="images/demo/home-03.jpg" alt="home-03"/>
-                                                              </div>
-                                                              <span className="demo-name">Home Fashion 03</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-04.html">
-                                                              <div className="demo-image">
-                                                                  <img className="lazyload" data-src="images/demo/home-04.jpg"
-                                                                      src="images/demo/home-04.jpg" alt="home-04"/>
-                                                              </div>
-                                                              <span className="demo-name">Home Fashion 04</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-05.html">
-                                                              <div className="demo-image">
-                                                                  <img className="lazyload" data-src="images/demo/home-05.jpg"
-                                                                      src="images/demo/home-05.jpg" alt="home-05"/>
-                                                              </div>
-                                                              <span className="demo-name">Home Fashion 05</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-06.html">
-                                                              <div className="demo-image position-relative">
-                                                                  <img className="lazyload" data-src="images/demo/home-06.jpg"
-                                                                      src="images/demo/home-06.jpg" alt="home-06"/>
-                                                              </div>
-                                                              <span className="demo-name">Home Fashion 06</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item position-relative">
-                                                          <a href="home-drinkwear.html">
-                                                              <div className="demo-image">
-                                                                  <img className="lazyload"
-                                                                      data-src="images/demo/home-drinkwear.png"
-                                                                      src="images/demo/home-drinkwear.png"
-                                                                      alt="home-personalized-pod"/>
-                                                                  <div className="demo-label">
-                                                                      <span className="demo-new">New</span>
-                                                                  </div>
-                                                              </div>
-                                                              <span className="demo-name">Home Drinkwear</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item position-relative">
-                                                          <a href="home-supplement.html">
-                                                              <div className="demo-image">
-                                                                  <img className="lazyload"
-                                                                      data-src="images/demo/home-supplement.png"
-                                                                      src="images/demo/home-supplement.png"
-                                                                      alt="home-personalized-pod"/>
-                                                                  <div className="demo-label">
-                                                                      <span className="demo-new">New</span>
-                                                                  </div>
-                                                              </div>
-                                                              <span className="demo-name">Home Supplement</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-personalized-pod.html">
-                                                              <div className="demo-image">
-                                                                  <img className="lazyload"
-                                                                      data-src="images/demo/home-personalized-pod.jpg"
-                                                                      src="images/demo/home-personalized-pod.jpg"
-                                                                      alt="home-personalized-pod"/>
-                                                              </div>
-                                                              <span className="demo-name">Home Personalized Pod</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-pickleball.html">
-                                                              <div className="demo-image">
-                                                                  <img className="lazyload"
-                                                                      data-src="images/demo/home-pickleball.png"
-                                                                      src="images/demo/home-pickleball.png"
-                                                                      alt="home-pickleball"/>
-                                                              </div>
-                                                              <span className="demo-name">Home Pickleball</span>
-                                                          </a>
-                                                      </div>
-                                                      <div className="demo-item">
-                                                          <a href="home-ceramic.html">
-                                                              <div className="demo-image">
-                                                                  <img className="lazyload"
-                                                                      data-src="images/demo/home-ceramic.png"
-                                                                      src="images/demo/home-ceramic.png" alt="home-ceramic"/>
-                                                              </div>
-                                                              <span className="demo-name">Home Ceramic</span>
-                                                          </a>
-                                                      </div>
-                                                  </div>
-                                                  <div className="text-center view-all-demo">
-                                                      <a href="#modalDemo" data-bs-toggle="modal"
-                                                          className="tf-btn btn-xl btn-fill radius-3 animate-hover-btn fw-6"><span>View
-                                                              all demos (48+)</span><i
-                                                              className="icon icon-arrow-right"></i></a>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </li>
+                                            </div>
+                                        </li>
+                                        <li className="menu-item">
+                                            <a href="#" className="item-link">Trending<i className="icon icon-arrow-down"></i></a>
+                                            <div className="sub-menu mega-menu">
+                                                <div className="container">
+                                                    <div className="row-demo">
+                                                        <div className="demo-item">
+                                                            <a href="index-2.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-01.jpg"
+                                                                        src="images/demo/home-01.jpg" alt="home-01"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                        <span>Trend</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 01</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-multi-brand.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-multi-brand.jpg"
+                                                                        src="images/demo/home-multi-brand.jpg"
+                                                                        alt="home-multi-brand"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                        <span className="demo-hot">Hot</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Multi Brand</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-02.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-02.jpg"
+                                                                        src="images/demo/home-02.jpg" alt="home-02"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-hot">Hot</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 02</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-03.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-03.jpg"
+                                                                        src="images/demo/home-03.jpg" alt="home-03"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 03</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-04.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-04.jpg"
+                                                                        src="images/demo/home-04.jpg" alt="home-04"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 04</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-05.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-05.jpg"
+                                                                        src="images/demo/home-05.jpg" alt="home-05"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 05</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-06.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-06.jpg"
+                                                                        src="images/demo/home-06.jpg" alt="home-06"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 06</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item position-relative">
+                                                            <a href="home-drinkwear.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-drinkwear.png"
+                                                                        src="images/demo/home-drinkwear.png"
+                                                                        alt="home-personalized-pod"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Drinkwear</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item position-relative">
+                                                            <a href="home-supplement.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-supplement.png"
+                                                                        src="images/demo/home-supplement.png"
+                                                                        alt="home-personalized-pod"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Supplement</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-personalized-pod.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-personalized-pod.jpg"
+                                                                        src="images/demo/home-personalized-pod.jpg"
+                                                                        alt="home-personalized-pod"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Personalized Pod</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-pickleball.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-pickleball.png"
+                                                                        src="images/demo/home-pickleball.png"
+                                                                        alt="home-pickleball"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Pickleball</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-ceramic.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-ceramic.png"
+                                                                        src="images/demo/home-ceramic.png" alt="home-ceramic"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Ceramic</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-center view-all-demo">
+                                                        <a href="#modalDemo" data-bs-toggle="modal"
+                                                            className="tf-btn btn-xl btn-fill radius-3 animate-hover-btn fw-6"><span>View
+                                                                all demos (48+)</span><i
+                                                                className="icon icon-arrow-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="menu-item">
+                                            <a href="#" className="item-link">Shop the Look<i className="icon icon-arrow-down"></i></a>
+                                            <div className="sub-menu mega-menu">
+                                                <div className="container">
+                                                    <div className="row-demo">
+                                                        <div className="demo-item">
+                                                            <a href="index-2.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-01.jpg"
+                                                                        src="images/demo/home-01.jpg" alt="home-01"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                        <span>Trend</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 01</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-multi-brand.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-multi-brand.jpg"
+                                                                        src="images/demo/home-multi-brand.jpg"
+                                                                        alt="home-multi-brand"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                        <span className="demo-hot">Hot</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Multi Brand</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-02.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-02.jpg"
+                                                                        src="images/demo/home-02.jpg" alt="home-02"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-hot">Hot</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 02</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-03.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-03.jpg"
+                                                                        src="images/demo/home-03.jpg" alt="home-03"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 03</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-04.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-04.jpg"
+                                                                        src="images/demo/home-04.jpg" alt="home-04"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 04</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-05.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload" data-src="images/demo/home-05.jpg"
+                                                                        src="images/demo/home-05.jpg" alt="home-05"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 05</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-06.html">
+                                                                <div className="demo-image position-relative">
+                                                                    <img className="lazyload" data-src="images/demo/home-06.jpg"
+                                                                        src="images/demo/home-06.jpg" alt="home-06"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Fashion 06</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item position-relative">
+                                                            <a href="home-drinkwear.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-drinkwear.png"
+                                                                        src="images/demo/home-drinkwear.png"
+                                                                        alt="home-personalized-pod"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Drinkwear</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item position-relative">
+                                                            <a href="home-supplement.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-supplement.png"
+                                                                        src="images/demo/home-supplement.png"
+                                                                        alt="home-personalized-pod"/>
+                                                                    <div className="demo-label">
+                                                                        <span className="demo-new">New</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="demo-name">Home Supplement</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-personalized-pod.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-personalized-pod.jpg"
+                                                                        src="images/demo/home-personalized-pod.jpg"
+                                                                        alt="home-personalized-pod"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Personalized Pod</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-pickleball.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-pickleball.png"
+                                                                        src="images/demo/home-pickleball.png"
+                                                                        alt="home-pickleball"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Pickleball</span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="demo-item">
+                                                            <a href="home-ceramic.html">
+                                                                <div className="demo-image">
+                                                                    <img className="lazyload"
+                                                                        data-src="images/demo/home-ceramic.png"
+                                                                        src="images/demo/home-ceramic.png" alt="home-ceramic"/>
+                                                                </div>
+                                                                <span className="demo-name">Home Ceramic</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-center view-all-demo">
+                                                        <a href="#modalDemo" data-bs-toggle="modal"
+                                                            className="tf-btn btn-xl btn-fill radius-3 animate-hover-btn fw-6"><span>View
+                                                                all demos (48+)</span><i
+                                                                className="icon icon-arrow-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> */}
                                       
-                                      <li className="menu-item position-relative">
-                                          <a href="#" className="item-link">Pages<i className="icon icon-arrow-down"></i></a>
-                                          <div className="sub-menu submenu-default">
-                                              <ul className="menu-list">
-                                                  <li>
-                                                      <Link to="/about"
-                                                          className="menu-link-text link text_black-2">About us</Link>
-                                                  </li>
-                                                  
-                                                  <li>
-                                                      <Link to="/contact" className="menu-link-text link text_black-2">Contact</Link>
-                                                  </li>
-                                                  <li>
-                                                      <Link to="/faq" className="menu-link-text link text_black-2">FAQ</Link>
-                                                  </li>
-                                                  
-                                                  
-                                                  <li className="menu-item-2">
-                                                      <a href="#" className="menu-link-text link text_black-2">My account</a>
-                                                      <div className="sub-menu submenu-default">
-                                                          <ul className="menu-list">
-                                                              <li><a href="my-account.html"
-                                                                      className="menu-link-text link text_black-2">My
-                                                                      account</a></li>
-                                                              <li><a href="my-account-orders.html"
-                                                                      className="menu-link-text link text_black-2">My
-                                                                      order</a></li>
-                                                              <li><a href="my-account-orders-details.html"
-                                                                      className="menu-link-text link text_black-2">My order
-                                                                      details</a></li>
-                                                              <li><a href="my-account-address.html"
-                                                                      className="menu-link-text link text_black-2">My
-                                                                      address</a></li>
-                                                              <li><a href="my-account-edit.html"
-                                                                      className="menu-link-text link text_black-2">My account
-                                                                      details</a></li>
-                                                              <li><a href="my-account-wishlist.html"
-                                                                      className="menu-link-text link text_black-2">My
-                                                                      wishlist</a></li>
-                                                          </ul>
-                                                      </div>
-                                                  </li>
-                                                  
-
-                                              </ul>
-                                          </div>
-                                      </li>
-                                      <li className="menu-item">
-                                          <Link to="/blog" className="item-link">Blog</Link>
-                                      </li>
-                                  </ul>
-                              </nav>
+                                        <li className="menu-item">
+                                            <Link to="/about" className="item-link">About</Link>
+                                        </li>
+                                        <li className="menu-item">
+                                            <Link to="/contact" className="item-link">Contact</Link>
+                                        </li>
+                                        <li className="menu-item">
+                                            <Link to="/faq" className="item-link">Faq</Link>
+                                        </li>
+                                        <li className="menu-item">
+                                            <Link to="/blog" className="item-link">Blog</Link>
+                                        </li>
+                                    </ul>
+                                </nav>
                           </div>
                           <div className="box-right">
                               <div className="icon">

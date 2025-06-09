@@ -1,22 +1,36 @@
 import PropTypes from 'prop-types';
 import Icon from '../Button/Icon';
+import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Search = ({ action = 'https://themesflat.co/html/ecomus/home-search.html', results = [],onSearch = () => {}}) => {
+// import ai from '@/assets/images/avatar/google-gemini-icon.svg';
+const Search = ({ results = [],onSearch = () => {}}) => {
+  const navigate = useNavigate();
+    const [value, setValue] = useState('')
     
-    const handleOnSearch =(e)=>{
-        e.preventDefault();
-        onSearch(e);
+    const handleOnSearch =(value)=>{
+        navigate(`/products/search`, { state: { search: value } });
     }
+  
+    
     return (
     <div className="tf-form-search">
-      <form action={action} className="search-box" onSubmit={handleOnSearch}>
-        <input type="text" placeholder="Search product" />
-        <button className="tf-btn" type="submit">
-          <Icon icon={'icon-search'} />
-        </button>
-      </form>
+        <div className="search-box">
+            <input type="text" placeholder="Search product" value={value} onChange={(e)=>setValue(e.target.value)}/>
+            
+            <span className="tf-btn-span ">
+                <a className="tf-btn"  href="#camera" data-bs-toggle="modal">
+                  <Icon icon={'icon-ai-camera'} title='adad' /> <span className='ms-1 text-white'>AI</span>
+                </a>
+                
+                <button className="tf-btn ms-1" onClick={()=>handleOnSearch(value)}>
+                  <Icon icon={'icon-search'} />
+                </button>
+            </span>
+        </div>
+        
 
-      {results.length > 0 && (
+      {(results.length > 0 && value.length > 0) && (
         <div className="search-suggests-results">
           <div className="search-suggests-results-inner">
             <ul>

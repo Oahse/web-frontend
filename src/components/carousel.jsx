@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Swiper from 'swiper';
 // import 'swiper/swiper-bundle.css';  // Make sure to import Swiper's styles
 
@@ -63,26 +64,28 @@ const Carousel = ({ items = [], pagination = true }) => {
                 <div className="wrap-slider">
                   <img
                     className="lazyload"
-                    data-src={item.img}
-                    src={item.img}
+                    data-src={item?.img || item.images[0]}
+                    src={item?.img || item.images[0]}
                     alt={`hp-slideshow-0${index}`}
+                    style={{maxHeight:'600px'}}
                   />
                   <div className="box-content">
                     <div className="container">
                       <h2 className="fade-item fade-item-2 fw-6 heading">
-                        {item.headingone}
+                        {item?.headingone || item?.name?.trim().split(" ").slice(0, -1).join(" ")}
                         <br />
-                        {item.headingtwo}
+                        {item?.headingtwo || item?.name?.trim().split(" ").pop()}
                       </h2>
-                      <p className="fade-item fade-item-1 fw-6 d-block">{item.body}</p>
+                      <p className="fade-item fade-item-1 fw-6 d-block">{item?.body || item?.description?.desc}</p>
                       <div className="fade-item fade-item-3">
-                        <a
-                          href="shop-default.html"
+                        <Link
+                          to={item.link || `/products/${item?.id}`}
+                          state={{ product: item }}
                           className="tf-btn btn-fill animate-hover-btn btn-xl radius-60"
                         >
-                          <span>{item.btntext}</span>
+                          <span>{item.btntext || `Buy Now`}</span>
                           <i className="icon icon-arrow-right"></i>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>

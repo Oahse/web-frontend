@@ -3,12 +3,13 @@ import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
-import Extras from '@/components/extra'
-const Blog =()=>{
+import Extras from '@/components/extra';
+import BreadCrumbs from '@/components/breadcrumbs';
+
+const Blog =({categories=[]})=>{
     const [loading, setLoading] = useState(false);
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
             
             {loading && <Loader />} 
             
@@ -20,18 +21,17 @@ const Blog =()=>{
                     <div className="container-full">
                         <div className="row">
                             <div className="col-12">
-                                <div className="heading text-center">Right Sidebar</div>
-                                <ul className="breadcrumbs d-flex align-items-center justify-content-center">
-                                    <li>
-                                        <a href="index-2.html">Home</a>
-                                    </li>
-                                    <li>
-                                        <i className="icon-arrow-right"></i>
-                                    </li>
-                                    <li>
-                                        Blog Right Sidebar
-                                    </li>
-                                </ul>
+                                <div className="heading text-center">Blog</div>
+                                <BreadCrumbs
+                                    dir='center'
+                                    links={[
+                                        { name: 'Home', href: '/' },
+                                        { name: 'Blog' }
+                                    ]}
+                                    // prev={{ href: `/products/${product?.id}`, tooltip: 'Previous Product' }}
+                                    // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
+                                    // back={{ href: '/products', tooltip: 'Back to Products' }}
+                                />
                             </div>
                         </div>
                     </div>
@@ -344,7 +344,7 @@ const Blog =()=>{
                 {/* <!-- /blog-grid-main --> */}
                 <Footer />
             </div>
-            <Extras />
+            <Extras categories={categories} />
         </div>
     )
 }

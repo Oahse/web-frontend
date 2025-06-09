@@ -12,29 +12,182 @@ import { ToastContainer, notify } from '@/services/notifications/ui';
 
 import QuantitySelector from '@/components/quantityselector';
 import VariantPicker from '@/components/variantpicker';
-
-const Extras  =({categories=[], product=null, amount=1})=>{
-    const items = [
-        { image: grocery1, alt: 'Grocery Item 1' },
-        { image: grocery2, alt: 'Grocery Item 2' },
-        // Add more items as needed
-      ];
-    const addToCart = (product, amount) => {
-    // notify(`${amount} ${product?.name} has been added to cart`)
-    notify({ text: `${amount} ${product?.name} has been added to cart`, type: 'success' });
-    console.log(amount, product?.name,'has been added to cart')
-    };
-
-    const addToWishList = (product, amount) => {
-        notify({ text: `${amount} ${product?.name} has been added to wishlist`, type: 'success' });
-        console.log(amount, product?.name,'has been added to wishlist');
-    };
-
-    const getDiscountPrice = (price, discount) => {
-        return (price-(price * (discount / 100))).toFixed(2);
-    };
-
+import Camera from '@/components/form/Camera';
+import AccountNavBar from '@/pages/auth/accountnavbar';
+import Search2 from '@/components/form/Search2';
+import { handleAddToCart,handleAddToWishlist, getDiscountPrice } from '@/services/helper';
+import PaymentOptions from '@/components/paymentMethods';
+import { paymentMethods,rateSentence } from '@/services/helper';
+import { sendMessage,editMessage } from "@/services/sockets";
+// console.log("I absolutely love this product!",rateSentence("not bad  at all!")); // 5
+//     console.log("not bad  at all!",rateSentence("not bad  at all!")); // 3
+//     console.log("I hate this thing.",rateSentence("I hate this thing.")); // 1
+const Extras  =({categories=[], product=null, amount=1, active=0, user, paymentMethod, currentComment})=>{
+    
     const [quantity, setQuantity] = useState(amount);
+    const defaultMethod = paymentMethods.find(pm => pm.id === 'credit_card') || paymentMethods[0];
+    const initialMethod = paymentMethod ? paymentMethods.find(pm => pm.id === paymentMethod) : defaultMethod;
+    
+    const [paymentmethod, setpaymentMethod] = useState(initialMethod);
+    const [askformData, setAskFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+    });
+    const [selectedRating, setSelectedRating] = useState(0); // UI feedback only
+    const [editedRating, setEditedRating] = useState(0);
+    const [reviewformData, setReviewFormData] = useState({
+        userid: user?.id || '',
+        userimage: user?.image,
+        username: `${user?.firstname}${user?.firstname}`,
+        datetime: new Date().toISOString(),
+        product_id: product?.id,
+        rating: 0,
+        comment: "",
+    });
+    
+    const [editformData, setEditFormData] = useState(currentComment);
+    
+    
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        setAskFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+    
+    const handleStarClick = (index) => {
+        const newRating = index + 1;
+        setSelectedRating(newRating);
+        setReviewFormData((prev) => ({
+            ...prev,
+            rating: newRating,
+        }));
+
+
+        setEditedRating(newRating);
+        setEditFormData((prev) => ({
+            ...prev,
+            rating: newRating,
+        }));
+    };
+
+    const handleReviewChange = (e) => {
+        const { name, value } = e.target;
+
+        setReviewFormData((prev) => {
+            return {
+                ...prev,
+                [name]: value,
+            };
+        });
+    };
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditFormData((prev) => {
+            return {
+                ...currentComment,
+                [name]: value,
+            };
+        });
+
+    }
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+
+        // Basic validation
+        if (!reviewformData.rating || !reviewformData.comment) {
+        
+            notify({ text: `Please fill in all required fields.`, type: 'error' });
+        return;
+        }
+
+        try {
+            const key = `reviews_${product.id}`;
+            const res = sendMessage(key, JSON.stringify(reviewformData));
+            if (res.success){
+                // Reset form
+                setReviewFormData({
+                    userid: user?.id || '',
+                    userimage: user?.image,
+                    username: `${user?.firstname}${user?.firstname}`,
+                    datetime: new Date().toISOString(),
+                    product_id: product?.id,
+                    rating: 0,
+                    comment: "",
+                });
+                notify({ text: `Review submitted successfully!`, type: 'success' });
+            }else{
+                notify({ text: res.error, type: 'error' });
+            }
+        } catch (error) {
+            notify({ text: `Review submission failed: ${error}!`, type: 'error' });
+        }
+    };
+    const handleReviewEdit = async (e) => {
+        e.preventDefault();
+
+        // Basic validation
+        if (!editformData.rating || !editformData.comment) {
+            notify({ text: `Please fill in all required fields.`, type: 'error' });
+            return;
+        }
+
+        try {
+            const key = `reviews_${product.id}`;
+            const res = editMessage(key, JSON.stringify(editformData));
+            if (res.success){
+                // Reset form
+                setEditFormData({
+                    userid: user?.id || '',
+                    userimage: user?.image,
+                    username: `${user?.firstname}${user?.firstname}`,
+                    datetime: new Date().toISOString(),
+                    product_id: product?.id,
+                    rating: 0,
+                    comment: "",
+                });
+                notify({ text: `Review Edited successfully!`, type: 'success' });
+            }else{
+                notify({ text: res.error, type: 'error' });
+            }
+        } catch (error) {
+            notify({ text: `Review Edit failed: ${error}!`, type: 'error' });
+        }
+    };
+    
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Basic validation
+        if (!askformData.name || !askformData.email || !askformData.message) {
+        alert("Please fill in all required fields.");
+        return;
+        }
+
+        // Log or send the form data (example only)
+        try {
+            // console.log("Form Submitted:", askformData);
+            // alert("Form submitted successfully!");
+            notify({ text: `Ask a question Form submitted successfully!`, type: 'success' });
+
+            // Reset form
+            setAskFormData({
+                name: "",
+                email: "",
+                phone: "",
+                message: "",
+            });
+        } catch (error) {
+            // alert("Something went wrong. Please try again later.");
+            notify({ text: `Ask a question Form submission failed: ${error}!`, type: 'error' });
+        }
+    };
 
     return(
         <>
@@ -46,6 +199,182 @@ const Extras  =({categories=[], product=null, amount=1})=>{
             <BottomToolBar />
             {/* <!-- /toolbar-bottom --> */}
 
+            <div className="modal modalCentered fade modalDemo tf-product-modal modal-part-content" id="edit_review">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="header">
+                            <div className="demo-title">Edit a Review</div>
+                            <span className="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                        </div>
+                        <div className="overflow-y-auto">
+                                <form onSubmit={handleReviewEdit}>
+                                    
+                                    <fieldset className='mb-3'>
+                                        <label className='me-2'>Rating * </label>
+                                            {Array.from({ length: 5 }).map((_, index) => (
+                                                <i
+                                                    key={index}
+                                                    onClick={() => handleStarClick(index)}
+                                                    className={`icon icon-star ${(index < currentComment?.rating || (index < editformData?.rating) || index < editedRating) ? 'icon-active' : 'icon-inactive'}`}
+                                                    style={{ cursor: 'pointer' }}
+                                                ></i>
+                                            ))}
+                                    </fieldset>
+                                    <fieldset>
+                                        <label>Comment</label>
+                                        <textarea name="comment" rows="4" value={editformData?.comment || currentComment?.comment}
+                                            onChange={handleEditChange}></textarea>
+                                    </fieldset>
+                                    <button type="submit" className="tf-btn w-100 btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn">
+                                        <span>Save</span>
+                                    </button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="modal modalCentered fade modalDemo tf-product-modal modal-part-content" id="write_review">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="header">
+                            <div className="demo-title">Write a Review</div>
+                            <span className="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                        </div>
+                        <div className="overflow-y-auto">
+                                <form onSubmit={handleReviewSubmit}>
+                                    
+                                    <fieldset className='mb-3'>
+                                        <label className='me-2'>Rating *</label>
+                                            {Array.from({ length: 5 }).map((_, index) => (
+                                                <i
+                                                    key={index}
+                                                    onClick={() => handleStarClick(index)}
+                                                    className={`icon icon-star ${index < selectedRating ? 'icon-active' : 'icon-inactive'}`}
+                                                    style={{ cursor: 'pointer' }}
+                                                ></i>
+                                            ))}
+
+
+                                    </fieldset>
+                                    <fieldset>
+                                        <label>Comment</label>
+                                        <textarea name="comment" rows="4" value={reviewformData.comment}
+                                            onChange={handleReviewChange}></textarea>
+                                    </fieldset>
+                                    <button type="submit" className="tf-btn w-100 btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn">
+                                        <span>Send</span>
+                                    </button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* <!-- modal ask_question --> */}
+            <div className="modal modalCentered fade modalDemo tf-product-modal modal-part-content" id="ask_question">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="header">
+                            <div className="demo-title">Ask a question</div>
+                            <span className="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                        </div>
+                        <div className="overflow-y-auto">
+                                <form onSubmit={handleSubmit}>
+                                    <fieldset>
+                                        <label>Name *</label>
+                                        <input type="text" name="name" required value={askformData.name}
+                                            onChange={handleChange}/>
+                                    </fieldset>
+                                    <fieldset>
+                                        <label>Email *</label>
+                                        <input type="email" name="email" required value={askformData.email}
+                                                onChange={handleChange}/>
+                                    </fieldset>
+                                    <fieldset>
+                                        <label>Phone number</label>
+                                        <input type="number" name="phone" value={askformData.phone}
+                                            onChange={handleChange}/>
+                                    </fieldset>
+                                    <fieldset>
+                                        <label>Message</label>
+                                        <textarea name="message" rows="4" required value={askformData.message}
+                                            onChange={handleChange}></textarea>
+                                    </fieldset>
+                                    <button type="submit" className="tf-btn w-100 btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn">
+                                        <span>Send</span>
+                                    </button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* <!-- /modal ask_question -->
+
+            <!-- modal delivery_return --> */}
+            <div className="modal modalCentered fade modalDemo tf-product-modal modal-part-content" id="delivery_return">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="header">
+                            <div className="demo-title">Shipping & Delivery</div>
+                            <span className="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                        </div>
+                        <div className="overflow-y-auto">
+                            <div className="tf-product-popup-delivery">
+                                <div className="title">Delivery</div>
+                                <p className="text-paragraph">All orders shipped with UPS Express.</p>
+                                <p className="text-paragraph">Always free shipping for orders over US $250.</p>
+                                <p className="text-paragraph">All orders are shipped with a UPS tracking number.</p>
+                            </div>
+                            <div className="tf-product-popup-delivery">
+                                <div className="title">Returns</div>
+                                <p className="text-paragraph">Items returned within 14 days in like-new condition are eligible for full refund or store credit.</p>
+                                <p className="text-paragraph">Refunds go to the original form of payment.</p>
+                                <p className="text-paragraph">Customer pays return shipping. Original shipping fees are non-refundable.</p>
+                                <p className="text-paragraph">Sale items are final purchase.</p>
+                            </div>
+                            <div className="tf-product-popup-delivery">
+                                <div className="title">Help</div>
+                                <p className="text-paragraph">Need help? Reach out any time.</p>
+                                <p className="text-paragraph">Email: <a href="mailto:contact@domain.com">contact@domain.com</a></p>
+                                <p className="text-paragraph mb-0">Phone: +1 (23) 456 789</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* <!-- /modal delivery_return -->
+
+            <!-- modal share social --> */}
+            <div className="modal modalCentered fade modalDemo tf-product-modal modal-part-content" id="share_social">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="header">
+                            <div className="demo-title">Share</div>
+                            <span className="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                        </div>
+                        <div className="overflow-y-auto">
+                            <ul className="tf-social-icon d-flex gap-10">
+                                <li><a href="#" className="box-icon social-facebook bg_line"><i className="icon icon-fb"></i></a></li>
+                                <li><a href="#" className="box-icon social-twiter bg_line"><i className="icon icon-Icon-x"></i></a></li>
+                                <li><a href="#" className="box-icon social-instagram bg_line"><i className="icon icon-instagram"></i></a></li>
+                                <li><a href="#" className="box-icon social-tiktok bg_line"><i className="icon icon-tiktok"></i></a></li>
+                                <li><a href="#" className="box-icon social-pinterest bg_line"><i className="icon icon-pinterest-1"></i></a></li>
+                            </ul>
+                            <form className="form-share">
+                                <fieldset>
+                                    <input type="text" value="https://themesflat.co/html/ecomus/" readOnly />
+                                </fieldset>
+                                <div className="button-submit">
+                                    <button type="button" className="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn">Copy</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* <!-- /modal share social --> */}
+
             <div className="modal fade modalDemo" id="modalDemo">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
@@ -56,7 +385,7 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                         <div className="mega-menu">
                             <div className="row-demo">
                                 <div className="demo-item">
-                                    <a href="index-2.html">
+                                    <Link to="index-2.html">
                                         <div className="demo-image position-relative">
                                             <img className="lazyload" data-src="images/demo/home-01.jpg"
                                                 src="images/demo/home-01.jpg" alt="home-01"/>
@@ -66,10 +395,10 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                             </div>
                                         </div>
                                         <span className="demo-name">Home Fashion 01</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-multi-brand.html">
+                                    <Link to="home-multi-brand.html">
                                         <div className="demo-image position-relative">
                                             <img className="lazyload" data-src="images/demo/home-multi-brand.jpg"
                                                 src="images/demo/home-multi-brand.jpg" alt="home-multi-brand"/>
@@ -79,10 +408,10 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                             </div>
                                         </div>
                                         <span className="demo-name">Home Multi Brand</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-02.html">
+                                    <Link to="home-02.html">
                                         <div className="demo-image position-relative">
                                             <img className="lazyload" data-src="images/demo/home-02.jpg"
                                                 src="images/demo/home-02.jpg" alt="home-02"/>
@@ -91,46 +420,46 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                             </div>
                                         </div>
                                         <span className="demo-name">Home Fashion 02</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-03.html">
+                                    <Link to="home-03.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-03.jpg"
                                                 src="images/demo/home-03.jpg" alt="home-03"/>
                                         </div>
                                         <span className="demo-name">Home Fashion 03</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-04.html">
+                                    <Link to="home-04.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-04.jpg"
                                                 src="images/demo/home-04.jpg" alt="home-04"/>
                                         </div>
                                         <span className="demo-name">Home Fashion 04</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-05.html">
+                                    <Link to="home-05.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-05.jpg"
                                                 src="images/demo/home-05.jpg" alt="home-05"/>
                                         </div>
                                         <span className="demo-name">Home Fashion 05</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-06.html">
+                                    <Link to="home-06.html">
                                         <div className="demo-image position-relative">
                                             <img className="lazyload" data-src="images/demo/home-06.jpg"
                                                 src="images/demo/home-06.jpg" alt="home-06"/>
                                         </div>
                                         <span className="demo-name">Home Fashion 06</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-drinkwear.html">
+                                    <Link to="home-drinkwear.html">
                                         <div className="demo-image position-relative">
                                             <img className="lazyload" data-src="images/demo/home-drinkwear.png"
                                                 src="images/demo/home-drinkwear.png" alt="home-drinkwear"/>
@@ -139,10 +468,10 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                             </div>
                                         </div>
                                         <span className="demo-name">Home Drinkwear</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-supplement.html">
+                                    <Link to="home-supplement.html">
                                         <div className="demo-image position-relative">
                                             <img className="lazyload" data-src="images/demo/home-supplement.png"
                                                 src="images/demo/home-supplement.png" alt="home-supplement"/>
@@ -151,368 +480,368 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                             </div>
                                         </div>
                                         <span className="demo-name">Home Supplement</span>
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 <div className="demo-item">
-                                    <a href="home-personalized-pod.html">
+                                    <Link to="home-personalized-pod.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-personalized-pod.jpg"
                                                 src="images/demo/home-personalized-pod.jpg" alt="home-personalized-pod"/>
                                         </div>
                                         <span className="demo-name">Home Personalized Pod</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-pickleball.html">
+                                    <Link to="home-pickleball.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-pickleball.png"
                                                 src="images/demo/home-pickleball.png" alt="home-pickleball"/>
                                         </div>
                                         <span className="demo-name">Home Pickleball</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-ceramic.html">
+                                    <Link to="home-ceramic.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-ceramic.png"
                                                 src="images/demo/home-ceramic.png" alt="home-ceramic"/>
                                         </div>
                                         <span className="demo-name">Home Ceramic</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-food.html">
+                                    <Link to="home-food.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-food.png"
                                                 src="images/demo/home-food.png" alt="home-food"/>
                                         </div>
                                         <span className="demo-name">Home Food</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-camp-and-hike.html">
+                                    <Link to="home-camp-and-hike.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-camp-and-hike.png"
                                                 src="images/demo/home-camp-and-hike.png" alt="home-camp-and-hike"/>
                                         </div>
                                         <span className="demo-name">Home Camp And Hike</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-07.html">
+                                    <Link to="home-07.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-07.jpg"
                                                 src="images/demo/home-07.jpg" alt="home-07"/>
                                         </div>
                                         <span className="demo-name">Home Fashion 07</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-08.html">
+                                    <Link to="home-08.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-08.jpg"
                                                 src="images/demo/home-08.jpg" alt="home-08"/>
                                         </div>
                                         <span className="demo-name">Home Fashion 08</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-skincare.html">
+                                    <Link to="home-skincare.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-skincare.jpg"
                                                 src="images/demo/home-skincare.jpg" alt="home-skincare"/>
                                         </div>
                                         <span className="demo-name">Home Skincare</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-headphone.html">
+                                    <Link to="home-headphone.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-headphone.jpg"
                                                 src="images/demo/home-headphone.jpg" alt="home-headphone"/>
                                         </div>
                                         <span className="demo-name">Home Headphone</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-giftcard.html">
+                                    <Link to="home-giftcard.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-giftcard.jpg"
                                                 src="images/demo/home-giftcard.jpg" alt="home-gift-card"/>
                                         </div>
                                         <span className="demo-name">Home Gift Card</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-furniture.html">
+                                    <Link to="home-furniture.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-furniture.jpg"
                                                 src="images/demo/home-furniture.jpg" alt="home-furniture"/>
                                         </div>
                                         <span className="demo-name">Home Furniture</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-furniture-02.html">
+                                    <Link to="home-furniture-02.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-furniture2.jpg"
                                                 src="images/demo/home-furniture2.jpg" alt="home-furniture-2"/>
                                         </div>
                                         <span className="demo-name">Home Furniture 2</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-skateboard.html">
+                                    <Link to="home-skateboard.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-skateboard.jpg"
                                                 src="images/demo/home-skateboard.jpg" alt="home-skateboard"/>
                                         </div>
                                         <span className="demo-name">Home Skateboard</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-stroller.html">
+                                    <Link to="home-stroller.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-stroller.jpg"
                                                 src="images/demo/home-stroller.jpg" alt="home-stroller"/>
                                         </div>
                                         <span className="demo-name">Home Stroller</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-decor.html">
+                                    <Link to="home-decor.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-decor.jpg"
                                                 src="images/demo/home-decor.jpg" alt="home-decor"/>
                                         </div>
                                         <span className="demo-name">Home Decor</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-electronic.html">
+                                    <Link to="home-electronic.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-electronic.jpg"
                                                 src="images/demo/home-electronic.jpg" alt="home-electronic"/>
                                         </div>
                                         <span className="demo-name">Home Electronic</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-setup-gear.html">
+                                    <Link to="home-setup-gear.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-setup-gear.jpg"
                                                 src="images/demo/home-setup-gear.jpg" alt="home-setup-gear"/>
                                         </div>
                                         <span className="demo-name">Home Setup Gear</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-dog-accessories.html">
+                                    <Link to="home-dog-accessories.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-dog-accessories.jpg"
                                                 src="images/demo/home-dog-accessories.jpg" alt="home-dog-accessories"/>
                                         </div>
                                         <span className="demo-name">Home Dog Accessories</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-kitchen-wear.html">
+                                    <Link to="home-kitchen-wear.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-kitchen.jpg"
                                                 src="images/demo/home-kitchen.jpg" alt="home-kitchen-wear"/>
                                         </div>
                                         <span className="demo-name">Home Kitchen Wear</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-phonecase.html">
+                                    <Link to="home-phonecase.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-phonecase.jpg"
                                                 src="images/demo/home-phonecase.jpg" alt="home-phonecase"/>
                                         </div>
                                         <span className="demo-name">Home Phonecase</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-paddle-boards.html">
+                                    <Link to="home-paddle-boards.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home_paddle_board.jpg"
                                                 src="images/demo/home_paddle_board.jpg" alt="home-paddle_board"/>
                                         </div>
                                         <span className="demo-name">Home Paddle Boards</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-glasses.html">
+                                    <Link to="home-glasses.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-glasses.jpg"
                                                 src="images/demo/home-glasses.jpg" alt="home-glasses"/>
                                         </div>
                                         <span className="demo-name">Home Glasses</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-pod-store.html">
+                                    <Link to="home-pod-store.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-pod-store.jpg"
                                                 src="images/demo/home-pod-store.jpg" alt="home-pod-store"/>
                                         </div>
                                         <span className="demo-name">Home POD Store</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-activewear.html">
+                                    <Link to="home-activewear.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-activewear.jpg"
                                                 src="images/demo/home-activewear.jpg" alt="home-activewear"/>
                                         </div>
                                         <span className="demo-name">Activewear</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-handbag.html">
+                                    <Link to="home-handbag.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-handbag.jpg"
                                                 src="images/demo/home-handbag.jpg" alt="home-handbag"/>
                                         </div>
                                         <span className="demo-name">Home Handbag</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-tee.html">
+                                    <Link to="home-tee.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-tee.jpg"
                                                 src="images/demo/home-tee.jpg" alt="home-tee"/>
                                         </div>
                                         <span className="demo-name">Home Tee</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-sock.html">
+                                    <Link to="home-sock.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-socks.jpg"
                                                 src="images/demo/home-socks.jpg" alt="home-sock"/>
                                         </div>
                                         <span className="demo-name">Home Sock</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-jewerly.html">
+                                    <Link to="home-jewerly.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-jewelry.jpg"
                                                 src="images/demo/home-jewelry.jpg" alt="home-jewelry"/>
                                         </div>
                                         <span className="demo-name">Home Jewelry</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-sneaker.html">
+                                    <Link to="home-sneaker.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-sneaker.jpg"
                                                 src="images/demo/home-sneaker.jpg" alt="home-sneaker"/>
                                         </div>
                                         <span className="demo-name">Home Sneaker</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-accessories.html">
+                                    <Link to="home-accessories.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-accessories.jpg"
                                                 src="images/demo/home-accessories.jpg" alt="home-accessories"/>
                                         </div>
                                         <span className="demo-name">Home Accessories</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-grocery.html">
+                                    <Link to="home-grocery.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-gocery.jpg"
                                                 src="images/demo/home-gocery.jpg" alt="home-grocery"/>
                                         </div>
                                         <span className="demo-name">Home Grocery</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-baby.html">
+                                    <Link to="home-baby.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-baby.jpg"
                                                 src="images/demo/home-baby.jpg" alt="home-baby"/>
                                         </div>
                                         <span className="demo-name">Home Baby</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-cosmetic.html">
+                                    <Link to="home-cosmetic.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-cosmetic.png"
                                                 src="images/demo/home-cosmetic.png" alt="home-cosmetic"/>
                                         </div>
                                         <span className="demo-name">Home Cosmetic</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-plant.html">
+                                    <Link to="home-plant.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-plant.png"
                                                 src="images/demo/home-plant.png" alt="home-plant"/>
                                         </div>
                                         <span className="demo-name">Home Plant</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-swimwear.html">
+                                    <Link to="home-swimwear.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-swimwear.png"
                                                 src="images/demo/home-swimwear.png" alt="home-swimwear"/>
                                         </div>
                                         <span className="demo-name">Home Swimwear</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-electric-bike.html">
+                                    <Link to="home-electric-bike.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-electric-bike.png"
                                                 src="images/demo/home-electric-bike.png" alt="home-electric-bike"/>
                                         </div>
                                         <span className="demo-name">Home Electric Bike</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-footwear.html">
+                                    <Link to="home-footwear.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-footwear.jpg"
                                                 src="images/demo/home-footwear.jpg" alt="home-footwear"/>
                                         </div>
                                         <span className="demo-name">Home Footwear</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-book-store.html">
+                                    <Link to="home-book-store.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-bookstore.png"
                                                 src="images/demo/home-bookstore.png" alt="home-bookstore"/>
                                         </div>
                                         <span className="demo-name">Home Bookstore</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-gaming-accessories.html">
+                                    <Link to="home-gaming-accessories.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-gaming-accessories.png"
                                                 src="images/demo/home-gaming-accessories.png" alt="home-gaming-accessories"/>
                                         </div>
                                         <span className="demo-name">Home Gaming Accessories</span>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="demo-item">
-                                    <a href="home-parallax.html">
+                                    <Link to="home-parallax.html">
                                         <div className="demo-image">
                                             <img className="lazyload" data-src="images/demo/home-skincare.jpg"
                                                 src="images/demo/home-skincare.jpg" alt="home-skincare"/>
                                         </div>
                                         <span className="demo-name">Home Parallax</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -528,369 +857,30 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                     <div className="mb-body">
                         <ul className="nav-ul-mb" id="wrapper-menu-navigation">
                             <li className="nav-mb-item">
-                                <a href="#dropdown-menu-one" className="collapsed mb-menu-link current" data-bs-toggle="collapse"
-                                    aria-expanded="true" aria-controls="dropdown-menu-one">
-                                    <span>Home</span>
-                                    <span className="btn-open-sub"></span>
-                                </a>
-                                <div id="dropdown-menu-one" className="collapse">
-                                    <ul className="sub-nav-menu">
-                                        <li><a href="index-2.html" className="sub-nav-link">Home Fashion 01</a></li>
-                                        <li><a href="home-02.html" className="sub-nav-link">Home Fashion 02</a></li>
-                                        <li><a href="home-03.html" className="sub-nav-link">Home Fashion 03</a></li>
-                                        <li><a href="home-04.html" className="sub-nav-link">Home Fashion 04</a></li>
-                                        <li><a href="home-05.html" className="sub-nav-link">Home Fashion 05</a></li>
-                                        <li><a href="home-06.html" className="sub-nav-link">Home Fashion 06</a></li>
-                                        <li><a href="home-07.html" className="sub-nav-link">Home Fashion 07</a></li>
-                                        <li><a href="home-08.html" className="sub-nav-link">Home Fashion 08</a></li>
-                                        <li><a href="home-giftcard.html" className="sub-nav-link">Home Gift Card</a></li>
-                                        <li><a href="home-headphone.html" className="sub-nav-link">Home Headphone</a></li>
-                                        <li><a href="home-multi-brand.html" className="sub-nav-link">Home Multi Brand</a></li>
-                                        <li><a href="home-skincare.html" className="sub-nav-link">Home skincare</a></li>
-                                        <li><a href="home-furniture.html" className="sub-nav-link">Home Furniture</a></li>
-                                        <li><a href="home-furniture-02.html" className="sub-nav-link">Home Furniture 2</a></li>
-                                        <li><a href="home-skateboard.html" className="sub-nav-link">Home Skateboard</a></li>
-                                        <li><a href="home-stroller.html" className="sub-nav-link">Home Stroller</a></li>
-                                        <li><a href="home-decor.html" className="sub-nav-link">Home Decor</a></li>
-                                        <li><a href="home-electronic.html" className="sub-nav-link">Home Electronic</a></li>
-                                        <li><a href="home-setup-gear.html" className="sub-nav-link">Home Setup Gear</a></li>
-                                        <li><a href="home-dog-accessories.html" className="sub-nav-link">Home Dog Accessories</a>
-                                        </li>
-                                        <li><a href="home-kitchen-wear.html" className="sub-nav-link">Home Kitchen Wear</a></li>
-                                        <li><a href="home-phonecase.html" className="sub-nav-link">Home Phonecase</a></li>
-                                        <li><a href="home-paddle-boards.html" className="sub-nav-link">Home Paddle Boards</a></li>
-                                        <li><a href="home-glasses.html" className="sub-nav-link">Home Glasses</a></li>
-                                        <li><a href="home-pod-store.html" className="sub-nav-link">Home POD Store</a></li>
-                                        <li><a href="home-activewear.html" className="sub-nav-link">Home Activewear</a></li>
-                                        <li><a href="home-handbag.html" className="sub-nav-link">Home Handbag</a></li>
-                                        <li><a href="home-tee.html" className="sub-nav-link">Home Tee</a></li>
-                                        <li><a href="home-sock.html" className="sub-nav-link">Home Sock</a></li>
-                                        <li><a href="home-jewerly.html" className="sub-nav-link">Home Jewelry</a></li>
-                                        <li><a href="home-sneaker.html" className="sub-nav-link">Home Sneaker</a></li>
-                                        <li><a href="home-accessories.html" className="sub-nav-link">Home Accessories</a></li>
-                                        <li><a href="home-grocery.html" className="sub-nav-link">Home Grocery</a></li>
-                                        <li><a href="home-baby.html" className="sub-nav-link">Home Baby</a></li>
-                                        <li><a href="home-personalized-pod.html" className="sub-nav-link">Home Personalized Pod</a>
-                                        </li>
-                                        <li><a href="home-pickleball.html" className="sub-nav-link">Home Pickleball</a></li>
-                                        <li><a href="home-ceramic.html" className="sub-nav-link">Home Ceramic</a></li>
-                                        <li><a href="home-food.html" className="sub-nav-link">Home Food</a></li>
-                                        <li><a href="home-camp-and-hike.html" className="sub-nav-link">Home Camp And Hike</a></li>
-                                        <li><a href="home-cosmetic.html" className="sub-nav-link">Home Cosmetic</a></li>
-                                        <li><a href="home-plant.html" className="sub-nav-link">Home Plant</a></li>
-                                        <li><a href="home-swimwear.html" className="sub-nav-link">Home Swimwear</a></li>
-                                        <li><a href="home-electric-bike.html" className="sub-nav-link">Home Electric Bike</a></li>
-                                        <li><a href="home-footwear.html" className="sub-nav-link">Home Footwear</a></li>
-                                        <li><a href="home-book-store.html" className="sub-nav-link">Home Book Store</a></li>
-                                        <li><a href="home-gaming-accessories.html" className="sub-nav-link">Home Gaming
-                                                Accessories</a></li>
-                                        <li><a href="home-drinkwear.html" className="sub-nav-link">Home Drinkwear</a></li>
-                                        <li><a href="home-supplement.html" className="sub-nav-link">Home Supplement</a></li>
-                                        <li><a href="home-parallax.html" className="sub-nav-link">Home Parallax</a></li>
-                                    </ul>
-                                </div>
-
+                                <Link to="/" className="mb-menu-link">Home</Link>
+                            </li>
+                            
+                            <li className="nav-mb-item">
+                                <Link to="/Linkbout" className="mb-menu-link">About</Link>
                             </li>
                             <li className="nav-mb-item">
-                                <a href="#dropdown-menu-two" className="collapsed mb-menu-link current" data-bs-toggle="collapse"
-                                    aria-expanded="true" aria-controls="dropdown-menu-two">
-                                    <span>Shop</span>
-                                    <span className="btn-open-sub"></span>
-                                </a>
-                                <div id="dropdown-menu-two" className="collapse">
-                                    <ul className="sub-nav-menu" id="sub-menu-navigation">
-                                        <li><a href="#sub-shop-one" className="sub-nav-link collapsed" data-bs-toggle="collapse"
-                                                aria-expanded="true" aria-controls="sub-shop-one">
-                                                <span>Shop layouts</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="sub-shop-one" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li><a href="shop-default.html" className="sub-nav-link">Default</a></li>
-                                                    <li><a href="shop-left-sidebar.html" className="sub-nav-link">Left sidebar</a>
-                                                    </li>
-                                                    <li><a href="shop-right-sidebar.html" className="sub-nav-link">Right sidebar</a>
-                                                    </li>
-                                                    <li><a href="shop-fullwidth.html" className="sub-nav-link">Fullwidth</a></li>
-                                                    <li><a href="shop-collection-sub.html" className="sub-nav-link">Sub
-                                                            collection</a></li>
-                                                    <li><a href="shop-collection-list.html" className="sub-nav-link">Collections
-                                                            list</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#sub-shop-two" className="sub-nav-link collapsed" data-bs-toggle="collapse"
-                                                aria-expanded="true" aria-controls="sub-shop-two">
-                                                <span>Features</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="sub-shop-two" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li><a href="shop-link.html" className="sub-nav-link">Pagination links</a></li>
-                                                    <li><a href="shop-loadmore.html" className="sub-nav-link">Pagination
-                                                            loadmore</a></li>
-                                                    <li><a href="shop-infinite-scrolling.html" className="sub-nav-link">Pagination
-                                                            infinite scrolling</a></li>
-                                                    <li><a href="shop-filter-sidebar.html" className="sub-nav-link">Filter
-                                                            sidebar</a></li>
-                                                    <li><a href="shop-filter-hidden.html" className="sub-nav-link">Filter hidden</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#sub-shop-three" className="sub-nav-link collapsed" data-bs-toggle="collapse"
-                                                aria-expanded="true" aria-controls="sub-shop-three">
-                                                <span>Product styles</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="sub-shop-three" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-
-                                                    <li><a href="product-style-01.html" className="sub-nav-link">Product style
-                                                            01</a></li>
-                                                    <li><a href="product-style-02.html" className="sub-nav-link">Product style
-                                                            02</a></li>
-                                                    <li><a href="product-style-03.html" className="sub-nav-link">Product style
-                                                            03</a></li>
-                                                    <li><a href="product-style-04.html" className="sub-nav-link">Product style
-                                                            04</a></li>
-                                                    <li><a href="product-style-05.html" className="sub-nav-link">Product style
-                                                            05</a></li>
-                                                    <li><a href="product-style-06.html" className="sub-nav-link">Product style
-                                                            06</a></li>
-                                                    <li><a href="product-style-07.html" className="sub-nav-link">Product style
-                                                            07</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <Link to="/contact" className="mb-menu-link">Contact</Link>
                             </li>
                             <li className="nav-mb-item">
-                                <a href="#dropdown-menu-three" className="collapsed mb-menu-link current" data-bs-toggle="collapse"
-                                    aria-expanded="true" aria-controls="dropdown-menu-three">
-                                    <span>Products</span>
-                                    <span className="btn-open-sub"></span>
-                                </a>
-                                <div id="dropdown-menu-three" className="collapse">
-                                    <ul className="sub-nav-menu" id="sub-menu-navigation1">
-                                        <li>
-                                            <a href="#sub-product-one" className="sub-nav-link collapsed" data-bs-toggle="collapse"
-                                                aria-expanded="true" aria-controls="sub-product-one">
-                                                <span>Product layouts</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="sub-product-one" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li><a href="product-detail.html" className="sub-nav-link">Product default</a>
-                                                    </li>
-                                                    <li><a href="product-grid-1.html" className="sub-nav-link">Product grid 1</a>
-                                                    </li>
-                                                    <li><a href="product-grid-2.html" className="sub-nav-link">Product grid 2</a>
-                                                    </li>
-                                                    <li><a href="product-stacked.html" className="sub-nav-link">Product stacked</a>
-                                                    </li>
-                                                    <li><a href="product-right-thumbnails.html" className="sub-nav-link">Product
-                                                            right thumbnails</a></li>
-                                                    <li><a href="product-bottom-thumbnails.html" className="sub-nav-link">Product
-                                                            bottom thumbnails</a></li>
-                                                    <li><a href="product-drawer-sidebar.html" className="sub-nav-link">Product
-                                                            drawer sidebar</a></li>
-                                                    <li><a href="product-description-accordion.html"
-                                                            className="sub-nav-link">Product description accordion</a></li>
-                                                    <li><a href="product-description-list.html" className="sub-nav-link">Product
-                                                            description list</a></li>
-                                                    <li><a href="product-description-vertical.html" className="sub-nav-link">Product
-                                                            description vertical</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#sub-product-two" className="sub-nav-link collapsed" data-bs-toggle="collapse"
-                                                aria-expanded="true" aria-controls="sub-product-two">
-                                                <span>Product details</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="sub-product-two" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li><a href="product-inner-zoom.html" className="sub-nav-link">Product inner
-                                                            zoom</a></li>
-                                                    <li><a href="product-zoom-magnifier.html" className="sub-nav-link">Product zoom
-                                                            magnifier</a></li>
-                                                    <li><a href="product-no-zoom.html" className="sub-nav-link">Product no zoom</a>
-                                                    </li>
-                                                    <li><a href="product-photoswipe-popup.html" className="sub-nav-link">Product
-                                                            photoswipe popup</a></li>
-                                                    <li><a href="product-zoom-popup.html" className="sub-nav-link">Product external
-                                                            zoom and photoswipe popup</a></li>
-                                                    <li><a href="product-video.html" className="sub-nav-link">Product video</a></li>
-                                                    <li><a href="product-3d.html" className="sub-nav-link">Product 3D, AR models</a>
-                                                    </li>
-                                                    <li><a href="product-options-customizer.html" className="sub-nav-link">Product
-                                                            options & customizer</a></li>
-                                                    <li><a href="product-advanced-types.html" className="sub-nav-link">Advanced
-                                                            product types</a></li>
-                                                    <li><a href="product-giftcard.html" className="sub-nav-link">Recipient
-                                                            information form for gift card products</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#sub-product-three" className="sub-nav-link collapsed"
-                                                data-bs-toggle="collapse" aria-expanded="true"
-                                                aria-controls="sub-product-three">
-                                                <span>Product swatchs</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="sub-product-three" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li><a href="product-color-swatch.html" className="sub-nav-link">Product color
-                                                            swatch</a></li>
-                                                    <li><a href="product-rectangle.html" className="sub-nav-link">Product
-                                                            rectangle</a></li>
-                                                    <li><a href="product-rectangle-color.html" className="sub-nav-link">Product
-                                                            rectangle color</a></li>
-                                                    <li><a href="product-swatch-image.html" className="sub-nav-link">Product swatch
-                                                            image</a></li>
-                                                    <li><a href="product-swatch-image-rounded.html" className="sub-nav-link">Product
-                                                            swatch image rounded</a></li>
-                                                    <li><a href="product-swatch-dropdown.html" className="sub-nav-link">Product
-                                                            swatch dropdown</a></li>
-                                                    <li><a href="product-swatch-dropdown-color.html"
-                                                            className="sub-nav-link">Product swatch dropdown color</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#sub-product-four" className="sub-nav-link collapsed" data-bs-toggle="collapse"
-                                                aria-expanded="true" aria-controls="sub-product-four">
-                                                <span>Product features</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="sub-product-four" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li><a href="product-frequently-bought-together.html"
-                                                            className="sub-nav-link">Frequently bought together</a></li>
-                                                    <li><a href="product-frequently-bought-together-2.html"
-                                                            className="sub-nav-link">Frequently bought together 2</a></li>
-                                                    <li><a href="product-upsell-features.html" className="sub-nav-link">Product
-                                                            upsell features</a></li>
-                                                    <li><a href="product-pre-orders.html" className="sub-nav-link">Product
-                                                            pre-orders</a></li>
-                                                    <li><a href="product-notification.html" className="sub-nav-link">Back in stock
-                                                            notification</a></li>
-                                                    <li><a href="product-pickup.html" className="sub-nav-link">Product pickup</a>
-                                                    </li>
-                                                    <li><a href="product-images-grouped.html" className="sub-nav-link">Variant
-                                                            images grouped</a></li>
-                                                    <li><a href="product-complimentary.html" className="sub-nav-link">Complimentary
-                                                            products</a></li>
-                                                    <li><a href="product-quick-order-list.html"
-                                                            className="sub-nav-link line-clamp">Quick order list<div
-                                                                className="demo-label"><span className="demo-new">New</span></div></a>
-                                                    </li>
-                                                    <li><a href="product-detail-volume-discount.html"
-                                                            className="sub-nav-link line-clamp">Volume Discount<div
-                                                                className="demo-label"><span className="demo-new">New</span></div></a>
-                                                    </li>
-                                                    <li><a href="product-detail-volume-discount-grid.html"
-                                                            className="sub-nav-link line-clamp">Volume Discount Grid<div
-                                                                className="demo-label"><span className="demo-new">New</span></div></a>
-                                                    </li>
-                                                    <li><a href="product-detail-buyx-gety.html"
-                                                            className="sub-nav-link line-clamp">Buy X Get Y<div className="demo-label">
-                                                                <span className="demo-new">New</span>
-                                                            </div></a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <Link to="/faq" className="mb-menu-link">Faq</Link>
                             </li>
                             <li className="nav-mb-item">
-                                <a href="#dropdown-menu-four" className="collapsed mb-menu-link current" data-bs-toggle="collapse"
-                                    aria-expanded="true" aria-controls="dropdown-menu-four">
-                                    <span>Pages</span>
-                                    <span className="btn-open-sub"></span>
-                                </a>
-                                <div id="dropdown-menu-four" className="collapse">
-                                    <ul className="sub-nav-menu" id="sub-menu-navigation2">
-                                        <li><a href="about-us.html" className="sub-nav-link">About us</a></li>
-                                        <li><a href="brands.html" className="sub-nav-link line-clamp">Brands<div className="demo-label">
-                                                    <span className="demo-new">New</span>
-                                                </div></a></li>
-                                        <li><a href="brands-v2.html" className="sub-nav-link">Brands V2</a></li>
-                                        <li><a href="contact-1.html" className="sub-nav-link">Contact 1</a></li>
-                                        <li><a href="contact-2.html" className="sub-nav-link">Contact 2</a></li>
-                                        <li><a href="faq-1.html" className="sub-nav-link">FAQ 01</a></li>
-                                        <li><a href="faq-2.html" className="sub-nav-link">FAQ 02</a></li>
-                                        <li><a href="our-store.html" className="sub-nav-link">Our store</a></li>
-                                        <li><a href="store-locations.html" className="sub-nav-link">Store locator</a></li>
-                                        <li><a href="timeline.html" className="sub-nav-link line-clamp">Timeline<div
-                                                    className="demo-label"><span className="demo-new">New</span></div></a></li>
-                                        <li><a href="view-cart.html" className="sub-nav-link line-clamp">View cart</a></li>
-                                        <li><a href="checkout.html" className="sub-nav-link line-clamp">Check out</a></li>
-                                        <li><a href="payment-confirmation.html" className="sub-nav-link line-clamp">Payment
-                                                Confirmation</a></li>
-                                        <li><a href="payment-failure.html" className="sub-nav-link line-clamp">Payment Failure</a>
-                                        </li>
-                                        <li><a href="#sub-account" className="sub-nav-link collapsed" data-bs-toggle="collapse"
-                                                aria-expanded="true" aria-controls="sub-account">
-                                                <span>My Account</span>
-                                                <span className="btn-open-sub"></span>
-                                            </a>
-                                            <div id="sub-account" className="collapse">
-                                                <ul className="sub-nav-menu sub-menu-level-2">
-                                                    <li><a href="my-account.html" className="sub-nav-link">My account</a></li>
-                                                    <li><a href="my-account-orders.html" className="sub-nav-link">My order</a></li>
-                                                    <li><a href="my-account-orders-details.html" className="sub-nav-link">My order
-                                                            details</a></li>
-                                                    <li><a href="my-account-address.html" className="sub-nav-link">My address</a>
-                                                    </li>
-                                                    <li><a href="my-account-edit.html" className="sub-nav-link">My account
-                                                            details</a></li>
-                                                    <li><a href="my-account-wishlist.html" className="sub-nav-link">My wishlist</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li><a href="invoice.html" className="sub-nav-link line-clamp">Invoice</a></li>
-                                        <li><a href="404.html" className="sub-nav-link line-clamp">404</a></li>
-                                    </ul>
-                                </div>
-
+                                <Link to="/blog" className="mb-menu-link">Blog</Link>
                             </li>
-                            <li className="nav-mb-item">
-                                <a href="#dropdown-menu-five" className="collapsed mb-menu-link current" data-bs-toggle="collapse"
-                                    aria-expanded="true" aria-controls="dropdown-menu-five">
-                                    <span>Blog</span>
-                                    <span className="btn-open-sub"></span>
-                                </a>
-                                <div id="dropdown-menu-five" className="collapse">
-                                    <ul className="sub-nav-menu">
-                                        <li><a href="blog-grid.html" className="sub-nav-link">Grid layout</a></li>
-                                        <li><a href="blog-sidebar-left.html" className="sub-nav-link">Left sidebar</a></li>
-                                        <li><a href="blog-sidebar-right.html" className="sub-nav-link">Right sidebar</a></li>
-                                        <li><a href="blog-list.html" className="sub-nav-link">Blog list</a></li>
-                                        <li><a href="blog-detail.html" className="sub-nav-link">Single Post</a></li>
-                                    </ul>
-                                </div>
-
-                            </li>
-                            <li className="nav-mb-item">
-                                <a href="https://themeforest.net/item/ecomus-ultimate-html5-template/53417990?s_rank=3"
-                                    className="mb-menu-link">Buy now</a>
-                            </li>
+                            
                         </ul>
                         <div className="mb-other-content">
                             <div className="d-flex group-icon">
-                                <a href="wishlist.html" className="site-nav-icon"><i className="icon icon-heart"></i>Wishlist</a>
-                                <a href="home-search.html" className="site-nav-icon"><i className="icon icon-search"></i>Search</a>
+                                <Link to="/account/wishlist" className="site-nav-icon"><i className="icon icon-heart"></i>Wishlist</Link>
+                                <Link to="#canvasSearch"  data-bs-toggle='offcanvas' data-bs-target="#canvasSearch" className="site-nav-icon"><i className="icon icon-search"></i>Search</Link>
                             </div>
                             <div className="mb-notice">
-                                <a href="contact-1.html" className="text-need">Need help ?</a>
+                                <Link to="/contact" className="text-need">Need help ?</Link>
                             </div>
                             <ul className="mb-info">
                                 <li>Address: 1234 Fashion Street, Suite 567, <br/> New York, NY 10001</li>
@@ -902,7 +892,7 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                     <div className="mb-bottom">
                         <Link to="/login/" className="site-nav-icon"><i className="icon icon-account"></i>Login</Link>
                         <span className='ms-2'></span>
-                        <Link to="/admin/" className="site-nav-icon"><i className="icon icon-account"></i>Admin</Link>
+                        <Link to="/admin" className="site-nav-icon"><i className="icon icon-account"></i>Admin</Link>
                         <div className="bottom-bar-language">
                             <div className="tf-currencies">
                                 <select className="image-select center style-default type-currencies">
@@ -926,26 +916,29 @@ const Extras  =({categories=[], product=null, amount=1})=>{
             </div>
             {/* <!-- mobile menu --> */}
             
+            <div class="offcanvas offcanvas-start canvas-filter canvas-sidebar canvas-sidebar-account" id="mbAccount">
+                <div class="canvas-wrapper">
+                    <header class="canvas-header">
+                        <span class="title">ACCOUNT</span>
+                        <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+                    </header>
+                    <div class="canvas-body sidebar-mobile-append"> 
+                        <AccountNavBar active={active}/>
+                    </div>
+                </div>
+            </div>
 
             {/* <!-- canvasSearch --> */}
             <div className="offcanvas offcanvas-end canvas-search" id="canvasSearch">
                 <div className="canvas-wrapper">
-                    <header className="tf-search-head">
+                    <header className="tf-search-head ">
                         <div className="title fw-5">
                             Search our site
                             <div className="close">
                                 <span className="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
                             </div>
                         </div>
-                        <div className="tf-search-sticky">
-                            <form className="tf-mini-search-frm">
-                                <fieldset className="text">
-                                    <input type="text" placeholder="Search" className="" name="text" tabindex="0" value=""
-                                        aria-required="true" required=""/>
-                                </fieldset>
-                                <button className="" type="submit"><i className="icon-search"></i></button>
-                            </form>
-                        </div>
+                        <Search2 />
                     </header>
                     <div className="canvas-body p-0">
                         <div className="tf-search-content">
@@ -954,16 +947,16 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                     <div className="tf-search-content-title fw-5">Quick link</div>
                                     <ul className="tf-quicklink-list">
                                         <li className="tf-quicklink-item">
-                                            <a href="shop-default.html" className="">Fashion</a>
+                                            <Link to="/products" className="">Fruits and Veggies</Link>
                                         </li>
                                         <li className="tf-quicklink-item">
-                                            <a href="shop-default.html" className="">Men</a>
+                                            <Link to="/products" className="">Oils</Link>
                                         </li>
                                         <li className="tf-quicklink-item">
-                                            <a href="shop-default.html" className="">Women</a>
+                                            <Link to="/products" className="">Brands</Link>
                                         </li>
                                         <li className="tf-quicklink-item">
-                                            <a href="shop-default.html" className="">Accessories</a>
+                                            <Link to="/products" className="">Nuts, Flowers and Beverages</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -972,12 +965,12 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                     <div className="tf-search-hidden-inner">
                                         <div className="tf-loop-item">
                                             <div className="image">
-                                                <a href="product-detail.html">
-                                                    <img src="images/products/white-3.jpg" alt=""/>
-                                                </a>
+                                                <Link to="/products/1">
+                                                    <img src={grocery1} alt=""/>
+                                                </Link>
                                             </div>
                                             <div className="content">
-                                                <a href="product-detail.html">Cotton jersey top</a>
+                                                <Link to="product-detail.html">Cotton jersey top</Link>
                                                 <div className="tf-product-info-price">
                                                     <div className="compare-at-price">$10.00</div>
                                                     <div className="price-on-sale fw-6">$8.00</div>
@@ -986,12 +979,12 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                         </div>
                                         <div className="tf-loop-item">
                                             <div className="image">
-                                                <a href="product-detail.html">
-                                                    <img src="images/products/white-2.jpg" alt=""/>
-                                                </a>
+                                                <Link to="/products/2">
+                                                    <img src={grocery2} alt=""/>
+                                                </Link>
                                             </div>
                                             <div className="content">
-                                                <a href="product-detail.html">Mini crossbody bag</a>
+                                                <Link to="product-detail.html">Mini crossbody bag</Link>
                                                 <div className="tf-product-info-price">
                                                     <div className="price fw-6">$18.00</div>
                                                 </div>
@@ -999,12 +992,12 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                         </div>
                                         <div className="tf-loop-item">
                                             <div className="image">
-                                                <a href="product-detail.html">
-                                                    <img src="images/products/white-1.jpg" alt=""/>
-                                                </a>
+                                                <Link to="/products/3">
+                                                    <img src={grocery2} alt=""/>
+                                                </Link>
                                             </div>
                                             <div className="content">
-                                                <a href="product-detail.html">Oversized Printed T-shirt</a>
+                                                <Link to="/products">Oversized Printed T-shirt</Link>
                                                 <div className="tf-product-info-price">
                                                     <div className="price fw-6">$18.00</div>
                                                 </div>
@@ -1064,12 +1057,18 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                         </ul>
                     </div>
                     <div className="mb-bottom">
-                        <a href="shop-default.html" className="tf-btn fw-5 btn-line">View all collection<i
-                                className="icon icon-arrow1-top-left"></i></a>
+                        <Link to="shop-default.html" className="tf-btn fw-5 btn-line">View all collection<i
+                                className="icon icon-arrow1-top-left"></i></Link>
                     </div>
                 </div>
             </div>
             {/* <!-- toolbarShopmb --> */}
+            <Modal 
+                id="camera" 
+                title='Camera'
+                className='form-sign-in modal-part-content'
+                body={<Camera />} 
+            />
             {/* <!-- modal login --> */}
             
             <Modal 
@@ -1124,19 +1123,17 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                             <div className="tf-mini-cart-items">
                                 <div className="tf-mini-cart-item">
                                     <div className="tf-mini-cart-image">
-                                        <a href="product-detail.html">
-                                            <img src="images/products/white-2.jpg" alt=""/>
-                                        </a>
+                                        <Link to='/products/1'>
+                                            <img src={grocery1} alt=""/>
+                                        </Link>
                                     </div>
                                     <div className="tf-mini-cart-info">
-                                        <a className="title link" href="product-detail.html">T-shirt</a>
+                                        <Link className="title link" to='/products/1'>T-shirt</Link>
                                         <div className="meta-variant">Light gray</div>
                                         <div className="price fw-6">$25.00</div>
                                         <div className="tf-mini-cart-btns">
                                             <div className="wg-quantity small">
-                                                <span className="btn-quantity minus-btn">-</span>
-                                                <input type="text" name="number" value="1"/>
-                                                <span className="btn-quantity plus-btn">+</span>
+                                                <QuantitySelector />
                                             </div>
                                             <div className="tf-mini-cart-remove">Remove</div>
                                         </div>
@@ -1144,18 +1141,16 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                 </div>
                                 <div className="tf-mini-cart-item">
                                     <div className="tf-mini-cart-image">
-                                        <a href="product-detail.html">
-                                            <img src="images/products/white-3.jpg" alt=""/>
-                                        </a>
+                                        <Link to='/products/2'>
+                                            <img src={grocery2} alt=""/>
+                                        </Link>
                                     </div>
                                     <div className="tf-mini-cart-info">
-                                        <a className="title link" href="product-detail.html">Oversized Motif T-shirt</a>
+                                        <Link className="title link" to='/products/2'>Oversized Motif T-shirt</Link>
                                         <div className="price fw-6">$25.00</div>
                                         <div className="tf-mini-cart-btns">
                                             <div className="wg-quantity small">
-                                                <span className="btn-quantity minus-btn">-</span>
-                                                <input type="text" name="number" value="1"/>
-                                                <span className="btn-quantity plus-btn">+</span>
+                                                <QuantitySelector />
                                             </div>
                                             <div className="tf-mini-cart-remove">Remove</div>
                                         </div>
@@ -1172,13 +1167,13 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                         <div className="swiper-slide">
                                             <div className="tf-minicart-recommendations-item">
                                                 <div className="tf-minicart-recommendations-item-image">
-                                                    <a href="product-detail.html">
-                                                        <img src="images/products/white-3.jpg" alt=""/>
-                                                    </a>
+                                                    <Link to='/products/1'>
+                                                        <img src={grocery1} alt=""/>
+                                                    </Link>
                                                 </div>
                                                 <div className="tf-minicart-recommendations-item-infos flex-grow-1">
-                                                    <a className="title" href="product-detail.html">Loose Fit
-                                                        Sweatshirt</a>
+                                                    <Link className="title" to='/products/2'>Loose Fit
+                                                        Sweatshirt</Link>
                                                     <div className="price">$25.00</div>
                                                 </div>
                                                 <div className="tf-minicart-recommendations-item-quickview">
@@ -1191,12 +1186,12 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                         <div className="swiper-slide">
                                             <div className="tf-minicart-recommendations-item">
                                                 <div className="tf-minicart-recommendations-item-image">
-                                                    <a href="product-detail.html">
-                                                        <img src="images/products/white-2.jpg" alt=""/>
-                                                    </a>
+                                                    <Link to='/products/2'>
+                                                        <img src={grocery2} alt=""/>
+                                                    </Link>
                                                 </div>
                                                 <div className="tf-minicart-recommendations-item-infos flex-grow-1">
-                                                    <a className="title" href="product-detail.html">Loose Fit Hoodie</a>
+                                                    <Link className="title" to={'/products/2'}>Loose Fit Hoodie</Link>
                                                     <div className="price">$25.00</div>
                                                 </div>
                                                 <div className="tf-minicart-recommendations-item-quickview">
@@ -1246,7 +1241,7 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                 <div className="tf-cart-total">Subtotal</div>
                                 <div className="tf-totals-total-value fw-6">$49.99 USD</div>
                             </div>
-                            <div className="tf-cart-tax">Taxes and <a href="#">shipping</a> calculated at checkout</div>
+                            <div className="tf-cart-tax" data-bs-dismiss="modal">Taxes and <Link to="/shipping">shipping</Link> calculated at checkout</div>
                             <div className="tf-mini-cart-line"></div>
                             <div className="tf-cart-checkbox">
                                 <div className="tf-checkbox-wrapp">
@@ -1256,18 +1251,18 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                         <i className="icon-check"></i>
                                     </div>
                                 </div>
-                                <label for="CartDrawer-Form_agree">
+                                <label for="CartDrawer-Form_agree" data-bs-dismiss="modal">
                                     I agree with the
-                                    <a href="#" title="Terms of Service">terms and conditions</a>
+                                    <Link to="/terms" className='ms-2' title="Terms of Service">terms and conditions</Link>
                                 </label>
                             </div>
-                            <div className="tf-mini-cart-view-checkout">
-                                <a href="view-cart.html"
+                            <div className="tf-mini-cart-view-checkout" data-bs-dismiss="modal">
+                                <Link to="/Linkccount/cart"
                                     className="tf-btn btn-outline radius-3 link w-100 justify-content-center">View
-                                    cart</a>
-                                <a href="checkout.html"
+                                    cart</Link>
+                                <Link to="/Linkccount/orders/checkout"
                                     className="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Check
-                                        out</span></a>
+                                        out</span></Link>
                             </div>
                         </div>
                     </div>
@@ -1409,8 +1404,8 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                 <input type="text" name="text" placeholder=""/>
                             </div>
                             <div className="tf-cart-tool-btns">
-                                <a href="#"
-                                    className="tf-btn fw-6 justify-content-center btn-fill w-100 animate-hover-btn radius-3"><span>Estimate</span></a>
+                                <Link to="#"
+                                    className="tf-btn fw-6 justify-content-center btn-fill w-100 animate-hover-btn radius-3"><span>Estimate</span></Link>
                                 <div
                                     className="tf-mini-cart-tool-primary text-center fw-6 w-100 tf-mini-cart-tool-close">
                                     Cancel</div>
@@ -1445,9 +1440,9 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                                 <div className="icon">
                                                     <i className="icon-close"></i>
                                                 </div>
-                                                <a href="product-detail.html">
+                                                <Link to="product-detail.html">
                                                     <img className="radius-3" src="images/products/orange-1.jpg" alt=""/>
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                         <div className="tf-compare-item">
@@ -1455,16 +1450,16 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                                                 <div className="icon">
                                                     <i className="icon-close"></i>
                                                 </div>
-                                                <a href="product-detail.html">
+                                                <Link to="product-detail.html">
                                                     <img className="radius-3" src="images/products/pink-1.jpg" alt=""/>
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="tf-compare-buttons">
                                         <div className="tf-compare-buttons-wrap">
-                                            <a href="compare.html"
-                                                className="tf-btn radius-3 btn-fill justify-content-center fw-6 fs-14 flex-grow-1 animate-hover-btn ">Compare</a>
+                                            <Link to="compare.html"
+                                                className="tf-btn radius-3 btn-fill justify-content-center fw-6 fs-14 flex-grow-1 animate-hover-btn ">Compare</Link>
                                             <div className="tf-compapre-button-clear-all link">
                                                 Clear All
                                             </div>
@@ -1479,6 +1474,36 @@ const Extras  =({categories=[], product=null, amount=1})=>{
         </div>
         {/* <!-- /modal compare --> */}
 
+        {/* <!-- payment options --> */}
+        <div className="offcanvas offcanvas-bottom canvas-compare" id="payment_options">
+            <div className="canvas-wrapper">
+                <header className="canvas-header">
+                    <div className="close-popup">
+                        <span className="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+                    </div>
+                </header>
+                <div className="canvas-body">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-12">
+                                <div className="tf-compare-list">
+                                    <div className="tf-compare-head">
+                                        <div className="title">Payment Options</div>
+                                    </div>
+                                    <div className="tf-compare-offcanvas">
+                                        
+                                        <PaymentOptions method={paymentmethod} onChange={setpaymentMethod}/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/* <!-- /payment options --> */}
+
         {/* <!-- modal quick_add --> */}
         <Modal 
             id="quick_add"
@@ -1488,10 +1513,15 @@ const Extras  =({categories=[], product=null, amount=1})=>{
             body={<div className="wrap">
                 <div className="tf-product-info-item">
                     <div className="image">
-                        <img src={product?.image} alt=""/>
+                        <img src={product?.images && product?.images[0] || product?.image} 
+                            alt="image-product" 
+                            style={{minWidth:'100px'}}  
+                            className={`lazyload img-product`} 
+                            data-src={product?.images && product?.images[0] || product?.image} 
+                            />
                     </div>
-                    <div className="content">
-                        <a href="javascript:void(0);">{product?.name}</a>
+                    <div className="content" data-bs-dismiss="modal">
+                        <Link to={`/products/${product?.id}`} state={{ product }}  >{product?.name}</Link>
                         {(product?.discountStartDate && product?.discount) ?
                             <div className="tf-product-info-price">
                                 <div className="price-on-sale">{product?.currency}{getDiscountPrice(product?.price, product?.discount)}</div>
@@ -1507,9 +1537,6 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                 </div>
                 <div className="tf-product-info-variant-picker mb_15">
                     <div className="variant-picker-item">
-                        <div className="variant-picker-label">
-                            Size: <span className="fw-6 variant-picker-label-value">S</span>
-                        </div>
                         <VariantPicker sizes={product?.sizes}/>
                     </div>
                 </div>
@@ -1519,17 +1546,36 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                 </div>
                 <div className="tf-product-info-buy-button">
                     <form className="">
-                        <a href="javascript:void(0);"
-                            onClick={()=>addToCart(product, quantity)}
+                        <Link to="javascript:void(0);"
+                            onClick={()=>handleAddToCart(product, user, {quantity, price:(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)})}
                             className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
-                                to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></a>
+                                to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></Link>
                         <div className="tf-product-btn-wishlist btn-icon-action">
-                            <i className="icon-heart" onClick={()=>addToWishList(product, quantity)}></i>
+                            <i className="icon-heart" onClick={()=>handleAddToWishlist(product, user)}></i>
                             <i className="icon-delete"></i>
                         </div>
                         <div className="w-100">
-                            <a href="#" className="btns-full">Buy with <img src="images/payments/paypal.png" alt=""/></a>
-                            <a href="#" className="payment-more-option">More payment options</a>
+                            <div data-bs-dismiss="modal">
+                                <Link 
+                                    to="/account/orders/checkout" 
+                                    state={{
+                                        product,
+                                        user,
+                                        quantity,
+                                        paymentMethod:paymentmethod?.id,
+                                        price: (getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)
+                                    }}
+                                    className="btns-full">
+                                    Buy with 
+                                    <img src={paymentmethod?.image} alt={paymentmethod?.name} style={{maxHeight:'18px', marginLeft:'2rem'}} className='ms-2'/></Link>
+                            </div>
+                            <a
+                                href="#payment_options"  
+                                data-bs-toggle="offcanvas" 
+                                aria-controls="offcanvasLeft" 
+                                className="payment-more-option">
+                                    More payment options
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -1545,12 +1591,12 @@ const Extras  =({categories=[], product=null, amount=1})=>{
             className='modalDemo'
             body={<div className="wrap">
                 <div className="tf-product-media-wrap">
-                    <Scroller3 className='tf-single-slide' items={items} itemsPerView={1}/>
+                    <Scroller3 className='tf-single-slide' items={product?.images || []} itemsPerView={1}/>
                 </div>
                 <div className="tf-product-info-wrap position-relative" style={{minHeight:'480px'}}>
                     <div className="tf-product-info-list">
                         <div className="tf-product-info-title">
-                            <h5><a className="link" href="javascript:void(0);">{product?.name}</a></h5>
+                            <h5><Link className="link" to={`/products/${product?.id}`} state={{ product }} >{product?.name}</Link></h5>
                         </div>
                         <div className="tf-product-info-badges">
                             <div className="badges text-uppercase">Best seller</div>
@@ -1571,17 +1617,15 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                             </div>
                         }
                         <div className="tf-product-description">
-                            <p>{product?.description}</p>
+                            <p>{product?.description?.desc || product?.description || ''}</p>
                         </div>
                         <div className="tf-product-info-variant-picker">
                             <div className="variant-picker-item">
                                 <div className="d-flex justify-content-between align-items-center">
-                                    <div className="variant-picker-label">
-                                        Size: <span className="fw-6 variant-picker-label-value">S</span>
-                                    </div>
-                                    <div className="find-size btn-choose-size fw-6">Find your size</div>
+                                    <VariantPicker sizes={product?.sizes}/>
+                                    {/* <div className="find-size btn-choose-size fw-6">Find your size</div> */}
                                 </div>
-                                <VariantPicker sizes={product?.sizes}/>
+                                
                             </div>
                         </div>
                         <div className="tf-product-info-quantity">
@@ -1590,28 +1634,50 @@ const Extras  =({categories=[], product=null, amount=1})=>{
                         </div>
                         <div className="tf-product-info-buy-button">
                             <form className="">
-                                <a href="javascript:void(0);"
-                                    onClick={()=>addToCart(product, quantity)}
+                                <Link to="javascript:void(0);" 
+                                    onClick={()=>handleAddToCart(product, user, {quantity, price:(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)})}
                                     className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
-                                        to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></a>
-                                <a href="javascript:void(0);"
-                                    onClick={()=>addToWishList(product, quantity)}
+                                        to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></Link>
+                                <Link to="javascript:void(0);"
+                                    onClick={()=>handleAddToWishlist(product, user)}
                                     className="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action">
                                     <span className="icon icon-heart"></span>
                                     <span className="tooltip">Add to Wishlist</span>
                                     <span className="icon icon-delete"></span>
-                                </a>
+                                </Link>
                                 
                                 <div className="w-100">
-                                    <a href="#" className="btns-full">Buy with <img src="images/payments/paypal.png"
-                                            alt=""/></a>
-                                    <a href="#" className="payment-more-option">More payment options</a>
+                                    <div data-bs-dismiss="modal">
+                                        <Link 
+                                            to="/account/orders/checkout" 
+                                            state={{
+                                                product,
+                                                user,
+                                                quantity,
+                                                paymentMethod:paymentmethod?.id,
+                                                price: (getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)
+                                            }}
+                                            className="btns-full">
+                                            Buy with 
+                                            <img src={paymentmethod?.image} alt={paymentmethod?.name} style={{maxHeight:'18px', marginLeft:'2rem'}} className='ms-2'/></Link>
+                                    </div>
+                                    <a
+                                        href="#payment_options"  
+                                        data-bs-toggle="offcanvas" 
+                                        aria-controls="offcanvasLeft" 
+                                        className="payment-more-option">
+                                            More payment options
+                                    </a>
+                                    
+                                    
                                 </div>
                             </form>
                         </div>
-                        <div>
-                            <a href="product-detail.html" className="tf-btn fw-6 btn-line">View full details<i
-                                    className="icon icon-arrow1-top-left"></i></a>
+                        <div data-bs-dismiss="modal">
+                            <Link to={`products/${product?.id}`} state={{ product }} className="tf-btn fw-6 btn-line">
+                                View full details
+                                <i className="icon icon-arrow1-top-left"></i>
+                            </Link>
                         </div>
                     </div>
                 </div>

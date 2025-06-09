@@ -4689,6 +4689,11 @@ header.header-bg {
   height: 50px;
   border: 1px solid var(--line) !important;
 }
+.tf-field.style-1 .tf-input:hover,
+.tf-field.style-1 .tf-input:focus {
+  border-color: var(--main) !important;
+}
+
 .tf-field.style-1 .tf-input:not(:placeholder-shown) ~ .tf-field-label, .tf-field.style-1 .tf-input:focus ~ .tf-field-label {
   top: 4px;
   left: 14px;
@@ -4791,6 +4796,7 @@ header.header-bg {
   -ms-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
+  position: relative;
 }
 .tf-dropdown-sort .btn-select {
   display: flex;
@@ -4812,7 +4818,7 @@ header.header-bg {
   margin: 6px !important;
   margin-top: 10px !important;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1019607843);
-  min-width: 180px;
+  max-width: 180px;
   border: 0;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -4822,7 +4828,13 @@ header.header-bg {
   overscroll-behavior-y: contain;
   overflow-y: auto;
   z-index: 99999;
+  position: absolute;
+  top: 100%; /* place dropdown below the button */
+  right: 0;   /* align the right edge */
+  left: auto;
+  
 }
+
 .tf-dropdown-sort .dropdown-menu::-webkit-scrollbar {
   width: 5px;
 }
@@ -5008,8 +5020,17 @@ header.header-bg {
   padding-top: 11px;
   padding-bottom: 11px;
 }
-.tf-form-search .search-box .tf-btn {
+.tf-form-search .search-box .tf-btn-span {
   position: absolute;
+  top: 42px;
+  transform: translateY(-50%);
+  left:calc(100% - 174px);
+  /* right: 5px; */
+  right: 15px;
+  width: 100%;
+}
+.tf-form-search .search-box .tf-btn {
+  /* position: absolute; */
   top: 50%;
   transform: translateY(-50%);
   right: 5px;
@@ -5750,7 +5771,8 @@ header.header-bg {
 
 /*------------ carousel ---------------- */
 .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
-.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet,
+.pagination-dot {
   margin: 0px;
 }
 
@@ -7133,6 +7155,7 @@ header.header-bg {
   line-height: 19px;
   color: var(--text);
   text-decoration: underline;
+  cursor: pointer;
 }
 .modal-shopping-cart .tf-minicart-recommendations {
   margin: 15px 36px;
@@ -9574,7 +9597,7 @@ header.header-bg {
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateX(100%);
   width: 36px;
   height: 26px;
   color: var(--success);
@@ -21366,13 +21389,14 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 .rtl .flat-banner-sock img {
   transform: rotateY(180deg);
 }
-.rtl .tf-form-search .search-box .tf-btn {
+.rtl .tf-form-search .search-box .tf-btn-span {
   left: 5px;
   right: auto;
 }
+
 .rtl .tf-form-search .search-box input {
   padding-left: 40px;
-  padding-right: 18px;
+  padding-right: 32px;
 }
 .rtl .btn-sidebar-style2 {
   left: auto;
@@ -21511,14 +21535,14 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .scroller-container {
   scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  /* scrollbar-width: none; */
+  /* -ms-overflow-style: none; */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-  user-select: none;
-  -webkit-user-drag: none;
+  /* user-select: none; */
+  /* -webkit-user-drag: none; */
 }
 .scroller-container::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
 }
 .scroller-item:hover img,
 .scroller-item-active img {
@@ -21529,4 +21553,9 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   border: 1px solid black !important;
   border-radius: 8px;
 }
+
+.icon-active {
+  color: var(--yellow);
+}
+
 /*# sourceMappingURL=styles.css.map */

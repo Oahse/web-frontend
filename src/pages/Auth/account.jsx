@@ -6,42 +6,13 @@ import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import AccountSideBar from './accountsidebar';
 import Extras from '@/components/extra'
-const Account =()=>{
+import useAuth from "@/hooks/useAuth";
+import { Link } from 'react-router-dom';
+const Account =({categories=[]})=>{
     const { isMobile} = useDeviceType();
-    const [loading, setLoading] = useState(false);
-    const navLinks = [
-        {
-          "href": "my-account-dashboard.html",
-          "active": true,
-          "name": "Dashboard"
-        },
-        {
-          "href": "my-account-orders.html",
-          "active": false,
-          "name": "Orders"
-        },
-        {
-          "href": "my-account-address.html",
-          "active": false,
-          "name": "Address"
-        },
-        {
-          "href": "my-account-edit.html",
-          "active": false,
-          "name": "Account Details"
-        },
-        {
-          "href": "my-account-wishlist.html",
-          "active": false,
-          "name": "Wishlist"
-        },
-        {
-          "href": "login.html",
-          "active": false,
-          "name": "Logout"
-        }
-    ]
-      
+    const { loading:isloading, error:iserror, user} = useAuth();
+    const [loading, setLoading] = useState(isloading);
+    
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
             
@@ -60,19 +31,19 @@ const Account =()=>{
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-3">
-                                <AccountSideBar />
+                                <AccountSideBar active={0}/>
                                 
                             </div>
                             <div className="col-lg-9">
                                 <div className="my-account-content account-dashboard">
                                     <div className="mb_60">
-                                        <h5 className="fw-5 mb_20">Hello Themesflat</h5>
+                                        <h5 className="fw-5 mb_20">Hello {user?.firstname} {user?.lastname}</h5>
                                         <p>
-                                            From your account dashboard you can view your <a className="text_primary"
-                                                href="my-account-orders.html">recent orders</a>, manage your <a
-                                                className="text_primary" href="my-account-address.html">shipping and billing
-                                                address</a>, and <a className="text_primary" href="my-account-edit.html">edit your
-                                                password and account details</a>.
+                                            From your account dashboard you can view your <Link className="text_primary"
+                                                to="/account/orders">recent orders</Link>, manage your <Link
+                                                className="text_primary" to="/account/address">shipping and billing
+                                                address</Link>, and <Link className="text_primary" to="/account/settings">edit your
+                                                password and account details</Link>.
                                         </p>
                                     </div>
                                 </div>
@@ -87,7 +58,8 @@ const Account =()=>{
                 </div>
                 <Footer />
             </div>
-            <Extras />
+            
+            <Extras categories={categories} active={0}/>
         </div>
     )
 }

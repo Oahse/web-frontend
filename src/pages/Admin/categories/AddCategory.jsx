@@ -13,7 +13,7 @@ import useAdminStyles from '@/hooks/useAdminStyles';
 
 
 
-const AddAdminCategory = ({API_URL ,Companyname, isLoggedIn, user })=>{
+const AddAdminCategory = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categories=[]  })=>{
   useAdminStyles(); // ✅ dynamically manages admin styles
     const [formData, setFormData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -98,7 +98,7 @@ const AddAdminCategory = ({API_URL ,Companyname, isLoggedIn, user })=>{
                     {/* <!-- /section-menu-left --> */}
                     <div className="section-content-right">
                         {/* <!-- header-dashboard --> */}
-                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={user}  />
+                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={loggedInUser}  />
                         {/* <!-- /header-dashboard --> */}
                         {/* <!-- main-content --> */}
                         <div class="main-content">

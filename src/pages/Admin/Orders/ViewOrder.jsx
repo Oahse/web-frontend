@@ -10,7 +10,7 @@ import useAdminStyles from '@/hooks/useAdminStyles';
 
 
 
-const ViewAdminOrders = ({API_URL ,Companyname, isLoggedIn, user })=>{
+const ViewAdminOrders = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categories=[]  })=>{
     useAdminStyles(); // ✅ dynamically manages admin styles
   const navigate = useNavigate();
     const location = useLocation();
@@ -74,7 +74,7 @@ const ViewAdminOrders = ({API_URL ,Companyname, isLoggedIn, user })=>{
                     {/* <!-- /section-menu-left --> */}
                     <div className="section-content-right">
                         {/* <!-- header-dashboard --> */}
-                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={user}  />
+                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={loggedInUser}  />
                         {/* <!-- /header-dashboard --> */}
                         {/* <!-- main-content --> */}
                         <div className="main-content">

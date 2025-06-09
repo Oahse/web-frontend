@@ -11,7 +11,7 @@ import Toast from "@/components/Toast";
 import { rolePermissions } from "@/constants/permissions";
 import Modal from "@/components/modal";
 import useAdminStyles from '@/hooks/useAdminStyles';
-const ViewAdminUsers = ({API_URL ,Companyname, isLoggedIn, loggedInUser })=>{
+const ViewAdminUsers = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categories=[] })=>{
     useAdminStyles(); // ✅ dynamically manages admin styles
     const [formData, setFormData] = useState({active:false,permissions:[],});
     const [loading, setLoading] = useState(false);

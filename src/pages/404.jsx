@@ -4,7 +4,7 @@ import Header from "@/components/toolbar/header"
 import Extras from "@/components/extra"
 import imgnotfound from "@/assets/images/item/404.svg"
 
-const NotFound =()=>{
+const NotFound =({categories=[]})=>{
     const [loading, setLoading] = useState(false);
     return(
         <div className="preload-wrapper">
@@ -36,7 +36,7 @@ const NotFound =()=>{
 
             </div>
 
-            <Extras />
+            <Extras categories={categories} />
         </div>
     )
 }

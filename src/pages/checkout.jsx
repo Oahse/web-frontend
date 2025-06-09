@@ -5,25 +5,157 @@ import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import Extras from '@/components/extra';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ToastContainer, notify } from '@/services/notifications/ui';
-const Checkout =()=>{
-    const { isMobile } = useDeviceType();
-    const [loading, setLoading] = useState(false);
-    const progressValue = '10.99%';
-    const location = useLocation();
+import { capturePaypalOrder, createPaypalOrder } from '@/services/api/products';
+import { getDiscountPrice } from '@/services/helper';
+import BreadCrumbs from '@/components/breadcrumbs';
+import brown from '@/assets/images/products/brown.jpg';
+import kid2 from '@/assets/images/products/kid-12.jpg';
+import PaymentOptions from '@/components/paymentMethods';
+import { paymentMethods } from '@/services/helper';
+const cart = [
+  {
+    id: 1,
+    name: 'Ribbed modal T-shirt',
+    image: brown,
+    quantity: 1,
+    variant: 'Brown / M',
+    price: 25.0
+  },
+  {
+    id: 2,
+    name: 'Vanilla White',
+    image: kid2,
+    quantity: 1,
+    variant: null,
+    price: 35.0
+  },
+  // etc...
+];
 
-    const { product, amount } = location?.state || {};
+const Checkout =({categories=[]})=>{
+    // const { isMobile } = useDeviceType();
+    const [loading, setLoading] = useState(false);
+    
+    // const progressValue = '10.99%';
+    const location = useLocation();
+    
+    const [cartItems, setCartItems] = useState(cart || []);
+
+    const { product, user, quantity,paymentMethod, price } = location?.state || {};
+    // Set method from paymentMethod (string or object)
+    const defaultMethod = paymentMethods.find(pm => pm.id === 'credit_card') || paymentMethods[0];
+
+    const initialMethod = (() => {
+    if (paymentMethod) {
+        return paymentMethods.find(pm => pm.id === paymentMethod) || defaultMethod;
+    }
+        return defaultMethod;
+    })();
+
+    const [method, setMethod] = useState(initialMethod);
+
+
 
     useEffect(() => {
-        if (product && amount) {
-        notify({ text: `${amount} ${product.name} has been added to cart`, type: 'success' });
+    if (product && quantity && price) {
+        setCartItems(prevItems => {
+            const existsIndex = prevItems.findIndex(item => item.id === product.id);
+            if (existsIndex !== -1) {
+                // Update quantity for existing product
+                const updatedItems = [...prevItems];
+                // updatedItems[existsIndex].quantity += quantity; // increase quantity
+                return updatedItems;
+            }
+            // Add new product
+            return [
+                ...prevItems,
+                {
+                    id: product.id,
+                    name: product.name,
+                    image: product.images[0],
+                    quantity,
+                    variant: null,
+                    price: Number(price),
+                }
+            ];
+            }
+        );
+
+        
+        notify({ text: `${quantity} ${product.name} has been added to cart`, type: 'success' });
+    }
+    }, [product, quantity, price]);
+    const totalPrice = cartItems.reduce(
+            (acc, item) => acc + Number(item.price),
+            0
+        );
+
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+
+    const validate = async () => {
+        const validateCart = () => new Promise((resolve, reject) => {
+            if (!cartItems.length) reject('Cart is empty');
+            else resolve();
+        });
+
+        const validateTerms = () => new Promise((resolve, reject) => {
+            if (!acceptedTerms) reject('You need to accept Terms and Conditions.');
+            else resolve();
+        });
+
+        const validateMethod = () => new Promise((resolve, reject) => {
+            if (!method) reject('You need to select the Payment Method');
+            else resolve();
+        });
+
+        const results = await Promise.allSettled([
+            validateCart(),
+            validateTerms(),
+            validateMethod()
+        ]);
+
+        const errors = results
+            .filter(r => r.status === 'rejected')
+            .map(r => r.reason);
+
+        if (errors.length) {
+            errors.forEach(err => notify({ text: err, type: 'error' }));
+            throw new Error('Validation failed');  // Throw to stop handlePay execution
         }
-    }, [product, amount]); // run effect when product or amount changes
+
+        // No errors, validation passed
+    };
+
+    const handlePay = async () => {
+        try {
+            await validate();  // Will throw if validation fails
+
+            const result = await createPaypalOrder({
+                orderData: {
+                    user,
+                    cartItems,
+                }
+            });
+
+            if (result.data) {
+                notify({ text: `Payments initiated successfully.`, type: 'success' });
+            } else {
+                notify({ text: `Payment processing failed: ${result.error}`, type: 'error' });
+            }
+        } catch (error) {
+            if (error.message !== 'Validation failed') {
+                notify({ text: `Error: ${error.message}`, type: 'error' });
+            }
+            // If validation failed, errors already notified, so we can silently ignore here
+        }
+    };
+
+
 
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
             
             {loading && <Loader />} 
             
@@ -34,6 +166,16 @@ const Checkout =()=>{
                 <div className="tf-page-title">
                     <div className="container-full">
                         <div className="heading text-center">Check Out</div>
+                        <BreadCrumbs
+                              dir='center'
+                              links={[
+                                  { name: 'Home', href: '/' },
+                                  { name: 'Check Out' }
+                              ]}
+                              // prev={{ href: `/products/${product?.id}`, tooltip: 'Previous Product' }}
+                              // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
+                              // back={{ href: '/products', tooltip: 'Back to Products' }}
+                          />
                     </div>
                 </div>
 
@@ -145,60 +287,25 @@ const Checkout =()=>{
                                 <div className="tf-cart-footer-inner">
                                     <h5 className="fw-5 mb_20">Your order</h5>
                                     
-                                    <form className="tf-page-cart-checkout widget-wrap-checkout">
+                                    <div className="tf-page-cart-checkout widget-wrap-checkout">
                                         <ul className="wrap-checkout-product">
-                                            <li className="checkout-product-item">
-                                                <figure className="img-product">
-                                                    <img src="images/products/brown.jpg" alt="product"/>
-                                                    <span className="quantity">1</span>
-                                                </figure>
-                                                <div className="content">
-                                                    <div className="info">
-                                                        <p className="name">Ribbed modal T-shirt</p>
-                                                        <span className="variant">Brown / M</span>
+                                            {cartItems.length ? cartItems.map(item => (
+                                                <li key={item.id} className="checkout-product-item">
+                                                    <figure className="img-product">
+                                                        <img src={item.image} alt={item.name} />
+                                                        <span className="quantity">{item.quantity}</span>
+                                                    </figure>
+                                                    <div className="content">
+                                                        <Link className="info"  to={`/products/${product?.id}`} state={{ product }}>
+                                                            <p className="name">{item.name}</p>
+                                                            {item.variant && <span className="variant">{item.variant}</span>}
+                                                        </Link>
+                                                        <span className="price">${Number(item.price || 0).toFixed(2)}</span>
                                                     </div>
-                                                    <span className="price">$25.00</span>
-                                                </div>
-                                            </li>
-                                            <li className="checkout-product-item">
-                                                <figure className="img-product">
-                                                    <img src="images/products/kid-12.jpg" alt="product"/>
-                                                    <span className="quantity">1</span>
-                                                </figure>
-                                                <div className="content">
-                                                    <div className="info">
-                                                        <p className="name">Vanilla White</p>
-                                                    </div>
-                                                    <span className="price">$35.00</span>
-                                                </div>
-                                            </li>
-                                            <li className="checkout-product-item">
-                                                <figure className="img-product">
-                                                    <img src="images/products/beige-2.jpg" alt="product"/>
-                                                    <span className="quantity">1</span>
-                                                </figure>
-                                                <div className="content">
-                                                    <div className="info">
-                                                        <p className="name">Cotton jersey top</p>
-                                                        <span className="variant">Beige / S</span>
-                                                    </div>
-                                                    <span className="price">$8.00</span>
-                                                </div>
-                                            </li>
-                                            <li className="checkout-product-item">
-                                                <figure className="img-product">
-                                                    <img src="images/products/orange-1.jpg" alt="product"/>
-                                                    <span className="quantity">3</span>
-                                                </figure>
-                                                <div className="content">
-                                                    <div className="info">
-                                                        <p className="name">Ribbed Tank Top</p>
-                                                        <span className="variant">Orange / S</span>
-                                                    </div>
-                                                    <span className="price">$54.00</span>
-                                                </div>
-                                            </li>
+                                                </li>
+                                            )):<span className='text-danger'>No Items in Cart</span>}
                                         </ul>
+
                                         <div className="coupon-box">
                                             <input type="text" placeholder="Discount code"/>
                                             <a href="#"
@@ -206,33 +313,38 @@ const Checkout =()=>{
                                         </div>
                                         <div className="d-flex justify-content-between line pb_20">
                                             <h6 className="fw-5">Total</h6>
-                                            <h6 className="total fw-5">$122.00</h6>
+                                            <h6 className="total fw-5">{product?.currency}{totalPrice}</h6>
                                         </div>
                                         <div className="wd-check-payment">
-                                            <div className="fieldset-radio mb_20">
-                                                <input type="radio" name="payment" id="bank" className="tf-check" checked/>
-                                                <label for="bank">Direct bank transfer</label>
-
-                                            </div>
-                                            <div className="fieldset-radio mb_20">
-                                                <input type="radio" name="payment" id="delivery" className="tf-check"/>
-                                                <label for="delivery">Cash on delivery</label>
-                                            </div>
+                                            
+                                            <PaymentOptions method={method} onChange={setMethod}/>
+                                            
                                             <p className="text_black-2 mb_20">Your personal data will be used to process your order,
                                                 support your experience throughout this website, and for other purposes
-                                                described in our <a href="privacy-policy.html"
-                                                    className="text-decoration-underline">privacy policy</a>.</p>
+                                                described in our <Link to="/privacy-policy"
+                                                    className="text-decoration-underline">privacy policy</Link>.</p>
                                             <div className="box-checkbox fieldset-radio mb_20">
-                                                <input type="checkbox" id="check-agree" className="tf-check"/>
+                                                <input type="checkbox" id="check-agree" className="tf-check" checked={acceptedTerms} onChange={()=>setAcceptedTerms(!acceptedTerms)}/>
                                                 <label for="check-agree" className="text_black-2">I have read and agree to the
-                                                    website <a href="terms-conditions.html"
-                                                        className="text-decoration-underline">terms and conditions</a>.</label>
+                                                    website <Link to="/terms"
+                                                        className="text-decoration-underline">terms and conditions</Link>.</label>
                                             </div>
                                         </div>
                                         <button
+                                            onClick={()=>handlePay()}
                                             className="tf-btn radius-3 btn-fill btn-icon animate-hover-btn justify-content-center">Place
-                                            order</button>
-                                    </form>
+                                            order 
+                                            {method?.image && (
+                                                <img
+                                                    src={method.image}
+                                                    alt={method.name}
+                                                    style={{ maxHeight: '18px', marginLeft: '2rem' }}
+                                                    className="ms-2"
+                                                />
+                                                )}
+
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -241,7 +353,7 @@ const Checkout =()=>{
 
                 <Footer />
             </div>
-            <Extras />
+            <Extras categories={categories} paymentMethod={paymentMethod}/>
         </div>
     )
 }

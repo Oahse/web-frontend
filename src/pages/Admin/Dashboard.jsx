@@ -12,7 +12,7 @@ import VectorMap from "@/components/admin/maps/us";
 import { USA } from "@/constants/countrystates";
 import useAdminStyles from '@/hooks/useAdminStyles';
 
-const DashBoard = ({API_URL , Companyname, isLoggedIn, user })=>{
+const DashBoard = ({API_URL , Companyname, isLoggedIn, loggedInUser,categories=[] })=>{
     useAdminStyles(); // ✅ dynamically manages admin styles
     const [loading, setLoading] = useState(false);
     const [isHeaderFullWidth, setIsHeaderFullWidth] = useState(false);
@@ -67,7 +67,7 @@ const DashBoard = ({API_URL , Companyname, isLoggedIn, user })=>{
                     {/* <!-- section-content-right --> */}
                     <div className="section-content-right">
                         {/* <!-- header-dashboard --> */}
-                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={user} />
+                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={loggedInUser} />
                         {/* <!-- /header-dashboard --> */}
                         {/* <!-- main-content --> */}
                         <div className="main-content">

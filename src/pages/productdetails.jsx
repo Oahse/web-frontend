@@ -1,4 +1,4 @@
-import useDeviceType from '@/hooks/useDeviceType'
+import useAuth from '@/hooks/useAuth';
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
@@ -9,29 +9,9 @@ import Extras from '@/components/extra'
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import CountDownTimer from '@/components/countdown';
 import Scroller3 from '@/components/scroller3'
-import Scroller from '@/components/scroller'
-import paypal from '@/assets/images/payments/paypal.png';
-import beige1 from '@/assets/images/shop/products/hmgoepprod31.jpg';
-import beige2 from '@/assets/images/shop/products/hmgoepprod.jpg';
-import beige3 from '@/assets/images/shop/products/hmgoepprod2.jpg';
-import beige4 from '@/assets/images/shop/products/hmgoepprod3.jpg';
-import beige5 from '@/assets/images/shop/products/hmgoepprod4.jpg';
-import beige6 from '@/assets/images/shop/products/hmgoepprod5.jpg';
-
+import Scroller5 from "@/components/scroller5";
 import black1 from '@/assets/images/shop/products/hmgoepprod6.jpg';
-import black2 from '@/assets/images/shop/products/hmgoepprod7.jpg';
-import black3 from '@/assets/images/shop/products/hmgoepprod8.jpg';
-import black4 from '@/assets/images/shop/products/hmgoepprod9.jpg';
-
-import blue1 from '@/assets/images/shop/products/hmgoepprod10.jpg';
-import blue2 from '@/assets/images/shop/products/hmgoepprod11.jpg';
-import blue3 from '@/assets/images/shop/products/hmgoepprod12.jpg';
-import blue4 from '@/assets/images/shop/products/hmgoepprod13.jpg';
-
 import white1 from '@/assets/images/shop/products/hmgoepprod14.jpg';
-import white2 from '@/assets/images/shop/products/hmgoepprod15.jpg';
-import white3 from '@/assets/images/shop/products/hmgoepprod16.jpg';
-import white4 from '@/assets/images/shop/products/hmgoepprod17.jpg';
 import orange1 from '@/assets/images/products/orange-1.jpg';
 import hoodie1 from '@/assets/images/products/brown.jpg';
 import hoodie2 from '@/assets/images/products/purple.jpg';
@@ -53,13 +33,28 @@ import bag1 from '@/assets/images/products/black-4.jpg';
 import bag2 from '@/assets/images/products/black-8.jpg';
 import pink1 from '@/assets/images/products/pink-1.jpg';
 import brown2 from '@/assets/images/products/brown-2.jpg';
+import collection9 from '@/assets/images/collections/collection-circle-9.jpg';
+import collection10 from '@/assets/images/collections/collection-circle-10.jpg';
 import QuantitySelector from '@/components/quantityselector';
 import { fetchProduct,fetchRelatedProducts } from '@/services/api/products';
 import VariantPicker from '@/components/variantpicker';
 // import currencies from '@/constants/currencies';
-import { ToastContainer, notify } from '@/services/notifications/ui';
-import Tab2 from '@/components/tab2';
 
+import Tab2 from '@/components/tab2';
+import { handleAddToCart,handleAddToWishlist, getDiscountPrice } from '@/services/helper';
+
+import { paymentMethods } from '@/services/helper';
+import paypal from '@/assets/images/payments/paypal.png';
+// import visa from '@/assets/images/payments/visa.png';
+import mastercard from '@/assets/images/payments/img-2.png';
+// Add these imports for your other images:
+import cash from '@/assets/images/payments/cash.jpg';
+import applepay from '@/assets/images/payments/applepay.jpg';
+import googlepay from '@/assets/images/payments/googlepay.png';
+import amazonpay from '@/assets/images/payments/amazonpay.jpg';
+import cryptocurrency from '@/assets/images/payments/cryptocurrency.webp';
+import { fetchProductReviews } from '../services/api/products';
+import useProductReview from '@/hooks/useProductReview';
 const relatedproducts = [
     {
       id: 1,
@@ -83,6 +78,88 @@ const relatedproducts = [
         { label: 'XL', id: 'values-xl', price: 12 },
       ],
       rating: 4,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 2,
@@ -103,6 +180,88 @@ const relatedproducts = [
         { label: 'M', id: 'values-m', price: 9 },
       ],
       rating: 4,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 3,
@@ -123,6 +282,88 @@ const relatedproducts = [
         { label: 'S', id: 'values-s', price: 0 },
       ],
       rating: 3,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 4,
@@ -144,6 +385,88 @@ const relatedproducts = [
         { label: 'L', id: 'values-l', price: 10 },
       ],
       rating: 5,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 5,
@@ -167,6 +490,88 @@ const relatedproducts = [
         { label: 'XL', id: 'values-xl', price: 12 },
       ],
       rating: 1,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 6,
@@ -190,6 +595,88 @@ const relatedproducts = [
         { label: 'XL', id: 'values-xl', price: 12 },
       ],
       rating: 2,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 7,
@@ -213,6 +700,88 @@ const relatedproducts = [
         { label: 'XL', id: 'values-xl', price: 12 },
       ],
       rating: 4,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 8,
@@ -236,6 +805,88 @@ const relatedproducts = [
         { label: 'XL', id: 'values-xl', price: 12 },
       ],
       rating: 5,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 9,
@@ -259,6 +910,88 @@ const relatedproducts = [
         { label: 'XL', id: 'values-xl', price: 12 },
       ],
       rating: 3,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 10,
@@ -282,6 +1015,88 @@ const relatedproducts = [
         { label: 'XL', id: 'values-xl', price: 12 },
       ],
       rating: 4,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
       id: 11,
@@ -305,65 +1120,386 @@ const relatedproducts = [
         { label: 'XL', id: 'values-xl', price: 12 },
       ],
       rating: 4,
+        description:{
+          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+          materialscareleft:[
+            {
+              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+              name:'Care: Hand wash'
+            },
+            {
+              name:'Imported'
+            }
+
+          ],
+          materialscareright:[
+            {
+              icon:'icon-machine',
+              name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+              icon:'icon-iron',
+              name:'Iron maximum 110ºC.'
+            },
+            {
+              icon:'icon-bleach',
+              name:'Do not bleach/bleach.'
+            },
+            {
+              icon:'icon-dry-clean',
+              name:'Do not dry clean.'
+            },
+            {
+              icon:'icon-tumble-dry',
+              name:'Tumble dry, medium hear.'
+            }
+
+          ]
+        },
+        additionalinfo:[
+          {
+            label:'Color',
+            value:'White, Pink, Black'
+          },
+          {
+            label:'Size',
+            value:'S, M, L, XL'
+          }
+        ],
+        checkout:{
+          title:{
+            icon:'icon-safe',
+            name:'Guarantee Safe Checkout'
+          },
+          methods:[
+            {
+              image:paypal,
+              maxHeight:'18px',
+              marginLeft:'2rem'
+            },
+            {
+              image:mastercard,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:googlepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:applepay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            },
+            {
+              image:amazonpay,
+              maxHeight:'24px',
+              marginLeft:'2rem'
+            }
+          ]
+        }
     },
     {
-      id: 12,
-      name: 'Activewear Tights',
-      price: 32.5,
-      currency: '€',
-      discount: 20,
-      discountStartDate: '2025-05-15T14:15:00Z',
-      availability: 'In stock',
-      brand: 'FlexiFit',
-      category: 'Fibers',
-      images: [hoodie2, hoodie1, black1, white1],
-      colors: [
-        { name: 'Grey', swatch: 'bg_grey', image: hoodie2 },
-        { name: 'Maroon', swatch: 'bg_maroon', image: hoodie1 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'L', id: 'values-l', price: 10 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 5,
+        id: 12,
+        name: 'Activewear Tights',
+        price: 32.5,
+        currency: '€',
+        discount: 20,
+        discountStartDate: '2025-05-15T14:15:00Z',
+        availability: 'In stock',
+        brand: 'FlexiFit',
+        category: 'Fibers',
+        images: [hoodie2, hoodie1, black1, white1],
+        colors: [
+            { name: 'Grey', swatch: 'bg_grey', image: hoodie2 },
+            { name: 'Maroon', swatch: 'bg_maroon', image: hoodie1 },
+        ],
+        sizes: [
+            { label: 'S', id: 'values-s', price: 0 },
+            { label: 'M', id: 'values-m', price: 9 },
+            { label: 'L', id: 'values-l', price: 10 },
+            { label: 'XL', id: 'values-xl', price: 12 },
+        ],
+        rating: 5,
+        description:{
+            desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+            features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+            materialscareleft:[
+            {
+                name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+            },
+            {
+                name:'Care: Hand wash'
+            },
+            {
+                name:'Imported'
+            }
+
+            ],
+            materialscareright:[
+            {
+                icon:'icon-machine',
+                name:'Machine wash max. 30ºC. Short spin.'
+            },
+            {
+                icon:'icon-iron',
+                name:'Iron maximum 110ºC.'
+            },
+            {
+                icon:'icon-bleach',
+                name:'Do not bleach/bleach.'
+            },
+            {
+                icon:'icon-dry-clean',
+                name:'Do not dry clean.'
+            },
+            {
+                icon:'icon-tumble-dry',
+                name:'Tumble dry, medium hear.'
+            }
+
+            ]
+        },
+        additionalinfo:[
+            {
+            label:'Color',
+            value:'White, Pink, Black'
+            },
+            {
+            label:'Size',
+            value:'S, M, L, XL'
+            }
+        ],
+        checkout:{
+            title:{
+                icon:'icon-safe',
+                name:'Guarantee Safe Checkout'
+            },
+            methods:[
+            {
+                image:paypal,
+                maxHeight:'18px',
+                marginLeft:'2rem'
+            },
+            {
+                image:mastercard,
+                maxHeight:'24px',
+                marginLeft:'2rem'
+            },
+            {
+                image:googlepay,
+                maxHeight:'24px',
+                marginLeft:'2rem'
+            },
+            {
+                image:applepay,
+                maxHeight:'24px',
+                marginLeft:'2rem'
+            },
+            {
+                image:amazonpay,
+                maxHeight:'24px',
+                marginLeft:'2rem'
+            }
+            ]
+        }
     },
   ];
-const ProductDetails = () =>{
-    const { isMobile, isTablet, isDesktop } = useDeviceType();
+const items = [
+    {
+        header: "Best Sellers",
+        description: "Check out our most popular products.",
+        rating: 5,  // e.g. 5 stars
+        image: shirt2,
+        name: "John Doe",
+        metas: "Verified Buyer",
+        products: [
+        {
+            id: 101,
+            name: "Classic Watch",
+            color: "black",
+            images: [
+                shirt2,
+            ],
+            price: 150,
+            currency: "$",
+        },
+        {
+            id: 102,
+            name: "Leather Wallet",
+            color: "brown",
+            images: [
+                shorts1,
+            ],
+            price: 45,
+            currency: "$",
+        },
+        {
+            id: 103,
+            name: "Sunglasses",
+            color: "black",
+            images: [
+                shorts2,
+            ],
+            price: 90,
+            currency: "$",
+        },
+        {
+            id: 104,
+            name: "Leather Wallet",
+            color: "brown",
+            images: [
+                shorts1,
+            ],
+            price: 45,
+            currency: "$",
+        },
+        {
+            id: 105,
+            name: "Sunglasses",
+            color: "black",
+            images: [
+                shorts2,
+            ],
+            price: 90,
+            currency: "$",
+        }
+        // Add more products as needed
+        ],
+    },
+    {
+        header: "New Arrivals",
+        description: "Fresh styles just arrived.",
+        rating: 4,  // 4 stars
+        image: shirt2,
+        name: "Jane Smith",
+        metas: "Fashion Blogger",
+        products: [
+        {
+            id: 201,
+            name: "Sneakers",
+            color: "white",
+            images: [
+                shirt2,
+            ],
+            price: 120,
+            currency: "$",
+        },
+        {
+            id: 202,
+            name: "Backpack",
+            color: "navy",
+            images: [
+                shirt2,
+            ],
+            price: 80,
+            currency: "$",
+        },
+        {
+            id: 203,
+            name: "Beanie",
+            color: "grey",
+            images: [
+                shirt2,
+            ],
+            price: 25,
+            currency: "$",
+        },
+        ],
+    },
+    // More items (testimonial groups) as needed
+];
+const productreview ={
+    avg:5,
+    totalreviews:168, 
+    totalcomments:3,
+    ratings:[{
+                name: 5,
+                percentage:"94.67%",
+                total:59,
+            },{
+                name: 4,
+                percentage:"60%",
+                total:46,
+            },{
+                name: 3,
+                percentage:"0%",
+                total:0,
+            },{
+                name: 2,
+                percentage:"0%",
+                total:0,
+            },{
+                name: 1,
+                percentage:"0%",
+                total:0,
+            }
+        ],
+    comments:[
+                {
+                    user: {
+                        name: "oscaroguledo",
+                        image: collection9,
+                    },
+                    rating:2,
+                    datetime: "2025-06-08T10:00:00Z",
+                    text: `Great theme - we were looking for a theme with lots of built in features and flexibility and this was perfect. We expected to need to employ a developer to add a few finishing touches. But we actually managed to do everything ourselves. We did have one small query and the support given was swift and helpful.`,
+                    replies: [
+                        {
+                            user: {
+                                name: "oscaroguledo",
+                                image: collection10,
+                            },
+                            rating:5,
+                            datetime: "2025-06-08T10:00:00Z",
+                            text: `We love to hear it! Part of what we love most about Modave is how much it empowers store owners like yourself to build a beautiful website without having to hire a developer :) Thank you for this fantastic review!`,
+                        },
+                    ],
+                },
+                {
+                    user: {
+                        name: "Superb quality apparel that exceeds expectations",
+                        profileLink: "#",
+                        image: collection9,
+                    },
+                    rating:5,
+                    datetime: "2025-06-08T10:00:00Z",
+                    text: `Great theme - we were looking for a theme with lots of built in features and flexibility and this was perfect. We expected to need to employ a developer to add a few finishing touches. But we actually managed to do everything ourselves. We did have one small query and the support given was swift and helpful.`,
+                    replies: [],
+                },
+            ],
+    options : [
+        { label: "Edit", sortValue: "edit" },
+        { label: "Delete", sortValue: "delete" },
+    ]
+}
+const ProductDetails = ( {categories =[]}) =>{
+    const { loading:isloading, error, user} = useAuth();
+    const [loading, setLoading] = useState(isloading);
     const location = useLocation();
     const navigate = useNavigate();
     
     // Destructure the product from the location state
-    const { product:currentproduct} = location?.state || {}; // Default to empty object if state is undefined
-    
-    // const { country } = useCountryByLocation();
-    // console.log(country,'=====country')
-    const [loading, setLoading] = useState(false);
+    const { product:currentproduct } = location?.state || {};
+    // Set method from paymentMethod (string or object)
+    const defaultMethod = paymentMethods.find(pm => pm.id === 'credit_card') || paymentMethods[0];
+
+    const initialMethod = (() => {
+        return defaultMethod;
+    })();
+
+    const [paymentmethod, setPaymentMethod] = useState(initialMethod);
     const [relatedProductsLoading, setRelatedProductsLoading] = useState(false);
     const [product, setProduct] = useState(currentproduct||{});
+    const { productReview,setProductReview } = useProductReview(productreview,product?.id);
+    
     const [relatedProducts, setRelatedProducts] = useState(relatedproducts || []);
-
     const [quantity, setQuantity] = useState(1);
     
-    
-    const addToCart = (product, amount) => {
-        // notify(`${amount} ${product?.name} has been added to cart`)
-        notify({ text: `${amount} ${product?.name} has been added to cart`, type: 'success' });
-        console.log(amount, product?.name,'has been added to cart')
-    };
-    const addToWishList = (product, amount) => {
-        notify({ text: `${amount} ${product?.name} has been added to wishlist`, type: 'success' });
-        console.log(amount, product?.name,'has been added to wishlist')
-    };
-    const buyNow =(product, amount)=>{
-        navigate('/account/orders/checkout', { state: { product, amount } })
-    }
-      
-    const getDiscountPrice = (price, discount) => {
-        return (price-(price * (discount / 100))).toFixed(2);
-    };
     const handleSetCurrentProduct =(product)=>{
         
         setProduct(product);
@@ -372,6 +1508,10 @@ const ProductDetails = () =>{
 
         // Change the URL without reloading the page
         navigate(`/products/${productIdOrSlug}`, { replace: false });
+    }
+    const [currentComment, setCurrentComment] = useState(null);
+    const handleCurrentCommentData = (review)=>{
+        setCurrentComment(review);
     }
     
     useEffect(() => {
@@ -390,20 +1530,36 @@ const ProductDetails = () =>{
           loadProduct();
         }
       }, [currentproduct]);
-      useEffect(() => {
+
+    useEffect(() => {
         const loadRelatedProducts = async () => {
-          setRelatedProductsLoading(true);
-          const result = await fetchRelatedProducts({ id: product?.id });
-          if (result.data) {
-            setRelatedProducts(result.data);
-          }
-          setRelatedProductsLoading(false);
+            setRelatedProductsLoading(true);
+            const result = await fetchRelatedProducts({ id: product?.id });
+            if (result.data) {
+                    setRelatedProducts(result.data);
+            }
+            setRelatedProductsLoading(false);
         };
       
         if (product?.id) {
-          loadRelatedProducts();
+            loadRelatedProducts();
         }
-      }, [product]);
+    }, [product]);
+
+    useEffect(() => {
+        const loadReviewedProducts = async () => {
+            // setReviewedProductsLoading(true);
+            const result = await fetchProductReviews({ productId: product?.id });
+            if (result.data) {
+                    setProductReview(result.data);
+            }
+            // setReviewedProductsLoading(false);
+        };
+      
+        if (product?.id) {
+            loadReviewedProducts();
+        }
+    }, [product]);
       
 
     return(
@@ -465,10 +1621,10 @@ const ProductDetails = () =>{
                                                 </div>
                                             }
                                             
-                                            <div className="tf-product-info-liveview">
+                                            {/* <div className="tf-product-info-liveview">
                                                 <div className="liveview-count">20</div>
                                                 <p className="fw-6">People are viewing this right now</p>
-                                            </div>
+                                            </div> */}
                                             {(product?.discountStartDate && product?.discount) && <div className="tf-product-info-countdown">
                                                 <div className="countdown-wrap">
                                                     <div className="countdown-title">
@@ -484,13 +1640,6 @@ const ProductDetails = () =>{
                                             <div className="tf-product-info-variant-picker">
                                                 
                                                 <div className="variant-picker-item">
-                                                    <div className="d-flex justify-content-between align-items-center">
-                                                        <div className="variant-picker-label">
-                                                            Size: <span className="fw-6 variant-picker-label-value">S</span>
-                                                        </div>
-                                                        <a href="#find_size" data-bs-toggle="modal" className="find-size fw-6">Find
-                                                            your size</a>
-                                                    </div>
                                                     <VariantPicker sizes={product?.sizes}/>
                                                 </div>
                                             </div>
@@ -501,12 +1650,12 @@ const ProductDetails = () =>{
                                             <div className="tf-product-info-buy-button">
                                                 <form className="">
                                                     <a href="javascript:void(0);"
-                                                        onClick={()=>addToCart(product, quantity)}
+                                                        onClick={()=>handleAddToCart(product, user, {quantity, price:(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)})}
                                                         className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
                                                             to cart -&nbsp;</span><span
                                                             className="tf-qty-price total-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></a>
                                                     <a href="javascript:void(0);"
-                                                        onClick={()=>addToWishList(product, quantity)}
+                                                        onClick={()=>handleAddToWishlist(product, user)}
                                                         className="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action">
                                                         <span className="icon icon-heart"></span>
                                                         <span className="tooltip">Add to Wishlist</span>
@@ -514,18 +1663,32 @@ const ProductDetails = () =>{
                                                     </a>
                                                     
                                                     <div className="w-100">
-                                                        <a href="javascript:void(0);" onClick={()=>buyNow(product, quantity)} className="btns-full">Buy with <img src={paypal} alt="paypal"/></a>
-                                                        <a href="#" className="payment-more-option">More payment options</a>
+                                                        <div data-bs-dismiss="modal">
+                                                            <Link 
+                                                                to="/account/orders/checkout" 
+                                                                state={{
+                                                                    product,
+                                                                    user,
+                                                                    quantity,
+                                                                    paymentMethod:paymentmethod?.id,
+                                                                    price: (getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)
+                                                                }}
+                                                                className="btns-full">
+                                                                Buy with 
+                                                                <img src={paymentmethod?.image} alt={paymentmethod?.name} style={{maxHeight:'18px', marginLeft:'2rem'}} className='ms-2'/></Link>
+                                                        </div>
+                                                        <a
+                                                            href="#payment_options"  
+                                                            data-bs-toggle="offcanvas" 
+                                                            aria-controls="offcanvasLeft" 
+                                                            className="payment-more-option">
+                                                                More payment options
+                                                        </a>
                                                     </div>
                                                 </form>
                                             </div>
                                             <div className="tf-product-info-extra-link">
-                                                <a href="#compare_color" data-bs-toggle="modal" className="tf-product-extra-icon">
-                                                    <div className="icon">
-                                                        <img src="images/item/compare.svg" alt=""/>
-                                                    </div>
-                                                    <div className="text fw-6">Compare color</div>
-                                                </a>
+                                                
                                                 <a href="#ask_question" data-bs-toggle="modal" className="tf-product-extra-icon">
                                                     <div className="icon">
                                                         <i className="icon-question"></i>
@@ -573,82 +1736,21 @@ const ProductDetails = () =>{
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="tf-product-info-trust-seal">
-                                                <div className="tf-product-trust-mess">
-                                                    <i className="icon-safe"></i>
-                                                    <p className="fw-6">Guarantee Safe <br/> Checkout</p>
-                                                </div>
-                                                <div className="tf-payment">
-                                                    <img src="images/payments/visa.png" alt=""/>
-                                                    <img src="images/payments/img-1.png" alt=""/>
-                                                    <img src="images/payments/img-2.png" alt=""/>
-                                                    <img src="images/payments/img-3.png" alt=""/>
-                                                    <img src="images/payments/img-4.png" alt=""/>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="tf-sticky-btn-atc">
-                        <div className="container">
-                            <div className="tf-height-observer w-100 d-flex align-items-center">
-                                <div className="tf-sticky-atc-product d-flex align-items-center">
-                                    <div className="tf-sticky-atc-img">
-                                        <img className="lazyloaded" data-src={product?.image} alt=""
-                                            src={product?.image}/>
-                                    </div>
-                                    <div className="tf-sticky-atc-title fw-5 d-xl-block d-none">Cotton jersey top</div>
-                                </div>
-                                <div className="tf-sticky-atc-infos">
-                                    <form className="">
-                                        <div className="tf-sticky-atc-variant-price text-center">
-                                            <select className="tf-select">
-                                                <option selected="selected">Beige / S - $8.00</option>
-                                                <option>Beige / M - $8.00</option>
-                                                <option>Beige / L - $8.00</option>
-                                                <option>Beige / XL - $8.00</option>
-                                                <option>Black / S - $8.00</option>
-                                                <option>Black / M - $8.00</option>
-                                                <option>Black / L - $8.00</option>
-                                                <option>Black / XL - $8.00</option>
-                                                <option>Blue / S - $8.00</option>
-                                                <option>Blue / M - $8.00</option>
-                                                <option>Blue / L - $8.00</option>
-                                                <option>Blue / XL - $8.00</option>
-                                                <option>White / S - $8.00</option>
-                                                <option>White / M - $8.00</option>
-                                                <option>White / L - $8.00</option>
-                                                <option>White / XL - $8.00</option>
-                                            </select>
-                                        </div>
-                                        <div className="tf-sticky-atc-btns">
-                                            <div className="tf-product-info-quantity">
-                                                <div className="wg-quantity">
-                                                    <span className="btn-quantity minus-btn">-</span>
-                                                    <input type="text" name="number" value="1"/>
-                                                    <span className="btn-quantity plus-btn">+</span>
-                                                </div>
-                                            </div>
-                                            <a href="javascript:void(0);"
-                                                className="tf-btn btn-fill radius-3 justify-content-center fw-6 fs-14 flex-grow-1 animate-hover-btn btn-add-to-cart">
-                                                    <span>Add</span>
-                                                    to cart</a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </section>
 
                 <section className="flat-spacing-17 pt_0">
                     <div className="container">
                         <div className="row">
                             <div className="col-12">
-                                <Tab2 product={product}/>
+                                <Tab2 product={product} productReview={productReview} onCurrentCommentData={handleCurrentCommentData}/>
                             </div>
                         </div>
                     </div>
@@ -739,926 +1841,31 @@ const ProductDetails = () =>{
                                     ))}
                                 </div>
                             </div>
-                            {/* <div dir="ltr" className="swiper tf-sw-product-sell wrap-sw-over" data-preview="4" data-tablet="3"
-                                data-mobile="2" data-space-lg="30" data-space-md="15" data-pagination="2" data-pagination-md="3"
-                                data-pagination-lg="3">
-                                <div className="swiper-wrapper">
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/orange-1.jpg"
-                                                        src="images/products/orange-1.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/white-1.jpg"
-                                                        src="images/products/white-1.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Ribbed Tank Top</a>
-                                                <span className="price">$16.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Orange</span>
-                                                        <span className="swatch-value bg_orange-3"></span>
-                                                        <img className="lazyload" data-src="images/products/orange-1.jpg"
-                                                            src="images/products/orange-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-1.jpg"
-                                                            src="images/products/black-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-1.jpg"
-                                                            src="images/products/white-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/brown.jpg"
-                                                        src="images/products/brown.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/purple.jpg"
-                                                        src="images/products/purple.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                                <div className="on-sale-wrap">
-                                                    <div className="on-sale-item">-33%</div>
-                                                </div>
-                                                <div className="countdown-box">
-                                                    <div className="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Ribbed modal T-shirt</a>
-                                                <span className="price">From $18.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Brown</span>
-                                                        <span className="swatch-value bg_brown"></span>
-                                                        <img className="lazyload" data-src="images/products/brown.jpg"
-                                                            src="images/products/brown.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Purple</span>
-                                                        <span className="swatch-value bg_purple"></span>
-                                                        <img className="lazyload" data-src="images/products/purple.jpg"
-                                                            src="images/products/purple.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Green</span>
-                                                        <span className="swatch-value bg_light-green"></span>
-                                                        <img className="lazyload" data-src="images/products/green.jpg"
-                                                            src="images/products/green.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/white-3.jpg"
-                                                        src="images/products/white-3.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/white-4.jpg"
-                                                        src="images/products/white-4.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#shoppingCart" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Add to cart</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Oversized Printed T-shirt</a>
-                                                <span className="price">$10.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/white-2.jpg"
-                                                        src="images/products/white-2.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/pink-1.jpg"
-                                                        src="images/products/pink-1.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title">Oversized Printed T-shirt</a>
-                                                <span className="price">$16.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-2.jpg"
-                                                            src="images/products/white-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Pink</span>
-                                                        <span className="swatch-value bg_purple"></span>
-                                                        <img className="lazyload" data-src="images/products/pink-1.jpg"
-                                                            src="images/products/pink-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-2.jpg"
-                                                            src="images/products/black-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/brown-2.jpg"
-                                                        src="images/products/brown-2.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/brown-3.jpg"
-                                                        src="images/products/brown-3.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">V-neck linen T-shirt</a>
-                                                <span className="price">$114.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Brown</span>
-                                                        <span className="swatch-value bg_brown"></span>
-                                                        <img className="lazyload" data-src="images/products/brown-2.jpg"
-                                                            src="images/products/brown-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-5.jpg"
-                                                            src="images/products/white-5.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product"
-                                                        data-src="images/products/light-green-1.jpg"
-                                                        src="images/products/light-green-1.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/light-green-2.jpg"
-                                                        src="images/products/light-green-2.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn absolute-2">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Loose Fit Sweatshirt</a>
-                                                <span className="price">$10.00</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Light Green</span>
-                                                        <span className="swatch-value bg_light-green"></span>
-                                                        <img className="lazyload" data-src="images/products/light-green-1.jpg"
-                                                            src="images/products/light-green-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-3.jpg"
-                                                            src="images/products/black-3.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Blue</span>
-                                                        <span className="swatch-value bg_blue-2"></span>
-                                                        <img className="lazyload" data-src="images/products/blue.jpg"
-                                                            src="images/products/blue.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Dark Blue</span>
-                                                        <span className="swatch-value bg_dark-blue"></span>
-                                                        <img className="lazyload" data-src="images/products/dark-blue.jpg"
-                                                            src="images/products/dark-blue.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-6.jpg"
-                                                            src="images/products/white-6.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Grey</span>
-                                                        <span className="swatch-value bg_light-grey"></span>
-                                                        <img className="lazyload" data-src="images/products/light-grey.jpg"
-                                                            src="images/products/light-grey.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="nav-sw nav-next-slider nav-next-product box-icon w_46 round"><span
-                                    className="icon icon-arrow-left"></span></div>
-                            <div className="nav-sw nav-prev-slider nav-prev-product box-icon w_46 round"><span
-                                    className="icon icon-arrow-right"></span></div>
-                            <div className="sw-dots style-2 sw-pagination-product justify-content-center"></div> */}
+                            
                         </div>
                     </div>
                 </section>
                 }                                                    
                 
 
-                <section className="flat-spacing-4 pt_0">
+                {/* <!-- Testimonial --> */}
+                <section className="flat-spacing-17 pt_0 flat-testimonial">
                     <div className="container">
                         <div className="flat-title">
-                            <span className="title">Recently Viewed</span>
+                            <span className="title">Happy Clients</span>
                         </div>
-                        <div className="hover-sw-nav hover-sw-2">
-                            <div dir="ltr" className="swiper tf-sw-recent wrap-sw-over" data-preview="4" data-tablet="3"
-                                data-mobile="2" data-space-lg="30" data-space-md="30" data-space="15" data-pagination="1"
-                                data-pagination-md="1" data-pagination-lg="1">
-                                <div className="swiper-wrapper">
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product"
-                                                        data-src="images/products/light-green-1.jpg"
-                                                        src="images/products/light-green-1.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/light-green-2.jpg"
-                                                        src="images/products/light-green-2.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn absolute-2">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Loose Fit Sweatshirt</a>
-                                                <span className="price">$10.00</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Light Green</span>
-                                                        <span className="swatch-value bg_light-green"></span>
-                                                        <img className="lazyload" data-src="images/products/light-green-1.jpg"
-                                                            src="images/products/light-green-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-3.jpg"
-                                                            src="images/products/black-3.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Blue</span>
-                                                        <span className="swatch-value bg_blue-2"></span>
-                                                        <img className="lazyload" data-src="images/products/blue.jpg"
-                                                            src="images/products/blue.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Dark Blue</span>
-                                                        <span className="swatch-value bg_dark-blue"></span>
-                                                        <img className="lazyload" data-src="images/products/dark-blue.jpg"
-                                                            src="images/products/dark-blue.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-6.jpg"
-                                                            src="images/products/white-6.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Grey</span>
-                                                        <span className="swatch-value bg_light-grey"></span>
-                                                        <img className="lazyload" data-src="images/products/light-grey.jpg"
-                                                            src="images/products/light-grey.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/brown-2.jpg"
-                                                        src="images/products/brown-2.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/brown-3.jpg"
-                                                        src="images/products/brown-3.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">V-neck linen T-shirt</a>
-                                                <span className="price">$114.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Brown</span>
-                                                        <span className="swatch-value bg_brown"></span>
-                                                        <img className="lazyload" data-src="images/products/brown-2.jpg"
-                                                            src="images/products/brown-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-5.jpg"
-                                                            src="images/products/white-5.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/white-2.jpg"
-                                                        src="images/products/white-2.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/pink-1.jpg"
-                                                        src="images/products/pink-1.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title">Oversized Printed T-shirt</a>
-                                                <span className="price">$16.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-2.jpg"
-                                                            src="images/products/white-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Pink</span>
-                                                        <span className="swatch-value bg_purple"></span>
-                                                        <img className="lazyload" data-src="images/products/pink-1.jpg"
-                                                            src="images/products/pink-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-2.jpg"
-                                                            src="images/products/black-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/white-3.jpg"
-                                                        src="images/products/white-3.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/white-4.jpg"
-                                                        src="images/products/white-4.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#shoppingCart" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Add to cart</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Oversized Printed T-shirt</a>
-                                                <span className="price">$10.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/brown.jpg"
-                                                        src="images/products/brown.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/purple.jpg"
-                                                        src="images/products/purple.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                                <div className="on-sale-wrap">
-                                                    <div className="on-sale-item">-33%</div>
-                                                </div>
-                                                <div className="countdown-box">
-                                                    <div className="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Ribbed modal T-shirt</a>
-                                                <span className="price">From $18.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Brown</span>
-                                                        <span className="swatch-value bg_brown"></span>
-                                                        <img className="lazyload" data-src="images/products/brown.jpg"
-                                                            src="images/products/brown.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Purple</span>
-                                                        <span className="swatch-value bg_purple"></span>
-                                                        <img className="lazyload" data-src="images/products/purple.jpg"
-                                                            src="images/products/purple.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Green</span>
-                                                        <span className="swatch-value bg_light-green"></span>
-                                                        <img className="lazyload" data-src="images/products/green.jpg"
-                                                            src="images/products/green.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/orange-1.jpg"
-                                                        src="images/products/orange-1.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/white-1.jpg"
-                                                        src="images/products/white-1.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Ribbed Tank Top</a>
-                                                <span className="price">$16.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Orange</span>
-                                                        <span className="swatch-value bg_orange-3"></span>
-                                                        <img className="lazyload" data-src="images/products/orange-1.jpg"
-                                                            src="images/products/orange-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-1.jpg"
-                                                            src="images/products/black-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-1.jpg"
-                                                            src="images/products/white-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="nav-sw nav-next-slider nav-next-recent box-icon w_46 round"><span
-                                    className="icon icon-arrow-left"></span></div>
-                            <div className="nav-sw nav-prev-slider nav-prev-recent box-icon w_46 round"><span
-                                    className="icon icon-arrow-right"></span></div>
-                            <div className="sw-dots style-2 sw-pagination-recent justify-content-center"></div>
-                        </div>
+                        <Scroller5 items={items} />
                     </div>
                 </section>
+                {/* <!-- /Testimonial --> */}
 
                 <Footer />
                 
             </div>
             
-            {/* <!-- modal ask_question --> */}
-            <div className="modal modalCentered fade modalDemo tf-product-modal modal-part-content" id="ask_question">
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="header">
-                            <div className="demo-title">Ask a question</div>
-                            <span className="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-                        </div>
-                        <div className="overflow-y-auto">
-                                <form>
-                                    <fieldset>
-                                        <label>Name *</label>
-                                        <input type="text" name="name" required />
-                                    </fieldset>
-                                    <fieldset>
-                                        <label>Email *</label>
-                                        <input type="email" name="email" required />
-                                    </fieldset>
-                                    <fieldset>
-                                        <label>Phone number</label>
-                                        <input type="number" name="phone" />
-                                    </fieldset>
-                                    <fieldset>
-                                        <label>Message</label>
-                                        <textarea name="message" rows="4" required></textarea>
-                                    </fieldset>
-                                    <button type="submit" className="tf-btn w-100 btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn">
-                                        <span>Send</span>
-                                    </button>
-                                </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- /modal ask_question -->
-
-            <!-- modal delivery_return --> */}
-            <div className="modal modalCentered fade modalDemo tf-product-modal modal-part-content" id="delivery_return">
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="header">
-                            <div className="demo-title">Shipping & Delivery</div>
-                            <span className="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-                        </div>
-                        <div className="overflow-y-auto">
-                            <div className="tf-product-popup-delivery">
-                                <div className="title">Delivery</div>
-                                <p className="text-paragraph">All orders shipped with UPS Express.</p>
-                                <p className="text-paragraph">Always free shipping for orders over US $250.</p>
-                                <p className="text-paragraph">All orders are shipped with a UPS tracking number.</p>
-                            </div>
-                            <div className="tf-product-popup-delivery">
-                                <div className="title">Returns</div>
-                                <p className="text-paragraph">Items returned within 14 days in like-new condition are eligible for full refund or store credit.</p>
-                                <p className="text-paragraph">Refunds go to the original form of payment.</p>
-                                <p className="text-paragraph">Customer pays return shipping. Original shipping fees are non-refundable.</p>
-                                <p className="text-paragraph">Sale items are final purchase.</p>
-                            </div>
-                            <div className="tf-product-popup-delivery">
-                                <div className="title">Help</div>
-                                <p className="text-paragraph">Need help? Reach out any time.</p>
-                                <p className="text-paragraph">Email: <a href="mailto:contact@domain.com">contact@domain.com</a></p>
-                                <p className="text-paragraph mb-0">Phone: +1 (23) 456 789</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- /modal delivery_return -->
-            <!-- modal share social --> */}
-            <div className="modal modalCentered fade modalDemo tf-product-modal modal-part-content" id="share_social">
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="header">
-                            <div className="demo-title">Share</div>
-                            <span className="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-                        </div>
-                        <div className="overflow-y-auto">
-                            <ul className="tf-social-icon d-flex gap-10">
-                                <li><a href="#" className="box-icon social-facebook bg_line"><i className="icon icon-fb"></i></a></li>
-                                <li><a href="#" className="box-icon social-twiter bg_line"><i className="icon icon-Icon-x"></i></a></li>
-                                <li><a href="#" className="box-icon social-instagram bg_line"><i className="icon icon-instagram"></i></a></li>
-                                <li><a href="#" className="box-icon social-tiktok bg_line"><i className="icon icon-tiktok"></i></a></li>
-                                <li><a href="#" className="box-icon social-pinterest bg_line"><i className="icon icon-pinterest-1"></i></a></li>
-                            </ul>
-                            <form className="form-share">
-                                <fieldset>
-                                    <input type="text" value="https://themesflat.co/html/ecomus/" readOnly />
-                                </fieldset>
-                                <div className="button-submit">
-                                    <button type="button" className="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn">Copy</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- /modal share social --> */}
             
-            <Extras product={product} amount={quantity} />
+            
+            <Extras categories={categories}  product={product} amount={quantity} currentComment={currentComment} />
         </div>
         )
     }

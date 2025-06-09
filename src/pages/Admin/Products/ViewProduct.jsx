@@ -11,7 +11,7 @@ import DatePicker from "@/components/Date";
 import { ToastContainer, toast } from 'react-toastify';
 import Toast from "@/components/Toast";
 import useAdminStyles from '@/hooks/useAdminStyles';
-const ViewAdminProducts = ({API_URL ,Companyname, isLoggedIn, user })=>{
+const ViewAdminProducts = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categories=[] })=>{
   useAdminStyles(); // ✅ dynamically manages admin styles
     const location = useLocation();
       console.log(location.state)
@@ -142,7 +142,7 @@ const ViewAdminProducts = ({API_URL ,Companyname, isLoggedIn, user })=>{
                     {/* <!-- /section-menu-left --> */}
                     <div className="section-content-right">
                         {/* <!-- header-dashboard --> */}
-                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={user} />
+                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={loggedInUser} />
                         {/* <!-- /header-dashboard --> */}
                         {/* <!-- main-content --> */}
                         <div className="main-content">

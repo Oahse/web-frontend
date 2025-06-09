@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import './DropDown.css';
 
-const Dropdown = ({ dropdownbtn = null, content = null, isImage=true }) => {
+const Dropdown = ({ dropdownbtn = null, content = null, isImage=true, className,style }) => {
   const [isOpen, setIsOpen] = useState(false); // State to track dropdown visibility
   const dropdownRef = useRef(null);
 
@@ -27,9 +27,10 @@ const Dropdown = ({ dropdownbtn = null, content = null, isImage=true }) => {
 
   return (
     <div
-        className={`dropdown no-text ${isImage && 'image-select'}`}
+        className={`dropdown no-text ${isImage && 'image-select'} ${className}`}
         onClick={(e) => e.stopPropagation()} // Prevent closing the dropdown on button click
         ref={dropdownRef}
+        
       >
         {/* Button that toggles the dropdown */}
         <div className='dropdown-btn' onClick={toggleDropdown} aria-expanded={isOpen} aria-haspopup="true">
@@ -37,7 +38,7 @@ const Dropdown = ({ dropdownbtn = null, content = null, isImage=true }) => {
         </div>
 
         {/* Conditionally render the dropdown menu based on isOpen */}
-        <div className={`dropdown-menu dropdown-menu-end has-content ${isOpen ? 'show' : ''}`}>
+        <div className={`dropdown-menu dropdown-menu-end has-content ${isOpen ? 'show' : ''}`} style={style} >
           {content}
         </div>
     </div>

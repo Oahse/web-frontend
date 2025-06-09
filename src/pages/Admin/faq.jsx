@@ -9,7 +9,7 @@ import { fetchFaqs } from "@/services/api/faq";
 import Accordion from "@/components/admin/accordion";
 import useAdminStyles from '@/hooks/useAdminStyles';
 
-const AdminFaqs = ({ isLoggedIn, loggedInUser }) => {
+const AdminFaqs = ({ isLoggedIn, loggedInUser,categories=[] }) => {
     useAdminStyles(); // ✅ dynamically manages admin styles
     const [loading, setLoading] = useState(false);
     const [isHeaderFullWidth, setIsHeaderFullWidth] = useState(false);

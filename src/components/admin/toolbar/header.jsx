@@ -17,6 +17,7 @@ import customer3 from '@/assets/images/customers/customer-3.jpg';
 import userimg from '@/assets/images/avatar/user-1.png';
 import DropDown from '@/components/admin/DropDown';
 import {useCountryByLocation} from '@/hooks/useCountry';
+import { Link } from "react-router-dom";
 
 
 const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
@@ -32,9 +33,9 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
         <div className="header-dashboard">
             <div className="wrap">
                 <div className="header-left">
-                    <a href="index-2.html">
+                    <Link to="/admin">
                         <img className="" id="logo_header_mobile" alt="" src={logo} data-light={logo} data-dark={logowhite} style={{width:'120px'}} />
-                    </a>
+                    </Link>
                     <div className="button-show-hide" onClick={showHideMenu}>
                         <i className="icon-chevron-left"></i>
                     </div>

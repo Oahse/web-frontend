@@ -7,7 +7,7 @@ import SignUpimg from '@/assets/images/images-section/signup.avif';
 import useAdminStyles from '@/hooks/useAdminStyles';
 
 
-const AdminSignUp = () => {
+const AdminSignUp = ({isLoggedIn, loggedInUser,categories=[] }) => {
   useAdminStyles(); // ✅ dynamically manages admin styles
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

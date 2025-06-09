@@ -12,7 +12,7 @@ const Scroller = ({ items = [], child, itemsPerView, pagination =true,isMobile=n
   const paginationRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const slidesPerView = isDesktop ? 5 : isTablet ? 3 : itemsPerView || 2;
+  const slidesPerView = itemsPerView || isDesktop ? 5 : isTablet ? 3 : 2;
   const totalPages = Math.ceil(items.length / slidesPerView);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Scroller = ({ items = [], child, itemsPerView, pagination =true,isMobile=n
         pagination={false}
       >
         {items.map((item, index) => (
-          <SwiperSlide key={index} style={{minWidth:'100px'}}>
+          <SwiperSlide key={index} style={{minWidth:`100${child?'%':'px'}`}}>
             {child === 'banner'?<BannerCard {...item} />:<CategoryCard {...item} isMobile={isMobile}/>}
             
           </SwiperSlide>

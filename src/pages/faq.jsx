@@ -4,11 +4,12 @@ import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import Extras from '@/components/extra'
-const Faq =()=>{
+import { Link } from "react-router-dom";
+import BreadCrumbs from '@/components/breadcrumbs';
+const Faq =({categories=[]})=>{
     const [loading, setLoading] = useState(false);
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
             
             {loading && <Loader />} 
             
@@ -18,6 +19,16 @@ const Faq =()=>{
                 <div className="tf-page-title style-2">
                     <div className="container-full">
                         <div className="heading text-center">FAQ</div>
+                        <BreadCrumbs
+                            dir='center'
+                            links={[
+                                { name: 'Home', href: '/' },
+                                { name: 'Faq' }
+                            ]}
+                            // prev={{ href: `/products/${product?.id}`, tooltip: 'Previous Product' }}
+                            // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
+                            // back={{ href: '/products', tooltip: 'Back to Products' }}
+                        />
                     </div>
                 </div>
                 <section className="flat-spacing-11">
@@ -186,10 +197,10 @@ const Faq =()=>{
                                     representative.<br/><br/>Please allow 06 - 12 business days from the time your package arrives
                                     back to us for a refund to be issued.</p>
                                 <div className="d-flex gap-20 align-items-center">
-                                    <a href="contact-1.html"
-                                        className="tf-btn radius-3 btn-fill animate-hover-btn justify-content-center">Contact us</a>
-                                    <a href="contact-2.html" className="tf-btn btn-line">Live chat<i
-                                            className="icon icon-arrow1-top-left"></i></a>
+                                    <Link to="/contact"
+                                        className="tf-btn radius-3 btn-fill animate-hover-btn justify-content-center">Contact us</Link>
+                                    <Link href="/contact" className="tf-btn btn-line">Live chat<i
+                                            className="icon icon-arrow1-top-left"></i></Link>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +209,7 @@ const Faq =()=>{
 
                 <Footer />
             </div>
-            <Extras />
+            <Extras categories={categories} />
         </div>
     )
 }

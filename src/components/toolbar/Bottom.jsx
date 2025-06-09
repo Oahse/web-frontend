@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const BottomToolBar =()=> {
     return(
@@ -19,21 +20,21 @@ const BottomToolBar =()=> {
                 </a>
             </div>
             <div className="toolbar-item">
-                <a href="#login" data-bs-toggle="modal">
+                <Link to="/account" >
                     <div className="toolbar-icon">
                         <i className="icon-account"></i>
                     </div>
                     <div className="toolbar-label">Account</div>
-                </a>
+                </Link>
             </div>
             <div className="toolbar-item">
-                <a href="wishlist.html">
+                <Link to="/account/wishlist">
                     <div className="toolbar-icon">
                         <i className="icon-heart"></i>
                         <div className="toolbar-count">0</div>
                     </div>
                     <div className="toolbar-label">Wishlist</div>
-                </a>
+                </Link>
             </div>
             <div className="toolbar-item">
                 <a href="#shoppingCart" data-bs-toggle="modal">

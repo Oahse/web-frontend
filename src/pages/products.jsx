@@ -30,10 +30,20 @@ import cap2 from '@/assets/images/products/black-6.jpg';
 import bag1 from '@/assets/images/products/black-4.jpg';
 import bag2 from '@/assets/images/products/black-8.jpg';
 import Pagination from "@/components/pagination";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import BreadCrumbs from '@/components/breadcrumbs';
 import FilterAndSort from "@/components/filterandsort";
 import currencies from "@/constants/currencies";
+import { fetchProducts } from "../services/api/products";
+import paypal from '@/assets/images/payments/paypal.png';
+// import visa from '@/assets/images/payments/visa.png';
+import mastercard from '@/assets/images/payments/img-2.png';
+// Add these imports for your other images:
+import cash from '@/assets/images/payments/cash.jpg';
+import applepay from '@/assets/images/payments/applepay.jpg';
+import googlepay from '@/assets/images/payments/googlepay.png';
+import amazonpay from '@/assets/images/payments/amazonpay.jpg';
+import cryptocurrency from '@/assets/images/payments/cryptocurrency.webp';
 
 const products = [
   {
@@ -58,6 +68,88 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 2,
@@ -78,6 +170,88 @@ const products = [
       { label: 'M', id: 'values-m', price: 9 },
     ],
     rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 3,
@@ -98,6 +272,88 @@ const products = [
       { label: 'S', id: 'values-s', price: 0 },
     ],
     rating: 3,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 4,
@@ -119,6 +375,88 @@ const products = [
       { label: 'L', id: 'values-l', price: 10 },
     ],
     rating: 5,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 5,
@@ -142,6 +480,88 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 1,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 6,
@@ -165,6 +585,88 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 2,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 7,
@@ -188,6 +690,88 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 8,
@@ -211,6 +795,88 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 5,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 9,
@@ -234,6 +900,88 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 3,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 10,
@@ -257,6 +1005,88 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 11,
@@ -280,6 +1110,88 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
   {
     id: 12,
@@ -303,20 +1215,121 @@ const products = [
       { label: 'XL', id: 'values-xl', price: 12 },
     ],
     rating: 5,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
   },
 ];
 
-
- 
 const Products = ({ categories = [] }) => {
+    const location = useLocation();
+    const searchValue = location.state?.search || '';
     const { isMobile, isTablet, isDesktop } = useDeviceType();
     const [loading, setLoading] = useState(false);
-    const [filteredProducts, setFilteredProducts] = useState(products);
+    const [filteredProducts, setFilteredProducts] = useState(products|| []);
     const [paginatedProducts, setPaginatedProducts] = useState(filteredProducts||[]);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
+    useEffect(() => {
+            const loadProducts = async () => {
+                const response = await fetchProducts({ query:searchValue });
+                // Assuming your response contains products in response.data or similar
+                // console.log(response,'---')
+                if (response.data.length > 0 ){
+                    setFilteredProducts(response.data || products);
+                    
+                }else{
+                    // setIsEmpty(true);
+                }
+                // setError(response.error);
+                setLoading(response.loading);
+            };
+    
+            if (searchValue) {
+                loadProducts();
+            }
+        }, [searchValue]);
     const handleFilter = (items) => {
-        console.log(items,'----');
+        // console.log(items,'----');
         setFilteredProducts(items);
         setPaginatedProducts(items);
         
@@ -406,7 +1419,6 @@ const Products = ({ categories = [] }) => {
                               // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
                               // back={{ href: '/products', tooltip: 'Back to Products' }}
                           />
-                        {/* <p className="text-center text-2 text_black-2 mt_5">Shop through our latest selections</p> */}
                     </div>
                 </div>
 
@@ -513,7 +1525,7 @@ const Products = ({ categories = [] }) => {
                 </section>
 
                 <Footer />
-                <Extras selectedProduct={selectedProduct} />
+                <Extras categories={categories}  product={selectedProduct} />
             </div>
         </div>
     );

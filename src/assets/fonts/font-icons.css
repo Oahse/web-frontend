@@ -28,6 +28,17 @@
 .icon-account:before {
   content: "\e900";
 }
+.icon-ai-camera {
+  display: inline-block;
+  width: 16px;  /* or your desired size */
+  height: 16px;
+  background-image: url('../images/avatar/google-gemini-icon.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: spin 5s linear infinite;
+}
+
 .icon-arrow1-left:before {
   content: "\e901";
 }
@@ -118,6 +129,11 @@
 .icon-energy:before {
   content: "\e91e";
 }
+.icon-ellipsis:before {
+  content: '⋮';
+  font-size: large;
+  font-weight: bold;
+}
 .icon-experienced:before {
   content: "\e91f";
 }
@@ -159,6 +175,9 @@
 }
 .icon-grid-4:before {
   content: "\e92c";
+}
+.icon-google:before {
+  content: "g";
 }
 .icon-health:before {
   content: "\e92d";

@@ -11,7 +11,7 @@ import Toast from "@/components/Toast";
 import useAdminStyles from '@/hooks/useAdminStyles';
 
 
-const AdminStoreSetting = ({ isLoggedIn, loggedInUser }) => {
+const AdminStoreSetting = ({ isLoggedIn, loggedInUser,categories=[] }) => {
     useAdminStyles(); // ✅ dynamically manages admin styles
     const location = useLocation();
     const [store, setStore] = useState(location.state?.store || null); // initial store data

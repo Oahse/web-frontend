@@ -3,15 +3,14 @@ import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
-import Extras from '@/components/extra'
-const RefundPolicy =()=>{
+import Extras from '@/components/extra';
+
+const RefundPolicy =({categories=[]})=>{
     
     const [loading, setLoading] = useState(false);
 
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
-            
             {loading && <Loader />} 
             
             <div id="wrapper">
@@ -59,7 +58,7 @@ const RefundPolicy =()=>{
                 <Footer />
             </div>
             
-            <Extras />
+            <Extras categories={categories} />
 
         </div>
     )

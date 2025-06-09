@@ -114,7 +114,7 @@ const menuItems = [
     }
   ];
 
-  const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, user }) => {
+  const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categories=[]  }) => {
     useAdminStyles(); // ✅ dynamically manages admin styles
     const [product, setProduct] = useState(null);
     const [formData, setFormData] = useState(null);
@@ -228,7 +228,7 @@ const menuItems = [
                     {/* <!-- /section-menu-left --> */}
                     <div className="section-content-right">
                         {/* <!-- header-dashboard --> */}
-                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={user}  />
+                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={loggedInUser}  />
                         {/* <!-- /header-dashboard --> */}
                         {/* <!-- main-content --> */}
                         <div className="main-content">

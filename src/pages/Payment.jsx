@@ -5,7 +5,7 @@ import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import Extras from '@/components/extra'
-const Payment =()=>{
+const Payment =({categories=[]})=>{
     // const { isMobile} = useDeviceType();
     const [loading, setLoading] = useState(false);
     const [issuccess, SetIsuccess] = useState(true);
@@ -107,7 +107,7 @@ const Payment =()=>{
 
                 <Footer />
             </div>
-            <Extras />
+            <Extras  categories={categories} />
         </div>
     )
 }

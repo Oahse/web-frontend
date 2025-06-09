@@ -1,9 +1,11 @@
-import React, { useEffect, useRef} from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-
+import { useLocation } from "react-router-dom"; // or 'next/router' if using Next.js
+import * as bootstrap from 'bootstrap';
 const Modal = ({ id, show = false, onClose, children = null, className = '', centered = true, title, fade = true, closable = true, body = null }) => {
   const modalRef = useRef();
-
+  const location = useLocation(); // detects route changes
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -20,6 +22,16 @@ const Modal = ({ id, show = false, onClose, children = null, className = '', cen
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [show, onClose]);
+
+  // Close modal when route (URL) changes
+  useEffect(() => {
+    const modalEl = document.getElementById(id);
+    if (modalEl) {
+      const instance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      
+      instance.hide();
+    }
+  }, [location?.pathname]);
   
   
   

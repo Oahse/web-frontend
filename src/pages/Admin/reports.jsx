@@ -12,7 +12,7 @@ import LineChart12 from "@/components/admin/charts/lineChart12";
 import LineChart13 from "@/components/admin/charts/lineChart13";
 import AreaLineChart from "@/components/admin/charts/areaLineChart22";
 
-const AdminReport = ({ isLoggedIn, loggedInUser }) => {
+const AdminReport = ({ isLoggedIn, loggedInUser,categories=[]}) => {
     useAdminStyles(); // ✅ dynamically manages admin styles
     const [loading, setLoading] = useState(false);
     const [isHeaderFullWidth, setIsHeaderFullWidth] = useState(false);

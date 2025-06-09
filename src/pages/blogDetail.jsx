@@ -4,7 +4,7 @@ import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import Extras from '@/components/extra'
-const BlogDetail =()=>{
+const BlogDetail =({categories=[]})=>{
     const [loading, setLoading] = useState(false);
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
@@ -312,7 +312,7 @@ const BlogDetail =()=>{
                 <br/>
                 <Footer />
             </div>
-            <Extras />
+            <Extras categories={categories} />
         </div>
     )
 }

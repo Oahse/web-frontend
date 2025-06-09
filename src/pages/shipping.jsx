@@ -3,12 +3,13 @@ import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
-import Extras from '@/components/extra'
-const Shipping =()=>{
+import Extras from '@/components/extra';
+import BreadCrumbs from '@/components/breadcrumbs';
+
+const Shipping =( {categories=[]})=>{
     const [loading, setLoading] = useState(false);
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
-            <a href="javascript:void(0);" id="toggle-rtl" className="tf-btn animate-hover-btn btn-fill">RTL</a>
             
             {loading && <Loader />} 
             
@@ -18,6 +19,16 @@ const Shipping =()=>{
                 <div className="tf-page-title style-2">
                     <div className="container-full">
                         <div className="heading text-center">Shipping & Delivery</div>
+                        <BreadCrumbs
+                            dir='center'
+                            links={[
+                                { name: 'Home', href: '/' },
+                                { name: 'Shipping & Delivery' }
+                            ]}
+                            // prev={{ href: `/products/${product?.id}`, tooltip: 'Previous Product' }}
+                            // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
+                            // back={{ href: '/products', tooltip: 'Back to Products' }}
+                        />
                     </div>
                 </div>
                 <section className="flat-spacing-25">
@@ -49,7 +60,7 @@ const Shipping =()=>{
                 </section>
                 <Footer />
             </div>
-            <Extras />
+            <Extras  categories={categories} />
         </div>
     )
 }

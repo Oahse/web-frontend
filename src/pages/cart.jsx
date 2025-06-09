@@ -7,16 +7,174 @@ import Extras from '@/components/extra';
 import QuantitySelector from '@/components/quantityselector';
 import { Link } from "react-router-dom";
 import { fetchCartByUser } from "@/services/api/carts";
+import useAuth from "@/hooks/useAuth";
+import CountDownTimer from '@/components/countdown';
+import BreadCrumbs from '@/components/breadcrumbs';
 
-const Cart =({userId=null})=>{
-    const [loading, setLoading] = useState(false);
-    const [isempty, setIsEmpty] = useState(false);
-    const [error, setError] = useState(false);
+import orange1 from '@/assets/images/products/orange-1.jpg';
+import white1 from '@/assets/images/products/white-1.jpg';
+import black1 from '@/assets/images/products/black-1.jpg';
+import hoodie1 from '@/assets/images/products/brown.jpg';
+import hoodie2 from '@/assets/images/products/purple.jpg';
+import jeans1 from '@/assets/images/products/green.jpg';
+import jeans2 from '@/assets/images/products/white-2.jpg';
+import sneakers1 from '@/assets/images/products/white-3.jpg';
+import sneakers2 from '@/assets/images/products/white-4.jpg';
+import pink1 from '@/assets/images/products/pink-1.jpg';
+import brown2 from '@/assets/images/products/brown-2.jpg';
+import dress1 from '@/assets/images/products/white-2.jpg';
+import dress2 from '@/assets/images/products/pink-1.jpg';
+import jacket1 from '@/assets/images/products/brown-2.jpg';
+import jacket2 from '@/assets/images/products/brown-3.jpg';
+import useDeviceType from '@/hooks/useDeviceType'
+import { fetchCartRelatedProducts } from "../services/api/products";
+
+const alsoLike = [
+        {
+            id: 1,
+            name: 'Ribbed Tank Top',
+            price: 16.95,
+            currency: '$',
+            discount: 20,
+            discountStartDate: '2025-05-18T08:00:00Z',
+            availability: 'In stock',
+            brand: 'Ecomus',
+            category: 'Fibers',  // tank top - fibers (like cotton/wool)
+            images: [orange1, black1, white1, white1],
+            colors: [
+                { name: 'Orange', swatch: 'bg_orange-3', image: orange1 },
+                { name: 'Black', swatch: 'bg_dark', image: black1 },
+                { name: 'White', swatch: 'bg_white', image: white1 },
+                ],
+            sizes: [
+                { label: 'S', id: 'values-s', price: 0 },
+                { label: 'M', id: 'values-m', price: 9 },
+                { label: 'XL', id: 'values-xl', price: 12 },
+            ],
+            rating: 4,
+        },
+        {
+            id: 2,
+            name: 'Slim Fit Jeans',
+            price: 49.99,
+            currency: '£',
+            discount: 15,
+            discountStartDate: '2025-05-15T12:30:00Z',
+            availability: 'Limited stock',
+            brand: 'DenimMax',
+            category: 'Fibers',  // denim = fiber-based fabric
+            images: [jeans1, jeans2, black1, white1],
+            colors: [
+                { name: 'Blue', swatch: 'bg_blue', image: jeans1 },
+                { name: 'Black', swatch: 'bg_dark', image: black1 },
+            ],
+            sizes: [
+                { label: 'M', id: 'values-m', price: 9 },
+            ],
+            rating: 4,
+        },
+        {
+            id: 3,
+            name: 'Cotton Hoodie',
+            price: 39.5,
+            currency: '€',
+            discount: 10,
+            discountStartDate: '2025-05-10T14:00:00Z',
+            availability: 'Out of stock',
+            brand: 'CozyWear',
+            category: 'Fibers',
+            images: [hoodie1, hoodie2, black1, white1],
+            colors: [
+                { name: 'Grey', swatch: 'bg_grey', image: hoodie1 },
+                { name: 'Navy', swatch: 'bg_navy', image: hoodie2 },
+            ],
+            sizes: [
+                { label: 'S', id: 'values-s', price: 0 },
+            ],
+            rating: 3,
+        },
+        {
+            id: 4,
+            name: 'Chunky Sneakers',
+            price: 74.0,
+            currency: '$',
+            discount: 30,
+            discountStartDate: '2025-05-17T09:15:00Z',
+            availability: 'Pre-order',
+            brand: 'StepUp',
+            category: 'Nuts, Flowers & Beverages',  // shoes, let's loosely associate here
+            images: [sneakers1, sneakers2, black1, white1],
+            colors: [
+                { name: 'White', swatch: 'bg_white', image: sneakers1 },
+                { name: 'Black', swatch: 'bg_dark', image: black1 },
+                { name: 'Beige', swatch: 'bg_beige', image: sneakers2 },
+            ],
+            sizes: [
+                { label: 'L', id: 'values-l', price: 10 },
+            ],
+            rating: 5,
+        },
+        {
+            id: 5,
+            name: 'Floral Summer Dress',
+            price: 29.99,
+            currency: '€',
+            discount: 25,
+            discountStartDate: '2025-05-14T10:45:00Z',
+            availability: 'In stock',
+            brand: 'SunBreeze',
+            category: 'Fibers',
+            images: [dress1, dress2, white1, pink1],
+            colors: [
+                { name: 'Floral Red', swatch: 'bg_red', image: dress1 },
+                { name: 'Light Blue', swatch: 'bg_lightblue', image: dress2 },
+            ],
+            sizes: [
+                { label: 'S', id: 'values-s', price: 0 },
+                { label: 'M', id: 'values-m', price: 9 },
+                { label: 'L', id: 'values-l', price: 10 },
+                { label: 'XL', id: 'values-xl', price: 12 },
+            ],
+            rating: 1,
+        },
+        {
+            id: 6,
+            name: 'Leather Jacket',
+            price: 119.99,
+            currency: '£',
+            discount: 35,
+            discountStartDate: '2025-05-13T16:00:00Z',
+            availability: 'Limited stock',
+            brand: 'UrbanRide',
+            category: 'Meat, Fish & Sweeteners',  // leather comes from animals
+            images: [jacket1, jacket2, brown2, black1],
+            colors: [
+                { name: 'Black', swatch: 'bg_dark', image: black1 },
+                { name: 'Brown', swatch: 'bg_brown', image: jacket2 },
+            ],
+            sizes: [
+                { label: 'S', id: 'values-s', price: 0 },
+                { label: 'M', id: 'values-m', price: 9 },
+                { label: 'L', id: 'values-l', price: 10 },
+                { label: 'XL', id: 'values-xl', price: 12 },
+            ],
+            rating: 2,
+        },
+    ]
+    
+const Cart =({categories=[]})=>{
+    const { isMobile, isTablet, isDesktop } = useDeviceType();
+    const { loading:isloading, error:iserror, user} = useAuth();
+    const [loading, setLoading] = useState(isloading);
+    const [isempty, setIsEmpty] = useState(true);
+    const [error, setError] = useState(iserror);
     const [products, setProducts] = useState([]);
+    const [cartrelatedproducts, setCartRelatedProducts] = useState(alsoLike || []);
+    const [cartrelatedproductsloading, setCartRelatedProductsLoading] = useState(isloading);
 
     useEffect(() => {
         const loadCartProducts = async () => {
-            const response = await fetchCartByUser({ userId });
+            const response = await fetchCartByUser({ userId:user?.id });
             // Assuming your response contains products in response.data or similar
             // console.log(response,'---')
             if (response.data.length > 0 ){
@@ -29,10 +187,27 @@ const Cart =({userId=null})=>{
             setLoading(response.loading);
         };
 
-        if (userId) {
-        loadCartProducts();
+        if (user?.id) {
+            loadCartProducts();
         }
-    }, [userId]);
+    }, [user?.id]);
+
+    useEffect(() => {
+        
+        const loadCartRelatedProducts = async () => {
+            const response = await fetchCartRelatedProducts({ cartId:user?.cartId });
+            // Assuming your response contains products in response.data or similar
+            // console.log(response,'---')
+            setCartRelatedProducts(response.data || []);
+            setError(response.error);
+            setCartRelatedProductsLoading(response.loading);
+        };
+
+        if (user?.cartId) {
+            loadCartRelatedProducts();
+        }
+
+    }, [user?.cartId]);
     
     // Initialize quantities: { [productId]: quantity }
     const [quantities, setQuantities] = useState(() => {
@@ -46,7 +221,7 @@ const Cart =({userId=null})=>{
         return (price-(price * (discount / 100))).toFixed(2);
     };
     const [shippingThreshold, setShippingThreshold]= useState(100);
-    const [total, setTotal] = useState(0);
+    const [total, setTotal] = useState(30);
     const [currency, setCurrency] = useState('$');
     const [totalstring, setTotalString] = useState('$0');
 
@@ -58,15 +233,22 @@ const Cart =({userId=null})=>{
             return sum + getDiscountPrice(product?.price,product?.discount) * qty;
         }, 0);
 
-        setTotal(newTotal||0);
-        setTotalString(`${currency}${newTotal||0}`)
-    }, [quantities, products,currency]);
+        setTotal(Math.min(100,newTotal||total));
+        setTotalString(`${currency}${Math.min(100,newTotal||total)}`)
+    }, [quantities, products,currency,total]);
 
     const handleQuantityChange = (productId, newQuantity) => {
         setQuantities(prev => ({
             ...prev,
             [productId]: newQuantity < 1 ? 1 : newQuantity, // minimum 1
         }));
+    };
+
+    const [progress, setProgress] = useState(total.toFixed(0));
+    
+    const isDiscountActive = (product) => {
+        if (!product.discountStartDate) return false;
+        return new Date(product.discountStartDate) <= new Date();
     };
     
       
@@ -80,6 +262,16 @@ const Cart =({userId=null})=>{
                 <div className="tf-page-title">
                     <div className="container-full">
                         <div className="heading text-center">Shopping Cart</div>
+                        <BreadCrumbs
+                              dir='center'
+                              links={[
+                                  { name: 'Home', href: '/' },
+                                  { name: 'Cart' }
+                              ]}
+                              // prev={{ href: `/products/${product?.id}`, tooltip: 'Previous Product' }}
+                              // next={{ href: `/products/${product?.id}`, tooltip: 'Next Product' }}
+                              // back={{ href: '/products', tooltip: 'Back to Products' }}
+                          />
                     </div>
                 </div>
 
@@ -98,13 +290,19 @@ const Cart =({userId=null})=>{
                                 <div className="title-left">
                                     <svg className="d-inline-block" xmlns="http://www.w3.org/2000/svg" width="16" height="24"
                                         viewBox="0 0 16 24" fill="rgb(219 18 21)">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                        <path fillRule="evenodd" clipRule="evenodd"
                                             d="M10.0899 24C11.3119 22.1928 11.4245 20.2409 10.4277 18.1443C10.1505 19.2691 9.64344 19.9518 8.90645 20.1924C9.59084 18.2379 9.01896 16.1263 7.19079 13.8576C7.15133 16.2007 6.58824 17.9076 5.50148 18.9782C4.00436 20.4517 4.02197 22.1146 5.55428 23.9669C-0.806588 20.5819 -1.70399 16.0418 2.86196 10.347C3.14516 11.7228 3.83141 12.5674 4.92082 12.8809C3.73335 7.84186 4.98274 3.54821 8.66895 0C8.6916 7.87426 11.1062 8.57414 14.1592 12.089C17.4554 16.3071 15.5184 21.1748 10.0899 24Z">
                                         </path>
                                     </svg>
-                                    <p>These products are limited, checkout within </p>
+                                    <p>Checkout within </p>
                                 </div>
-                                <div className="js-countdown timer-count" data-timer="600" data-labels="d:,h:,m:,s"></div>
+                                {/* <div className="js-countdown timer-count" data-timer="600" data-labels="d:,h:,m:,s"></div> */}
+                                
+                                <div className="count-down">
+                                    <div className="tf-countdown-v2">
+                                        <CountDownTimer starttime={7200000} />
+                                    </div>
+                                </div>
                             </div>
                             <div className="tf-page-cart-wrap">
                                 <div className="tf-page-cart-item">
@@ -164,11 +362,11 @@ const Cart =({userId=null})=>{
                                     <div className="tf-cart-footer-inner">
                                         <div className="tf-free-shipping-bar">
                                             <div className="tf-progress-bar">
-                                                <span style={{width:"50%;"}}>
+                                                <span style={{width:"50%;",left:`${progress}%`}}>
                                                     <div className="progress-car">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="14"
                                                             viewBox="0 0 21 14" fill="currentColor">
-                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            <path fillRule="evenodd" clipRule="evenodd"
                                                                 d="M0 0.875C0 0.391751 0.391751 0 0.875 0H13.5625C14.0457 0 14.4375 0.391751 14.4375 0.875V3.0625H17.3125C17.5867 3.0625 17.845 3.19101 18.0104 3.40969L20.8229 7.12844C20.9378 7.2804 21 7.46572 21 7.65625V11.375C21 11.8582 20.6082 12.25 20.125 12.25H17.7881C17.4278 13.2695 16.4554 14 15.3125 14C14.1696 14 13.1972 13.2695 12.8369 12.25H7.72563C7.36527 13.2695 6.39293 14 5.25 14C4.10706 14 3.13473 13.2695 2.77437 12.25H0.875C0.391751 12.25 0 11.8582 0 11.375V0.875ZM2.77437 10.5C3.13473 9.48047 4.10706 8.75 5.25 8.75C6.39293 8.75 7.36527 9.48046 7.72563 10.5H12.6875V1.75H1.75V10.5H2.77437ZM14.4375 8.89937V4.8125H16.8772L19.25 7.94987V10.5H17.7881C17.4278 9.48046 16.4554 8.75 15.3125 8.75C15.0057 8.75 14.7112 8.80264 14.4375 8.89937ZM5.25 10.5C4.76676 10.5 4.375 10.8918 4.375 11.375C4.375 11.8582 4.76676 12.25 5.25 12.25C5.73323 12.25 6.125 11.8582 6.125 11.375C6.125 10.8918 5.73323 10.5 5.25 10.5ZM15.3125 10.5C14.8293 10.5 14.4375 10.8918 14.4375 11.375C14.4375 11.8582 14.8293 12.25 15.3125 12.25C15.7957 12.25 16.1875 11.8582 16.1875 11.375C16.1875 10.8918 15.7957 10.5 15.3125 10.5Z">
                                                             </path>
                                                         </svg>
@@ -291,7 +489,7 @@ const Cart =({userId=null})=>{
                                                 </label>
                                             </div>
                                             <div className="cart-checkout-btn">
-                                                <Link to="/account/orders/checkout"
+                                                <Link to="/account/orders/checkout" state={{products:products}}
                                                     className="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center">
                                                     <span>Check out</span>
                                                 </Link>
@@ -389,13 +587,13 @@ const Cart =({userId=null})=>{
                                                             <title id="pi-amazon">Amazon</title>
                                                             <path
                                                                 d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"
-                                                                fill="#000" fill-rule="nonzero" opacity=".07"></path>
+                                                                fill="#000" fillRule="nonzero" opacity=".07"></path>
                                                             <path
                                                                 d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"
-                                                                fill="#FFF" fill-rule="nonzero"></path>
+                                                                fill="#FFF" fillRule="nonzero"></path>
                                                             <path
                                                                 d="M25.26 16.23c-1.697 1.48-4.157 2.27-6.275 2.27-2.97 0-5.644-1.3-7.666-3.463-.16-.17-.018-.402.173-.27 2.183 1.504 4.882 2.408 7.67 2.408 1.88 0 3.95-.46 5.85-1.416.288-.145.53.222.248.47v.001zm.706-.957c-.216-.328-1.434-.155-1.98-.078-.167.024-.193-.148-.043-.27.97-.81 2.562-.576 2.748-.305.187.272-.047 2.16-.96 3.063-.14.138-.272.064-.21-.12.205-.604.664-1.96.446-2.29h-.001z"
-                                                                fill="#F90" fill-rule="nonzero"></path>
+                                                                fill="#F90" fillRule="nonzero"></path>
                                                             <path
                                                                 d="M21.814 15.291c-.574-.498-.676-.73-.993-1.205-.947 1.012-1.618 1.315-2.85 1.315-1.453 0-2.587-.938-2.587-2.818 0-1.467.762-2.467 1.844-2.955.94-.433 2.25-.51 3.25-.628v-.235c0-.43.033-.94-.208-1.31-.212-.333-.616-.47-.97-.47-.66 0-1.25.353-1.392 1.085-.03.163-.144.323-.3.33l-1.677-.187c-.14-.033-.296-.153-.257-.38.386-2.125 2.223-2.766 3.867-2.766.84 0 1.94.234 2.604.9.842.82.762 1.918.762 3.11v2.818c0 .847.335 1.22.65 1.676.113.164.138.36-.003.482-.353.308-.98.88-1.326 1.2a.367.367 0 0 1-.414.038zm-1.659-2.533c.34-.626.323-1.214.323-1.918v-.392c-1.25 0-2.57.28-2.57 1.82 0 .782.386 1.31 1.05 1.31.487 0 .922-.312 1.197-.82z"
                                                                 fill="#221F1F"></path>
@@ -416,582 +614,102 @@ const Cart =({userId=null})=>{
                 </section>
                 {/* <!-- page-cart --> */}
 
-                {/* <!-- Testimonial --> */}
-                <section className="flat-spacing-17 pt_0 flat-testimonial">
-                    <div className="container">
-                        <div className="flat-title">
-                            <span className="title">Happy Clients</span>
-                        </div>
-                        <div className="wrap-carousel">
-                            <div dir="ltr" className="swiper tf-sw-testimonial" data-preview="3" data-tablet="2" data-mobile="1"
-                                data-space-lg="30" data-space-md="15">
-                                <div className="swiper-wrapper">
-                                    <div className="swiper-slide">
-                                        <div className="testimonial-item style-column">
-                                            <div className="rating">
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                            </div>
-                                            <div className="heading">Best Online Fashion Site</div>
-                                            <div className="text">
-                                                “ I always find something stylish and affordable on this web fashion site ”
-                                            </div>
-                                            <div className="author">
-                                                <div className="name">Robert smith</div>
-                                                <div className="metas">Customer from USA</div>
-                                            </div>
-                                            <div className="product">
-                                                <div className="image">
-                                                    <a href="product-detail.html">
-                                                        <img className="lazyload" data-src="images/shop/products/img-p2.png"
-                                                            src="images/shop/products/img-p2.png" alt=""/>
-                                                    </a>
-                                                </div>
-                                                <div className="content-wrap">
-                                                    <div className="product-title">
-                                                        <a href="product-detail.html">Jersey thong body</a>
-                                                    </div>
-                                                    <div className="price">$105.95</div>
-                                                </div>
-                                                <a href="product-detail.html" className=""><i className="icon-arrow1-top-left"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide">
-                                        <div className="testimonial-item style-column">
-                                            <div className="rating">
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                            </div>
-                                            <div className="heading">Great Selection and Quality</div>
-                                            <div className="text">
-                                                "I love the variety of styles and the high-quality clothing on this web fashion
-                                                site."
-                                            </div>
-                                            <div className="author">
-                                                <div className="name">Allen Lyn</div>
-                                                <div className="metas"><span>Customer from France</span></div>
-                                            </div>
-                                            <div className="product">
-                                                <div className="image">
-                                                    <a href="product-detail.html">
-                                                        <img className="lazyload" data-src="images/shop/products/img-p3.png"
-                                                            src="images/shop/products/img-p3.png" alt=""/>
-                                                    </a>
-                                                </div>
-                                                <div className="content-wrap">
-                                                    <div className="product-title">
-                                                        <a href="product-detail.html">Cotton jersey top</a>
-                                                    </div>
-                                                    <div className="price">$7.95</div>
-                                                </div>
-                                                <a href="product-detail.html" className=""><i className="icon-arrow1-top-left"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide">
-                                        <div className="testimonial-item style-column">
-                                            <div className="rating">
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                            </div>
-                                            <div className="heading">Best Customer Service</div>
-                                            <div className="text">
-                                                "I finally found a web fashion site with stylish and flattering options in my
-                                                size."
-                                            </div>
-                                            <div className="author">
-                                                <div className="name">Peter Rope</div>
-                                                <div className="metas">Customer from USA</div>
-                                            </div>
-                                            <div className="product">
-                                                <div className="image">
-                                                    <a href="product-detail.html">
-                                                        <img className="lazyload" data-src="images/shop/products/img-p4.png"
-                                                            src="images/shop/products/img-p4.png" alt=""/>
-                                                    </a>
-                                                </div>
-                                                <div className="content-wrap">
-                                                    <div className="product-title">
-                                                        <a href="product-detail.html">Ribbed modal T-shirt</a>
-                                                    </div>
-                                                    <div className="price">From $18.95</div>
-                                                </div>
-                                                <a href="product-detail.html" className=""><i className="icon-arrow1-top-left"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide">
-                                        <div className="testimonial-item style-column">
-                                            <div className="rating">
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                                <i className="icon-star"></i>
-                                            </div>
-                                            <div className="heading">Great Selection and Quality</div>
-                                            <div className="text">
-                                                "I love the variety of styles and the high-quality clothing on this web fashion
-                                                site."
-                                            </div>
-                                            <div className="author">
-                                                <div className="name">Hellen Ase</div>
-                                                <div className="metas"><span>Customer from Japan</span></div>
-                                            </div>
-                                            <div className="product">
-                                                <div className="image">
-                                                    <a href="product-detail.html">
-                                                        <img className="lazyload" data-src="images/shop/products/img-p5.png"
-                                                            src="images/shop/products/img-p5.png" alt=""/>
-                                                    </a>
-                                                </div>
-                                                <div className="content-wrap">
-                                                    <div className="product-title">
-                                                        <a href="product-detail.html">Customer from Japan</a>
-                                                    </div>
-                                                    <div className="price">$16.95</div>
-                                                </div>
-                                                <a href="product-detail.html" className=""><i className="icon-arrow1-top-left"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="nav-sw nav-next-slider nav-next-testimonial lg"><span
-                                    className="icon icon-arrow-left"></span></div>
-                            <div className="nav-sw nav-prev-slider nav-prev-testimonial lg"><span
-                                    className="icon icon-arrow-right"></span></div>
-                            <div className="sw-dots style-2 sw-pagination-testimonial justify-content-center"></div>
-                        </div>
-                    </div>
-                </section>
-                {/* <!-- /Testimonial --> */}
 
                 {/* <!-- product --> */}
-                <section className="flat-spacing-17 pt_0">
-                    <div className="container">
-                        <div className="flat-title">
-                            <span className="title">You may also like</span>
-                        </div>
-                        <div className="hover-sw-nav hover-sw-2">
-                            <div dir="ltr" className="swiper tf-sw-product-sell wrap-sw-over" data-preview="4" data-tablet="3"
-                                data-mobile="2" data-space-lg="30" data-space-md="15" data-pagination="2" data-pagination-md="3"
-                                data-pagination-lg="3">
-                                <div className="swiper-wrapper">
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
+                { cartrelatedproductsloading ? 
+                    <span>Loading Products you may like...</span> 
+                    :
+                    <section className="flat-spacing-17 pt_0">
+                        <div className="container">
+                            <div className="flat-title">
+                                <span className="title">You may also like</span>
+                            </div>
+                            <div className="hover-sw-nav hover-sw-2">
+                                <div className={`tf-grid-layout wrapper-shop ${isDesktop && 'tf-col-5'} ${isTablet && 'tf-col-3'} ${isMobile && 'tf-col-2'}`} id="gridLayout">
+                                    
+                                    {cartrelatedproducts?.map((product) => (
+                                        <div key={product?.id} className="card-product grid" data-availability={product?.availability} data-brand={product?.brand}>
                                             <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/orange-1.jpg"
-                                                        src="images/products/orange-1.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/white-1.jpg"
-                                                        src="images/products/white-1.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Ribbed Tank Top</a>
-                                                <span className="price">$16.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Orange</span>
-                                                        <span className="swatch-value bg_orange-3"></span>
-                                                        <img className="lazyload" data-src="images/products/orange-1.jpg"
-                                                            src="images/products/orange-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-1.jpg"
-                                                            src="images/products/black-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-1.jpg"
-                                                            src="images/products/white-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/brown.jpg"
-                                                        src="images/products/brown.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/purple.jpg"
-                                                        src="images/products/purple.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                                <div className="on-sale-wrap">
-                                                    <div className="on-sale-item">-33%</div>
-                                                </div>
-                                                <div className="countdown-box">
-                                                    <div className="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Ribbed modal T-shirt</a>
-                                                <span className="price">From $18.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Brown</span>
-                                                        <span className="swatch-value bg_brown"></span>
-                                                        <img className="lazyload" data-src="images/products/brown.jpg"
-                                                            src="images/products/brown.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Purple</span>
-                                                        <span className="swatch-value bg_purple"></span>
-                                                        <img className="lazyload" data-src="images/products/purple.jpg"
-                                                            src="images/products/purple.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Green</span>
-                                                        <span className="swatch-value bg_light-green"></span>
-                                                        <img className="lazyload" data-src="images/products/green.jpg"
-                                                            src="images/products/green.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/white-3.jpg"
-                                                        src="images/products/white-3.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/white-4.jpg"
-                                                        src="images/products/white-4.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#shoppingCart" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Add to cart</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Oversized Printed T-shirt</a>
-                                                <span className="price">$10.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/white-2.jpg"
-                                                        src="images/products/white-2.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/pink-1.jpg"
-                                                        src="images/products/pink-1.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title">Oversized Printed T-shirt</a>
-                                                <span className="price">$16.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-2.jpg"
-                                                            src="images/products/white-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Pink</span>
-                                                        <span className="swatch-value bg_purple"></span>
-                                                        <img className="lazyload" data-src="images/products/pink-1.jpg"
-                                                            src="images/products/pink-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-2.jpg"
-                                                            src="images/products/black-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product" data-src="images/products/brown-2.jpg"
-                                                        src="images/products/brown-2.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/brown-3.jpg"
-                                                        src="images/products/brown-3.jpg" alt="image-product"/>
-                                                </a>
-                                                <div className="size-list">
-                                                    <span>S</span>
-                                                    <span>M</span>
-                                                    <span>L</span>
-                                                    <span>XL</span>
-                                                </div>
-                                                <div className="list-product-btn">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
-                                                        <span className="icon icon-bag"></span>
-                                                        <span className="tooltip">Quick Add</span>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
-                                                        <span className="icon icon-heart"></span>
-                                                        <span className="tooltip">Add to Wishlist</span>
-                                                        <span className="icon icon-delete"></span>
-                                                    </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
-                                                        <span className="icon icon-view"></span>
-                                                        <span className="tooltip">Quick View</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">V-neck linen T-shirt</a>
-                                                <span className="price">$114.95</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Brown</span>
-                                                        <span className="swatch-value bg_brown"></span>
-                                                        <img className="lazyload" data-src="images/products/brown-2.jpg"
-                                                            src="images/products/brown-2.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-5.jpg"
-                                                            src="images/products/white-5.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" lazy="true">
-                                        <div className="card-product">
-                                            <div className="card-product-wrapper">
-                                                <a href="product-detail.html" className="product-img">
-                                                    <img className="lazyload img-product"
-                                                        data-src="images/products/light-green-1.jpg"
-                                                        src="images/products/light-green-1.jpg" alt="image-product"/>
-                                                    <img className="lazyload img-hover" data-src="images/products/light-green-2.jpg"
-                                                        src="images/products/light-green-2.jpg" alt="image-product"/>
-                                                </a>
+                                                <Link to={`/products/${product.id}`} state={{ product }} className="product-img">
+                                                    <img data-src={product?.images[0]} className=" lazyload img-product" src={product?.images[0]} alt={product?.name} />
+                                                    <img className="lazyload img-hover" data-src={product?.images[1]} src={product?.images[1]} alt={`${product?.name} hover`} />
+                                                </Link>
                                                 <div className="list-product-btn absolute-2">
-                                                    <a href="#quick_add" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quick-add tf-btn-loading">
+                                                    <a href="#quick_add" data-bs-toggle="modal" onClick={() => setSelectedProduct(product)} className="box-icon bg_white quick-add tf-btn-loading">
                                                         <span className="icon icon-bag"></span>
                                                         <span className="tooltip">Quick Add</span>
                                                     </a>
-                                                    <a href="javascript:void(0);"
-                                                        className="box-icon bg_white wishlist btn-icon-action">
+                                                    <a href="#quick_add" data-bs-toggle="modal" onClick={() => setSelectedProduct(product)} className="box-icon bg_white wishlist btn-icon-action">
                                                         <span className="icon icon-heart"></span>
                                                         <span className="tooltip">Add to Wishlist</span>
                                                         <span className="icon icon-delete"></span>
                                                     </a>
-                                                    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                                        className="box-icon bg_white compare btn-icon-action">
-                                                        <span className="icon icon-compare"></span>
-                                                        <span className="tooltip">Add to Compare</span>
-                                                        <span className="icon icon-check"></span>
-                                                    </a>
-                                                    <a href="#quick_view" data-bs-toggle="modal"
-                                                        className="box-icon bg_white quickview tf-btn-loading">
+                                                    <a href="#quick_view" data-bs-toggle="modal" onClick={() => setSelectedProduct(product)} className="box-icon bg_white quickview tf-btn-loading">
                                                         <span className="icon icon-view"></span>
                                                         <span className="tooltip">Quick View</span>
                                                     </a>
                                                 </div>
                                             </div>
+
                                             <div className="card-product-info">
-                                                <a href="product-detail.html" className="title link">Loose Fit Sweatshirt</a>
-                                                <span className="price">$10.00</span>
-                                                <ul className="list-color-product">
-                                                    <li className="list-color-item color-swatch active">
-                                                        <span className="tooltip">Light Green</span>
-                                                        <span className="swatch-value bg_light-green"></span>
-                                                        <img className="lazyload" data-src="images/products/light-green-1.jpg"
-                                                            src="images/products/light-green-1.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Black</span>
-                                                        <span className="swatch-value bg_dark"></span>
-                                                        <img className="lazyload" data-src="images/products/black-3.jpg"
-                                                            src="images/products/black-3.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Blue</span>
-                                                        <span className="swatch-value bg_blue-2"></span>
-                                                        <img className="lazyload" data-src="images/products/blue.jpg"
-                                                            src="images/products/blue.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Dark Blue</span>
-                                                        <span className="swatch-value bg_dark-blue"></span>
-                                                        <img className="lazyload" data-src="images/products/dark-blue.jpg"
-                                                            src="images/products/dark-blue.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">White</span>
-                                                        <span className="swatch-value bg_white"></span>
-                                                        <img className="lazyload" data-src="images/products/white-6.jpg"
-                                                            src="images/products/white-6.jpg" alt="image-product"/>
-                                                    </li>
-                                                    <li className="list-color-item color-swatch">
-                                                        <span className="tooltip">Light Grey</span>
-                                                        <span className="swatch-value bg_light-grey"></span>
-                                                        <img className="lazyload" data-src="images/products/light-grey.jpg"
-                                                            src="images/products/light-grey.jpg" alt="image-product"/>
-                                                    </li>
-                                                </ul>
+                                                <Link to={`/products/${product.id}`} state={{ product}} className="title link">
+                                                    {product?.name} (<small><strong>{product?.brand}</strong></small>)
+                                                </Link>
+
+                                                {isDiscountActive(product) && product.discount ? (
+                                                    <span className="price current-price">
+                                                        <div className="d-flex justify-content-between align-items-start flex-wrap">
+                                                            <small className="text-success">{product.currency}{getDiscountPrice(product.price, product.discount)}</small>
+                                                            <span className="d-flex gap-2 mx-2">
+                                                                {product?.sizes.map((size) => {
+                                                                    const uniqueId = `${product?.id}-${size?.id}`;
+                                                                    return (
+                                                                        <label key={uniqueId} className="style-text small" htmlFor={uniqueId}>
+                                                                            <p className="mb-0">{size.label}</p>
+                                                                        </label>
+                                                                    );
+                                                                })}
+                                                            </span>
+                                                        </div>
+                                                        <div className="small mt-1">
+                                                            <span style={{ textDecoration: 'line-through', textDecorationThickness: '0.1px', fontWeight: 'lighter' }}>
+                                                                {product.currency}{product.price}
+                                                            </span>
+                                                            <span className="ms-2 small text-danger">{product.discount}% OFF</span>
+                                                        </div>
+                                                    </span>
+                                                ) : (
+                                                    <span className="price current-price">
+                                                        <div className="d-flex justify-content-between align-items-start flex-wrap">
+                                                            <small>{product.currency}{product.price}</small>
+                                                            <span className="d-flex gap-2 mx-2">
+                                                                {product.sizes.map((size) => {
+                                                                    const uniqueId = `${product.id}-${size.id}`;
+                                                                    return (
+                                                                        <label key={uniqueId} className="style-text small" htmlFor={uniqueId}>
+                                                                            <p className="mb-0">{size.label}</p>
+                                                                        </label>
+                                                                    );
+                                                                })}
+                                                            </span>
+                                                        </div>
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
-                                    </div>
+                                    ))
+                                    }
                                 </div>
                             </div>
-                            <div className="nav-sw nav-next-slider nav-next-product box-icon w_46 round"><span
-                                    className="icon icon-arrow-left"></span></div>
-                            <div className="nav-sw nav-prev-slider nav-prev-product box-icon w_46 round"><span
-                                    className="icon icon-arrow-right"></span></div>
-                            <div className="sw-dots style-2 sw-pagination-product justify-content-center"></div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                }
+                
                 {/* <!-- /product --> */}
                 <Footer />
             </div>
             
-            <Extras />
+            <Extras categories={categories} />
         </div>
     )
 }

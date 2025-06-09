@@ -60,7 +60,7 @@ const Scroller2 = ({ items = [], itemsPerView, pagination =true}) => {
                 </div>
                 <div className="content">
                     <div className="title">{item.title}</div>
-                    <p>{item.description}</p>
+                    <p className="text_black-2">{item.description}</p>
                 </div>
                 </div>
             </div>

@@ -12,7 +12,7 @@ import useAdminStyles from '@/hooks/useAdminStyles';
 
 
 
-const TrackAdminOrders = ({API_URL, adminMenu=[] ,Companyname, isLoggedIn, user })=>{
+const TrackAdminOrders = ({API_URL, adminMenu=[] ,Companyname, isLoggedIn, loggedInUser, categories=[]  })=>{
   useAdminStyles(); // ✅ dynamically manages admin styles
     const location = useLocation();
     const [order, setOrder] = useState(location.state?.item || null);
@@ -59,7 +59,7 @@ const TrackAdminOrders = ({API_URL, adminMenu=[] ,Companyname, isLoggedIn, user 
                     {/* <!-- /section-menu-left --> */}
                     <div className="section-content-right">
                         {/* <!-- header-dashboard --> */}
-                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={user}  />
+                        <AdminHeader onshowHideMenu={showHideMenu} isLoggedIn={isLoggedIn} user={loggedInUser}  />
                         {/* <!-- /header-dashboard --> */}
                         {/* <!-- main-content --> */}
                         <div className="main-content">

@@ -5,7 +5,7 @@ import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import Extras from '@/components/extra';
 
-const PrivacyPolicy =()=>{
+const PrivacyPolicy =({categories=[]})=>{
     const [loading, setLoading] = useState(false);
     return(
         <div  className="preload-wrapper color-primary-8 color-main-text-2" >
@@ -55,7 +55,7 @@ const PrivacyPolicy =()=>{
                 </section>
                 <Footer />
             </div>
-            <Extras />
+            <Extras categories={categories} />
         </div>
      )
  }

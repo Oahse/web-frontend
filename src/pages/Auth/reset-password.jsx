@@ -5,7 +5,7 @@ import Header from "@/components/toolbar/header";
 import TopHeader from '@/components/toolbar/topHeader'
 import Footer from "@/components/footer";
 import Extras from '@/components/extra';
-const ResetPassword =()=>{
+const ResetPassword =({categories=[]})=>{
     const { isMobile} = useDeviceType();
     const [loading, setLoading] = useState(false);
     return(
@@ -86,7 +86,7 @@ const ResetPassword =()=>{
                 </section>
                 <Footer />
             </div>
-            <Extras />
+            <Extras categories={categories} />
         </div>
     )
 }

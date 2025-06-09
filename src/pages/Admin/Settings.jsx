@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Toast from "@/components/Toast";
 import useAdminStyles from '@/hooks/useAdminStyles';
 
-const AdminSetting = ({ isLoggedIn, loggedInUser }) => {
+const AdminSetting = ({ isLoggedIn, loggedInUser,categories=[] }) => {
     useAdminStyles(); // ✅ dynamically manages admin styles
     const location = useLocation();
     const [store, setStore] = useState(location.state?.store || null); // initial store data
