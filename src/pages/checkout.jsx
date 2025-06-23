@@ -1,4 +1,3 @@
-import useDeviceType from '@/hooks/useDeviceType'
 import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
@@ -8,7 +7,6 @@ import Extras from '@/components/extra';
 import { Link, useLocation } from 'react-router-dom';
 import { ToastContainer, notify } from '@/services/notifications/ui';
 import { capturePaypalOrder, createPaypalOrder } from '@/services/api/products';
-import { getDiscountPrice } from '@/services/helper';
 import BreadCrumbs from '@/components/breadcrumbs';
 import brown from '@/assets/images/products/brown.jpg';
 import kid2 from '@/assets/images/products/kid-12.jpg';

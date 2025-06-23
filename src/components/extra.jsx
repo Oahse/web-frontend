@@ -9,19 +9,16 @@ import grocery1 from '@/assets/images/products/grocery-1.jpg';
 import grocery2 from '@/assets/images/products/grocery-2.jpg';
 import Scroller3 from '@/components/scroller3';
 import { ToastContainer, notify } from '@/services/notifications/ui';
-
 import QuantitySelector from '@/components/quantityselector';
 import VariantPicker from '@/components/variantpicker';
 import Camera from '@/components/form/Camera';
 import AccountNavBar from '@/pages/auth/accountnavbar';
 import Search2 from '@/components/form/Search2';
-import { handleAddToCart,handleAddToWishlist, getDiscountPrice } from '@/services/helper';
+import { handleAddToCart,handleAddToWishlist, getDiscount } from '@/services/helper';
 import PaymentOptions from '@/components/paymentMethods';
 import { paymentMethods,rateSentence } from '@/services/helper';
 import { sendMessage,editMessage } from "@/services/sockets";
-// console.log("I absolutely love this product!",rateSentence("not bad  at all!")); // 5
-//     console.log("not bad  at all!",rateSentence("not bad  at all!")); // 3
-//     console.log("I hate this thing.",rateSentence("I hate this thing.")); // 1
+
 const Extras  =({categories=[], product=null, amount=1, active=0, user, paymentMethod, currentComment})=>{
     
     const [quantity, setQuantity] = useState(amount);
@@ -1522,11 +1519,11 @@ const Extras  =({categories=[], product=null, amount=1, active=0, user, paymentM
                     </div>
                     <div className="content" data-bs-dismiss="modal">
                         <Link to={`/products/${product?.id}`} state={{ product }}  >{product?.name}</Link>
-                        {(product?.discountStartDate && product?.discount) ?
+                        {(product?.discountStartDate && product?.salePrice) ?
                             <div className="tf-product-info-price">
-                                <div className="price-on-sale">{product?.currency}{getDiscountPrice(product?.price, product?.discount)}</div>
+                                <div className="price-on-sale">{product?.currency}{product?.salePrice}</div>
                                 <div className="compare-at-price">{product?.currency}{product?.price}</div>
-                                <div className="badges-on-sale"><span>{product?.discount}</span>% OFF</div>
+                                <div className="badges-on-sale"><span>{getDiscount(product?.price, product?.salePrice)}</span>% OFF</div>
                             </div>
                             :
                             <div className="tf-product-info-price">
@@ -1547,9 +1544,9 @@ const Extras  =({categories=[], product=null, amount=1, active=0, user, paymentM
                 <div className="tf-product-info-buy-button">
                     <form className="">
                         <Link to="javascript:void(0);"
-                            onClick={()=>handleAddToCart(product, user, {quantity, price:(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)})}
+                            onClick={()=>handleAddToCart(product, user, {quantity, price:((product?.salePrice || product?.price) * quantity).toFixed(2)})}
                             className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
-                                to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></Link>
+                                to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{((product?.salePrice || product?.price) * quantity).toFixed(2)}</span></Link>
                         <div className="tf-product-btn-wishlist btn-icon-action">
                             <i className="icon-heart" onClick={()=>handleAddToWishlist(product, user)}></i>
                             <i className="icon-delete"></i>
@@ -1563,7 +1560,7 @@ const Extras  =({categories=[], product=null, amount=1, active=0, user, paymentM
                                         user,
                                         quantity,
                                         paymentMethod:paymentmethod?.id,
-                                        price: (getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)
+                                        price: ((product?.salePrice || product?.price) * quantity).toFixed(2)
                                     }}
                                     className="btns-full">
                                     Buy with 
@@ -1605,11 +1602,11 @@ const Extras  =({categories=[], product=null, amount=1, active=0, user, paymentM
                                 <p className="fw-6">Selling fast! 48 people have this in their carts.</p>
                             </div>
                         </div>
-                        {(product?.discountStartDate && product?.discount) ?
+                        {(product?.discountStartDate && product?.salePrice) ?
                             <div className="tf-product-info-price">
-                                <div className="price-on-sale">{product?.currency}{getDiscountPrice(product?.price, product?.discount)}</div>
+                                <div className="price-on-sale">{product?.currency}{product?.salePrice}</div>
                                 <div className="compare-at-price">{product?.currency}{product?.price}</div>
-                                <div className="badges-on-sale"><span>{product?.discount}</span>% OFF</div>
+                                <div className="badges-on-sale"><span>{getDiscount(product?.price, product?.discount)}</span>% OFF</div>
                             </div>
                             :
                             <div className="tf-product-info-price">
@@ -1635,9 +1632,9 @@ const Extras  =({categories=[], product=null, amount=1, active=0, user, paymentM
                         <div className="tf-product-info-buy-button">
                             <form className="">
                                 <Link to="javascript:void(0);" 
-                                    onClick={()=>handleAddToCart(product, user, {quantity, price:(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)})}
+                                    onClick={()=>handleAddToCart(product, user, {quantity, price:((product?.salePrice || product?.price) * quantity).toFixed(2)})}
                                     className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
-                                        to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></Link>
+                                        to cart -&nbsp;</span><span className="tf-qty-price">{product?.currency}{((product?.salePrice || product?.price) * quantity).toFixed(2)}</span></Link>
                                 <Link to="javascript:void(0);"
                                     onClick={()=>handleAddToWishlist(product, user)}
                                     className="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action">
@@ -1655,7 +1652,7 @@ const Extras  =({categories=[], product=null, amount=1, active=0, user, paymentM
                                                 user,
                                                 quantity,
                                                 paymentMethod:paymentmethod?.id,
-                                                price: (getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)
+                                                price: ((product?.salePrice || product?.price) * quantity).toFixed(2)
                                             }}
                                             className="btns-full">
                                             Buy with 

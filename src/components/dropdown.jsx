@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const DropDown = ({ active = 0, items = [], onSelect=() => {} }) => {
+const DropDown = ({ active = 0, items = [], onSelect=() => {}, callcomponent=null }) => {
   const [selectedIndex, setSelectedIndex] = useState(active);
   const [show, setShow] = useState(false);
   const handleSelect = (item, index) => {
@@ -14,8 +14,9 @@ const DropDown = ({ active = 0, items = [], onSelect=() => {} }) => {
   return (
     <div className="tf-dropdown-sort" data-bs-toggle="dropdown">
       <div className="btn-select" onClick={()=>setShow(!show)}>
+        {callcomponent || <>
         <span className="text-sort-value">{items[selectedIndex]?.label || "Select"}</span>
-        <span className="icon icon-arrow-down"></span>
+        <span className="icon icon-arrow-down"></span></>}
       </div>
       <div className={`dropdown-menu ${show && ' show'}`}>
         {items.map((item, index) => (

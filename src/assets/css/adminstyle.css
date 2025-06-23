@@ -2675,7 +2675,8 @@
     background: #ECF0F4;
     height: unset;
   }
-  .header-dashboard .wrap .header-grid > .setting {
+  
+  /* .header-dashboard .wrap .header-grid > .setting {
     width: 24px;
     display: -webkit-box;
     display: -moz-box;
@@ -2691,7 +2692,7 @@
     animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-  }
+  } */
   .header-dashboard .wrap .header-item {
     display: -webkit-box;
     display: -moz-box;
@@ -3914,11 +3915,28 @@
   .popup-wrap.apps .dropdown-menu.show .list-apps .item a:hover .text-tiny {
     color: var(--Secondary);
   }
-  .popup-wrap.user .dropdown-menu.show {
+  .popup-wrap.user .dropdown-menu.show,
+  .popup-wrap.user-pic .dropdown-menu.show {
     width: 188px;
     margin-top: 19px !important;
   }
-  .popup-wrap.user .dropdown-menu.show .user-item {
+  .popup-wrap.search {
+    position: relative;
+  }
+  .popup-wrap.search > .dropdown .item,
+  .popup-wrap.search > .dropdown .header-item {
+    position: relative;
+  }
+ 
+  .popup-wrap.search .dropdown-menu.show {
+    width: 344px;
+    margin-top: 20px !important;
+  }
+  .popup-wrap.search .dropdown-menu.show .form-search {
+    display: block;
+    border-radius: 12px;
+  }
+  .popup-wrap.user .dropdown-menu.show .user-item{
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -3930,7 +3948,7 @@
     gap: 10px;
     border-radius: 12px;
   }
-  .popup-wrap.user .dropdown-menu.show .user-item .icon i {
+  .popup-wrap.user .dropdown-menu.show .user-item .icon i{
     font-size: 20px;
     color: var(--Icon);
     -webkit-transition: all 0.3s ease;
@@ -3939,7 +3957,7 @@
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
   }
-  .popup-wrap.user .dropdown-menu.show .user-item .body-title-2 {
+  .popup-wrap.user .dropdown-menu.show .user-item .body-title-2{
     flex-grow: 1;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
@@ -3947,7 +3965,7 @@
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
   }
-  .popup-wrap.user .dropdown-menu.show .user-item .number {
+  .popup-wrap.user .dropdown-menu.show .user-item .number{
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -3965,10 +3983,10 @@
     font-weight: 500;
     line-height: 12px;
   }
-  .popup-wrap.user .dropdown-menu.show .user-item:hover .body-title-2 {
+  .popup-wrap.user .dropdown-menu.show .user-item:hover .body-title-2{
     color: var(--Secondary);
   }
-  .popup-wrap.user .dropdown-menu.show .user-item:hover .icon i {
+  .popup-wrap.user .dropdown-menu.show .user-item:hover .icon i{
     color: var(--Secondary);
   }
   .popup-wrap.message {
@@ -5631,15 +5649,22 @@
     .layout-wrap .section-content-right .header-dashboard .header-left > a {
       display: block;
     }
+    
     .layout-wrap .section-content-right .header-dashboard .header-grid > .divider,
-    .layout-wrap .section-content-right .header-dashboard .header-grid > .user,
+    /* .layout-wrap .section-content-right .header-dashboard .header-grid > .user, */
     .layout-wrap .section-content-right .header-dashboard .header-grid > .apps,
     .layout-wrap .section-content-right .header-dashboard .header-grid > .button-dark-light,
     .layout-wrap .section-content-right .header-dashboard .header-grid > .button-zoom-maximize,
+    /* .layout-wrap .section-content-right .header-dashboard .header-grid > .message, */
+    /* .layout-wrap .section-content-right .header-dashboard .header-grid > .noti, */
+    .layout-wrap .section-content-right .header-dashboard .header-grid > .country {
+        display: none;
+    }
     .layout-wrap .section-content-right .header-dashboard .header-grid > .message,
     .layout-wrap .section-content-right .header-dashboard .header-grid > .noti,
-    .layout-wrap .section-content-right .header-dashboard .header-grid > .country {
-      display: none;
+    .layout-wrap .section-content-right .header-dashboard .header-grid > .search,
+    .layout-wrap .section-content-right .header-dashboard .header-grid > .user {
+        display: block;
     }
     .swiper-button-next,
     .swiper-button-prev {

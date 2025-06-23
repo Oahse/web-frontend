@@ -1,4 +1,5 @@
 import Search from "@/components/admin/form/Search";
+import ListSearch from "@/components/admin/form/ListSearch";
 // Import images
 import logo from '@/assets/images/logo/banwe_logo_text_black.png';
 import logowhite from '@/assets/images/logo/banwe_logo_text_white.png';
@@ -18,9 +19,10 @@ import userimg from '@/assets/images/avatar/user-1.png';
 import DropDown from '@/components/admin/DropDown';
 import {useCountryByLocation} from '@/hooks/useCountry';
 import { Link } from "react-router-dom";
-
+import useDeviceType from '@/hooks/useDeviceType';
 
 const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
+    const { isDesktop } = useDeviceType();
     const country = useCountryByLocation();
     const showHideMenu = (e) => {
   
@@ -41,14 +43,22 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
                     </div>
                     <Search />
                 </div>
-                <div className="header-grid">
                 
-                    <div className="header-item country p-2">
+                <div className="header-grid">
+                    {!isDesktop && <div className="popup-wrap search type-header" >
+                        <DropDown 
+                            dropdownbtn={<span className="header-item">
+                                <i className="icon-search"></i>
+                            </span>}
+                            content={<ListSearch />} />
+                    </div>}
+                    {country &&  <div className="header-item country p-2">
                         <img src={country?.country?.flag} alt={country?.country?.country} className="img-fluid rounded-circle" style={{height:'100%', objectFit:'cover'}} />  
-                    </div>
-                    <div className="header-item button-dark-light">
+                    </div>}
+                    
+                    {/* <div className="header-item button-dark-light">
                         <i className="icon-moon"></i>
-                    </div>
+                    </div> */}
                     <div className="popup-wrap noti type-header">
                         
                         <DropDown 
@@ -67,7 +77,7 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
                                         </div>
                                         <div className="flex-grow">
                                             <div className="flex items-center justify-between">
-                                                <a href="#" className="body-title">Cameron Williamson</a>
+                                                <Link to="#" className="body-title">Cameron Williamson</Link>
                                                 <div className="time">10:13 PM</div>
                                             </div>
                                             <div className="text-tiny">Hello?</div>
@@ -81,7 +91,7 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
                                         </div>
                                         <div className="flex-grow">
                                             <div className="flex items-center justify-between">
-                                                <a href="#" className="body-title">Ralph Edwards</a>
+                                                <Link to="#" className="body-title">Ralph Edwards</Link>
                                                 <div className="time">10:13 PM</div>
                                             </div>
                                             <div className="text-tiny">Are you there?  interested i this...</div>
@@ -95,7 +105,7 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
                                         </div>
                                         <div className="flex-grow">
                                             <div className="flex items-center justify-between">
-                                                <a href="#" className="body-title">Eleanor Pena</a>
+                                                <Link to="#" className="body-title">Eleanor Pena</Link>
                                                 <div className="time">10:13 PM</div>
                                             </div>
                                             <div className="text-tiny">Interested in this loads?</div>
@@ -109,14 +119,14 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
                                         </div>
                                         <div className="flex-grow">
                                             <div className="flex items-center justify-between">
-                                                <a href="#" className="body-title">Jane Cooper</a>
+                                                <Link to="#" className="body-title">Jane Cooper</Link>
                                                 <div className="time">10:13 PM</div>
                                             </div>
                                             <div className="text-tiny">Okay...Do we have a deal?</div>
                                         </div>
                                     </div>
                                 </li>
-                                <li><a href="#" className="tf-button w-full">View all</a></li>
+                                <li><Link to="#" className="tf-button w-full">View all</Link></li>
                             </>}/>
                     </div>
                     <div className="popup-wrap message type-header">
@@ -174,15 +184,15 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
                                         </div>
                                     </div>
                                 </li>
-                                <li><a href="#" className="tf-button w-full">View all</a></li>
+                                <li><Link to="#" className="tf-button w-full">View all</Link></li>
                             </>}/>
                     </div>
-                    <div className="header-item button-zoom-maximize">
+                    {/* <div className="header-item button-zoom-maximize">
                         <div className="">
                             <i className="icon-maximize"></i>
                         </div>
-                    </div>
-                    <div className="popup-wrap apps type-header">
+                    </div> */}
+                    {/* <div className="popup-wrap apps type-header">
                         
                         <DropDown 
                             dropdownbtn={<span className="header-item">
@@ -200,83 +210,85 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
                                         <div className="image">
                                         <img src={item1} alt="Photoshop" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">Photoshop</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="item">
                                         <div className="image">
                                         <img src={item2} alt="Illustrator" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">Illustrator</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="item">
                                         <div className="image">
                                         <img src={item3} alt="Sheets" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">Sheets</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="item">
                                         <div className="image">
                                         <img src={item4} alt="Gmail" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">Gmail</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="item">
                                         <div className="image">
                                         <img src={item5} alt="Messenger" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">Messenger</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="item">
                                         <div className="image">
                                         <img src={item6} alt="YouTube" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">YouTube</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="item">
                                         <div className="image">
                                         <img src={item7} alt="Flaticon" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">Flaticon</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="item">
                                         <div className="image">
                                         <img src={item8} alt="Instagram" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">Instagram</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="item">
                                         <div className="image">
                                         <img src={item9} alt="PDF" />
                                         </div>
-                                        <a href="#">
+                                        <Link to="#">
                                         <div className="text-tiny">PDF</div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="#" className="tf-button w-full">
+                                    <Link to="#" className="tf-button w-full">
                                     View all apps
-                                    </a>
+                                    </Link>
                                 </li>
                             </>}/>
-                    </div>
+                    </div> */}
+                    
+                    
                     <div className="popup-wrap user type-header" >
                         
                         <DropDown 
@@ -284,60 +296,64 @@ const AdminHeader =({onshowHideMenu,isLoggedIn, user})=>{
                                 <span className="image">
                                     <img src={user?.image?user?.image:userimg} alt="" style={{height:'100%', width:'100%', objectFit:'cover'}} />
                                 </span>
+                                {isDesktop 
+                                && 
                                 <span className="flex flex-column">
                                     <span className="body-text text-main-dark">{user?.firstname?user?.firstname:'Kristin'} {user?.lastname?user?.lastname:' Watson'}</span>
                                     <span className="text-tiny">Sale Administrator</span>
                                 </span>
+                                }
+                                
                             </span>}
                             content={<>
                                 <li>
-                                    <a href="#" className="user-item">
+                                    <Link to="/account/details" className="user-item">
                                         <div className="icon">
                                             <i className="icon-user"></i>
                                         </div>
                                         <div className="body-title-2">Account</div>
-                                    </a>
+                                    </Link>
                                 </li>
-                                <li>
-                                    <a href="#" className="user-item">
+                                {/* <li>
+                                    <Link to="#" className="user-item">
                                         <div className="icon">
                                             <i className="icon-mail"></i>
                                         </div>
                                         <div className="body-title-2">Inbox</div>
                                         <div className="number">27</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="user-item">
+                                    </Link>
+                                </li> */}
+                                {/* <li>
+                                    <Link to="#" className="user-item">
                                         <div className="icon">
                                             <i className="icon-file-text"></i>
                                         </div>
                                         <div className="body-title-2">Taskboard</div>
-                                    </a>
-                                </li>
+                                    </Link>
+                                </li> */}
                                 <li>
-                                    <a href="setting.html" className="user-item">
+                                    <Link to="/admin/settings" className="user-item">
                                         <div className="icon">
                                             <i className="icon-settings"></i>
                                         </div>
                                         <div className="body-title-2">Setting</div>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a href="#" className="user-item">
+                                    <Link to="/admin/support" className="user-item">
                                         <div className="icon">
                                             <i className="icon-headphones"></i>
                                         </div>
                                         <div className="body-title-2">Support</div>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a href="login.html" className="user-item">
+                                    <Link to="/admin/login" className="user-item">
                                         <div className="icon">
                                             <i className="icon-log-out"></i>
                                         </div>
                                         <div className="body-title-2">Log out</div>
-                                    </a>
+                                    </Link>
                                 </li>
                             </>}/>
                     </div>

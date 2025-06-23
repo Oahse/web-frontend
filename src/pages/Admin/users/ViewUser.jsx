@@ -184,20 +184,18 @@ const ViewAdminUsers = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categori
                                             <h5 className="mb-4">Account</h5>
                                             <div className="body-text">Fill in the information below to add a new account</div>
                                             <fieldset>
-                                                <div className="body-title mb-10">Upload images</div>
+                                                <div className="body-title mb-10">Upload image</div>
                                                 <div className="upload-image mb-16 flex-grow">
                                                     <div className="item up-load">
                                                         <label className="uploadfile h250" for="myFile">
                                                             <span className="icon">
                                                             <i className="icon-upload-cloud"></i>
                                                             </span>
-                                                            <span className="body-text">Drop your images here or select <span className="tf-color">click to browse</span></span>
-                                                            <img src={formData?.image} alt={formData?.title || formData?.name || 'Category Image'} className="has-img"/>
+                                                            <span className="body-text">Select your image <span className="tf-color">click to browse</span></span>
+                                                            <img src={formData?.image} alt={formData?.title || formData?.name || 'User Image'} className="has-img"/>
                                                             <input type="file" id="myFile" name="filename" onChange={handleImageChange} disabled={!isEditing}/>
                                                         </label>
                                                     </div>
-                                                    <img src={formData?.image} alt={formData?.title || formData?.name || 'Category Image'} style={{maxWidth:'450px'}}/>
-
                                                 </div>
                                             </fieldset>
                                         </div>

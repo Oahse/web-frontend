@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { format, parse, isValid } from 'date-fns';
+import { format, parse, isValid,formatISO } from 'date-fns';
 import DropDown from '@/components/admin/DropDown';
 
 const generateYears = (start = 1990, end = new Date().getFullYear()) => {
@@ -31,8 +31,8 @@ const DatePicker = ({ value, onChange, formatStr = 'yyyy-MM-dd', disabled=false 
   useEffect(() => {
     const selectedDate = new Date(year, month - 1, day);
     if (isValid(selectedDate)) {
-      const formatted = format(selectedDate, formatStr);
-      onChange?.(formatted);
+      const isoString = formatISO(new Date(selectedDate))
+      onChange?.(isoString);
     }
   }, [year, month, day, formatStr]);
 

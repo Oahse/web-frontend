@@ -4,6 +4,7 @@ import Pagination from '@/components/admin/pagination';
 import ListSearch from '@/components/admin/form/ListSearch';
 import { ToastContainer, toast } from 'react-toastify';
 import Toast from '@/components/Toast';
+import { formatToMMMDDYYYY } from '@/services/helper';
 
 const AdminTable = ({ items = [], showImages=true, handleDelete, columns, linkUrl, deletecaller }) => {
     const navigate = useNavigate();
@@ -172,7 +173,7 @@ const AdminTable = ({ items = [], showImages=true, handleDelete, columns, linkUr
                             checked={isAllSelected}
                             onChange={toggleSelectAll}
                         />
-                        <div className="body-title">{col.title || col.name}</div>
+                        <div className="body-title mx-2">{col.title || col.name}</div>
                     </li>
                     ) : (
                     <li key={index}><div className="body-title">{col.title || col.name}</div></li>
@@ -198,8 +199,8 @@ const AdminTable = ({ items = [], showImages=true, handleDelete, columns, linkUr
                                 onChange={() => toggleSelectItem(item.id)}
                                 onClick={(e) => e.stopPropagation()}
                             />
-                            {(item.image && showImages) && <div className="image">
-                            <img src={Array.isArray(item.image) ? item.image[0] : item.image} alt={item.title || item.name} />
+                            {(item.images && showImages) && <div className="image mx-2">
+                            <img src={Array.isArray(item.images) ? item.images[0] : ''} alt={item.title || item.name} />
                             </div>}
                             <div className="title line-clamp-2 mb-0 ms-2">
                             <span className="body-text">{item.title || item.name}</span>
@@ -210,7 +211,9 @@ const AdminTable = ({ items = [], showImages=true, handleDelete, columns, linkUr
                             {item[col.field]===true?<div className="block-tracking bg-1">{col.field}</div>:
                             item[col.field]==='Pending'?<div className="block-pending bg-1">{item[col.field]}</div>:
                             (item[col.field]==='Success' || item[col.field]==='In Stock')?<div className="block-available bg-1">{item[col.field]}</div>:
-                            (item[col.field]==='Out of stock')?<div className="block-stock bg-1">{item[col.field]}</div>:<>{item[col.field]}</>
+                            (item[col.field]==='Out of stock')?<div className="block-stock bg-1">{item[col.field]}</div>:
+                            (String(col.field)?.toLowerCase().includes('date') || String(col.field)?.toLowerCase().includes('create'))?<div className=" ">{formatToMMMDDYYYY(String(item[col.field]))}</div>:
+                            <>{item[col.field]}</>
                             }
                             
                         </div>

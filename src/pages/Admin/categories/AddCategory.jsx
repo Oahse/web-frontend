@@ -133,14 +133,14 @@ const AddAdminCategory = ({API_URL ,Companyname, isLoggedIn, loggedInUser,catego
                                               />
                                         </fieldset>
                                         <fieldset>
-                                            <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
+                                            <div class="body-title">Upload image <span class="tf-color-1">*</span></div>
                                             <div class="upload-image flex-grow">
                                               <div class="item up-load">
                                                   <label class="uploadfile h250" for="myFile">
                                                       <span class="icon">
                                                         <i class="icon-upload-cloud"></i>
                                                       </span>
-                                                      <span class="body-text">Drop your images here or select <span class="tf-color">click to browse</span></span>
+                                                      <span class="body-text">Select your image here <span class="tf-color">Click to browse</span></span>
                                                       <img src={imagePreview} alt={formData?.title || 'Category Image'} class="has-img"/>
                                                       <input type="file" id="myFile" name="filename" onChange={handleImageChange} />
                                                   </label>

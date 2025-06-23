@@ -41,7 +41,7 @@ import VariantPicker from '@/components/variantpicker';
 // import currencies from '@/constants/currencies';
 
 import Tab2 from '@/components/tab2';
-import { handleAddToCart,handleAddToWishlist, getDiscountPrice } from '@/services/helper';
+import { handleAddToCart,handleAddToWishlist, getDiscount } from '@/services/helper';
 
 import { paymentMethods } from '@/services/helper';
 import paypal from '@/assets/images/payments/paypal.png';
@@ -55,1260 +55,1262 @@ import amazonpay from '@/assets/images/payments/amazonpay.jpg';
 import cryptocurrency from '@/assets/images/payments/cryptocurrency.webp';
 import { fetchProductReviews } from '../services/api/products';
 import useProductReview from '@/hooks/useProductReview';
-const relatedproducts = [
-    {
-      id: 1,
-      name: 'Ribbed Tank Top',
-      price: 16.95,
-      currency: '$',
-      discount: 20,
-      discountStartDate: '2025-05-18T08:00:00Z',
-      availability: 'In stock',
-      brand: 'Ecomus',
-      category: 'Fibers',  // tank top - fibers (like cotton/wool)
-      images: [orange1, black1, white1, white1],
-      colors: [
-        { name: 'Orange', swatch: 'bg_orange-3', image: orange1 },
-        { name: 'Black', swatch: 'bg_dark', image: black1 },
-        { name: 'White', swatch: 'bg_white', image: white1 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 4,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
 
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
 
-          ]
+const relatedproducts  = [
+  {
+    id: 1,
+    name: 'Ribbed Tank Top',
+    price: 16.95,
+    currency: '$',
+    salePrice: 10,
+    discountEndDate: '2025-05-18T08:00:00Z',
+    availability: 'In stock',
+    brand: 'Ecomus',
+    category: 'Fibers',  // tank top - fibers (like cotton/wool)
+    images: [orange1, black1, white1, white1],
+    colors: [
+      { name: 'Orange', swatch: 'bg_orange-3', image: orange1 },
+      { name: 'Black', swatch: 'bg_dark', image: black1 },
+      { name: 'White', swatch: 'bg_white', image: white1 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
-        }
-    },
-    {
-      id: 2,
-      name: 'Slim Fit Jeans',
-      price: 49.99,
-      currency: '£',
-      discount: 15,
-      discountStartDate: '2025-05-15T12:30:00Z',
-      availability: 'Limited stock',
-      brand: 'DenimMax',
-      category: 'Fibers',  // denim = fiber-based fabric
-      images: [jeans1, jeans2, black1, white1],
-      colors: [
-        { name: 'Blue', swatch: 'bg_blue', image: jeans1 },
-        { name: 'Black', swatch: 'bg_dark', image: black1 },
-      ],
-      sizes: [
-        { label: 'M', id: 'values-m', price: 9 },
-      ],
-      rating: 4,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+        {
+          name:'Care: Hand wash'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
+        {
+          name:'Imported'
         }
-    },
-    {
-      id: 3,
-      name: 'Cotton Hoodie',
-      price: 39.5,
-      currency: '€',
-      discount: 10,
-      discountStartDate: '2025-05-10T14:00:00Z',
-      availability: 'Out of stock',
-      brand: 'CozyWear',
-      category: 'Fibers',
-      images: [hoodie1, hoodie2, black1, white1],
-      colors: [
-        { name: 'Grey', swatch: 'bg_grey', image: hoodie1 },
-        { name: 'Navy', swatch: 'bg_navy', image: hoodie2 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-      ],
-      rating: 3,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
 
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
-        }
-    },
-    {
-      id: 4,
-      name: 'Chunky Sneakers',
-      price: 74.0,
-      currency: '$',
-      discount: 30,
-      discountStartDate: '2025-05-17T09:15:00Z',
-      availability: 'Pre-order',
-      brand: 'StepUp',
-      category: 'Nuts, Flowers & Beverages',  // shoes, let's loosely associate here
-      images: [sneakers1, sneakers2, black1, white1],
-      colors: [
-        { name: 'White', swatch: 'bg_white', image: sneakers1 },
-        { name: 'Black', swatch: 'bg_dark', image: black1 },
-        { name: 'Beige', swatch: 'bg_beige', image: sneakers2 },
-      ],
-      sizes: [
-        { label: 'L', id: 'values-l', price: 10 },
-      ],
-      rating: 5,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
-        }
-    },
-    {
-      id: 5,
-      name: 'Floral Summer Dress',
-      price: 29.99,
-      currency: '€',
-      discount: 25,
-      discountStartDate: '2025-05-14T10:45:00Z',
-      availability: 'In stock',
-      brand: 'SunBreeze',
-      category: 'Fibers',
-      images: [dress1, dress2, white1, pink1],
-      colors: [
-        { name: 'Floral Red', swatch: 'bg_red', image: dress1 },
-        { name: 'Light Blue', swatch: 'bg_lightblue', image: dress2 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'L', id: 'values-l', price: 10 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 1,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
-        }
-    },
-    {
-      id: 6,
-      name: 'Leather Jacket',
-      price: 119.99,
-      currency: '£',
-      discount: 35,
-      discountStartDate: '2025-05-13T16:00:00Z',
-      availability: 'Limited stock',
-      brand: 'UrbanRide',
-      category: 'Meat, Fish & Sweeteners',  // leather comes from animals
-      images: [jacket1, jacket2, brown2, black1],
-      colors: [
-        { name: 'Black', swatch: 'bg_dark', image: black1 },
-        { name: 'Brown', swatch: 'bg_brown', image: jacket2 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'L', id: 'values-l', price: 10 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 2,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
         }
+
+      ]
     },
-    {
-      id: 7,
-      name: 'Striped Shirt',
-      price: 24.5,
-      currency: '$',
-      discount: 18,
-      discountStartDate: '2025-05-11T08:30:00Z',
-      availability: 'In stock',
-      brand: 'SmartLine',
-      category: 'Fibers',
-      images: [shirt1, shirt2, black1, white1],
-      colors: [
-        { name: 'Blue Stripe', swatch: 'bg_stripe-blue', image: shirt1 },
-        { name: 'Grey', swatch: 'bg_grey', image: shirt2 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'L', id: 'values-l', price: 10 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 4,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
-        }
-    },
-    {
-      id: 8,
-      name: 'Cargo Shorts',
-      price: 27.5,
-      currency: '€',
-      discount: 22,
-      discountStartDate: '2025-05-16T11:20:00Z',
-      availability: 'Discontinued',
-      brand: 'TrailFit',
-      category: 'Fibers',
-      images: [shorts1, shorts2, black1, white1],
-      colors: [
-        { name: 'Olive', swatch: 'bg_olive', image: shorts1 },
-        { name: 'Khaki', swatch: 'bg_khaki', image: shorts2 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'L', id: 'values-l', price: 10 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 5,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
-        }
-    },
-    {
-      id: 9,
-      name: 'Casual Baseball Cap',
-      price: 14.95,
-      currency: '$',
-      discount: 12,
-      discountStartDate: '2025-05-18T07:00:00Z',
-      availability: 'In stock',
-      brand: 'CapFlex',
-      category: 'Fibers',
-      images: [cap1, cap2, black1, white1],
-      colors: [
-        { name: 'Black', swatch: 'bg_dark', image: black1 },
-        { name: 'Red', swatch: 'bg_red', image: cap2 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'L', id: 'values-l', price: 10 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 3,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
-        }
-    },
-    {
-      id: 10,
-      name: 'Canvas Backpack',
-      price: 38.0,
-      currency: '£',
-      discount: 28,
-      discountStartDate: '2025-05-12T13:00:00Z',
-      availability: 'In stock',
-      brand: 'PackRight',
-      category: 'Fibers',
-      images: [bag1, bag2, black1, white1],
-      colors: [
-        { name: 'Navy', swatch: 'bg_navy', image: bag1 },
-        { name: 'Beige', swatch: 'bg_beige', image: bag2 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'L', id: 'values-l', price: 10 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 4,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
         }
-    },
-    {
-      id: 11,
-      name: 'Classic White Tee',
-      price: 12.99,
-      currency: '$',
-      discount: 10,
-      discountStartDate: '2025-05-13T10:00:00Z',
-      availability: 'Limited stock',
-      brand: 'BasicThreads',
-      category: 'Fibers',
-      images: [white1, black1, orange1, white1],
-      colors: [
-        { name: 'White', swatch: 'bg_white', image: white1 },
-        { name: 'Black', swatch: 'bg_dark', image: black1 },
-      ],
-      sizes: [
-        { label: 'S', id: 'values-s', price: 0 },
-        { label: 'M', id: 'values-m', price: 9 },
-        { label: 'L', id: 'values-l', price: 10 },
-        { label: 'XL', id: 'values-xl', price: 12 },
-      ],
-      rating: 4,
-        description:{
-          desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-          features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-          materialscareleft:[
-            {
-              name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-              name:'Care: Hand wash'
-            },
-            {
-              name:'Imported'
-            }
-
-          ],
-          materialscareright:[
-            {
-              icon:'icon-machine',
-              name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-              icon:'icon-iron',
-              name:'Iron maximum 110ºC.'
-            },
-            {
-              icon:'icon-bleach',
-              name:'Do not bleach/bleach.'
-            },
-            {
-              icon:'icon-dry-clean',
-              name:'Do not dry clean.'
-            },
-            {
-              icon:'icon-tumble-dry',
-              name:'Tumble dry, medium hear.'
-            }
-
-          ]
+      ]
+    }
+  },
+  {
+    id: 2,
+    name: 'Slim Fit Jeans',
+    price: 49.99,
+    currency: '£',
+    salePrice: 30,
+    discountEndDate: '2025-05-15T12:30:00Z',
+    availability: 'Limited stock',
+    brand: 'DenimMax',
+    category: 'Fibers',  // denim = fiber-based fabric
+    images: [jeans1, jeans2, black1, white1],
+    colors: [
+      { name: 'Blue', swatch: 'bg_blue', image: jeans1 },
+      { name: 'Black', swatch: 'bg_dark', image: black1 },
+    ],
+    sizes: [
+      { label: 'M', id: 'values-m', price: 9 },
+    ],
+    rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
         },
-        additionalinfo:[
-          {
-            label:'Color',
-            value:'White, Pink, Black'
-          },
-          {
-            label:'Size',
-            value:'S, M, L, XL'
-          }
-        ],
-        checkout:{
-          title:{
-            icon:'icon-safe',
-            name:'Guarantee Safe Checkout'
-          },
-          methods:[
-            {
-              image:paypal,
-              maxHeight:'18px',
-              marginLeft:'2rem'
-            },
-            {
-              image:mastercard,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:googlepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:applepay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            },
-            {
-              image:amazonpay,
-              maxHeight:'24px',
-              marginLeft:'2rem'
-            }
-          ]
-        }
-    },
-    {
-        id: 12,
-        name: 'Activewear Tights',
-        price: 32.5,
-        currency: '€',
-        discount: 20,
-        discountStartDate: '2025-05-15T14:15:00Z',
-        availability: 'In stock',
-        brand: 'FlexiFit',
-        category: 'Fibers',
-        images: [hoodie2, hoodie1, black1, white1],
-        colors: [
-            { name: 'Grey', swatch: 'bg_grey', image: hoodie2 },
-            { name: 'Maroon', swatch: 'bg_maroon', image: hoodie1 },
-        ],
-        sizes: [
-            { label: 'S', id: 'values-s', price: 0 },
-            { label: 'M', id: 'values-m', price: 9 },
-            { label: 'L', id: 'values-l', price: 10 },
-            { label: 'XL', id: 'values-xl', price: 12 },
-        ],
-        rating: 5,
-        description:{
-            desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
-            features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
-            materialscareleft:[
-            {
-                name:'Content: 100% LENZING™ ECOVERO™ Viscose'
-            },
-            {
-                name:'Care: Hand wash'
-            },
-            {
-                name:'Imported'
-            }
-
-            ],
-            materialscareright:[
-            {
-                icon:'icon-machine',
-                name:'Machine wash max. 30ºC. Short spin.'
-            },
-            {
-                icon:'icon-iron',
-                name:'Iron maximum 110ºC.'
-            },
-            {
-                icon:'icon-bleach',
-                name:'Do not bleach/bleach.'
-            },
-            {
-                icon:'icon-dry-clean',
-                name:'Do not dry clean.'
-            },
-            {
-                icon:'icon-tumble-dry',
-                name:'Tumble dry, medium hear.'
-            }
-
-            ]
+        {
+          name:'Care: Hand wash'
         },
-        additionalinfo:[
-            {
-            label:'Color',
-            value:'White, Pink, Black'
-            },
-            {
-            label:'Size',
-            value:'S, M, L, XL'
-            }
-        ],
-        checkout:{
-            title:{
-                icon:'icon-safe',
-                name:'Guarantee Safe Checkout'
-            },
-            methods:[
-            {
-                image:paypal,
-                maxHeight:'18px',
-                marginLeft:'2rem'
-            },
-            {
-                image:mastercard,
-                maxHeight:'24px',
-                marginLeft:'2rem'
-            },
-            {
-                image:googlepay,
-                maxHeight:'24px',
-                marginLeft:'2rem'
-            },
-            {
-                image:applepay,
-                maxHeight:'24px',
-                marginLeft:'2rem'
-            },
-            {
-                image:amazonpay,
-                maxHeight:'24px',
-                marginLeft:'2rem'
-            }
-            ]
+        {
+          name:'Imported'
         }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
     },
-  ];
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 3,
+    name: 'Cotton Hoodie',
+    price: 39.5,
+    currency: '€',
+    salePrice: 10,
+    discountEndDate: '2025-05-10T14:00:00Z',
+    availability: 'Out of stock',
+    brand: 'CozyWear',
+    category: 'Fibers',
+    images: [hoodie1, hoodie2, black1, white1],
+    colors: [
+      { name: 'Grey', swatch: 'bg_grey', image: hoodie1 },
+      { name: 'Navy', swatch: 'bg_navy', image: hoodie2 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+    ],
+    rating: 3,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 4,
+    name: 'Chunky Sneakers',
+    price: 74.0,
+    currency: '$',
+    salePrice: 40,
+    discountEndDate: '2025-05-17T09:15:00Z',
+    availability: 'Pre-order',
+    brand: 'StepUp',
+    category: 'Nuts, Flowers & Beverages',  // shoes, let's loosely associate here
+    images: [sneakers1, sneakers2, black1, white1],
+    colors: [
+      { name: 'White', swatch: 'bg_white', image: sneakers1 },
+      { name: 'Black', swatch: 'bg_dark', image: black1 },
+      { name: 'Beige', swatch: 'bg_beige', image: sneakers2 },
+    ],
+    sizes: [
+      { label: 'L', id: 'values-l', price: 10 },
+    ],
+    rating: 5,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 5,
+    name: 'Floral Summer Dress',
+    price: 29.99,
+    currency: '€',
+    salePrice: 20,
+    discountEndDate: '2025-05-14T10:45:00Z',
+    availability: 'In stock',
+    brand: 'SunBreeze',
+    category: 'Fibers',
+    images: [dress1, dress2, white1, pink1],
+    colors: [
+      { name: 'Floral Red', swatch: 'bg_red', image: dress1 },
+      { name: 'Light Blue', swatch: 'bg_lightblue', image: dress2 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'L', id: 'values-l', price: 10 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 1,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 6,
+    name: 'Leather Jacket',
+    price: 119.99,
+    currency: '£',
+    salePrice: 110,
+    discountEndDate: '2025-05-13T16:00:00Z',
+    availability: 'Limited stock',
+    brand: 'UrbanRide',
+    category: 'Meat, Fish & Sweeteners',  // leather comes from animals
+    images: [jacket1, jacket2, brown2, black1],
+    colors: [
+      { name: 'Black', swatch: 'bg_dark', image: black1 },
+      { name: 'Brown', swatch: 'bg_brown', image: jacket2 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'L', id: 'values-l', price: 10 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 2,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 7,
+    name: 'Striped Shirt',
+    price: 24.5,
+    currency: '$',
+    salePrice: 18,
+    discountEndDate: '2025-05-11T08:30:00Z',
+    availability: 'In stock',
+    brand: 'SmartLine',
+    category: 'Fibers',
+    images: [shirt1, shirt2, black1, white1],
+    colors: [
+      { name: 'Blue Stripe', swatch: 'bg_stripe-blue', image: shirt1 },
+      { name: 'Grey', swatch: 'bg_grey', image: shirt2 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'L', id: 'values-l', price: 10 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 8,
+    name: 'Cargo Shorts',
+    price: 27.5,
+    salePrice: 10,
+    currency: '€',
+    discountEndDate: '2025-05-16T11:20:00Z',
+    availability: 'Discontinued',
+    brand: 'TrailFit',
+    category: 'Fibers',
+    images: [shorts1, shorts2, black1, white1],
+    colors: [
+      { name: 'Olive', swatch: 'bg_olive', image: shorts1 },
+      { name: 'Khaki', swatch: 'bg_khaki', image: shorts2 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'L', id: 'values-l', price: 10 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 5,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 9,
+    name: 'Casual Baseball Cap',
+    price: 14.95,
+    currency: '$',
+    salePrice: 10,
+    discountEndDate: '2025-05-18T07:00:00Z',
+    availability: 'In stock',
+    brand: 'CapFlex',
+    category: 'Fibers',
+    images: [cap1, cap2, black1, white1],
+    colors: [
+      { name: 'Black', swatch: 'bg_dark', image: black1 },
+      { name: 'Red', swatch: 'bg_red', image: cap2 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'L', id: 'values-l', price: 10 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 3,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 10,
+    name: 'Canvas Backpack',
+    price: 38.0,
+    currency: '£',
+    salePrice: 30,
+    discountEndDate: '2025-05-12T13:00:00Z',
+    availability: 'In stock',
+    brand: 'PackRight',
+    category: 'Fibers',
+    images: [bag1, bag2, black1, white1],
+    colors: [
+      { name: 'Navy', swatch: 'bg_navy', image: bag1 },
+      { name: 'Beige', swatch: 'bg_beige', image: bag2 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'L', id: 'values-l', price: 10 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 11,
+    name: 'Classic White Tee',
+    price: 12.99,
+    currency: '$',
+    salePrice: 10,
+    discountEndDate: '2025-05-13T10:00:00Z',
+    availability: 'Limited stock',
+    brand: 'BasicThreads',
+    category: 'Fibers',
+    images: [white1, black1, orange1, white1],
+    colors: [
+      { name: 'White', swatch: 'bg_white', image: white1 },
+      { name: 'Black', swatch: 'bg_dark', image: black1 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'L', id: 'values-l', price: 10 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 4,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+  {
+    id: 12,
+    name: 'Activewear Tights',
+    price: 32.5,
+    currency: '€',
+    salePrice: 20,
+    discountEndDate: '2025-05-15T14:15:00Z',
+    availability: 'In stock',
+    brand: 'FlexiFit',
+    category: 'Fibers',
+    images: [hoodie2, hoodie1, black1, white1],
+    colors: [
+      { name: 'Grey', swatch: 'bg_grey', image: hoodie2 },
+      { name: 'Maroon', swatch: 'bg_maroon', image: hoodie1 },
+    ],
+    sizes: [
+      { label: 'S', id: 'values-s', price: 0 },
+      { label: 'M', id: 'values-m', price: 9 },
+      { label: 'L', id: 'values-l', price: 10 },
+      { label: 'XL', id: 'values-xl', price: 12 },
+    ],
+    rating: 5,
+    description:{
+      desc:'Button-up shirt sleeves and a relaxed silhouette. It’s tailored with drapey, crinkle-texture fabric that’s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply.',
+      features:['Front button placket','Adjustable sleeve tabs','Babaton embroidered crest at placket and hem'],
+      materialscareleft:[
+        {
+          name:'Content: 100% LENZING™ ECOVERO™ Viscose'
+        },
+        {
+          name:'Care: Hand wash'
+        },
+        {
+          name:'Imported'
+        }
+
+      ],
+      materialscareright:[
+        {
+          icon:'icon-machine',
+          name:'Machine wash max. 30ºC. Short spin.'
+        },
+        {
+          icon:'icon-iron',
+          name:'Iron maximum 110ºC.'
+        },
+        {
+          icon:'icon-bleach',
+          name:'Do not bleach/bleach.'
+        },
+        {
+          icon:'icon-dry-clean',
+          name:'Do not dry clean.'
+        },
+        {
+          icon:'icon-tumble-dry',
+          name:'Tumble dry, medium hear.'
+        }
+
+      ]
+    },
+    additionalinfo:[
+      {
+        label:'Color',
+        value:'White, Pink, Black'
+      },
+      {
+        label:'Size',
+        value:'S, M, L, XL'
+      }
+    ],
+    checkout:{
+      title:{
+        icon:'icon-safe',
+        name:'Guarantee Safe Checkout'
+      },
+      methods:[
+        {
+          image:paypal,
+          maxHeight:'18px',
+          marginLeft:'2rem'
+        },
+        {
+          image:mastercard,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:googlepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:applepay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        },
+        {
+          image:amazonpay,
+          maxHeight:'24px',
+          marginLeft:'2rem'
+        }
+      ]
+    }
+  },
+];
 const items = [
     {
         header: "Best Sellers",
@@ -1607,14 +1609,14 @@ const ProductDetails = ( {categories =[]}) =>{
                                                 <div className="badges">Best seller</div>
                                                 <div className="product-status-content">
                                                     <i className="icon-lightning"></i>
-                                                    <p className="fw-6">Selling fast! 56 people have this in their carts.</p>
+                                                    {/* <p className="fw-6">Selling fast! 56 people have this in their carts.</p> */}
                                                 </div>
                                             </div>
-                                            {(product?.discountStartDate && product?.discount) ?
+                                            {(product?.discountEndDate && product?.salePrice) ?
                                                 <div className="tf-product-info-price">
-                                                    <div className="price-on-sale">{product?.currency}{getDiscountPrice(product?.  price, product?.discount)}</div>
+                                                    <div className="price-on-sale">{product?.currency}{product?.salePrice}</div>
                                                     <div className="compare-at-price">{product?.currency}{product?.price}</div>
-                                                    <div className="badges-on-sale"><span>{product?.discount}</span>% OFF</div>
+                                                    <div className="badges-on-sale"><span>{getDiscount(product?.price, product?.salePrice)}</span>% OFF</div>
                                                 </div>:
                                                 <div className="tf-product-info-price">
                                                     <div className="price-on-sale">{product?.currency}{product?.price}</div>
@@ -1625,14 +1627,14 @@ const ProductDetails = ( {categories =[]}) =>{
                                                 <div className="liveview-count">20</div>
                                                 <p className="fw-6">People are viewing this right now</p>
                                             </div> */}
-                                            {(product?.discountStartDate && product?.discount) && <div className="tf-product-info-countdown">
+                                            {(product?.discountEndDate && product?.discount) && <div className="tf-product-info-countdown">
                                                 <div className="countdown-wrap">
                                                     <div className="countdown-title">
                                                         <i className="icon-time tf-ani-tada"></i>
                                                         <p>HURRY UP! SALE ENDS IN:</p>
                                                     </div>
                                                     <div className="tf-countdown style-1">
-                                                        <CountDownTimer starttime={new Date(product?.discountStartDate).getTime()}/>
+                                                        <CountDownTimer starttime={new Date(product?.discountEndDate).getTime()}/>
                                                     </div>
                                                 </div>
                                             </div>}
@@ -1650,10 +1652,10 @@ const ProductDetails = ( {categories =[]}) =>{
                                             <div className="tf-product-info-buy-button">
                                                 <form className="">
                                                     <a href="javascript:void(0);"
-                                                        onClick={()=>handleAddToCart(product, user, {quantity, price:(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)})}
+                                                        onClick={()=>handleAddToCart(product, user, {quantity, price:((product?.salePrice || product?.price) * quantity).toFixed(2)})}
                                                         className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
                                                             to cart -&nbsp;</span><span
-                                                            className="tf-qty-price total-price">{product?.currency}{(getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)}</span></a>
+                                                            className="tf-qty-price total-price">{product?.currency}{((product?.salePrice || product?.price) * quantity).toFixed(2)}</span></a>
                                                     <a href="javascript:void(0);"
                                                         onClick={()=>handleAddToWishlist(product, user)}
                                                         className="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action">
@@ -1671,7 +1673,7 @@ const ProductDetails = ( {categories =[]}) =>{
                                                                     user,
                                                                     quantity,
                                                                     paymentMethod:paymentmethod?.id,
-                                                                    price: (getDiscountPrice(product?.price, product?.discount) * quantity).toFixed(2)
+                                                                    price: ((product?.salePrice || product?.price) * quantity).toFixed(2)
                                                                 }}
                                                                 className="btns-full">
                                                                 Buy with 
@@ -1806,7 +1808,7 @@ const ProductDetails = ( {categories =[]}) =>{
                                                 </div>
                                                 <div className="card-product-info">
                                                     <a href="javascript:void(0);" onClick={()=>handleSetCurrentProduct(relatedproduct)}  className="title link">{relatedproduct?.name}</a>
-                                                    {(product?.discountStartDate && product?.discount) ?
+                                                    {(product?.discountEndDate && product?.discount) ?
                                                         <span className="price">
                                                             <span className=" text-success">{relatedproduct?.currency}{getDiscountPrice(relatedproduct?. price, relatedproduct?.discount)}</span>
                                                             <span className="small mt-1 ms-2 ">
