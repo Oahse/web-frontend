@@ -1,4 +1,0 @@
-# wrangler.toml
-name = 'banwee'
-compatibility_date = "2025-08-19"
-pages_build_output_dir = "./dist"
