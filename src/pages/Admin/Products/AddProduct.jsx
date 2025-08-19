@@ -12,7 +12,7 @@ import Toast from "@/components/Toast";
 import useAdminStyles from '@/hooks/useAdminStyles';
 
 
-  const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categories=[]  }) => {
+const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categories=[]  }) => {
     useAdminStyles(); // ✅ dynamically manages admin styles
     // const [product, setProduct] = useState(null);
     const [formData, setFormData] = useState({

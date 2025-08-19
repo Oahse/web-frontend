@@ -4,8 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "vite build",
     "ngrok": "ngrok http 5173",
@@ -20,6 +18,7 @@
     "chart.js": "^4.4.9",
     "date-fns": "^4.1.0",
     "dexie": "^4.0.11",
+    "gapi-script": "^1.2.0",
     "gh-pages": "^6.1.1",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
