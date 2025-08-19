@@ -8,6 +8,7 @@ export default defineConfig({
     react(),
     Inspect()
   ],
+  base: './',
   build: {
     sourcemap: true,  // Disable sourcemaps for production build
   },
