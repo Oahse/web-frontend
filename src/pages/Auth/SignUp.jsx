@@ -1,8 +1,8 @@
-import useDeviceType from '@/hooks/useDeviceType'
+import useDeviceType from '@/hooks/useDeviceType';
 import { useState } from "react";
 import Loader from "@/components/loader";
 import Header from "@/components/toolbar/header";
-import TopHeader from '@/components/toolbar/topHeader'
+import TopHeader from '@/components/toolbar/topHeader';
 import Footer from "@/components/footer";
 import { Link } from 'react-router-dom';
 import Extras from '@/components/extra';

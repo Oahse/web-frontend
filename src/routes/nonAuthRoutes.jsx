@@ -1,10 +1,10 @@
 import React from 'react';
 import Home from '@/pages/home';
-import Products from '@/pages/products'; // assuming Bookings component exists
-import SignUp from '@/pages/auth/signup'; // assuming SignUp component exists
-import Login from '@/pages/auth/login'; // assuming SignUp component exists
+import Products from '@/pages/products'; 
+import SignUp from '@/pages/auth/signup'; 
+import Login from '@/pages/auth/login'; 
 import ResetPassword from '@/pages/auth/reset-password';
-import Account from '@/pages/auth/account'; // assuming Account component exists
+import Account from '@/pages/auth/account'; 
 import Cart from '@/pages/cart';
 import ProductDetails from '@/pages/productdetails'; // assuming ProductDetails component exists
 import Checkout from '@/pages/checkout'; // assuming Checkout component exists
