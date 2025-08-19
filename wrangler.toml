@@ -1,0 +1,7 @@
+name = "banwee"
+account_id = "59fda70066cea1ddbbbdbddaf5f18042"
+workers_dev = true
+compatibility_date = "2025-08-19"
+
+[site]
+bucket = "./dist"
