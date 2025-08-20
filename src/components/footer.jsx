@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '@/assets/images/logo/banwe_logo_text_green.png';
+import logo from '@/assets/images/logo/banwee_logo_text_green.png';
 // Payment method images
 import visa from '@/assets/images/payments/visa.png';
 import img1 from '@/assets/images/payments/img-1.png';

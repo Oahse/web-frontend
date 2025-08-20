@@ -1,5 +1,5 @@
 
-import logo from '@/assets/images/logo/banwe_logo_text_green.png';
+import logo from '@/assets/images/logo/banwee_logo_text_green.png';
 import Search from '@/components/form/Search';
 import searchImg1 from '@/assets/images/item/search-grocey1.jpg';
 import searchImg2 from '@/assets/images/item/search-grocey2.jpg';
@@ -104,9 +104,9 @@ const Header =()=>{
                               </a>
                           </div>
                           <div className="col-md-4 col-6">
-                              <a href="index-2.html" className="logo-header">
+                              <Link to="/" className="logo-header">
                                   <img src={logo} alt="logo" className="logo" height={4}/>
-                              </a>
+                              </Link>
                           </div>
                           <div className="col-md-4 col-6 tf-md-hidden">
                             <Search
