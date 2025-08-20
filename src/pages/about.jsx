@@ -142,7 +142,7 @@ const About =({categories=[]})=>{
                 <section className="flat-spacing-9">
                     <div className="container">
                         <div className="flat-title my-0">
-                            <span className="title">We are Banwe</span>
+                            <span className="title">We are Banwee</span>
                             <p className="sub-title text_black-2">
                                 Welcome to our classic women's clothing store, where we believe <br className="d-xl-block d-none"/>
                                 that timeless style never goes out of fashion. Our collection features classic <br
@@ -170,7 +170,7 @@ const About =({categories=[]})=>{
                                 <div>
                                     <div className="heading">Established - 1995</div>
                                     <div className="text">
-                                        Banwe was founded in 1995 by Jane Smith, a fashion lover with a <br
+                                        Banwee was founded in 1995 by Jane Smith, a fashion lover with a <br
                                             className="d-xl-block d-none"/>
                                         passion for timeless style. Jane had always been drawn to classic <br
                                             className="d-xl-block d-none"/>

@@ -4789,7 +4789,7 @@ function Home({categories=[]}) {
                         </div>
                         <div className="tf-content-wrap wow fadeInUp" data-wow-delay="0s">
                             <p className="subheading text-uppercase fw-7">PERFECT GIFT FOR YOU</p>
-                            <h2 className="heading fade-item fade-item-1 fw-6">Banwe Subscription</h2>
+                            <h2 className="heading fade-item fade-item-1 fw-6">Banwee Subscription</h2>
                             <p className="desc fade-item fade-item-2">Delivered every month! Perfect for your favorite vegan or
                                 anyone you want <br/> to introduce to the best better-for-you foods out there.</p>
                             <Link to="/products"
