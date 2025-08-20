@@ -7,7 +7,7 @@ const AdminFooter = () => {
   return (
     <div className="bottom-page">
       <div className="body-text">
-        Copyright © {currentYear} <Link to="/">Banwe</Link>. Design by Themesflat. All rights reserved.
+        Copyright © {currentYear} <Link to="/">Banwee</Link>. All rights reserved.
       </div>
     </div>
   );
