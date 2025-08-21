@@ -1,7 +1,7 @@
 import Search from "@/components/admin/form/Search";
 import ListSearch from "@/components/admin/form/ListSearch";
 // Import images
-import logo from '@/assets/images/logo/banwe_logo_text_black.png';
+import logo from '@/assets/images/logo/banwee_logo_text_black.png';
 import logowhite from '@/assets/images/logo/banwe_logo_text_white.png';
 import item1 from '@/assets/images/apps/item-1.png';
 import item2 from '@/assets/images/apps/item-2.png';
