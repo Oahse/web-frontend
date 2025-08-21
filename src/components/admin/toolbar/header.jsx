@@ -3,15 +3,6 @@ import ListSearch from "@/components/admin/form/ListSearch";
 // Import images
 import logo from '@/assets/images/logo/banwee_logo_text_black.png';
 import logowhite from '@/assets/images/logo/banwe_logo_text_white.png';
-import item1 from '@/assets/images/apps/item-1.png';
-import item2 from '@/assets/images/apps/item-2.png';
-import item3 from '@/assets/images/apps/item-3.png';
-import item4 from '@/assets/images/apps/item-4.png';
-import item5 from '@/assets/images/apps/item-5.png';
-import item6 from '@/assets/images/apps/item-6.png';
-import item7 from '@/assets/images/apps/item-7.png';
-import item8 from '@/assets/images/apps/item-8.png';
-import item9 from '@/assets/images/apps/item-9.png';
 import customer1 from '@/assets/images/customers/customer-1.jpg';
 import customer2 from '@/assets/images/customers/customer-2.jpg';
 import customer3 from '@/assets/images/customers/customer-3.jpg';

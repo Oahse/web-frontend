@@ -41,8 +41,6 @@ const categories = [
   ];
   
   
-  
-
 const Header =()=>{
     const isLoggedIn =false;
     const searchResults = [

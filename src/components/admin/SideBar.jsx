@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import logo from '@/assets/images/logo/banwe_logo_text_black.png';
+import logo from '@/assets/images/logo/banwee_logo_text_black.png';
 import logowhite from '@/assets/images/logo/banwe_logo_text_white.png';
 import { Link } from 'react-router-dom';
 
