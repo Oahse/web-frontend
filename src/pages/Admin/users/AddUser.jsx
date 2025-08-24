@@ -11,12 +11,17 @@ import Toast from "@/components/Toast";
 import { rolePermissions } from "@/constants/permissions";
 import Modal from "@/components/modal";
 import useAdminStyles from '@/hooks/useAdminStyles';
+import { uploadMultipleFiles, deleteMultipleFiles } from "@/services/github";
+
 const ViewAdminUsers = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categories=[] })=>{
     useAdminStyles(); // ✅ dynamically manages admin styles
     const [formData, setFormData] = useState({active:false,permissions:[],});
     const [loading, setLoading] = useState(false);
     const [isHeaderFullWidth, setIsHeaderFullWidth] = useState(false);
     const [show, setShow]  =useState(false);
+    const [githubImages, setGithubImages] = useState([]);
+    const [imagePreview, setImagePreview] = useState(null);
+
     const showHideMenu = (e) => {
         e.preventDefault()
         // Find the layout-wrap element
@@ -50,46 +55,70 @@ const ViewAdminUsers = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categori
         }));
     };
                 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            convertImageToBase64(file).then(base64 => {
-            setFormData(prev => ({ ...prev, image: base64 }));
-        }).catch(err => {
-            console.error("Upload error:", err);
-            setFormData(prev => ({ ...prev, image: file }));
-        });
+            // Save the selected file to formData
+            setFormData(prev => ({ ...prev, picture: file }));
+
+            try {
+                // Convert file to base64 string (for preview)
+                const base64Preview = await convertImageToBase64(file);
+                setImagePreview(base64Preview);
+            } catch (error) {
+                console.error("Error generating preview:", error);
+                setImagePreview(null);
+            }
         }
     };
-        const handleRemovePermission = (permission) => {
-            setFormData(prev => ({
-                ...prev,
-                permissions: prev.permissions.filter(p => p !== permission)
-            }));
-        };
-        const handleAddPermission = (permission) => {
-            setFormData(prev => ({
-                ...prev,
-                permissions: [...prev.permissions, permission] 
-            }));
-        };
+
+    const handleRemovePermission = (permission) => {
+        setFormData(prev => ({
+            ...prev,
+            permissions: prev.permissions.filter(p => p !== permission)
+        }));
+    };
+    const handleAddPermission = (permission) => {
+        setFormData(prev => ({
+            ...prev,
+            permissions: [...prev.permissions, permission] 
+        }));
+    };
       
-        const handleSave = async () => {
+    const handleSave = async () => {
+        try {
+            // Upload images to GitHub
+            const uploadedResults = await uploadMultipleFiles([formData.picture], 'users');
+            
+            const failedUploads = uploadedResults.filter(res => !res?.url);
+            if (failedUploads.length > 0) {
+                failedUploads.forEach(res => {
+                    toast.error(<Toast title="Upload error" subtitle={res?.error?.message || String(res?.error) || "Unknown error"} />);
+                });
+                return; // Don't submit product if uploads failed
+            }
+            const githubPaths = uploadedResults.filter(res => res?.githubPath);
+            setGithubImages(githubPaths)
+            // Update image URLs
+            const imageUrl = uploadedResults.map(res => res.url);
         
-            try {
-                const result = await createUser({ userData: formData });
-        
+            const result = await createUser({ userData: {
+                ...formData,
+                picture: imageUrl
+            } });
+    
             if (!result.error) {
                 toast.success(<Toast title={result.message} subtitle='' />);
             } else {
+                await deleteMultipleFiles(githubPaths);
                 // Display success toast
                 toast.error(<Toast title={result.error} subtitle='Something went wrong. Please try again.' />);
             }
-            } catch (error) {
-                // Catch any unexpected errors
-                toast.error(<Toast title={error} subtitle='An error occurred. Please try again.' />);
-            } 
-        };
+        } catch (error) {
+            // Catch any unexpected errors
+            toast.error(<Toast title={error} subtitle='An error occurred. Please try again.' />);
+        } 
+    };
       
     
     
@@ -141,7 +170,7 @@ const ViewAdminUsers = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categori
                                                             <i className="icon-upload-cloud"></i>
                                                             </span>
                                                             <span className="body-text">Select your image <span className="tf-color">click to browse</span></span>
-                                                            <img src={formData?.image} alt={formData?.title || formData?.name || 'User Image'} className="has-img"/>
+                                                            <img src={imagePreview} alt={formData?.title || formData?.name || 'User Image'} className="has-img"/>
                                                             <input type="file" id="myFile" name="filename" onChange={handleImageChange} />
                                                         </label>
                                                     </div>
@@ -395,6 +424,7 @@ const ViewAdminUsers = ({API_URL ,Companyname, isLoggedIn, loggedInUser,categori
                 </div>
                 {/* <!-- /layout-wrap --> */}
             </div>
+            <ToastContainer />
             {/* <!-- /#page --> */}
         </div>
     )

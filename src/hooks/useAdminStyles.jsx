@@ -15,7 +15,7 @@ const links = [
 const useAdminStyles = () => {
   const location = useLocation();
   const baseUrl = import.meta.env.MODE === 'production'? '':'/src/';
-  console.log(import.meta.env.MODE,'====->>>>',baseUrl)
+  // console.log(import.meta.env.MODE,'====->>>>',baseUrl)
   const addStyles = () => {
     const head = document.head;
     links.forEach((href) => {

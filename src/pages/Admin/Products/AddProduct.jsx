@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DropDown from '@/components/admin/DropDown';
 import Preloader from "@/components/admin/PreLoader";
 import SideBar from "@/components/admin/SideBar";
@@ -10,6 +10,7 @@ import { convertImageToBase64,formatToMMMDDYYYY } from '@/services/helper';
 import { ToastContainer, toast } from 'react-toastify';
 import Toast from "@/components/Toast";
 import useAdminStyles from '@/hooks/useAdminStyles';
+import { uploadMultipleFiles, deleteMultipleFiles } from "@/services/github";
 
 
 const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categories=[]  }) => {
@@ -17,7 +18,7 @@ const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categ
     // const [product, setProduct] = useState(null);
     const [formData, setFormData] = useState({
             name:'',
-            category: '',
+            category: null,
             discountEndDate: '',
             variants: [],
             dateAdded: '',
@@ -28,6 +29,7 @@ const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categ
           });
     const [loading, setLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState([]);
+    const [githubImages, setGithubImages] = useState([]);
     const [isHeaderFullWidth, setIsHeaderFullWidth] = useState(false);
     const sizes = ['S', 'M', 'L', 'XL'];
     const showHideMenu = (e) => {
@@ -69,18 +71,15 @@ const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categ
     };
     
         
-    const handleImageChange = (e) => {
-        const files = Array.from(e.target.files);
-        files.forEach(file => {
-          convertImageToBase64(file).then(base64 => {
-            setFormData(prev => ({ ...prev, images: [...prev.images, base64] }));
-            setImagePreview(prev => [...prev, base64]);
-          }).catch(err => {
-            console.error("Upload error:", err);
-            setFormData(prev => ({ ...prev, images: [...prev.images, URL.createObjectURL(file)] }));
-            setImagePreview(prev => [...prev, URL.createObjectURL(file)]);
-          });
-        });
+    const handleImageChange = async (e) => {
+      const files = Array.from(e.target.files);
+      setFormData(prev => ({ ...prev, images: files })); // Just store files
+
+      // Optional: Generate previews
+      const base64Previews = await Promise.all(
+        files.map(file => convertImageToBase64(file).catch(() => URL.createObjectURL(file)))
+      );
+      setImagePreview(base64Previews);
     };
 
     const handleRemoveImage = (img) => {
@@ -108,14 +107,34 @@ const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categ
           
   
       try {
-        const result = await createProduct({ productData: formData });
+        // Upload images to GitHub
+        const uploadedResults = await uploadMultipleFiles(formData.images, formData.category);
+        
+        const failedUploads = uploadedResults.filter(res => !res?.url);
+        if (failedUploads.length > 0) {
+            failedUploads.forEach(res => {
+                toast.error(<Toast title="Upload error" subtitle={res?.error?.message || String(res?.error) || "Unknown error"} />);
+            });
+          return; // Don't submit product if uploads failed
+        }
+        const githubPaths = uploadedResults.filter(res => res?.githubPath);
+        setGithubImages(githubPaths)
+        // Update image URLs
+        const imageUrls = uploadedResults.map(res => res.url);
+    
+        const result = await createProduct({ productData: {
+              ...formData,
+              images: imageUrls
+            } });
   
         if (!result.error) {
           // setFormData(result.data);
           toast.success(<Toast title={result.message} subtitle="" />);
         } else {
+          await deleteMultipleFiles(githubPaths);
           toast.error(<Toast title={result.error} subtitle="Something went wrong. Please try again." />);
         }
+        
       } catch (error) {
         toast.error(<Toast title="An error occurred. Please try again." subtitle={error} />);
       } 
@@ -181,7 +200,48 @@ const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categ
                                 </div>
                                 {/* <!-- form-add-product --> */}
                                 <form className="form-add-product" >
+                                  
                                   <div className="wg-box mb-30">
+                                      <fieldset className="name">
+                                          <div className="body-title mb-10">Product title <span className="tf-color-1">*</span></div>
+                                          <input  onChange={handleInputChange} className="mb-10" type="text" placeholder="Enter title" name="name" tabindex="0" value={formData?.name || ''} aria-required="true" required="" />
+                                          <div className="text-tiny text-surface-2">Do not exceed 20 characters when entering the product name.</div>
+                                      </fieldset>
+                                      <fieldset className="category">
+                                          <div className="body-title  mb-10">Product Category <span className="tf-color-1">*</span></div>
+                                          <DropDown
+                                            isImage={false}
+                                            dropdownbtn={
+                                                <div
+                                                    className="dropdown-toggle w-100 date"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-haspopup="true"
+                                                    aria-expanded="false"
+                                                >
+                                                <input  readOnly className="w-100" type="text" placeholder="Choose category" name="category" tabindex="0" value={formData?.category || ''} aria-required="true" required=""/>
+                                                
+                                                </div>
+                                                
+                                            }
+                                            content=
+                                            {
+                                              <div className="p-3" style={{maxHeight:'400px', overflowY:'auto'}}>
+                                                  {productCategories.map((item, index) => (
+                                                      <div key={item.id || index} disabled={true} 
+                                                        className={`mt-4 mx-4  tf-btn  select-item ${item.name === formData?.category ? "bg-success text-white" : ""}`} 
+                                                        role="button"
+                                                        tabindex="0" 
+                                                        onClick={()=>handleFormDataChange('category', item.name)}
+                                                        style={{ cursor: 'pointer' }}
+                                                        >{item.name}</div>
+                                                      
+                                                  ))}
+                                              </div>
+                                            }
+                                          />
+                                      </fieldset>
+                                      {formData.category 
+                                      && 
                                       <fieldset>
                                           <div className="body-title mb-10">Upload images</div>
                                           <div className="upload-image mb-16 flex-grow">
@@ -242,47 +302,7 @@ const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categ
 
                                           </div>
                                           <div className="body-text">You need to add at least 4 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</div>
-                                      </fieldset>
-                                  </div>
-                                  <div className="wg-box mb-30">
-                                      <fieldset className="name">
-                                          <div className="body-title mb-10">Product title <span className="tf-color-1">*</span></div>
-                                          <input  onChange={handleInputChange} className="mb-10" type="text" placeholder="Enter title" name="name" tabindex="0" value={formData?.name || ''} aria-required="true" required="" />
-                                          <div className="text-tiny text-surface-2">Do not exceed 20 characters when entering the product name.</div>
-                                      </fieldset>
-                                      <fieldset className="name">
-                                          <div className="body-title  mb-10">Product Category <span className="tf-color-1">*</span></div>
-                                          <DropDown
-                                            isImage={false}
-                                            dropdownbtn={
-                                                <div
-                                                    className="dropdown-toggle w-100 date"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-haspopup="true"
-                                                    aria-expanded="false"
-                                                >
-                                                <input  readOnly className="w-100" type="text" placeholder="Choose category" name="category" tabindex="0" value={formData?.category || ''} aria-required="true" required=""/>
-                                                
-                                                </div>
-                                                
-                                            }
-                                            content=
-                                            {
-                                              <div className="p-3" style={{maxHeight:'400px', overflowY:'auto'}}>
-                                                  {productCategories.map((item, index) => (
-                                                      <div key={item.id || index} disabled={true} 
-                                                        className={`mt-4 mx-4  tf-btn  select-item ${item.name === formData?.category ? "bg-success text-white" : ""}`} 
-                                                        role="button"
-                                                        tabindex="0" 
-                                                        onClick={()=>handleFormDataChange('category', item.name)}
-                                                        style={{ cursor: 'pointer' }}
-                                                        >{item.name}</div>
-                                                      
-                                                  ))}
-                                              </div>
-                                            }
-                                          />
-                                      </fieldset>
+                                      </fieldset>}
                                       <fieldset className="variants">
                                             {/* <div className="body-title mb-10">Variants <span className="tf-color-1">*</span></div> */}
                                             <div className="flat-accordion style-default has-btns-arrow mb_60">
@@ -475,6 +495,7 @@ const AddAdminProducts = ({ API_URL, Companyname, isLoggedIn, loggedInUser,categ
                 </div>
                 {/* <!-- /layout-wrap --> */}
             </div>
+            <ToastContainer />
             {/* <!-- /#page --> */}
         </div>
     )

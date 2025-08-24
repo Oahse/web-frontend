@@ -4,7 +4,7 @@ import { getSocket, closeSocket } from "@/services/sockets";
 
 
 const useProductReview = (initialReviewData, productId) => {
-    const wsUrl = `ws://localhost:8001/ws/reviews/${productId}`;
+    const wsUrl = `http://localhost:8001/reviews/${productId}`;
     const socketKey = `reviews_${productId}`;
 
     const [productReview, setProductReview] = useState(initialReviewData);
