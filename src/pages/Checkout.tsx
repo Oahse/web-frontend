@@ -7,7 +7,7 @@ import StripePaymentForm from '../components/payment/StripePaymentForm';
 import { v4 as uuidv4 } from 'uuid';
 
 export const Checkout: React.FC = () => {
-  const { items, totalPrice, clearCart } = useCart();
+  const { items, totalItems, clearCart } = useCart();
   const [step, setStep] = useState<'shipping' | 'payment' | 'confirmation'>('shipping');
   const [orderId, setOrderId] = useState<string>(uuidv4()); // Generate a unique order ID
 
@@ -51,7 +51,7 @@ export const Checkout: React.FC = () => {
   };
 
   // Calculate order summary
-  const subtotal = totalPrice;
+  const subtotal = totalItems;
   const shipping = shippingMethod === 'express' ? 12.99 : subtotal > 49.99 ? 0 : 5.99;
   const tax = subtotal * 0.07;
   const total = subtotal + shipping + tax;
@@ -306,19 +306,19 @@ export const Checkout: React.FC = () => {
                 {items.map((item) => (
                   <div key={`${item.id}-${item.variant || ''}`} className="flex py-3 border-b border-border-light last:border-0">
                     <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <img src={item.variant.images[0].url} alt={item.variant.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="ml-4 flex-grow">
                       <div className="flex justify-between">
-                        <h3 className="font-medium text-main">{item.name}</h3>
-                        <span className="font-medium text-main">${(item.price * item.quantity).toFixed(2)}</span>
+                        <h3 className="font-medium text-main">{item.variant.name}</h3>
+                        <span className="font-medium text-main">${(item.price_per_unit * item.quantity).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm text-copy-light">
                         <span>
                           {item.variant && `Size: ${item.variant}, `}
                           Qty: {item.quantity}
                         </span>
-                        <span>${item.price.toFixed(2)} each</span>
+                        <span>${item.total_price.toFixed(2)} each</span>
                       </div>
                     </div>
                   </div>
@@ -425,19 +425,19 @@ export const Checkout: React.FC = () => {
                 {items.map((item) => (
                   <div key={`${item.id}-${item.variant || ''}`} className="flex py-3 border-b border-border-light last:border-0">
                     <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <img src={item.variant.images[0].url} alt={item.variant.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="ml-4 flex-grow">
                       <div className="flex justify-between">
-                        <h3 className="font-medium text-main">{item.name}</h3>
-                        <span className="font-medium text-main">${(item.price * item.quantity).toFixed(2)}</span>
+                        <h3 className="font-medium text-main">{item.variant.name}</h3>
+                        <span className="font-medium text-main">${(item.price_per_unit * item.quantity).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm text-copy-light">
                         <span>
                           {item.variant && `Size: ${item.variant}, `}
                           Qty: {item.quantity}
                         </span>
-                        <span>${item.price.toFixed(2)} each</span>
+                        <span>${item.total_price.toFixed(2)} each</span>
                       </div>
                     </div>
                   </div>
