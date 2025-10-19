@@ -2,61 +2,86 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/banwe_logo_green.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Banwee</title>
-    <meta charset="utf-8">
-    
+    <title>Banwee - Organic African Products</title>
 
-    <meta name="author" content="banwee.com">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.css" />
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#61b482">
+    <meta name="msapplication-TileColor" content="#61b482">
+    <meta name="theme-color" content="#ffffff">
 
-    <!-- Favicon and Touch Icons  -->
-    <link rel="shortcut icon" href="/src/assets/images/logo/banwe_logo_green.png">
-    <link rel="apple-touch-icon-precomposed" href="/src/assets/images/logo/banwe_logo_green.png">
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Banwee - Organic African Products">
+    <meta name="description" content="Discover premium organic products from Africa. Ethically sourced, sustainably produced, and delivered to your doorstep.">
+    <meta name="keywords" content="organic, african, products, fair trade, sustainable, natural, shea butter, coffee, spices, superfoods, banwee">
+    <meta name="author" content="Banwee">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.banwee.com/">
+    <meta property="og:title" content="Banwee - Organic African Products">
+    <meta property="og:description" content="Discover premium organic products from Africa. Ethically sourced, sustainably produced, and delivered to your doorstep.">
+    <meta property="og:image" content="https://www.banwee.com/banwee-og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.banwee.com/">
+    <meta property="twitter:title" content="Banwee - Organic African Products">
+    <meta property="twitter:description" content="Discover premium organic products from Africa. Ethically sourced, sustainably produced, and delivered to your doorstep.">
+    <meta property="twitter:image" content="https://www.banwee.com/banwee-twitter-image.jpg">
+
+    <!-- Threads (Meta) -->
+    <meta property="og:site_name" content="Banwee">
+    <meta property="og:image:secure_url" content="https://www.banwee.com/banwee-og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Pinterest -->
+    <meta name="pinterest-rich-pin" content="true" />
+
+    <!-- Reddit -->
+    <meta property="og:site_name" content="Banwee" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Banwee - Organic African Products" />
+    <meta property="og:description" content="Discover premium organic products from Africa. Ethically sourced, sustainably produced, and delivered to your doorstep." />
+    <meta property="og:image" content="https://www.banwee.com/banwee-og-image.jpg" />
+    <meta property="og:url" content="https://www.banwee.com/" />
+
+    <!-- TikTok -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.banwee.com/" />
+    <meta property="og:title" content="Banwee - Organic African Products" />
+    <meta property="og:description" content="Discover premium organic products from Africa. Ethically sourced, sustainably produced, and delivered to your doorstep." />
+    <meta property="og:image" content="https://www.banwee.com/banwee-og-image.jpg" />
+
+    <!-- Schema.org / Google Rich Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Banwee",
+      "url": "https://www.banwee.com",
+      "logo": "https://www.banwee.com/banwe_logo_green.png",
+      "sameAs": [
+        "https://www.facebook.com/banwee",
+        "https://twitter.com/banwee",
+        "https://www.instagram.com/banwee"
+      ]
+    }
+    </script>
+
+    <!-- Additional Social Media (WhatsApp, Instagram, YouTube, Telegram, Snapchat, ChatGPT, Twitch) -->
+    <!-- Most of these platforms primarily use Open Graph tags (og:*) for sharing information. -->
+    <!-- The existing Open Graph tags cover these platforms effectively. -->
 
   </head>
   <body>
     <div id="root"></div>
-    <!-- Javascript -->
-    <script type="module" src="/src/assets/js/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- PhotoSwipe -->
-    
-    <!-- PhotoSwipe Lightbox UMD -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/umd/photoswipe-lightbox.umd.min.js"></script>
-
-    <!-- PhotoSwipe UMD -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/umd/photoswipe.umd.min.js"></script>
-    
-    
-    <!-- <script type="module" src="/src/assets/js/bootstrap.min.js"></script> -->
-    <!-- <script type="module" src="/src/assets/js/bootstrap-select.min.js"></script> -->
-    <!-- <script type="module" src="/src/assets/js/zoom.js"></script> -->
-    <script type="module" src="/src/assets/js/adminzoom.js"></script>
-    <script type="module" src="/src/assets/js/swiper-bundle.min.js"></script>
-    <!-- <script type="module" src="/src/assets/js/carousel.js"></script> -->
-    <script type="module" src="/src/assets/js/lazysize.min.js"></script>
-    <script type="module" src="/src/assets/js/count-down.js"></script>
-    <!-- <script type="module" src="/src/assets/js/wow.min.js"></script> -->
-    <script type="module" src="/src/assets/js/multiple-modal.js"></script>
-    <!-- <script type="module" src="/src/assets/js/raphael.min.js"></script> -->
-    <!-- <script type="module" src="/src/assets/js/morris.min.js"></script> -->
-    
-    <!-- <script type="module" src="/src/assets/js/morris.js"></script> -->
-    <!-- <script type="module" src="/src/assets/js/apexcharts/apexcharts.js"></script> -->
-    <script type="module" src="/src/assets/js/jvectormap.min.js"></script>
-    <script type="module" src="/src/assets/js/jvectormap-us-lcc.js"></script>
-    
-    <script type="module" src="/src/assets/js/switcher.js"></script>
-    
-    <script type="module" defer src="/src/assets/js/theme-settings.js"></script>
-    <script type="module" src="/src/assets/js/main.js"></script>
-
-    <!-- React / Vite or Main Entry Point -->
-    <script type="module" src="/src/main.jsx"></script>
-
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

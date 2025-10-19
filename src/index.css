@@ -1,68 +1,187 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* PLEASE NOTE: THESE TAILWIND IMPORTS SHOULD NEVER BE DELETED */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+/* DO NOT DELETE THESE TAILWIND IMPORTS, OTHERWISE THE STYLING WILL NOT RENDER AT ALL */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
+@layer base {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    /* Brand Colors */
+    --color-main: #253d4e;
+    --color-primary: #61b482;
+    --color-primary-light: #8fd4a5;
+    --color-primary-dark: #4c9066;
+    --color-secondary: #f2c94c;
+    --color-secondary-light: #f5d563;
+    --color-secondary-dark: #e6b843;
+    
+    /* Semantic Colors */
+    --color-success: #10b981;
+    --color-success-light: #34d399;
+    --color-success-dark: #059669;
+    --color-warning: #f59e0b;
+    --color-warning-light: #fbbf24;
+    --color-warning-dark: #d97706;
+    --color-error: #ef4444;
+    --color-error-light: #f87171;
+    --color-error-dark: #dc2626;
+    --color-info: #3b82f6;
+    --color-info-light: #60a5fa;
+    --color-info-dark: #2563eb;
+    
+    /* Surface Colors */
+    --color-background: #f8fafc;
+    --color-surface: #ffffff;
+    --color-surface-elevated: #ffffff;
+    --color-surface-hover: #f1f5f9;
+    --color-surface-active: #e2e8f0;
+    --color-surface-disabled: #f8fafc;
+    
+    /* Text Colors */
+    --color-copy: #1e293b;
+    --color-copy-light: #64748b;
+    --color-copy-lighter: #94a3b8;
+    --color-copy-muted: #cbd5e1;
+    --color-copy-inverse: #ffffff;
+    
+    /* Border Colors */
+    --color-border: #e2e8f0;
+    --color-border-light: #f1f5f9;
+    --color-border-strong: #cbd5e1;
+    --color-border-focus: var(--color-primary);
+    
+    /* Interactive States */
+    --color-hover: rgba(97, 180, 130, 0.1);
+    --color-active: rgba(97, 180, 130, 0.2);
+    --color-focus: rgba(97, 180, 130, 0.3);
+    --color-disabled: #f1f5f9;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
-  a:hover {
-    color: #747bff;
+
+  .dark {
+    /* Brand Colors - Adjusted for dark mode */
+    --color-main: #ffffff;
+    --color-primary: #61b482;
+    --color-primary-light: #8fd4a5;
+    --color-primary-dark: #4c9066;
+    --color-secondary: #f2c94c;
+    --color-secondary-light: #f5d563;
+    --color-secondary-dark: #e6b843;
+    
+    /* Semantic Colors - Dark mode variants */
+    --color-success: #10b981;
+    --color-success-light: #34d399;
+    --color-success-dark: #059669;
+    --color-warning: #f59e0b;
+    --color-warning-light: #fbbf24;
+    --color-warning-dark: #d97706;
+    --color-error: #ef4444;
+    --color-error-light: #f87171;
+    --color-error-dark: #dc2626;
+    --color-info: #3b82f6;
+    --color-info-light: #60a5fa;
+    --color-info-dark: #2563eb;
+    
+    /* Surface Colors - Dark mode */
+    --color-background: #0f172a;
+    --color-surface: #1e293b;
+    --color-surface-elevated: #334155;
+    --color-surface-hover: #475569;
+    --color-surface-active: #64748b;
+    --color-surface-disabled: #1e293b;
+    
+    /* Text Colors - Dark mode */
+    --color-copy: #f8fafc;
+    --color-copy-light: #cbd5e1;
+    --color-copy-lighter: #94a3b8;
+    --color-copy-muted: #64748b;
+    --color-copy-inverse: #1e293b;
+    
+    /* Border Colors - Dark mode */
+    --color-border: #334155;
+    --color-border-light: #475569;
+    --color-border-strong: #64748b;
+    --color-border-focus: var(--color-primary);
+    
+    /* Interactive States - Dark mode */
+    --color-hover: rgba(97, 180, 130, 0.15);
+    --color-active: rgba(97, 180, 130, 0.25);
+    --color-focus: rgba(97, 180, 130, 0.4);
+    --color-disabled: #334155;
+    
+    /* Shadows - Dark mode */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.3);
   }
-  button {
-    background-color: #f9f9f9;
+  
+  /* Base styles for consistent typography and spacing */
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Montserrat', 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--color-copy);
+    background-color: var(--color-background);
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+  
+  /* Focus styles for accessibility */
+  *:focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  
+  /* Remove focus outline for mouse users */
+  .js-focus-visible *:focus:not(.focus-visible) {
+    outline: none;
+  }
+
+  /* Placeholder styling */
+  ::placeholder {
+    color: var(--color-copy-muted);
+  }
+
+  /* Custom Scrollbar Styling */
+  /* For Webkit browsers (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 8px; /* width of the scrollbar */
+    height: 8px; /* height of horizontal scrollbar */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface-elevated); /* color of the tracking area */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary); /* color of the scroll thumb */
+    border-radius: 10px; /* roundness of the scroll thumb */
+    border: 2px solid var(--color-surface-elevated); /* creates padding around scroll thumb */
+  }
+
+  /* On hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-dark);
+  }
+
+  /* For Firefox */
+  /* Note: Firefox has limited styling options compared to Webkit */
+  /* You can set the color and width, but not much else */
+  html {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: var(--color-primary) var(--color-surface-elevated); /* thumb and track color */
   }
 }
