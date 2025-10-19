@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ChevronRightIcon, CalendarIcon, TagIcon, FacebookIcon, TwitterIcon, LinkedinIcon } from 'lucide-react';
 import { BlogAPI } from '../apis';
 import { BlogPost as APIBlogPost } from '../apis/types';
-import { useApi } from '../../hooks/useApi';
+import { useApi } from '../hooks/useApi';
 import ErrorMessage from '../components/common/ErrorMessage';
 
 export const BlogPost: React.FC = () => {
