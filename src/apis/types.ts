@@ -32,7 +32,17 @@ export interface BaseEntity {
 }
 
 // User types
-export type UserRole = 'Guest' | 'Customer' | 'Supplier' | 'Admin' | 'Moderator' | 'Support' | 'Manager' | 'SuperAdmin' | 'GodAdmin';
+export enum UserRole {
+  Guest = 'Guest',
+  Customer = 'Customer',
+  Supplier = 'Supplier',
+  Admin = 'Admin',
+  Moderator = 'Moderator',
+  Support = 'Support',
+  Manager = 'Manager',
+  SuperAdmin = 'SuperAdmin',
+  GodAdmin = 'GodAdmin',
+}
 export type UserGender = 'Male' | 'Female';
 
 export interface User extends BaseEntity {
@@ -464,4 +474,31 @@ export interface APIErrorResponse {
   details?: ValidationError[] | Record<string, unknown>;
   timestamp: string;
   path: string;
+}
+
+export interface Wishlist extends BaseEntity {
+  name: string;
+  user_id: string;
+  is_default: boolean;
+  items: WishlistItem[];
+}
+
+export interface WishlistItem extends BaseEntity {
+  wishlist_id: string;
+  product_id: string;
+  variant_id?: string;
+  quantity: number;
+  product: Product;
+  added_at: string; // Changed from created_at
+}
+
+export interface WishlistCreate {
+  name?: string;
+  is_default?: boolean;
+}
+
+export interface WishlistItemCreate {
+  product_id: string;
+  variant_id?: string;
+  quantity?: number;
 }

@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCartIcon, HeartIcon, EyeIcon, CheckIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { motion } from 'framer-motion';
 import { useCart } from '../../contexts/CartContext';
 import { useWishlist } from '../../contexts/WishlistContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { SkeletonCard } from '../ui/SkeletonCard';
 import { QRCodeDisplay } from './QRCodeDisplay';
 import { BarcodeDisplay } from './BarcodeDisplay';
@@ -69,22 +69,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const { addItem: addToCart, removeItem: removeFromCart, cart } = useCart();
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist, defaultWishlist } = useWishlist();
-
-  const isInCart = cart?.items.some(item => item.variant.id === displayVariant?.id) || false;
-
-  // Show skeleton if loading or no product data
-  if (isLoading || !product) {
-    return (
-      <SkeletonCard
-        variant="product"
-        className={className}
-        animation={animation}
-      />
-    );
-  }
+  const { isAuthenticated, setRedirectPath } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Get the display variant (selected variant or first variant or fallback to product)
   const displayVariant = selectedVariant || (product.variants && product.variants[0]);
+
+  const isInCart = cart?.items.some(item => item.variant.id === displayVariant?.id) || false;
 
   // Get the primary image from variant or fallback to product image
   const getPrimaryImage = () => {
@@ -112,45 +104,120 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const displayImage = getPrimaryImage();
   const { price, discountPrice } = getDisplayPrice();
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!displayVariant) {
-      toast.error("Cannot add to cart: product variant not found.");
-      return;
-    }
+      const handleAddToCart = async (e: React.MouseEvent) => {
 
-    if (isInCart) {
-      const cartItem = cart?.items.find(item => item.variant.id === displayVariant.id);
-      if (cartItem) {
-        await removeFromCart(cartItem.id);
-        toast('Removed from cart');
-      }
-    } else {
-      await addToCart({
-        variant_id: displayVariant.id,
-        quantity: 1,
-      });
-      toast.success('Added to cart!');
-    }
-  };
+        e.preventDefault();
 
-  const handleAddToWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const isProductInWishlist = isInWishlist(product.id, displayVariant?.id);
+        e.stopPropagation();
 
-    if (isProductInWishlist) {
-      // To remove, we need the actual wishlist item ID, which we don't have here.
-      // For simplicity, we'll just call removeItem with product.id and let the context handle finding the item.
-      // A more robust solution would involve passing the wishlist item ID from the backend.
-      removeFromWishlist(defaultWishlist?.id || '', product.id); // Assuming default wishlist for now
-      toast('Removed from wishlist');
-    } else {
-      addToWishlist(product.id, displayVariant?.id);
-      toast.success('Added to wishlist!');
-    }
-  };
+    
+
+        if (!product) {
+
+          toast.error("Product data is not available.");
+
+          return;
+
+        }
+
+
+        const variantToAdd = displayVariant || (product.variants && product.variants.length > 0 ? product.variants[0] : undefined);
+
+    
+
+        if (!variantToAdd) {
+
+          toast.error("This product has no variants available.");
+
+          return;
+
+        }
+
+    
+
+        if (isInCart) {
+
+          toast.success('This item is already in your cart.');
+
+        } else {
+
+                    const success = await addToCart({
+
+                      product_id: product.id,
+
+                      variant_id: variantToAdd.id,
+
+                      quantity: 1,
+
+                    });
+
+                    if (!success) {
+
+                      setRedirectPath(location.pathname);
+
+                      navigate('/login');
+
+                    }
+
+                  }
+
+                };
+
+    
+
+      const handleAddToWishlist = async (e: React.MouseEvent) => {
+
+        e.preventDefault();
+
+        e.stopPropagation();
+
+    
+
+        if (!product) {
+
+          toast.error("Product data is not available.");
+
+          return;
+
+        }
+
+
+        const variantToAdd = displayVariant || (product.variants && product.variants.length > 0 ? product.variants[0] : undefined);
+
+
+        if (!variantToAdd) {
+
+          toast.error("This product has no variants available.");
+
+          return;
+
+        }
+
+    
+
+        const isProductInWishlist = isInWishlist(product.id, displayVariant?.id);
+
+    
+
+        if (isProductInWishlist) {
+
+          toast.success('This item is already in your wishlist.');
+
+        } else {
+
+          const success = await addToWishlist(product.id, displayVariant?.id);
+
+          if (!success) {
+
+            setRedirectPath(location.pathname);
+
+            navigate('/login');
+
+          }
+
+        }
+
+      };
 
   return (
     <motion.div
@@ -168,7 +235,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             alt={displayVariant ? `${product.name} - ${displayVariant.name}` : product.name}
             className={cn(
               'w-full object-cover group-hover:scale-105 transition-transform duration-300',
-              viewMode === 'grid' && 'h-48',
+              viewMode === 'grid' && 'h-40 sm:h-48', // Adjusted height
               viewMode === 'list' && 'h-40 md:h-32 rounded-md'
             )}
           />
@@ -194,10 +261,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             Out of Stock
           </span>
         )}
-        {/* Quick action buttons */}
+        {/* Quick action buttons - hidden on mobile for grid view */}
         <div
           className={cn(
             'absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-20',
+            viewMode === 'grid' && 'hidden sm:flex', // Hide on mobile
             viewMode === 'list' && 'hidden md:flex'
           )}>
           <div className="flex space-x-2">
@@ -228,10 +296,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         </div>
       </div>
-      <div className={cn('p-4', viewMode === 'list' && 'flex-grow')}>
+      <div className={cn('p-3 sm:p-4', viewMode === 'list' && 'flex-grow')}>
         <span className="text-xs text-copy-lighter">{product.category}</span>
         <Link to={`/product/${product.id}`}>
-          <h3 className="font-medium text-copy hover:text-primary transition-colors mb-1 line-clamp-2 h-12">
+          <h3 className="font-medium text-sm sm:text-base text-copy hover:text-primary transition-colors mb-1 line-clamp-2 h-10 sm:h-12">
             {product.name}
           </h3>
         </Link>
@@ -246,11 +314,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div>
             {discountPrice ? (
               <div className="flex items-center">
-                <span className="font-bold text-primary mr-2">${discountPrice.toFixed(2)}</span>
+                <span className="font-bold text-primary mr-2 text-sm sm:text-base">${discountPrice.toFixed(2)}</span>
                 <span className="text-xs text-copy-lighter line-through">${price.toFixed(2)}</span>
               </div>
             ) : (
-              <span className="font-bold text-primary">${price.toFixed(2)}</span>
+              <span className="font-bold text-primary text-sm sm:text-base">${price.toFixed(2)}</span>
             )}
             {displayVariant && (
               <div className="text-xs text-copy-lighter mt-1">
@@ -258,10 +326,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               </div>
             )}
           </div>
+          {/* Show simple add to cart button on mobile for grid view */}
           <button
             onClick={handleAddToCart}
             className={cn(
-              'text-copy-lighter hover:text-white transition-colors bg-primary text-white px-4 py-2 rounded-md flex items-center',
+              'sm:hidden text-copy-lighter hover:text-white transition-colors bg-primary text-white px-3 py-1.5 rounded-md flex items-center',
+              viewMode === 'list' && 'hidden' // Hide in list view on mobile
+            )}
+            aria-label={isInCart ? "Remove from cart" : "Add to cart"}>
+            {isInCart ? <CheckIcon size={16} /> : <ShoppingCartIcon size={16} />}
+          </button>
+          <button
+            onClick={handleAddToCart}
+            className={cn(
+              'hidden sm:flex text-copy-lighter hover:text-white transition-colors bg-primary text-white px-4 py-2 rounded-md items-center',
               viewMode === 'list' && 'md:order-1 md:p-2 md:rounded-md md:bg-primary md:text-white md:hover:bg-primary-dark'
             )}
             aria-label={isInCart ? "Remove from cart" : "Add to cart"}>

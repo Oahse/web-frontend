@@ -59,7 +59,7 @@ export interface InteractiveChartProps {
   showLegend?: boolean;
   enableDrillDown?: boolean;
   drillDownData?: DrillDownData;
-  onDataPointClick?: (dataPoint: { dataIndex: number; datasetIndex: number; label?: string; value: number }, index: number) => void;
+  onDataPointClick?: (dataPoint: { dataIndex: number; datasetIndex: number; label?: string; value: number | { x: string | Date; y: number } }, index: number) => void;
   onExport?: (format: 'png' | 'pdf' | 'csv') => void;
   refreshable?: boolean;
   onRefresh?: () => void;
@@ -145,7 +145,8 @@ export const InteractiveChart: React.FC<InteractiveChartProps> = ({
           color: 'rgba(0, 0, 0, 0.1)',
         },
         ticks: {
-        color: 'var(--color-copy-light)',
+          color: 'var(--color-copy-light)',
+        },
       },
       y: {
         display: true,
@@ -228,7 +229,7 @@ export const InteractiveChart: React.FC<InteractiveChartProps> = ({
     const commonProps = {
       ref: chartRef,
       data: currentData,
-      options: chartOptions,
+      options: chartOptions as any,
       height: height
     };
 

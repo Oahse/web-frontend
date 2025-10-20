@@ -355,14 +355,14 @@ export const Header: React.FC<HeaderProps> = ({
           transition={{ type: 'spring', stiffness: 100 }}
           className="fixed bottom-0 left-0 right-0 bg-surface shadow-lg p-4 flex flex-col md:flex-row items-center justify-between z-50 text-copy"
         >
-          <p className="text-sm mb-2 md:mb-0">
+          <p className="text-sm text-center md:text-left mb-4 md:mb-0">
             We use cookies to ensure you get the best experience on our website. By continuing to use this site, you agree to our use of cookies.
             <Link to="/privacy" className="text-primary hover:underline ml-1">Learn more</Link>
           </p>
-          <div className="flex space-x-2">
+          <div className="flex flex-col w-full md:w-auto md:flex-row md:space-x-2">
             <button
               onClick={handleAcceptCookies}
-              className="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-primary-dark transition-colors"
+              className="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-primary-dark transition-colors mb-2 md:mb-0"
             >
               Accept
             </button>

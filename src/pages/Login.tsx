@@ -20,7 +20,7 @@ export const Login: React.FC<LoginProps> = ({ isInitialLoading = false }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { login, isAuthenticated, isAdmin, isSupplier } = useAuth();
+  const { login, isAuthenticated, isAdmin, isSupplier, redirectPath, setRedirectPath } = useAuth();
   const skeleton = useSkeleton(isInitialLoading, { showOnMount: false });
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,9 +40,11 @@ export const Login: React.FC<LoginProps> = ({ isInitialLoading = false }) => {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(getRedirectPath());
+      const path = redirectPath || getRedirectPath();
+      navigate(path);
+      setRedirectPath(null); // Clear redirect path after navigation
     }
-  }, [getRedirectPath, isAuthenticated, navigate]);
+  }, [getRedirectPath, isAuthenticated, navigate, redirectPath, setRedirectPath]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,9 +54,13 @@ export const Login: React.FC<LoginProps> = ({ isInitialLoading = false }) => {
     }
     try {
       setLoading(true);
-      await login(email, password);
+      const path = await login(email, password);
       toast.success('Login successful! Welcome back to Banwee Organics.');
-      // Navigate will happen automatically due to the useEffect
+      if (path) {
+        navigate(path);
+      } else {
+        navigate(getRedirectPath());
+      }
     } catch (error) {
       toast.error('Login failed. Please check your email and password.'); 
       setLoading(false);

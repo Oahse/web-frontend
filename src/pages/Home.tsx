@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRightIcon, TruckIcon, BadgeCheckIcon, ShieldIcon, HeadphonesIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRightIcon, TruckIcon, BadgeCheckIcon, ShieldIcon, HeadphonesIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { ProductCard } from '../components/product/ProductCard';
 import { CategoryCard } from '../components/category/CategoryCard';
 import { useCart } from '../contexts/CartContext';
@@ -116,7 +116,7 @@ const categories = [
   {
     id: 2,
     name: 'Legumes',
-    image: 'https://images.unsplash.com/photo-1515543904379-3d757abe62ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1547496614-54c9948c22a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
     count: 18,
     path: '/products?category=Legumes',
   },
@@ -241,7 +241,7 @@ const popularProducts = [
     discountPrice: 5.99,
     rating: 4.8,
     reviewCount: 76,
-    image: 'https://images.unsplash.com/photo-1515543904379-3d757abe62ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1547496614-54c9948c22a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
     category: 'Legumes',
     isNew: true,
     isFeatured: false,
@@ -342,7 +342,7 @@ const deals = [
     discountPercent: 20,
     rating: 4.8,
     reviewCount: 47,
-    image: 'https://images.unsplash.com/photo-1515543904379-3d757abe62ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1547496614-54c9948c22a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
     category: 'Legumes',
     endsIn: '1d 8h 15m',
   },
@@ -388,6 +388,15 @@ export const Home: React.FC = () => {
     });
   }, []);
 
+  const categoriesContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollCategories = (direction: 'left' | 'right') => {
+    if (categoriesContainerRef.current) {
+      const scrollAmount = direction === 'left' ? -300 : 300;
+      categoriesContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   // Simple carousel functionality
   const nextSlide = () => {
     setCurrentSlide((prev) => (heroSlides.length ? (prev + 1) % heroSlides.length : 0));
@@ -409,6 +418,7 @@ export const Home: React.FC = () => {
     category: string;
     isNew: boolean;
     isFeatured: boolean;
+    variants?: ProductVariant[]; // Add variants property
   } => ({
     id: String(product.id),
     name: product.name,
@@ -420,6 +430,7 @@ export const Home: React.FC = () => {
     category: product.category?.name || 'General',
     isNew: false,
     isFeatured: true,
+    variants: product.variants, // Include variants
   });
 
   // Helper function to convert API categories to demo format
@@ -440,7 +451,7 @@ export const Home: React.FC = () => {
       return 'https://images.unsplash.com/photo-1574323347407-f5e1c0cf4b7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80';
     }
     if (name.includes('legume') || name.includes('bean') || name.includes('pea')) {
-      return 'https://images.unsplash.com/photo-1515543904379-3d757abe62ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80';
+      return 'https://images.unsplash.com/photo-1547496614-54c9948c22a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80';
     }
     if (name.includes('fruit') || name.includes('vegetable') || name.includes('produce')) {
       return 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80';
@@ -507,53 +518,83 @@ export const Home: React.FC = () => {
 
   const filteredPopularProducts = getFilteredPopularProducts();
 
+  const handleDragEnd = (event: any, info: any) => {
+    const offset = info.offset.x;
+    const velocity = info.velocity.x;
+
+    if (offset > 100 || velocity > 500) {
+      prevSlide();
+    } else if (offset < -100 || velocity < -500) {
+      nextSlide();
+    }
+  };
+
   return (
     <div className="pb-16 md:pb-0 text-copy">
       {/* Hero Section */}
       <section className="relative">
-        <div className="relative h-[60vh] md:h-[70vh] w-full">
-          <div className="absolute inset-0 bg-black/40 z-10" aria-hidden />
-          <img
-            src={heroSlides[currentSlide]?.image}
-            alt={heroSlides[currentSlide]?.title || 'Hero image'}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="relative z-20 container mx-auto px-4 h-full flex items-center">
-            <div className="max-w-xl text-white">
-              <motion.span
-                className="inline-block px-4 py-1 bg-primary text-white rounded-full mb-4 text-sm font-medium"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}>
-                {heroSlides[currentSlide]?.subtitle}
-              </motion.span>
-              <motion.h1
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}>
-                {heroSlides[currentSlide]?.title}
-              </motion.h1>
-              <motion.p
-                className="text-lg mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}>
-                {heroSlides[currentSlide]?.description}
-              </motion.p>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 }}>
-                <Link
-                  to={heroSlides[currentSlide]?.buttonLink || '/products'}
-                  className="inline-flex items-center bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-md transition-colors">
-                  {heroSlides[currentSlide]?.buttonText}
-                  <ArrowRightIcon size={16} className="ml-2" />
-                </Link>
-              </motion.div>
-            </div>
-          </div>
+        <motion.div
+          className="relative h-[60vh] md:h-[70vh] w-full"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={handleDragEnd}
+        >
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={currentSlide}
+              className="absolute inset-0"
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+            >
+              <div className="absolute inset-0 bg-black/40 z-10" aria-hidden />
+              <img
+                src={heroSlides[currentSlide]?.image}
+                alt={heroSlides[currentSlide]?.title || 'Hero image'}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="relative z-20 container mx-auto px-4 h-full flex items-center">
+                <div className="max-w-xl text-white">
+                  <motion.span
+                    className="inline-block px-4 py-1 bg-primary text-white rounded-full mb-4 text-sm font-medium"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}>
+                    {heroSlides[currentSlide]?.subtitle}
+                  </motion.span>
+                  <motion.h1
+                    className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}>
+                    {heroSlides[currentSlide]?.title}
+                  </motion.h1>
+                  <motion.p
+                    className="text-lg mb-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}>
+                    {heroSlides[currentSlide]?.description}
+                  </motion.p>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}>
+                    <Link
+                      to={heroSlides[currentSlide]?.buttonLink || '/products'}
+                      className="inline-flex items-center bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-md transition-colors">
+                      {heroSlides[currentSlide]?.buttonText}
+                      <ArrowRightIcon size={16} className="ml-2" />
+                    </Link>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
           {/* Navigation buttons */}
           <button
             type="button"
@@ -580,7 +621,7 @@ export const Home: React.FC = () => {
                 className={`w-3 h-3 rounded-full mx-1 ${currentSlide === index ? 'bg-white' : 'bg-white/50'}`} />
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Features */}
@@ -627,13 +668,21 @@ export const Home: React.FC = () => {
               <span className="text-primary font-medium">Explore our product range</span>
               <h2 className="text-2xl md:text-3xl font-bold text-main mt-1">Shop Categories</h2>
             </div>
-            <Link to="/products" className="inline-flex items-center text-primary hover:underline mt-4 md:mt-0">
-              All Categories
-              <ArrowRightIcon size={16} className="ml-2" />
-            </Link>
+            <div className="flex items-center space-x-2 mt-4 md:mt-0">
+              <button onClick={() => scrollCategories('left')} className="p-2 rounded-full bg-surface hover:bg-surface-hover">
+                <ChevronLeftIcon size={20} />
+              </button>
+              <button onClick={() => scrollCategories('right')} className="p-2 rounded-full bg-surface hover:bg-surface-hover">
+                <ChevronRightIcon size={20} />
+              </button>
+              <Link to="/products" className="inline-flex items-center text-primary hover:underline">
+                All Categories
+                <ArrowRightIcon size={16} className="ml-2" />
+              </Link>
+            </div>
           </div>
 
-          <div className="flex overflow-x-auto space-x-4 pb-4 scrollbar-hide">
+          <div ref={categoriesContainerRef} className="flex overflow-x-auto space-x-4 pb-4 scrollbar-hide">
             {categoriesLoading ? (
               <p>Loading categories...</p>
             ) : categoriesError ? (

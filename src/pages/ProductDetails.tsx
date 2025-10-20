@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   ChevronRightIcon,
   HeartIcon,
@@ -27,6 +27,7 @@ import { ProductsAPI, ReviewsAPI } from '../apis';
 import { Product, Review as APIReview } from '../apis/types';
 import ErrorMessage from '../components/common/ErrorMessage';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '../contexts/AuthContext';
 
 // Transform API product data
 const transformProduct = (product: Product, averageRating: number, reviewCount: number) => ({
@@ -71,6 +72,8 @@ const transformProduct = (product: Product, averageRating: number, reviewCount: 
 
 export const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedVariant, setSelectedVariant] = useState<{
     id: string;
     name: string;
@@ -94,6 +97,7 @@ export const ProductDetails: React.FC = () => {
 
   const { addItem: addToCart, removeItem: removeFromCart, updateQuantity, cart } = useCart();
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist, defaultWishlist } = useWishlist();
+  const { isAuthenticated, setRedirectPath } = useAuth();
 
   // API calls
   const {
@@ -432,8 +436,11 @@ export const ProductDetails: React.FC = () => {
                   <button
                     onClick={async () => {
                       if (!selectedVariant) return;
-                      await addToCart({ variant_id: selectedVariant.id, quantity: quantity });
-                      toast.success('Added to cart!');
+                      const success = await addToCart({ product_id: product.id, variant_id: selectedVariant.id, quantity: quantity });
+                      if (!success) {
+                        setRedirectPath(location.pathname);
+                        navigate('/login');
+                      }
                     }}
                     className="w-full bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center"
                   >
@@ -445,7 +452,7 @@ export const ProductDetails: React.FC = () => {
 
               {/* Wishlist Button */}
               <button
-                onClick={() => {
+                onClick={async () => {
                   if (!defaultWishlist) {
                     toast.error("No default wishlist found.");
                     return;
@@ -455,12 +462,18 @@ export const ProductDetails: React.FC = () => {
                       item => item.product_id === product.id && (selectedVariant ? item.variant_id === selectedVariant.id : true)
                     );
                     if (wishlistItem) {
-                      removeFromWishlist(defaultWishlist.id, wishlistItem.id);
-                      toast.success('Removed from wishlist!');
+                      const success = await removeFromWishlist(defaultWishlist.id, wishlistItem.id);
+                      if (!success) {
+                        setRedirectPath(location.pathname);
+                        navigate('/login');
+                      }
                     }
                   } else {
-                    addToWishlist(product.id, selectedVariant?.id, quantity);
-                    toast.success('Added to wishlist!');
+                    const success = await addToWishlist(product.id, selectedVariant?.id, quantity);
+                    if (!success) {
+                      setRedirectPath(location.pathname);
+                      navigate('/login');
+                    }
                   }
                 }}
                 className={`px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center min-w-[60px] ${isInWishlistState

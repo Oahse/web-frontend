@@ -1,47 +1,21 @@
 import React, { useEffect, useState, createContext, useContext, useCallback } from 'react';
-import axios from 'axios';
 import { useAuth } from './AuthContext';
 import { toast } from 'react-hot-toast';
-
-export interface WishlistItem {
-  id: string;
-  product_id: string;
-  variant_id?: string;
-  quantity: number;
-  added_at: string;
-  product?: {
-    id: string;
-    name: string;
-    variants: Array<{
-      images: Array<{ url: string }>;
-    }>;
-  };
-  variant?: {
-    id: string;
-    name: string;
-    base_price: number;
-    sale_price?: number;
-  };
-}
-
-export interface Wishlist {
-  id: string;
-  user_id: string;
-  name?: string;
-  is_default: boolean;
-  items: WishlistItem[];
-}
+import WishlistAPI from '../apis/wishlists';
+import { Wishlist, WishlistItem } from '../apis/types';
 
 interface WishlistContextType {
   wishlists: Wishlist[];
-  defaultWishlist: Wishlist | undefined;
-  fetchWishlists: () => Promise<void>;
-  addItem: (productId: string, variantId?: string, quantity?: number) => Promise<void>;
-  removeItem: (wishlistId: string, itemId: string) => Promise<void>;
+  defaultWishlist?: Wishlist;
+  fetchWishlists: () => void;
+  addItem: (productId: string, variantId?: string, quantity?: number) => Promise<boolean>;
+  removeItem: (wishlistId: string, itemId: string) => Promise<boolean>;
   isInWishlist: (productId: string, variantId?: string) => boolean;
-  clearWishlist: () => Promise<void>;
+  clearWishlist: () => Promise<boolean>;
 }
+
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
+
 export const useWishlist = () => {
   const context = useContext(WishlistContext);
   if (!context) {
@@ -49,10 +23,11 @@ export const useWishlist = () => {
   }
   return context;
 };
-export const WishlistProvider: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
+
+export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, user } = useAuth();
   const [wishlists, setWishlists] = useState<Wishlist[]>([]);
   const [defaultWishlist, setDefaultWishlist] = useState<Wishlist | undefined>(undefined);
-  const { isAuthenticated, user } = useAuth();
 
   const fetchWishlists = useCallback(async () => {
     if (!isAuthenticated || !user?.id) {
@@ -61,13 +36,15 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode; }> = ({ chi
       return;
     }
     try {
-      const response = await axios.get<Wishlist[]>(`/api/v1/users/${user.id}/wishlists`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      setWishlists(response.data);
-      setDefaultWishlist(response.data.find(wl => wl.is_default) || response.data[0]);
+      console.log('WishlistContext: Fetching wishlists with WishlistAPI.getWishlists');
+      const response = await WishlistAPI.getWishlists(user.id);
+      if (response.success) {
+        setWishlists(response.data);
+        setDefaultWishlist(response.data.find(wl => wl.is_default) || response.data[0]);
+      } else {
+        console.error("Failed to fetch wishlists:", response.message);
+        toast.error(response.message || "Failed to load wishlists.");
+      }
     } catch (error) {
       console.error("Failed to fetch wishlists:", error);
       toast.error("Failed to load wishlists.");
@@ -78,70 +55,82 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode; }> = ({ chi
     fetchWishlists();
   }, [fetchWishlists]);
 
-  const addItem = async (productId: string, variantId?: string, quantity: number = 1) => {
+  const addItem = async (productId: string, variantId?: string, quantity: number = 1): Promise<boolean> => {
     if (!isAuthenticated || !user?.id) {
       toast.error("Please log in to add items to wishlist.");
-      return;
+      return false;
     }
-    if (!defaultWishlist) {
+    let currentDefaultWishlist = defaultWishlist;
+    if (!currentDefaultWishlist) {
       // Create a default wishlist if none exists
       try {
-        const response = await axios.post<Wishlist>(`/api/v1/users/${user.id}/wishlists`, {
+        const response = await WishlistAPI.createWishlist(user.id, {
           name: "My Wishlist",
           is_default: true,
-        }, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
         });
-        setDefaultWishlist(response.data);
-        wishlists.push(response.data);
-        toast.success("Default wishlist created!");
+        if (response.success) {
+          currentDefaultWishlist = response.data;
+          setDefaultWishlist(response.data);
+          setWishlists(prev => [...prev, response.data]);
+          toast.success("Default wishlist created!");
+        } else {
+          console.error("Failed to create default wishlist:", response.message);
+          toast.error(response.message || "Failed to create default wishlist.");
+          return false;
+        }
       } catch (error) {
         console.error("Failed to create default wishlist:", error);
         toast.error("Failed to create default wishlist.");
-        return;
+        return false;
       }
     }
 
     try {
-      const response = await axios.post<WishlistItem>(
-        `/api/v1/users/${user.id}/wishlists/${defaultWishlist?.id}/items`,
+      const response = await WishlistAPI.addItemToWishlist(
+        user.id,
+        currentDefaultWishlist!.id,
         {
           product_id: productId,
           variant_id: variantId,
           quantity: quantity,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
         }
       );
-      toast.success("Item added to wishlist!");
-      fetchWishlists(); // Refresh wishlists
+      if (response.success) {
+        toast.success("Item added to wishlist!");
+        fetchWishlists(); // Refresh wishlists
+        return true;
+      } else {
+        console.error("Failed to add item to wishlist:", response.message);
+        toast.error(response.message || "Failed to add item to wishlist.");
+        return false;
+      }
     } catch (error) {
       console.error("Failed to add item to wishlist:", error);
       toast.error("Failed to add item to wishlist.");
+      return false;
     }
   };
 
-  const removeItem = async (wishlistId: string, itemId: string) => {
+  const removeItem = async (wishlistId: string, itemId: string): Promise<boolean> => {
     if (!isAuthenticated || !user?.id) {
       toast.error("Please log in to remove items from wishlist.");
-      return;
+      return false;
     }
     try {
-      await axios.delete(`/api/v1/users/${user.id}/wishlists/${wishlistId}/items/${itemId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      toast.success("Item removed from wishlist!");
-      fetchWishlists(); // Refresh wishlists
+      const response = await WishlistAPI.removeItemFromWishlist(user.id, wishlistId, itemId);
+      if (response.success) {
+        toast.success("Item removed from wishlist!");
+        fetchWishlists(); // Refresh wishlists
+        return true;
+      } else {
+        console.error("Failed to remove item from wishlist:", response.message);
+        toast.error(response.message || "Failed to remove item from wishlist.");
+        return false;
+      }
     } catch (error) {
       console.error("Failed to remove item from wishlist:", error);
       toast.error("Failed to remove item from wishlist.");
+      return false;
     }
   };
 
@@ -152,25 +141,27 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode; }> = ({ chi
     );
   };
 
-  const clearWishlist = async () => {
+  const clearWishlist = async (): Promise<boolean> => {
     if (!isAuthenticated || !user?.id || !defaultWishlist) {
       toast.error("Please log in to clear wishlist.");
-      return;
+      return false;
     }
     try {
-      // Remove all items from the default wishlist
-      await Promise.all(defaultWishlist.items.map(item =>
-        axios.delete(`/api/v1/users/${user.id}/wishlists/${defaultWishlist.id}/items/${item.id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        })
-      ));
-      toast.success("Wishlist cleared!");
-      fetchWishlists(); // Refresh wishlists
+      const itemIds = defaultWishlist.items.map(item => item.id);
+      const response = await WishlistAPI.clearWishlist(user.id, defaultWishlist.id, itemIds);
+      if (response.success) {
+        toast.success("Wishlist cleared!");
+        fetchWishlists(); // Refresh wishlists
+        return true;
+      } else {
+        console.error("Failed to clear wishlist:", response.message);
+        toast.error(response.message || "Failed to clear wishlist.");
+        return false;
+      }
     } catch (error) {
       console.error("Failed to clear wishlist:", error);
       toast.error("Failed to clear wishlist.");
+      return false;
     }
   };
 
@@ -189,4 +180,4 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode; }> = ({ chi
       {children}
     </WishlistContext.Provider>
   );
-};
+}

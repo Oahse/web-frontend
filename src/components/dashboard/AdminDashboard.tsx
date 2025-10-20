@@ -230,7 +230,8 @@ export const AdminDashboard: React.FC = () => {
       fill: true,
       tension: 0.4
     }]
-  };
+          }
+        },
         layout: { x: 0, y: 3, w: 6, h: 4 }
       },
       {

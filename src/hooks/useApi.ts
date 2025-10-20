@@ -91,7 +91,7 @@ export const useApi = <T = unknown>(options: UseApiOptions<T> = {}) => {
 
   const reset = useCallback(() => {
     setState({
-      data: execute ? state.data : null,
+      data: null,
       loading: false,
       error: null,
     });
@@ -289,7 +289,6 @@ export const useMutation = <TData = unknown, TVariables = unknown>(
       error: null,
     });
   }, []);
-
   return {
     ...state,
     mutate,

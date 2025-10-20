@@ -69,11 +69,11 @@ export const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
             </style>
           </head>
           <body>
-            <div class="qr-container">
+            <div className="qr-container">
               <h2>${variant.product_name || 'Product'}</h2>
               <h3>${variant.name}</h3>
               <img src="data:image/png;base64,${qrCode}" alt="QR Code" />
-              <div class="qr-info">
+              <div className="qr-info">
                 <p><strong>SKU:</strong> ${variant.sku}</p>
                 <p><strong>Variant ID:</strong> ${variant.id}</p>
               </div>

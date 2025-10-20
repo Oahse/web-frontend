@@ -23,13 +23,14 @@ interface User {
       telegram: boolean;
     };
   };
+  addresses?: Address[]; // Add addresses
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<string | undefined>;
   register: (name: string, email: string, password: string, role?: UserRole) => Promise<void>;
   logout: () => void;
   verifyEmail: (code: string) => Promise<void>;
@@ -37,6 +38,8 @@ interface AuthContextType {
   updateUserPreferences: (preferences: Partial<User['preferences']>) => Promise<void>;
   isAdmin: boolean;
   isSupplier: boolean;
+  redirectPath: string | null;
+  setRedirectPath: (path: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,6 +58,7 @@ export const AuthProvider: React.FC<{
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [redirectPath, setRedirectPath] = useState<string | null>(null);
   
   // Transform API user to local user format
   const transformUser = (apiUser: APIUser): User => ({
@@ -73,7 +77,8 @@ export const AuthProvider: React.FC<{
         whatsapp: false,
         telegram: false
       }
-    }
+    },
+    addresses: apiUser.addresses, // Map addresses
   });
 
   useEffect(() => {
@@ -81,6 +86,7 @@ export const AuthProvider: React.FC<{
     const checkAuth = async () => {
       if (TokenManager.isAuthenticated()) {
         try {
+          console.log('AuthContext: Checking authentication with AuthAPI.getProfile()');
           const response = await AuthAPI.getProfile();
           const transformedUser = transformUser(response.data);
           setUser(transformedUser);
@@ -98,7 +104,7 @@ export const AuthProvider: React.FC<{
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<string | undefined> => {
     setIsLoading(true);
     try {
       const response = await AuthAPI.login({ email, password });
@@ -108,6 +114,9 @@ export const AuthProvider: React.FC<{
       setIsAuthenticated(true);
       
       toast.success('Login successful!');
+      const path = redirectPath || undefined;
+      setRedirectPath(null);
+      return path;
     } catch (error: any) {
       toast.error(error.message || 'Login failed');
       throw error;
@@ -213,6 +222,8 @@ export const AuthProvider: React.FC<{
     updateUserPreferences,
     isAdmin,
     isSupplier,
+    redirectPath,
+    setRedirectPath,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

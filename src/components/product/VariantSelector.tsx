@@ -320,7 +320,7 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
                 ${getVariantPrice(selectedVariant).toFixed(2)}
               </div>
               {selectedVariant.sale_price && (
-          <div class="text-sm text-copy-light line-through">$137.02</div>
+          <div className="text-sm text-copy-light line-through">$137.02</div>
               )}
             </div>
           )}

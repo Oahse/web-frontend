@@ -21,10 +21,10 @@ export const Wishlist: React.FC = () => {
     addToCart({
       id: item.product_id,
       name: item.product?.name || "Product",
-      price: item.variant?.sale_price || item.variant?.base_price || 0,
+      price: item.product.variants[0]?.sale_price || item.product.variants[0]?.base_price || 0,
       image: item.product?.variants?.[0]?.images?.[0]?.url || "",
       quantity: item.quantity,
-      variant: item.variant?.name,
+      variant: item.product.variants[0]?.name,
     });
     toast.success("Item added to cart!");
     // Optionally remove from wishlist after adding to cart
@@ -79,12 +79,12 @@ export const Wishlist: React.FC = () => {
                   {item.product?.name}
                 </h2>
               </Link>
-              {item.variant && (
-                <p className="text-sm text-copy-light mb-2">Variant: {item.variant.name}</p>
+              {item.product.variants[0] && (
+                <p className="text-sm text-copy-light mb-2">Variant: {item.product.variants[0].name}</p>
               )}
               <div className="flex items-center justify-between mt-auto">
                 <span className="text-xl font-bold text-primary">
-                  ${(item.variant?.sale_price || item.variant?.base_price || 0).toFixed(2)}
+                  ${(item.product.variants[0]?.sale_price || item.product.variants[0]?.base_price || 0).toFixed(2)}
                 </span>
                 <button
                   onClick={() => handleAddToCart(item)}

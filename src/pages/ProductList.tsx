@@ -55,7 +55,7 @@ export const ProductList: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     currentCategoryParam ? currentCategoryParam.split(',') : []
   );
-  const searchQuery = searchParams.get('q');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   const [sortOption, setSortOption] = useState('created_at:desc');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [ratingRange, setRatingRange] = useState<[number, number]>([0, 5]);
@@ -102,6 +102,7 @@ export const ProductList: React.FC = () => {
 
   // Handle search and filter changes
   const handleSearch = (query: string) => {
+    setSearchQuery(query);
     const newSearchParams = new URLSearchParams(searchParams);
     if (query) {
       newSearchParams.set('q', query);
@@ -191,7 +192,8 @@ export const ProductList: React.FC = () => {
             <input
               type="text"
               placeholder="Search products..."
-              defaultValue={searchQuery || ''}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-64 px-4 py-2 border border-border rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-surface text-copy pr-10"
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
@@ -201,7 +203,7 @@ export const ProductList: React.FC = () => {
             />
             <button
               type="button"
-              onClick={() => handleSearch(searchQuery || '')}
+              onClick={() => handleSearch(searchQuery)}
               className="bg-primary text-white px-3 py-3 rounded-r-md hover:bg-primary-dark transition-colors h-full flex items-center justify-center"
             >
               <SearchIcon size={20} />
@@ -388,6 +390,8 @@ export const ProductList: React.FC = () => {
           {productsData?.pagination && productsData.pagination.pages > 1 && (
             <div className="flex items-center justify-center space-x-2 mt-8">
               <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
                 className="px-3 py-2 rounded-md bg-surface border border-border text-copy hover:bg-surface-hover disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Previous

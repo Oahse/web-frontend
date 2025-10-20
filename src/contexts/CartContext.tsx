@@ -1,8 +1,9 @@
-import React, { useEffect, createContext, useContext, useCallback } from 'react';
+import React, { useEffect, createContext, useContext, useCallback, useState } from 'react';
 import { Cart, CartItem, AddToCartRequest } from '../apis/types';
 import { useApi, useMutation } from '../hooks/useApi';
 import { CartAPI } from '../apis';
 import { TokenManager } from '../apis/client';
+import { setDatasets } from 'react-chartjs-2/dist/utils';
 
 interface CartContextType {
   cart: Cart | null;
@@ -37,45 +38,39 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (TokenManager.isAuthenticated()) {
-      fetchCart(CartAPI.getCart);
+      console.log('CartContext: Fetching cart with CartAPI.getCart');
+      fetchCart(() => CartAPI.getCart(TokenManager.getToken()!));
     }
   }, [fetchCart]);
 
-  const addItem = useCallback(async (item: AddToCartRequest) => {
-    const newCartItem = await addItemMutation.mutate(CartAPI.addToCart, item);
-    if (newCartItem && cart) {
-      const existingItem = cart.items.find(i => i.variant.id === newCartItem.variant.id);
-      if (existingItem) {
-        setCart({ ...cart, items: cart.items.map(i => i.id === existingItem.id ? newCartItem : i) });
-      } else {
-        setCart({ ...cart, items: [...cart.items, newCartItem] });
-      }
+  const addItem = async (item: AddToCartRequest) => {
+    const updatedCart = await addItemMutation.mutate(CartAPI.addToCart, item);
+    if (updatedCart) {
+      setCart(updatedCart);
     }
-  }, [addItemMutation, cart, setCart]);
+  };
 
-  const removeItem = useCallback(async (itemId: string) => {
-    await removeItemMutation.mutate(CartAPI.removeFromCart, itemId);
-    if (cart) {
-      setCart({ ...cart, items: cart.items.filter(i => i.id !== itemId) });
+  const removeItem = async (itemId: string) => {
+    const updatedCart = await removeItemMutation.mutate(CartAPI.removeFromCart, itemId);
+    if (updatedCart) {
+      setCart(updatedCart);
     }
-  }, [removeItemMutation, cart, setCart]);
+  };
 
-  const updateQuantity = useCallback(async (itemId: string, quantity: number) => {
-    const updatedItem = await updateItemMutation.mutate(
+  const updateQuantity = async (itemId: string, quantity: number) => {
+    const updatedCart = await updateItemMutation.mutate(
       (vars) => CartAPI.updateCartItem(vars.itemId, vars.quantity),
       { itemId, quantity }
     );
-    if (updatedItem && cart) {
-      setCart({ ...cart, items: cart.items.map(i => i.id === itemId ? updatedItem : i) });
+    if (updatedCart) {
+      setCart(updatedCart);
     }
-  }, [updateItemMutation, cart, setCart]);
+  };
 
-  const clearCart = useCallback(async () => {
+  const clearCart = async () => {
     await clearCartMutation.mutate(CartAPI.clearCart, undefined);
-    if (cart) {
-      setCart({ ...cart, items: [] });
-    }
-  }, [clearCartMutation, cart, setCart]);
+    setCart({ ...cart, items: [], subtotal: 0, tax_amount: 0, shipping_amount: 0, total_amount: 0 });
+  };
 
   const totalItems = cart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
   const items = cart?.items || [];

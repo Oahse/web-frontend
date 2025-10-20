@@ -40,15 +40,15 @@ export const Footer: React.FC = () => {
               <p className="text-copy-light">Get the latest updates on new products and upcoming sales</p>
             </div>
             <div className="flex-shrink-0 w-full md:w-auto md:min-w-[350px]">
-              <form className="flex">
+              <form className="flex flex-col sm:flex-row">
                 <input
                   type="email"
                   placeholder="Your email address"
-                  className="flex-grow px-4 py-3 border border-border rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary bg-surface text-copy"
+                  className="flex-grow px-4 py-3 border border-border rounded-md sm:rounded-l-md sm:rounded-r-none focus:outline-none focus:ring-1 focus:ring-primary bg-surface text-copy mb-2 sm:mb-0"
                 />
                 <button
                   type="submit"
-                  className="bg-primary text-white px-6 py-3 rounded-r-md hover:bg-primary-dark transition-colors flex items-center whitespace-nowrap">
+                  className="bg-primary text-white px-6 py-3 rounded-md sm:rounded-r-md sm:rounded-l-none hover:bg-primary-dark transition-colors flex items-center justify-center whitespace-nowrap">
                   Subscribe
                   <ArrowRightIcon size={16} className="ml-2" />
                 </button>

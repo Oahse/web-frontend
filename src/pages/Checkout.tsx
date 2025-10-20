@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRightIcon, CreditCardIcon, TruckIcon, CheckIcon } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useAuth } from '../contexts/AuthContext'; // Import useAuth
 import { motion } from 'framer-motion';
 import StripePaymentForm from '../components/payment/StripePaymentForm';
 import { v4 as uuidv4 } from 'uuid';
+import { CustomSelect } from '../components/common/CustomSelect'; // Import CustomSelect
 
 export const Checkout: React.FC = () => {
-  const { items, totalItems, clearCart } = useCart();
+  const { items, clearCart } = useCart();
+  const { user } = useAuth(); // Get user from AuthContext
   const [step, setStep] = useState<'shipping' | 'payment' | 'confirmation'>('shipping');
   const [orderId, setOrderId] = useState<string>(uuidv4()); // Generate a unique order ID
 
@@ -32,29 +35,63 @@ export const Checkout: React.FC = () => {
   const [shippingMethod, setShippingMethod] = useState('standard');
   const [paymentMethod, setPaymentMethod] = useState('credit-card');
 
+  // Country options for CustomSelect
+  const countryOptions = [
+    { value: 'United States', label: 'United States' },
+    { value: 'Canada', label: 'Canada' },
+    { value: 'United Kingdom', label: 'United Kingdom' },
+    { value: 'Australia', label: 'Australia' },
+    { value: 'Germany', label: 'Germany' },
+    { value: 'France', label: 'France' },
+  ];
+
+  // Calculate subtotal, shipping, tax, and total
+  const subtotal = items.reduce((sum, item) => sum + item.price_per_unit * item.quantity, 0);
+  const shipping = shippingMethod === 'standard' ? (subtotal > 49.99 ? 0 : 5.99) : 12.99;
+  const taxRate = 0.08; // Example tax rate
+  const tax = (subtotal + shipping) * taxRate;
+  const total = subtotal + shipping + tax;
+
   const handleShippingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // In a real application, you would validate shippingInfo here
     setStep('payment');
-    window.scrollTo(0, 0);
   };
 
-  const handlePaymentSuccess = (paymentIntentId: string) => {
-    console.log("Payment successful with ID:", paymentIntentId);
+  const handlePaymentSuccess = (paymentId: string) => {
+    // In a real application, you would send order details to your backend
+    console.log('Payment successful, paymentId:', paymentId);
+    clearCart(); // Clear the cart after successful order
     setStep('confirmation');
-    window.scrollTo(0, 0);
-    clearCart(); // Clear cart after successful payment
   };
 
   const handlePaymentError = (error: string) => {
-    console.error("Payment error:", error);
-    // Optionally, show an error message to the user
+    console.error('Payment error:', error);
+    // Display an error message to the user
+    alert('Payment failed: ' + error);
   };
 
-  // Calculate order summary
-  const subtotal = totalItems;
-  const shipping = shippingMethod === 'express' ? 12.99 : subtotal > 49.99 ? 0 : 5.99;
-  const tax = subtotal * 0.07;
-  const total = subtotal + shipping + tax;
+  // Pre-fill shipping info if user is logged in
+  useEffect(() => {
+    if (user) {
+      const [firstName, ...lastNameParts] = user.name.split(' ');
+      const lastName = lastNameParts.join(' ') || '';
+      const defaultAddress = user.addresses?.find(addr => addr.kind === 'Shipping') || user.addresses?.[0];
+
+      setShippingInfo(prev => ({
+        ...prev,
+        firstName: firstName || '',
+        lastName: lastName || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        address: defaultAddress?.street || '',
+        city: defaultAddress?.city || '',
+        state: defaultAddress?.state || '',
+        zipCode: defaultAddress?.post_code || '',
+        country: defaultAddress?.country || 'United States',
+      }));
+    }
+  }, [user]);
 
   return (
     <div className="container mx-auto px-4 py-8 text-copy">
@@ -234,19 +271,11 @@ export const Checkout: React.FC = () => {
                   <label htmlFor="country" className="block text-sm font-medium text-main mb-1">
                     Country
                   </label>
-                  <select
-                    id="country"
-                    className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary bg-surface"
+                  <CustomSelect
+                    options={countryOptions}
                     value={shippingInfo.country}
-                    onChange={(e) => setShippingInfo({ ...shippingInfo, country: e.target.value })}
-                    required>
-                    <option value="United States">United States</option>
-                    <option value="Canada">Canada</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="Australia">Australia</option>
-                    <option value="Germany">Germany</option>
-                    <option value="France">France</option>
-                  </select>
+                    onChange={(value) => setShippingInfo({ ...shippingInfo, country: value })}
+                  />
                 </div>
                 <h3 className="text-lg font-medium text-main mb-4">Shipping Method</h3>
                 <div className="space-y-3 mb-6">
@@ -304,7 +333,7 @@ export const Checkout: React.FC = () => {
               <h2 className="text-xl font-semibold text-main mb-4">Order Summary</h2>
               <div className="mb-4">
                 {items.map((item) => (
-                  <div key={`${item.id}-${item.variant || ''}`} className="flex py-3 border-b border-border-light last:border-0">
+                  <div key={`${item.id}-${item.variant?.id || ''}`} className="flex py-3 border-b border-border-light last:border-0">
                     <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
                       <img src={item.variant.images[0].url} alt={item.variant.name} className="w-full h-full object-cover" />
                     </div>
@@ -315,10 +344,10 @@ export const Checkout: React.FC = () => {
                       </div>
                       <div className="flex justify-between text-sm text-copy-light">
                         <span>
-                          {item.variant && `Size: ${item.variant}, `}
+                          {item.variant && `Size: ${item.variant.name}, `}
                           Qty: {item.quantity}
                         </span>
-                        <span>${item.total_price.toFixed(2)} each</span>
+                        <span>${item.price_per_unit.toFixed(2)} each</span>
                       </div>
                     </div>
                   </div>
@@ -423,7 +452,7 @@ export const Checkout: React.FC = () => {
               <h2 className="text-xl font-semibold text-main mb-4">Order Summary</h2>
               <div className="mb-4">
                 {items.map((item) => (
-                  <div key={`${item.id}-${item.variant || ''}`} className="flex py-3 border-b border-border-light last:border-0">
+                  <div key={`${item.id}-${item.variant?.id || ''}`} className="flex py-3 border-b border-border-light last:border-0">
                     <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
                       <img src={item.variant.images[0].url} alt={item.variant.name} className="w-full h-full object-cover" />
                     </div>
@@ -434,10 +463,10 @@ export const Checkout: React.FC = () => {
                       </div>
                       <div className="flex justify-between text-sm text-copy-light">
                         <span>
-                          {item.variant && `Size: ${item.variant}, `}
+                          {item.variant && `Size: ${item.variant.name}, `}
                           Qty: {item.quantity}
                         </span>
-                        <span>${item.total_price.toFixed(2)} each</span>
+                        <span>${item.price_per_unit.toFixed(2)} each</span>
                       </div>
                     </div>
                   </div>

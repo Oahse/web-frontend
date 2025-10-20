@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRightIcon, TrashIcon, MinusIcon, PlusIcon, ShoppingCartIcon } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { motion } from 'framer-motion';
+import { CartSkeleton } from '../components/skeletons/CartSkeleton';
 
 export const Cart: React.FC = () => {
   const { cart, removeItem, updateQuantity, clearCart, loading } = useCart();
@@ -31,7 +32,7 @@ export const Cart: React.FC = () => {
   const total = cart?.total_amount || 0;
 
   if (loading) {
-    return <div>Loading cart...</div>;
+    return <CartSkeleton />;
   }
 
   return (

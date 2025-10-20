@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { UserRole } from '../../apis/types';
 import { 
   BarChart3Icon, 
   UsersIcon, 
@@ -63,18 +64,22 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     if (!user) return widgets;
 
     // Filter widgets based on user role
+import { UserRole } from '../../apis/types';
+
+// ... (rest of the file)
+
     switch (user.role) {
-      case 'admin':
-      case 'superadmin':
+      case UserRole.Admin:
+      case UserRole.SuperAdmin:
         return widgets; // Admin sees all widgets
-      case 'supplier':
+      case UserRole.Supplier:
         return widgets.filter(w => 
           w.id.includes('supplier') || 
           w.id.includes('product') || 
           w.id.includes('order') ||
           w.id.includes('analytics')
         );
-      case 'customer':
+      case UserRole.Customer:
         return widgets.filter(w => 
           w.id.includes('customer') || 
           w.id.includes('order') ||
@@ -285,16 +290,16 @@ const WidgetContent: React.FC<{ widget: DashboardWidget }> = ({ widget }) => {
       return (
         <div className="text-center">
           <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {widget.data.value}
+            {widget.data.value as string}
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            {widget.data.label}
+            {widget.data.label as string}
           </div>
-          {widget.data.change && (
+          {(widget.data.change as number) && (
             <div className={`text-sm mt-2 ${
-              widget.data.change > 0 ? 'text-green-600' : 'text-red-600'
+              (widget.data.change as number) > 0 ? 'text-green-600' : 'text-red-600'
             }`}>
-              {widget.data.change > 0 ? '+' : ''}{widget.data.change}%
+              {(widget.data.change as number) > 0 ? '+' : ''}{(widget.data.change as number)}%
             </div>
           )}
         </div>
@@ -313,7 +318,7 @@ const WidgetContent: React.FC<{ widget: DashboardWidget }> = ({ widget }) => {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-700">
-                {widget.data.headers?.map((header: string, index: number) => (
+                {(widget.data.headers as string[])?.map((header: string, index: number) => (
                   <th key={index} className="text-left py-2 font-medium text-gray-900 dark:text-white">
                     {header}
                   </th>
@@ -321,9 +326,9 @@ const WidgetContent: React.FC<{ widget: DashboardWidget }> = ({ widget }) => {
               </tr>
             </thead>
             <tbody>
-              {widget.data.rows?.map((row: unknown[], index: number) => (
+              {(widget.data.rows as unknown[][])?.map((row: unknown[], index: number) => (
                 <tr key={index} className="border-b border-gray-100 dark:border-gray-800">
-                  {row.map((cell: unknown, cellIndex: number) => (
+                  {row.map((cell: React.ReactNode, cellIndex: number) => (
                     <td key={cellIndex} className="py-2 text-gray-600 dark:text-gray-400">
                       {cell}
                     </td>

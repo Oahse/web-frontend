@@ -69,10 +69,10 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
     }
 
     // Show toast notification based on toastType
-    // if (toastType === 'always' || (toastType === 'mutation' && apiError.error)) {
-    //   const message = getErrorMessage(apiError);
-    //   toast.error(message);
-    // }
+    if (toastType === 'always' || (toastType === 'mutation' && apiError.error)) {
+      const message = getErrorMessage(apiError);
+      toast.error(message);
+    }
 
     // Call custom error handler if provided
     if (onError) {

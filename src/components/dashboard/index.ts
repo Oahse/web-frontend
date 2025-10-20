@@ -18,7 +18,7 @@ export { CustomizableDashboard } from './widgets/CustomizableDashboard';
 export { RealTimeWidget } from './widgets/RealTimeWidget';
 
 // Utility Components
-export { ExportButton, exportToCSV, exportToJSON, exportToExcel, exportToPDF, exportChartAsPNG } from './utils/ExportUtils';
+export { exportToCSV, exportToJSON, exportToExcel, exportToPDF, exportChartAsPNG } from '../../lib/exportUtils';
 
 // Types
 export type { ChartData, ChartDataset, DrillDownData, InteractiveChartProps } from './charts/InteractiveChart';
@@ -27,4 +27,3 @@ export type { GeographicDataPoint, GeographicChartProps } from './charts/Geograp
 export type { TableColumn, TableRow, FilterConfig, GroupConfig, AdvancedTableProps } from './tables/AdvancedTable';
 export type { DashboardWidget, WidgetTemplate, CustomizableDashboardProps } from './widgets/CustomizableDashboard';
 export type { RealTimeDataPoint, RealTimeWidgetProps } from './widgets/RealTimeWidget';
-export type { ExportOptions } from './utils/ExportUtils';

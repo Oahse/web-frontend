@@ -22,22 +22,30 @@ export const Blog: React.FC = () => {
 
   // Fetch blog posts when filters or page change
   useEffect(() => {
-    const params: any = {
-      page: currentPage,
-      limit: 10,
-    };
-    if (categoryFilter && categoryFilter !== 'All') {
-      params.category = categoryFilter;
-    }
-    if (tagFilter) {
-      params.tag = tagFilter;
-    }
-    if (searchTerm) {
-      params.search = searchTerm;
-    }
-    params.is_published = showPublishedOnly;
+    const fetchPosts = async () => {
+      try {
+        const params: any = {
+          page: currentPage,
+          limit: 10,
+        };
+        if (categoryFilter && categoryFilter !== 'All') {
+          params.category = categoryFilter;
+        }
+        if (tagFilter) {
+          params.tag = tagFilter;
+        }
+        if (searchTerm) {
+          params.search = searchTerm;
+        }
+        params.is_published = showPublishedOnly;
 
-    fetchBlogPosts(() => BlogAPI.getBlogPosts(params.page, params.limit, params.is_published, params.search));
+        await fetchBlogPosts(() => BlogAPI.getBlogPosts(params.page, params.limit, params.is_published, params.search));
+      } catch (err) {
+        console.error("Error fetching blog posts:", err);
+      }
+    };
+
+    fetchPosts();
   }, [currentPage, categoryFilter, tagFilter, searchTerm, showPublishedOnly, fetchBlogPosts]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -58,6 +66,28 @@ export const Blog: React.FC = () => {
     setShowPublishedOnly(newPublishedState);
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set('is_published', String(newPublishedState));
+    setSearchParams(newSearchParams);
+    setCurrentPage(1);
+  };
+
+  const handleTagClick = (tag: string) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (tag === tagFilter) {
+      newSearchParams.delete('tag');
+    } else {
+      newSearchParams.set('tag', tag);
+    }
+    setSearchParams(newSearchParams);
+    setCurrentPage(1);
+  };
+
+  const handleCategoryClick = (category: string) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (category === 'All') {
+      newSearchParams.delete('category');
+    } else {
+      newSearchParams.set('category', category);
+    }
     setSearchParams(newSearchParams);
     setCurrentPage(1);
   };
@@ -302,4 +332,3 @@ export const Blog: React.FC = () => {
       </div>
     </div>;
 };
-export default Blog;
