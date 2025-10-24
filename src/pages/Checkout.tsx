@@ -74,8 +74,8 @@ export const Checkout: React.FC = () => {
   // Pre-fill shipping info if user is logged in
   useEffect(() => {
     if (user) {
-      const [firstName, ...lastNameParts] = user.name.split(' ');
-      const lastName = lastNameParts.join(' ') || '';
+      const firstName = user.firstname || user.full_name?.split(' ')[0] || '';
+      const lastName = user.lastname || user.full_name?.split(' ').slice(1).join(' ') || '';
       const defaultAddress = user.addresses?.find(addr => addr.kind === 'Shipping') || user.addresses?.[0];
 
       setShippingInfo(prev => ({

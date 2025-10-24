@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { PlusCircleIcon, MapPinIcon, HomeIcon, BriefcaseIcon, TrashIcon, PencilIcon } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { useApi, useMutation } from '../../hooks/useApi';
-import { AuthAPI } from '../../apis';
-import { Address } from '../../apis/types';
+import { apiClient, AuthAPI } from '../../apis';
+import { Address } from '../../types';
 
 export const Addresses: React.FC = () => {
   const { data: addresses, loading, error, execute: fetchAddresses, setData: setAddresses } = useApi<Address[]>();
@@ -100,7 +100,8 @@ export const Addresses: React.FC = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    const errorMessage = typeof error.message === 'object' ? JSON.stringify(error.message) : error.message;
+    return <div>Error: {errorMessage}</div>;
   }
 
   return <div>

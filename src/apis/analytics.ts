@@ -7,7 +7,7 @@ import {
   DashboardData, 
   AnalyticsFilters,
   APIResponse 
-} from './types';
+} from '../types/analytics';
 
 export class AnalyticsAPI {
   /**
@@ -16,8 +16,12 @@ export class AnalyticsAPI {
   static async getDashboardData(filters?: AnalyticsFilters): Promise<APIResponse<DashboardData>> {
     const queryParams = new URLSearchParams();
       
-    if (filters?.date_range?.start) queryParams.append('date_from', filters.date_range.start);
-    if (filters?.date_range?.end) queryParams.append('date_to', filters.date_range.end);
+    if (typeof filters?.date_range === 'string') {
+      queryParams.append('date_range', filters.date_range);
+    } else if (filters?.date_range) {
+      if (filters.date_range.start) queryParams.append('date_from', filters.date_range.start);
+      if (filters.date_range.end) queryParams.append('date_to', filters.date_range.end);
+    }
     if (filters?.category) queryParams.append('category', filters.category);
     if (filters?.supplier) queryParams.append('supplier', filters.supplier);
 

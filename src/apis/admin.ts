@@ -3,21 +3,14 @@
  */
 
 import { apiClient } from './client';
-import { 
-  User, 
-  Product, 
-  Order, 
-  AdminStats,
-  PaginatedResponse,
-  APIResponse 
-} from './types';
+import { User, Product, Order, AdminStats, PaginatedResponse, APIResponse } from './types';
 
 export class AdminAPI {
   /**
    * Get admin dashboard statistics
    */
   static async getAdminStats(): Promise<APIResponse<AdminStats>> {
-    return await apiClient.get<AdminStats>('/admin/statistics');
+    return await apiClient.get<AdminStats>('/admin/stats');
   }
 
   /**
@@ -210,20 +203,26 @@ export class AdminAPI {
    */
   static async getAllOrders(params?: {
     status?: string;
+    q?: string;
     supplier?: string;
     customer?: string;
     date_from?: string;
     date_to?: string;
+    min_price?: number;
+    max_price?: number;
     page?: number;
     limit?: number;
   }): Promise<APIResponse<PaginatedResponse<Order>>> {
     const queryParams = new URLSearchParams();
     
     if (params?.status) queryParams.append('status', params.status);
+    if (params?.q) queryParams.append('q', params.q);
     if (params?.supplier) queryParams.append('supplier', params.supplier);
     if (params?.customer) queryParams.append('customer', params.customer);
     if (params?.date_from) queryParams.append('date_from', params.date_from);
     if (params?.date_to) queryParams.append('date_to', params.date_to);
+    if (params?.min_price) queryParams.append('min_price', params.min_price.toString());
+    if (params?.max_price) queryParams.append('max_price', params.max_price.toString());
     if (params?.page) queryParams.append('page', params.page.toString());
     if (params?.limit) queryParams.append('limit', params.limit.toString());
 
@@ -232,6 +231,31 @@ export class AdminAPI {
   }
 
   /**
+   * Get all product variants for admin oversight
+   */
+  static async getAllVariants(params?: {
+    product_id?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<APIResponse<PaginatedResponse<ProductVariant>>> {
+    const queryParams = new URLSearchParams();
+    
+    if (params?.product_id) queryParams.append('product_id', params.product_id);
+    if (params?.search) queryParams.append('search', params.search);
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+
+    const url = `/admin/variants${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+    return await apiClient.get<PaginatedResponse<ProductVariant>>(url);
+  }
+
+  /**
+   * Get order details
+   */
+  static async getOrder(orderId: string): Promise<APIResponse<Order>> {
+    return await apiClient.get<Order>(`/admin/orders/${orderId}`);
+  }  /**
    * Get order disputes
    */
   static async getOrderDisputes(params?: {
@@ -268,6 +292,30 @@ export class AdminAPI {
   }
 
   /**
+   * Get admin messages
+   */
+  static async getMessages(params?: {
+    status?: 'read' | 'unread' | 'archived';
+    search?: string;
+    date_from?: string;
+    date_to?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<APIResponse<PaginatedResponse<AdminMessage>>> {
+    const queryParams = new URLSearchParams();
+    
+    if (params?.status) queryParams.append('status', params.status);
+    if (params?.search) queryParams.append('search', params.search);
+    if (params?.date_from) queryParams.append('date_from', params.date_from);
+    if (params?.date_to) queryParams.append('date_to', params.date_to);
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+
+    const url = `/admin/messages${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+    return await apiClient.get<PaginatedResponse<AdminMessage>>(url);
+  }
+
+  /**
    * Resolve order dispute
    */
   static async resolveDispute(disputeId: string, resolution: {
@@ -279,6 +327,10 @@ export class AdminAPI {
   }
 
   // System Management
+  static async getSalesTrend(days: number): Promise<APIResponse<SalesData[]>> {
+    return await apiClient.get<SalesData[]>(`/analytics/sales-trend?days=${days}`);
+  }
+
   /**
    * Get system health
    */
@@ -475,7 +527,7 @@ export class AdminAPI {
     const url = `/admin/export?${queryParams.toString()}`;
     const filename = `${data.type}-export-${new Date().toISOString().split('T')[0]}.${data.format}`;
     
-    await apiClient.download<void>(url, filename);
+    await apiClient.download(url, filename);
   }
 
   /**

@@ -72,8 +72,28 @@ const AdminOrders = lazy(() =>
 const AdminAnalytics = lazy(() =>
   import('./pages/admin/AdminAnalytics').then((module) => ({ default: module.AdminAnalytics }))
 );
+const AdminNotifications = lazy(() =>
+  import('./pages/admin/AdminNotifications').then((module) => ({ default: module.AdminNotifications }))
+);
 const AdminRegister = lazy(() =>
   import('./pages/admin/AdminRegister').then((module) => ({ default: module.AdminRegister }))
+);
+const AdminOrderDetail = lazy(() =>
+  import('./pages/admin/AdminOrderDetail').then((module) => ({ default: module.AdminOrderDetail }))
+);
+const AdminVariants = lazy(() =>
+  import('./pages/admin/AdminVariants').then((module) => ({ default: module.AdminVariants }))
+);
+const AdminMessages = lazy(() =>
+  import('./pages/admin/AdminMessages').then((module) => ({ default: module.AdminMessages }))
+);
+const AdminSettings = lazy(() =>
+  import('./pages/admin/AdminSettings').then((module) => ({ default: module.AdminSettings }))
+);
+
+// Lazy load supplier pages
+const SupplierDashboard = lazy(() =>
+  import('./components/dashboard/SupplierDashboard').then((module) => ({ default: module.SupplierDashboard }))
 );
 
 // Loading component
@@ -89,7 +109,7 @@ export function App() {
 
   return (
     <ErrorBoundary>
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID||''}>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
         <AuthProvider>
           <ThemeProvider>
             <CartProvider>
@@ -128,111 +148,162 @@ export function App() {
                         }}
                       />
                       <BrowserRouter>
-                            <Elements stripe={stripePromise}>
-                                <Suspense fallback={<PageLoading />}>
-                                    <Routes>
-                            <Route
-                              path="/admin"
-                              element={
-                                <AdminLayout>
-                                  <AdminDashboard />
-                                </AdminLayout>
-                              }
-                            />
-                            <Route
-                              path="/admin/products"
-                              element={
-                                <AdminLayout>
-                                  <AdminProducts />
-                                </AdminLayout>
-                              }
-                            />
-                            <Route
-                              path="/admin/users"
-                              element={
-                                <AdminLayout>
-                                  <AdminUsers />
-                                </AdminLayout>
-                              }
-                            />
-                            <Route
-                              path="/admin/orders"
-                              element={
-                                <AdminLayout>
-                                  <AdminOrders />
-                                </AdminLayout>
-                              }
-                            />
-                            <Route
-                              path="/admin/analytics"
-                              element={
-                                <AdminLayout>
-                                  <AdminAnalytics />
-                                </AdminLayout>
-                              }
-                            />
-                            <Route path="/admin/register" element={<AuthLayout><AdminRegister /></AuthLayout>} />
-                            <Route path="/admin/login" element={<AuthLayout><Login /></AuthLayout>} />
-                            <Route path="/" element={<Layout><Home /></Layout>} />
+                        <Elements stripe={stripePromise}>
+                          <Suspense fallback={<PageLoading />}>
+                            <Routes>
+                              <Route
+                                path="/admin"
+                                element={
+                                  <AdminLayout>
+                                    <AdminDashboard />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/products"
+                                element={
+                                  <AdminLayout>
+                                    <AdminProducts />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/users"
+                                element={
+                                  <AdminLayout>
+                                    <AdminUsers />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/orders"
+                                element={
+                                  <AdminLayout>
+                                    <AdminOrders />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/orders/:id"
+                                element={
+                                  <AdminLayout>
+                                    <AdminOrderDetail />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/variants"
+                                element={
+                                  <AdminLayout>
+                                    <AdminVariants />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/messages"
+                                element={
+                                  <AdminLayout>
+                                    <AdminMessages />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/analytics"
+                                element={
+                                  <AdminLayout>
+                                    <AdminAnalytics />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/notifications"
+                                element={
+                                  <AdminLayout>
+                                    <AdminNotifications />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route
+                                path="/admin/settings"
+                                element={
+                                  <AdminLayout>
+                                    <AdminSettings />
+                                  </AdminLayout>
+                                }
+                              />
+                              <Route path="/admin/register" element={<AuthLayout><AdminRegister /></AuthLayout>} />
+                              <Route path="/admin/login" element={<AuthLayout><Login /></AuthLayout>} />
 
-                            <Route path="/products" element={<Layout><ProductList /></Layout>} />
-                            <Route path="/product/:id" element={<Layout><ProductDetails /></Layout>} />
-                            <Route path="/cart" element={<Layout><Cart /></Layout>} />
-                            <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
-                            <Route path="/account/*" element={<Layout><Account /></Layout>} />
-                            <Route
-                              path="/login"
-                              element={
-                                <Layout>
-                                  <Login />
-                                </Layout>
-                              }
-                            />
-                            <Route
-                              path="/forgot-password"
-                              element={
-                                <Layout>
-                                  <ForgotPassword />
-                                </Layout>
-                              }
-                            />
-                            <Route path="/register" element={<Layout><Register /></Layout>} />
-                            <Route path="/about" element={<Layout><About /></Layout>} />
-                            <Route path="/contact" element={<Layout><Contact /></Layout>} />
-                            <Route path="/faq" element={<Layout><FAQ /></Layout>} />
-                            <Route path="/blog" element={<Layout><Blog /></Layout>} />
-                            <Route path="/blog/:id" element={<Layout><BlogPost /></Layout>} />
-                            <Route path="/account/wishlist" element={<Layout><Wishlist /></Layout>} />
-                            <Route
-                              path="/subscription"
-                              element={
-                                <Layout>
-                                  <Subscription />
-                                </Layout>
-                              }
-                            />
-                            <Route
-                              path="/terms"
-                              element={
-                                <Layout>
-                                  <TermsAndConditions />
-                                </Layout>
-                              }
-                            />
-                            <Route
-                              path="/privacy"
-                              element={
-                                <Layout>
-                                  <PrivacyPolicy />
-                                </Layout>
-                              }
-                            />
-                            <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
-                            <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
-                                                              </Routes>
-                                                          </Suspense>
-                                                      </Elements>
-                                                </BrowserRouter>                    </CategoryProvider>
+                              {/* Supplier Routes */}
+                              <Route
+                                path="/supplier"
+                                element={
+                                  <Layout>
+                                    <SupplierDashboard />
+                                  </Layout>
+                                }
+                              />
+
+                              <Route path="/" element={<Layout><Home /></Layout>} />
+
+                              <Route path="/products" element={<Layout><ProductList /></Layout>} />
+                              <Route path="/product/:id" element={<Layout><ProductDetails /></Layout>} />
+                              <Route path="/cart" element={<Layout><Cart /></Layout>} />
+                              <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
+                              <Route path="/account/*" element={<Layout><Account /></Layout>} />
+                              <Route
+                                path="/login"
+                                element={
+                                  <Layout>
+                                    <Login />
+                                  </Layout>
+                                }
+                              />
+                              <Route
+                                path="/forgot-password"
+                                element={
+                                  <Layout>
+                                    <ForgotPassword />
+                                  </Layout>
+                                }
+                              />
+                              <Route path="/register" element={<Layout><Register /></Layout>} />
+                              <Route path="/about" element={<Layout><About /></Layout>} />
+                              <Route path="/contact" element={<Layout><Contact /></Layout>} />
+                              <Route path="/faq" element={<Layout><FAQ /></Layout>} />
+                              <Route path="/blog" element={<Layout><Blog /></Layout>} />
+                              <Route path="/blog/:id" element={<Layout><BlogPost /></Layout>} />
+                              <Route path="/account/wishlist" element={<Layout><Wishlist /></Layout>} />
+                              <Route
+                                path="/subscription"
+                                element={
+                                  <Layout>
+                                    <Subscription />
+                                  </Layout>
+                                }
+                              />
+                              <Route
+                                path="/terms"
+                                element={
+                                  <Layout>
+                                    <TermsAndConditions />
+                                  </Layout>
+                                }
+                              />
+                              <Route
+                                path="/privacy"
+                                element={
+                                  <Layout>
+                                    <PrivacyPolicy />
+                                  </Layout>
+                                }
+                              />
+                              <Route path="/verify-email" element={<Layout><EmailVerification /></Layout>} />
+                              <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
+                            </Routes>
+                          </Suspense>
+                        </Elements>
+                      </BrowserRouter>                    </CategoryProvider>
                   </WebSocketProvider>
                 </NotificationProvider>
               </WishlistProvider>

@@ -231,7 +231,7 @@ export const Register: React.FC = () => {
         </form>
         <div className="relative flex items-center justify-center my-6">
           <div className="border-t border-border-light w-full"></div>
-          <span className="bg-surface px-3 text-sm text-copy-light absolute">Or sign up with</span>
+          <span className="bg-surface px-3 text-sm text-copy-light absolute">Sign up with</span>
         </div>
         <SocialAuth socialLoginMutation={socialLoginMutation} />
         <p className="text-center mt-6 text-sm text-copy-light">

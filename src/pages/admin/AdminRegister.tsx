@@ -37,7 +37,9 @@ export const AdminRegister: React.FC = () => {
 
     try {
       setLoading(true);
-      await register(name, email, password, userType);
+      const [firstname, ...lastnameParts] = name.split(' ');
+      const lastname = lastnameParts.join(' ') || firstname; // Handle single-word names
+      await register(firstname, lastname, email, password); // Call with correct arguments
       toast.success('Admin account created successfully! You can now log in to the admin dashboard.');
       navigate('/admin');
     } catch (error) {

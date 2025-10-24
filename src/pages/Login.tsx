@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -25,7 +25,7 @@ export const Login: React.FC<LoginProps> = ({ isInitialLoading = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const socialLoginMutation = useMutation<any, { token: string; provider: string }>();
+  const socialLoginMutation = useMutation<unknown, { token: string; provider: string }>();
 
   // Get redirect path from URL params or default based on user role
   const getRedirectPath = useCallback(() => {
@@ -62,7 +62,7 @@ export const Login: React.FC<LoginProps> = ({ isInitialLoading = false }) => {
         navigate(getRedirectPath());
       }
     } catch (error) {
-      toast.error('Login failed. Please check your email and password.'); 
+      toast.error('Login failed. Please check your email and password.');
       setLoading(false);
     }
   };
@@ -90,6 +90,7 @@ export const Login: React.FC<LoginProps> = ({ isInitialLoading = false }) => {
             placeholder="your@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
             required
           />
           <div>
@@ -108,6 +109,7 @@ export const Login: React.FC<LoginProps> = ({ isInitialLoading = false }) => {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
                 required
                 className="pr-10"
               />
@@ -161,7 +163,7 @@ export const Login: React.FC<LoginProps> = ({ isInitialLoading = false }) => {
         </form>
         <div className="relative flex items-center justify-center my-6">
           <div className="border-t border-border-light w-full"></div>
-          <span className="bg-surface px-3 text-sm text-copy-light absolute">Or continue with</span>
+          <span className="bg-surface px-3 text-sm text-copy-light absolute">Login with</span>
         </div>
 
 

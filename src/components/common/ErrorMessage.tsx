@@ -3,10 +3,10 @@
  */
 
 import React from 'react';
-import type { APIError } from '../../apis/client';
+import type { ApiError } from '../../types';
 
 interface ErrorMessageProps {
-  error?: APIError | Error | string | null;
+  error?: ApiError | Error | string | null;
   className?: string;
   showIcon?: boolean;
   variant?: 'default' | 'inline' | 'banner';

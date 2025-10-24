@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface Category {
-  id: number;
+interface DemoCategory {
+  id: string | number;
   name: string;
   image: string;
-  count: number;
+  count?: number;
   path: string;
 }
 
 interface CategoryCardProps {
-  category: Category;
+  category: DemoCategory;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
@@ -28,7 +28,9 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
           <h3 className="font-medium text-copy group-hover:text-primary transition-colors">
             {category.name}
           </h3>
-          <p className="text-sm text-copy-light">{category.count} items</p>
+          {category.count !== undefined && category.count > 0 && (
+            <p className="text-sm text-copy-light">{category.count} items</p>
+          )}
         </div>
       </div>
     </Link>

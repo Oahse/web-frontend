@@ -1,9 +1,9 @@
 import React, { useEffect, createContext, useContext, useCallback, useState } from 'react';
-import { Cart, CartItem, AddToCartRequest } from '../apis/types';
-import { useApi, useMutation } from '../hooks/useApi';
-import { CartAPI } from '../apis';
+import { Cart, CartItem } from '../types';
+import { AddToCartRequest } from '../types/api';
+import { useApi } from '../hooks/useApi';
 import { TokenManager } from '../apis/client';
-import { setDatasets } from 'react-chartjs-2/dist/utils';
+import { CartAPI } from '../apis/cart';
 
 interface CartContextType {
   cart: Cart | null;
@@ -27,50 +27,107 @@ export const useCart = () => {
 };
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const apiOptions = React.useMemo(() => ({}), []);
-  const { data: cart, loading, execute: fetchCart, setData: setCart } = useApi<Cart>(apiOptions);
+  const [cart, setCart] = useState<Cart | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const mutationOptions = React.useMemo(() => ({}), []);
-  const addItemMutation = useMutation<CartItem, AddToCartRequest>(mutationOptions);
-  const updateItemMutation = useMutation<CartItem, { itemId: string, quantity: number }>(mutationOptions);
-  const removeItemMutation = useMutation<{ message: string }, string>(mutationOptions);
-  const clearCartMutation = useMutation<{ message: string }>(mutationOptions);
+  const fetchCart = useCallback(async () => {
+    if (!TokenManager.isAuthenticated()) return;
+    
+    try {
+      setLoading(true);
+      const response = await CartAPI.getCart(TokenManager.getToken()!);
+      if (response.data) {
+        setCart(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch cart:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    if (TokenManager.isAuthenticated()) {
-      console.log('CartContext: Fetching cart with CartAPI.getCart');
-      fetchCart(() => CartAPI.getCart(TokenManager.getToken()!));
-    }
+    fetchCart();
   }, [fetchCart]);
 
-  const addItem = async (item: AddToCartRequest) => {
-    const updatedCart = await addItemMutation.mutate(CartAPI.addToCart, item);
-    if (updatedCart) {
-      setCart(updatedCart);
+  const addItem = useCallback(async (item: AddToCartRequest) => {
+    if (!TokenManager.isAuthenticated()) {
+      throw new Error('User must be authenticated to add items to cart');
     }
-  };
-
-  const removeItem = async (itemId: string) => {
-    const updatedCart = await removeItemMutation.mutate(CartAPI.removeFromCart, itemId);
-    if (updatedCart) {
-      setCart(updatedCart);
+    
+    try {
+      setLoading(true);
+      const response = await CartAPI.addToCart(item, TokenManager.getToken()!);
+      if (response.data) {
+        setCart(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to add item to cart:', error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
 
-  const updateQuantity = async (itemId: string, quantity: number) => {
-    const updatedCart = await updateItemMutation.mutate(
-      (vars) => CartAPI.updateCartItem(vars.itemId, vars.quantity),
-      { itemId, quantity }
-    );
-    if (updatedCart) {
-      setCart(updatedCart);
+  const removeItem = useCallback(async (itemId: string) => {
+    if (!TokenManager.isAuthenticated()) {
+      throw new Error('User must be authenticated to remove items from cart');
     }
-  };
+    
+    try {
+      setLoading(true);
+      const response = await CartAPI.removeFromCart(itemId, TokenManager.getToken()!);
+      if (response.data) {
+        setCart(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to remove item from cart:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const clearCart = async () => {
-    await clearCartMutation.mutate(CartAPI.clearCart, undefined);
-    setCart({ ...cart, items: [], subtotal: 0, tax_amount: 0, shipping_amount: 0, total_amount: 0 });
-  };
+  const updateQuantity = useCallback(async (itemId: string, quantity: number) => {
+    if (!TokenManager.isAuthenticated()) {
+      throw new Error('User must be authenticated to update cart items');
+    }
+    
+    try {
+      setLoading(true);
+      const response = await CartAPI.updateCartItem(itemId, quantity, TokenManager.getToken()!);
+      if (response.data) {
+        setCart(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to update cart item:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const clearCart = useCallback(async () => {
+    if (!TokenManager.isAuthenticated()) {
+      throw new Error('User must be authenticated to clear cart');
+    }
+    
+    try {
+      setLoading(true);
+      const response = await CartAPI.clearCart(TokenManager.getToken()!);
+      if (response.data) {
+        setCart(response.data);
+      } else {
+        // Fallback to manual clear if API doesn't return cart data
+        setCart(cart ? { ...cart, items: [], total_items: 0, total_amount: 0 } : null);
+      }
+    } catch (error) {
+      console.error('Failed to clear cart:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }, [cart]);
 
   const totalItems = cart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
   const items = cart?.items || [];

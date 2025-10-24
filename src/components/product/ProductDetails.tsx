@@ -7,8 +7,8 @@ import { useWishlist } from '../../contexts/WishlistContext';
 import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { useApi } from '../../hooks/useApi';
-import { ProductsAPI } from '../../apis';
-import { Product as APIProduct } from '../../apis/types';
+import { apiClient, ProductsAPI } from '../../apis';
+import { Product as APIProduct } from '../../types';
 import ErrorMessage from '../common/ErrorMessage';
 import ReviewForm from './ReviewForm';
 
@@ -162,17 +162,19 @@ export const ProductDetails: React.FC = () => {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!selectedVariant || !product) return;
-    addItem({
-      id: selectedVariant.id,
-      name: `${product.name} - ${selectedVariant.name}`,
-      price: selectedVariant.sale_price || selectedVariant.base_price,
-      quantity: quantity,
-      image: selectedVariant.images?.[0]?.url || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      variant: selectedVariant.name
-    });
-    toast.success(`Added to cart! ${product.name} - ${selectedVariant.name} has been added to your cart.`);
+    
+    try {
+      await addItem({
+        variant_id: String(selectedVariant.id),
+        quantity: quantity,
+      });
+      toast.success(`Added to cart! ${product.name} - ${selectedVariant.name} has been added to your cart.`);
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+      toast.error('Failed to add item to cart');
+    }
   };
 
   const handleAddToWishlist = () => {

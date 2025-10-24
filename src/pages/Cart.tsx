@@ -9,14 +9,14 @@ export const Cart: React.FC = () => {
   const { cart, removeItem, updateQuantity, clearCart, loading } = useCart();
   const [couponCode, setCouponCode] = useState('');
 
-  const handleQuantityChange = (id: string, quantity: number) => {
+  const handleQuantityChange = (id: string | number, quantity: number) => {
     if (quantity >= 1) {
-      updateQuantity(id, quantity);
+      updateQuantity(String(id), quantity);
     }
   };
 
-  const handleRemoveItem = (id: string) => {
-    removeItem(id);
+  const handleRemoveItem = (id: string | number) => {
+    removeItem(String(id));
   };
 
   const handleApplyCoupon = (e: React.FormEvent) => {
@@ -26,10 +26,10 @@ export const Cart: React.FC = () => {
   };
 
   const items = cart?.items || [];
-  const subtotal = cart?.subtotal || 0;
+  const subtotal = items.reduce((sum, item) => sum + (item.total_price || 0), 0);
   const shipping = subtotal > 49.99 ? 0 : 5.99;
-  const tax = cart?.tax_amount || 0;
-  const total = cart?.total_amount || 0;
+  const tax = subtotal * 0.08; // 8% tax rate - you might want to make this configurable
+  const total = cart?.total_amount || (subtotal + shipping + tax);
 
   if (loading) {
     return <CartSkeleton />;
@@ -78,13 +78,22 @@ export const Cart: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                       <div className="col-span-6 flex items-center">
                         <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
-                          <img src={item.variant.images[0]?.url} alt={item.variant.name} className="w-full h-full object-cover" />
+                          <img 
+                            src={item.variant.images?.[0]?.url || '/placeholder-image.jpg'} 
+                            alt={item.variant.product_name || item.variant.product?.name || item.variant.name} 
+                            className="w-full h-full object-cover" 
+                          />
                         </div>
                         <div className="ml-4">
                           <Link
                             to={`/products/${item.variant.product_id}`}
                             className="font-medium text-copy hover:text-primary">
-                            {item.variant.name}
+                            <div>
+                              {(item.variant.product_name || item.variant.product?.name) && (
+                                <div className="font-medium">{item.variant.product_name || item.variant.product?.name}</div>
+                              )}
+                              <div className="text-sm text-copy-light">{item.variant.name}</div>
+                            </div>
                           </Link>
                           <button
                             onClick={() => handleRemoveItem(item.id)}

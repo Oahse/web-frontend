@@ -4,11 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRightIcon, TruckIcon, BadgeCheckIcon, ShieldIcon, HeadphonesIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { ProductCard } from '../components/product/ProductCard';
 import { CategoryCard } from '../components/category/CategoryCard';
-import { useCart } from '../contexts/CartContext';
-import { useWishlist } from '../contexts/WishlistContext';
 import { useApi, usePaginatedApi } from '../hooks/useApi';
-import { ProductsAPI } from '../apis';
-import { Product, Category} from '../apis/types';
+import { ProductsAPI } from '../apis/products';
+import { Product, Category, ProductVariant } from '../types';
 import { useCategories } from '../contexts/CategoryContext';
 
 // Filter category configuration interfaces
@@ -51,23 +49,23 @@ const FILTER_CATEGORIES: Record<string, FilterCategory> = {
 const matchesCategory = (product: { category: string }, filterKey: string): boolean => {
   const category = FILTER_CATEGORIES[filterKey];
   if (!category) return false;
-  
+
   // Handle edge cases in product category data
   if (!product.category || typeof product.category !== 'string') {
     return false;
   }
-  
+
   const productCategory = product.category.toLowerCase().trim();
-  
+
   // Check exact matches first (case-insensitive)
-  if (category.exactMatches?.some(match => 
+  if (category.exactMatches?.some(match =>
     productCategory === match.toLowerCase()
   )) {
     return true;
   }
-  
+
   // Check keyword matches (case-insensitive)
-  return category.keywords.some(keyword => 
+  return category.keywords.some(keyword =>
     productCategory.includes(keyword.toLowerCase())
   );
 };
@@ -75,7 +73,7 @@ const matchesCategory = (product: { category: string }, filterKey: string): bool
 // Hero slides data - Amazon-style instant loading with demo data
 const heroSlides = [
   {
-    id: 1,
+    id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
     title: 'Organic Products from Africa',
     subtitle: 'Farm Fresh & Natural',
     description: 'Experience the authentic taste of Africa with our premium organic products.',
@@ -84,7 +82,7 @@ const heroSlides = [
     image: 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80',
   },
   {
-    id: 2,
+    id: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
     title: 'Ethically Sourced Ingredients',
     subtitle: 'Pure & Natural',
     description: 'Supporting local farmers while bringing you the best quality African produce.',
@@ -93,7 +91,7 @@ const heroSlides = [
     image: 'https://images.unsplash.com/photo-1595356161904-6708c97be89c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80',
   },
   {
-    id: 3,
+    id: '6ba7b811-9dad-11d1-80b4-00c04fd430c8',
     title: 'Sustainable Packaging',
     subtitle: 'Eco-Friendly',
     description: 'Our commitment to the planet with biodegradable and recyclable packaging.',
@@ -103,63 +101,12 @@ const heroSlides = [
   },
 ];
 
-// Categories data - instant loading
 
-const categories = [
-  {
-    id: 1,
-    name: 'Cereal Crops',
-    image: 'https://images.unsplash.com/photo-1574323347407-f5e1c0cf4b7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 24,
-    path: '/products?category=Cereal%20Crops',
-  },
-  {
-    id: 2,
-    name: 'Legumes',
-    image: 'https://images.unsplash.com/photo-1547496614-54c9948c22a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 18,
-    path: '/products?category=Legumes',
-  },
-  {
-    id: 3,
-    name: 'Fruits & Veggies',
-    image: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 32,
-    path: '/products?category=Fruits%20%26%20Veggies',
-  },
-  {
-    id: 4,
-    name: 'Oilseeds',
-    image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 15,
-    path: '/products?category=Oilseeds',
-  },
-  {
-    id: 5,
-    name: 'Spices and Herbs',
-    image: 'https://images.unsplash.com/photo-1532336414038-cf19250c5757?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 27,
-    path: '/products?category=Spices%20and%20Herbs',
-  },
-  {
-    id: 6,
-    name: 'Nuts & Beverages',
-    image: 'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 21,
-    path: '/products?category=Nuts%20%26%20Beverages',
-  },
-  { name: 'Brands', path: '/products?category=brands', image: 'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 21,},
-    { name: 'Fibers', path: '/products?category=fibers',image: 'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 21, },
-    { name: 'Meat, Fish & Sweeteners', path: '/products?category=meat-fish-sweeteners',image: 'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80',
-    count: 21, },
-];
 
 // Featured products data - instant loading
 const featuredProducts = [
   {
-    id: '1',
+    id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
     name: 'Organic Shea Butter',
     price: 12.99,
     discountPrice: 9.99,
@@ -171,7 +118,7 @@ const featuredProducts = [
     isFeatured: true,
   },
   {
-    id: '2',
+    id: 'b2c3d4e5-f6g7-8901-bcde-f23456789012',
     name: 'Organic Peanuts',
     price: 18.99,
     discountPrice: null,
@@ -183,7 +130,7 @@ const featuredProducts = [
     isFeatured: true,
   },
   {
-    id: '3',
+    id: 'c3d4e5f6-g7h8-9012-cdef-345678901234',
     name: 'Organic Quinoa',
     price: 8.99,
     discountPrice: 6.99,
@@ -195,7 +142,7 @@ const featuredProducts = [
     isFeatured: true,
   },
   {
-    id: '4',
+    id: 'd4e5f6g7-h8i9-0123-defg-456789012345',
     name: 'Dried Cassava',
     price: 15.99,
     discountPrice: null,
@@ -211,7 +158,7 @@ const featuredProducts = [
 // Popular products data - instant loading with updated categories for better filtering
 const popularProducts = [
   {
-    id: '5',
+    id: 'e5f6g7h8-i9j0-1234-efgh-567890123456',
     name: 'Organic Brown Rice',
     price: 14.99,
     discountPrice: 11.99,
@@ -223,7 +170,7 @@ const popularProducts = [
     isFeatured: false,
   },
   {
-    id: '6',
+    id: 'f6g7h8i9-j0k1-2345-fghi-678901234567',
     name: 'Organic Wheat Flour',
     price: 9.99,
     discountPrice: null,
@@ -235,7 +182,7 @@ const popularProducts = [
     isFeatured: false,
   },
   {
-    id: '7',
+    id: 'g7h8i9j0-k1l2-3456-ghij-789012345678',
     name: 'Black-Eyed Peas',
     price: 7.99,
     discountPrice: 5.99,
@@ -247,7 +194,7 @@ const popularProducts = [
     isFeatured: false,
   },
   {
-    id: '8',
+    id: 'h8i9j0k1-l2m3-4567-hijk-890123456789',
     name: 'Red Kidney Beans',
     price: 12.99,
     discountPrice: null,
@@ -259,7 +206,7 @@ const popularProducts = [
     isFeatured: false,
   },
   {
-    id: '11',
+    id: 'i9j0k1l2-m3n4-5678-ijkl-901234567890',
     name: 'Organic Lentils',
     price: 8.99,
     discountPrice: 6.99,
@@ -271,7 +218,7 @@ const popularProducts = [
     isFeatured: false,
   },
   {
-    id: '12',
+    id: 'j0k1l2m3-n4o5-6789-jklm-012345678901',
     name: 'Dried Mangoes',
     price: 11.99,
     discountPrice: null,
@@ -283,7 +230,7 @@ const popularProducts = [
     isFeatured: false,
   },
   {
-    id: '13',
+    id: 'k1l2m3n4-o5p6-7890-klmn-123456789012',
     name: 'Organic Plantain Chips',
     price: 6.99,
     discountPrice: 4.99,
@@ -295,7 +242,7 @@ const popularProducts = [
     isFeatured: false,
   },
   {
-    id: '14',
+    id: 'l2m3n4o5-p6q7-8901-lmno-234567890123',
     name: 'Sesame Seeds',
     price: 13.99,
     discountPrice: null,
@@ -307,7 +254,7 @@ const popularProducts = [
     isFeatured: false,
   },
   {
-    id: '15',
+    id: 'm3n4o5p6-q7r8-9012-mnop-345678901234',
     name: 'Sunflower Seeds',
     price: 9.99,
     discountPrice: 7.99,
@@ -323,7 +270,7 @@ const popularProducts = [
 // Deals data - instant loading
 const deals = [
   {
-    id: '9',
+    id: 'n4o5p6q7-r8s9-0123-nopq-456789012345',
     name: 'Organic Coconut Oil',
     price: 16.99,
     discountPrice: 12.99,
@@ -335,7 +282,7 @@ const deals = [
     endsIn: '2d 15h 22m',
   },
   {
-    id: '10',
+    id: 'o5p6q7r8-s9t0-1234-opqr-567890123456',
     name: 'Organic Chickpeas',
     price: 24.99,
     discountPrice: 19.99,
@@ -352,17 +299,16 @@ export const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'cereal-crops' | 'legumes' | 'fruits-vegetables' | 'oilseeds'>('all');
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const { addItem: addToCart, removeItem: removeFromCart, items: cartItems } = useCart();
-  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
+  // Removed unused cart and wishlist hooks since ProductCard handles these internally
 
   // API calls with quiet failure - use demo data as fallbackEstablished receive
   const { categories: apiCategories, loading: categoriesLoading, error: categoriesError } = useCategories();
 
-  const {data: featuredProductsData,execute: fetchFeaturedProducts,} = useApi<Product[]>({ showErrorToast: false });
+  const { data: featuredProductsData, execute: fetchFeaturedProducts } = useApi<Product[]>(undefined, { showErrorToast: false });
 
-  const {data: popularProductsData,execute: fetchPopularProducts,} = useApi<Product>({ showErrorToast: false });
+  const { data: popularProductsData, execute: fetchPopularProducts } = useApi<Product[]>(undefined, { showErrorToast: false });
 
-  const {data: dealsData, execute: fetchDeals} = usePaginatedApi<PaginatedResponse<Product>>({ showErrorToast: false });
+  const { data: dealsData, execute: fetchDeals } = usePaginatedApi<Product>(undefined, 1, 20, { showErrorToast: false });
 
   // Fetch data on component mount with quiet failure
   useEffect(() => {
@@ -378,14 +324,15 @@ export const Home: React.FC = () => {
     });
 
     // Fetch products for deals section - fail quietly, use demo data
-    fetchDeals(() => ProductsAPI.getProducts({
-      page: 1,
-      limit: 12,
+    fetchDeals((page, limit) => ProductsAPI.getProducts({
+      page,
+      limit,
       sort_by: 'created_at',
       sort_order: 'desc'
     })).catch(() => {
       // Quiet failure - demo data will be used
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const categoriesContainerRef = React.useRef<HTMLDivElement>(null);
@@ -434,11 +381,11 @@ export const Home: React.FC = () => {
   });
 
   // Helper function to convert API categories to demo format
-  const convertApiCategoryToDemo = (category: Category): { id: string | number; name: string; image: string; count: number; path: string } => ({
+  type DemoCategory = { id: string | number; name: string; image: string; count?: number; path: string };
+  const convertApiCategoryToDemo = (category: Category): DemoCategory => ({
     id: category.id,
     name: category.name,
     image: category.image_url || getCategoryImage(category.name),
-    count: category.count || 0, // This would need to be calculated in the backend
     path: `/products?category=${encodeURIComponent(category.name)}`
   });
 
@@ -483,8 +430,8 @@ export const Home: React.FC = () => {
   };
 
   const getDealsProducts = () => {
-    const apiItems = dealsData?.data || [];
-    if (Array.isArray(apiItems) && apiItems.length > 0) {
+    const apiItems = Array.isArray(dealsData) ? dealsData : [];
+    if (apiItems.length > 0) {
       // Filter for products with discounts
       const productsWithDeals = apiItems
         .map(convertApiProductToDemo)
@@ -518,7 +465,7 @@ export const Home: React.FC = () => {
 
   const filteredPopularProducts = getFilteredPopularProducts();
 
-  const handleDragEnd = (event: any, info: any) => {
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number; y: number }; velocity: { x: number; y: number } }) => {
     const offset = info.offset.x;
     const velocity = info.velocity.x;
 
@@ -686,15 +633,18 @@ export const Home: React.FC = () => {
             {categoriesLoading ? (
               <p>Loading categories...</p>
             ) : categoriesError ? (
-              <p>Error loading categories: {categoriesError.message}</p>
+              <p>Error loading categories: {typeof categoriesError === 'string' ? categoriesError : 'Failed to load categories'}</p>
             ) : (
-              (apiCategories || []).slice(0, 10).map(convertApiCategoryToDemo).map((category: { id: string | number; name: string; image: string; count: number; path: string }) => (
-                <div key={category.id} className="flex-none w-40">
-                  <CategoryCard
-                    category={category}
-                  />
-                </div>
-              ))
+              (apiCategories || []).slice(0, 10).map((category) => {
+                const convertedCategory = convertApiCategoryToDemo(category);
+                return (
+                  <div key={convertedCategory.id} className="flex-none w-40">
+                    <CategoryCard
+                      category={convertedCategory}
+                    />
+                  </div>
+                );
+              })
             )}
           </div>
         </div>
@@ -721,12 +671,6 @@ export const Home: React.FC = () => {
               <ProductCard
                 key={product.id}
                 product={product}
-                addToCart={addToCart}
-                removeFromCart={removeFromCart}
-                isInCart={cartItems.some(item => String(item.id) === String(product.id))}
-                addToWishlist={addToWishlist}
-                removeFromWishlist={removeFromWishlist}
-                isInWishlist={isInWishlist(product.id)}
               />
             ))}
           </div>
@@ -805,33 +749,27 @@ export const Home: React.FC = () => {
                     key={product.id}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ 
-                      duration: 0.2, 
+                    transition={{
+                      duration: 0.2,
                       delay: index * 0.05,
                       ease: "easeOut"
                     }}
                   >
                     <ProductCard
                       product={product}
-                      addToCart={addToCart}
-                      removeFromCart={removeFromCart}
-                      isInCart={cartItems.some(item => String(item.id) === String(product.id))}
-                      addToWishlist={addToWishlist}
-                      removeFromWishlist={removeFromWishlist}
-                      isInWishlist={isInWishlist(product.id)}
                     />
                   </motion.div>
                 ))}
               </div>
             ) : (
-              <motion.div 
+              <motion.div
                 className="text-center py-12"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
               >
                 <div className="max-w-md mx-auto">
-                  <motion.div 
+                  <motion.div
                     className="w-16 h-16 mx-auto mb-4 bg-surface-hover rounded-full flex items-center justify-center"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -841,7 +779,7 @@ export const Home: React.FC = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2 2v-5m16 0h-2M4 13h2m13-8l-4 4m0 0l-4-4m4 4V3" />
                     </svg>
                   </motion.div>
-                  <motion.h3 
+                  <motion.h3
                     className="text-lg font-medium text-main mb-2"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -849,19 +787,19 @@ export const Home: React.FC = () => {
                   >
                     No products found
                   </motion.h3>
-                  <motion.p 
+                  <motion.p
                     className="text-copy-light mb-4"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.3 }}
                   >
-                    {activeTab === 'all' 
+                    {activeTab === 'all'
                       ? "We couldn't find any products at the moment."
                       : `We couldn't find any products in the "${FILTER_CATEGORIES[activeTab]?.name || activeTab}" category.`
                     }
                   </motion.p>
                   {activeTab !== 'all' && (
-                    <motion.div 
+                    <motion.div
                       className="space-y-2 text-sm text-copy-light"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -899,20 +837,7 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {getDealsProducts().map((product: {
-              id: string;
-              name: string;
-              price: number;
-              discountPrice: number | null;
-              rating: number;
-              reviewCount: number;
-              image: string;
-              category: string;
-              isNew: boolean;
-              isFeatured: boolean;
-              discountPercent?: number;
-              endsIn?: string;
-            }) => (
+            {getDealsProducts().map((product) => (
               <div key={product.id} className="flex flex-col md:flex-row bg-background rounded-lg overflow-hidden shadow-sm">
                 <div className="md:w-1/3">
                   <img

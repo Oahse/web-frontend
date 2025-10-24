@@ -4,8 +4,9 @@ import { ShoppingBagIcon, HeartIcon, MapPinIcon, CreditCardIcon } from 'lucide-r
 import { Link } from 'react-router-dom';
 import { SkeletonDashboard } from '../ui/SkeletonDashboard';
 import { usePaginatedApi } from '../../hooks/useApi';
-import { OrdersAPI } from '../../apis';
-import { Order } from '../../apis/types';
+import { apiClient } from '../../apis';
+import OrdersAPI from '../../apis/orders';
+import { Order } from '../../types';
 
 interface DashboardProps {
   animation?: 'shimmer' | 'pulse' | 'wave';

@@ -4,8 +4,9 @@ import { ChevronDownIcon, ChevronUpIcon, EyeIcon, DownloadIcon, ShoppingBagIcon 
 import { Link } from 'react-router-dom';
 import { SkeletonOrderTable } from '../ui/SkeletonTable';
 import { usePaginatedApi } from '../../hooks/useApi';
-import { OrdersAPI } from '../../apis';
-import { Order } from '../../apis/types';
+import { apiClient } from '../../apis';
+import OrdersAPI from '../../apis/orders';
+import { Order } from '../../types';
 
 interface OrdersProps {
   animation?: 'shimmer' | 'pulse' | 'wave';

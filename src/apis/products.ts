@@ -6,16 +6,17 @@ import { apiClient } from './client';
 import { 
   Product,
   ProductVariant, 
-  SearchParams, 
+  ProductFilters,
   PaginatedResponse,
-  APIResponse 
-} from './types';
+  ApiResponse,
+  Review
+} from '../types';
 
 export class ProductsAPI {
   /**
    * Get all products with optional filters
    */
-  static async getProducts(params?: SearchParams): Promise<APIResponse<PaginatedResponse<Product>>> {
+  static async getProducts(params?: ProductFilters): Promise<ApiResponse<PaginatedResponse<Product>>> {
     const queryParams = new URLSearchParams();
     
     if (params?.q) queryParams.append('q', params.q);
@@ -35,14 +36,14 @@ export class ProductsAPI {
   /**
    * Get product by ID
    */
-  static async getProduct(productId: string): Promise<APIResponse<Product>> {
+  static async getProduct(productId: string): Promise<ApiResponse<Product>> {
     return await apiClient.get<Product>(`/products/${productId}`);
   }
 
   /**
    * Search products
    */
-  static async searchProducts(query: string, filters?: Omit<SearchParams, 'q'>): Promise<APIResponse<PaginatedResponse<Product>>> {
+  static async searchProducts(query: string, filters?: Omit<ProductFilters, 'search'>): Promise<ApiResponse<PaginatedResponse<Product>>> {
     const params = { q: query, ...filters };
     return await this.getProducts(params);
   }
@@ -50,47 +51,46 @@ export class ProductsAPI {
   /**
    * Get product variants
    */
-  static async getProductVariants(productId: string): Promise<APIResponse<ProductVariant[]>> {
+  static async getProductVariants(productId: string): Promise<ApiResponse<ProductVariant[]>> {
     return await apiClient.get<ProductVariant[]>(`/products/${productId}/variants`);
   }
 
   /**
    * Get variant by ID
    */
-  static async getVariant(variantId: string): Promise<APIResponse<ProductVariant>> {
+  static async getVariant(variantId: string): Promise<ApiResponse<ProductVariant>> {
     return await apiClient.get<ProductVariant>(`/products/variants/${variantId}`);
   }
 
   /**
    * Get variant QR code
    */
-  static async getVariantQRCode(variantId: string): Promise<APIResponse<{ qr_code: string }>> {
+  static async getVariantQRCode(variantId: string): Promise<ApiResponse<{ qr_code: string }>> {
     return await apiClient.get<{ qr_code: string }>(`/products/variants/${variantId}/qrcode`);
   }
 
   /**
    * Get variant barcode
    */
-  static async getVariantBarcode(variantId: string): Promise<APIResponse<{ barcode: string }>> {
+  static async getVariantBarcode(variantId: string): Promise<ApiResponse<{ barcode: string }>> {
     return await apiClient.get<{ barcode: string }>(`/products/variants/${variantId}/barcode`);
   }
-
-
 
   /**
    * Get featured products
    */
-  static async getFeaturedProducts(limit = 10): Promise<APIResponse<Product[]>> {
+  static async getFeaturedProducts(limit = 10): Promise<ApiResponse<Product[]>> {
     return await apiClient.get<Product[]>(`/products/featured?limit=${limit}`);
   }
-  static async getPopularProducts(limit = 10): Promise<APIResponse<Product[]>> {
+  
+  static async getPopularProducts(limit = 10): Promise<ApiResponse<Product[]>> {
     return await apiClient.get<Product[]>(`/products/popular?limit=${limit}`);
   }
 
   /**
    * Get recommended products
    */
-  static async getRecommendedProducts(productId?: string, limit = 10): Promise<APIResponse<Product[]>> {
+  static async getRecommendedProducts(productId?: string, limit = 10): Promise<ApiResponse<Product[]>> {
     const url = productId 
       ? `/products/${productId}/recommendations?limit=${limit}`
       : `/products/recommendations?limit=${limit}`;
@@ -100,8 +100,8 @@ export class ProductsAPI {
   /**
    * Get product reviews
    */
-  static async getProductReviews(productId: string, page = 1, limit = 10): Promise<APIResponse<PaginatedResponse<unknown>>> {
-    return await apiClient.get<PaginatedResponse<unknown>>(`/products/${productId}/reviews?page=${page}&limit=${limit}`);
+  static async getProductReviews(productId: string, page = 1, limit = 10): Promise<ApiResponse<PaginatedResponse<Review>>> {
+    return await apiClient.get<PaginatedResponse<Review>>(`/products/${productId}/reviews?page=${page}&limit=${limit}`);
   }
 
   /**
@@ -111,14 +111,14 @@ export class ProductsAPI {
     rating: number;
     title: string;
     comment: string;
-  }): Promise<APIResponse<{ message: string }>> {
-    return await apiClient.post<APIResponse<{ message: string }>>(`/products/${productId}/reviews`, review);
+  }): Promise<ApiResponse<{ message: string }>> {
+    return await apiClient.post<{ message: string }>(`/products/${productId}/reviews`, review);
   }
 
   /**
    * Get product availability
    */
-  static async checkAvailability(variantId: string, quantity = 1): Promise<APIResponse<{
+  static async checkAvailability(variantId: string, quantity = 1): Promise<ApiResponse<{
     available: boolean;
     stock: number;
     max_quantity: number;
@@ -137,7 +137,7 @@ export class ProductsAPI {
   static async createProduct(product: {
     name: string;
     description: string;
-    category_id: string;
+    category_id: number;
     variants?: Array<{
       sku: string;
       name: string;
@@ -146,22 +146,22 @@ export class ProductsAPI {
       stock: number;
       attributes?: Record<string, unknown>;
     }>;
-  }): Promise<APIResponse<Product>> {
+  }): Promise<ApiResponse<Product>> {
     return await apiClient.post<Product>('/products', product);
   }
 
   /**
    * Update product (Supplier/Admin only)
    */
-  static async updateProduct(productId: string, updates: Partial<Product>): Promise<APIResponse<Product>> {
+  static async updateProduct(productId: string, updates: Partial<Product>): Promise<ApiResponse<Product>> {
     return await apiClient.put<Product>(`/products/${productId}`, updates);
   }
 
   /**
    * Delete product (Supplier/Admin only)
    */
-  static async deleteProduct(productId: string): Promise<APIResponse<{ message: string }>> {
-    return await apiClient.delete<APIResponse<{ message: string }>>(`/products/${productId}`);
+  static async deleteProduct(productId: string): Promise<ApiResponse<{ message: string }>> {
+    return await apiClient.delete<{ message: string }>(`/products/${productId}`);
   }
 
   /**
@@ -173,22 +173,23 @@ export class ProductsAPI {
     base_price: number;
     sale_price?: number;
     stock: number;
-          attributes?: Record<string, unknown>;  }): Promise<APIResponse<ProductVariant>> {
+    attributes?: Record<string, unknown>;
+  }): Promise<ApiResponse<ProductVariant>> {
     return await apiClient.post<ProductVariant>(`/products/${productId}/variants`, variant);
   }
 
   /**
    * Update product variant (Supplier/Admin only)
    */
-  static async updateVariant(variantId: string, updates: Partial<ProductVariant>): Promise<APIResponse<ProductVariant>> {
+  static async updateVariant(variantId: string, updates: Partial<ProductVariant>): Promise<ApiResponse<ProductVariant>> {
     return await apiClient.put<ProductVariant>(`/products/variants/${variantId}`, updates);
   }
 
   /**
    * Delete product variant (Supplier/Admin only)
    */
-  static async deleteVariant(variantId: string): Promise<APIResponse<{ message: string }>> {
-    return await apiClient.delete<APIResponse<{ message: string }>>(`/products/variants/${variantId}`);
+  static async deleteVariant(variantId: string): Promise<ApiResponse<{ message: string }>> {
+    return await apiClient.delete<{ message: string }>(`/products/variants/${variantId}`);
   }
 
   /**
@@ -199,7 +200,7 @@ export class ProductsAPI {
     file: File, 
     isPrimary = false,
     onProgress?: (progress: number) => void
-  ): Promise<APIResponse<{ message: string; image_url: string }>> {
+  ): Promise<ApiResponse<{ message: string; image_url: string }>> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('is_primary', isPrimary.toString());
@@ -210,21 +211,21 @@ export class ProductsAPI {
   /**
    * Delete product image (Supplier/Admin only)
    */
-  static async deleteProductImage(imageId: string): Promise<APIResponse<{ message: string }>> {
-    return await apiClient.delete<APIResponse<{ message: string }>>(`/products/images/${imageId}`);
+  static async deleteProductImage(imageId: string): Promise<ApiResponse<{ message: string }>> {
+    return await apiClient.delete<{ message: string }>(`/products/images/${imageId}`);
   }
 
   /**
    * Update inventory (Supplier/Admin only)
    */
-  static async updateInventory(variantId: string, stock: number): Promise<APIResponse<{ message: string }>> {
-    return await apiClient.put<APIResponse<{ message: string }>>(`/products/variants/${variantId}/inventory`, { stock });
+  static async updateInventory(variantId: string, stock: number): Promise<ApiResponse<{ message: string }>> {
+    return await apiClient.put<{ message: string }>(`/products/variants/${variantId}/inventory`, { stock });
   }
 
   /**
    * Get supplier products (Supplier only)
    */
-  static async getSupplierProducts(params?: SearchParams): Promise<APIResponse<PaginatedResponse<Product>>> {
+  static async getSupplierProducts(params?: ProductFilters): Promise<ApiResponse<PaginatedResponse<Product>>> {
     const queryParams = new URLSearchParams();
     
     if (params?.q) queryParams.append('q', params.q);

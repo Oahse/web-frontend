@@ -7,7 +7,7 @@ import { ChevronDownIcon, SearchIcon, UserIcon, HeartIcon, ShoppingCartIcon, Men
 import { motion } from 'framer-motion';
 
 import { SkeletonHeader } from '../ui/SkeletonNavigation';
-import { Country, getCountryByCode } from '../../lib/countries';
+import { getCountryByCode } from '../../lib/countries';
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -31,9 +31,9 @@ export const Header: React.FC<HeaderProps> = ({
   animation = 'shimmer',
   isScrolled = false
 }) => {
-  const { isAuthenticated, user, isAdmin } = useAuth();
+  const { isAuthenticated, user, isAdmin, isSupplier } = useAuth();
   const { totalItems } = useCart();
-  const { wishlists, defaultWishlist } = useWishlist();
+  const { defaultWishlist } = useWishlist();
 
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,15 +49,16 @@ export const Header: React.FC<HeaderProps> = ({
     return () => clearInterval(adInterval);
   }, []);
 
-  const handleCountryChange = (country: Country) => {
-    setSelectedCountry(country.code);
-    // You might want to save this preference to localStorage or a user profile
-  };
+  // These functions can be used later for country/language switching
+  // const handleCountryChange = (country: Country) => {
+  //   setSelectedCountry(country.code);
+  //   localStorage.setItem('preferred_country', country.code);
+  // };
 
-  const handleLanguageChange = (langCode: string) => {
-    setSelectedLanguage(langCode);
-    // You might want to save this preference to localStorage or a user profile
-  };
+  // const handleLanguageChange = (langCode: string) => {
+  //   setSelectedLanguage(langCode);
+  //   localStorage.setItem('preferred_language', langCode);
+  // };
 
   // Categories for dropdown (keep for now, might be translated later)
   const categories = [
@@ -73,22 +74,31 @@ export const Header: React.FC<HeaderProps> = ({
   ];
 
 
-  // Cookie consent
+  // Cookie consent and country detection
   useEffect(() => {
     const consent = localStorage.getItem('cookie_consent');
     if (consent !== 'accepted') {
       setShowCookieConsent(true);
     }
 
-    // NOTE: Using http because the free tier of ip-api.com does not support https.
-    fetch('http://ip-api.com/json')
-      .then(response => response.json())
-      .then(data => {
-        if (data.countryCode) {
-          setSelectedCountry(data.countryCode);
-        }
-      })
-      .catch(error => console.error('Error fetching country:', error));
+    // Detect user's country and language from browser settings
+    const browserLang = navigator.language || (navigator.languages && navigator.languages[0]);
+    if (browserLang) {
+      const langCode = browserLang.split('-')[0];
+      const countryCode = browserLang.split('-')[1];
+
+      if (countryCode && countryCode.length === 2) {
+        setSelectedCountry(countryCode.toUpperCase());
+      } else if (langCode) {
+        // Fallback: if only language is available, try to map it to a country
+        // This is a simplification; a more robust solution might involve a language-to-country map
+        if (langCode === 'en') setSelectedCountry('US');
+        else if (langCode === 'fr') setSelectedCountry('FR');
+        else if (langCode === 'de') setSelectedCountry('DE');
+        // Add more language-to-country mappings as needed
+      }
+      setSelectedLanguage('en'); // Always set language to English
+    }
   }, []);
 
   const handleAcceptCookies = () => {
@@ -135,16 +145,29 @@ export const Header: React.FC<HeaderProps> = ({
               {isAdmin && (
                 <Link to="/admin" className="hover:text-primary transition-colors flex items-center">
                   <ShieldIcon size={14} className="mr-1" />
-                  Admin
+                  Admin Dashboard
+                </Link>
+              )}
+              {isSupplier && (
+                <Link to="/supplier" className="hover:text-primary transition-colors flex items-center">
+                  <ShieldIcon size={14} className="mr-1" />
+                  Supplier Dashboard
+                </Link>
+              )}
+              {(isAdmin || isSupplier) && (
+                <Link to="/" className="hover:text-primary transition-colors">
+                  Home
                 </Link>
               )}
             </div>
             <div className="flex items-center space-x-4">
               {/* Country Flag */}
-              {selectedCountry && getCountryByCode(selectedCountry) && (
-                <span className="text-lg" role="img" aria-label={`${getCountryByCode(selectedCountry)?.name} flag`}>
-                  {getCountryByCode(selectedCountry)?.flag}
-                </span>
+              {selectedCountry && (
+                <img
+                  src={`https://flagcdn.com/w20/${selectedCountry.toLowerCase()}.png`}
+                  alt={`${selectedCountry} flag`}
+                  className="w-5 h-auto mr-1 inline-block"
+                />
               )}
 
               {/* Language Code */}
@@ -226,7 +249,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="hidden md:flex items-center hover:text-primary">
                 <UserIcon size={24} className="mr-1" />
                 <div className="flex flex-col text-xs">
-                  <span>{isAuthenticated ? `Hello, ${user?.name.split(' ')[0]}` : 'Login'}</span>
+                  <span>{isAuthenticated ? `Hello, ${user?.firstname || user?.full_name?.split(' ')[0] || 'User'}` : 'Login'}</span>
                   <span className="font-semibold">
                     {isAuthenticated ? 'Account' : 'My Account'}
                   </span>
@@ -262,7 +285,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="hidden md:flex flex-col ml-1 text-xs">
                   <span>Your Cart</span>
                   <span className="font-semibold">
-                    ${totalItems > 0 ? 0 .toFixed(2) : '0.00'}
+                    ${totalItems > 0 ? '0.00' : '0.00'}
                   </span>
                 </div>
               </Link>

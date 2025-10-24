@@ -5,36 +5,25 @@
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
+import { User, ApiResponse, ApiError } from '../types';
 
 // API Configuration
-const API_CONFIG = {
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1',
+export const API_CONFIG = {
+  baseURL: import.meta.env?.VITE_API_BASE_URL || 'http://localhost:8000/api/v1',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
 };
 
-// Error types
-export interface APIError {
-  error: boolean;
+// Backend error response structure
+interface BackendErrorResponse {
   message: string;
-  details?: unknown;
+  detail?: string;
+  details?: Record<string, string[]> | unknown;
   timestamp?: string;
   path?: string;
-  status?: number;
-}
-
-export interface APIResponse<T = unknown> {
-  success: boolean;
-  data: T;
-  message?: string;
-  pagination?: {
-    page: number;
-    limit: number;
-    total: number;
-    pages: number;
-  };
+  errors?: Record<string, string[]>;
 }
 
 // Token management
@@ -83,6 +72,12 @@ let isToastVisible = false;
 
 // API Client class
 class APIClient {
+  private client: AxiosInstance;
+  private isRefreshing = false;
+  private failedQueue: Array<{
+    resolve: (value: unknown) => void;
+    reject: (reason?: unknown) => void;
+  }> = [];
 
   constructor() {
     this.client = axios.create(API_CONFIG);
@@ -198,46 +193,65 @@ class APIClient {
     this.failedQueue = [];
   }
 
-  private handleError(error: AxiosError, suppressToasts: boolean = false): Promise<never> {
-    const apiError: APIError = {
-      error: true,
+  private handleError(error: AxiosError, suppressToasts = false): Promise<never> {
+    const apiError: ApiError = {
       message: 'An unexpected error occurred',
-      status: error.response?.status,
+      code: error.response?.status?.toString(),
     };
 
     if (error.response?.data) {
-      const errorData = error.response.data as unknown;
-      if (typeof errorData?.message === 'object' && errorData.message !== null && 'message' in errorData.message) {
-        apiError.message = (errorData.message as { message: string }).message;
-      } else {
-        apiError.message = errorData?.message || errorData?.detail || apiError.message;
+      const errorData = error.response.data as BackendErrorResponse;
+      
+      // Handle backend error structure
+      if (errorData.message) {
+        apiError.message = errorData.message;
+      } else if (errorData.detail) {
+        apiError.message = errorData.detail;
       }
-      apiError.details = errorData?.details;
-      apiError.timestamp = errorData?.timestamp;
-      apiError.path = errorData?.path;
+      
+      // Handle validation errors
+      if (errorData.details || errorData.errors) {
+        apiError.message = errorData.details || errorData.errors;
+        
+        // Extract first validation error for display
+        const validationErrors = errorData.details || errorData.errors;
+        if (validationErrors && typeof validationErrors === 'object') {
+          const firstError = Object.values(validationErrors)[0];
+          if (Array.isArray(firstError) && firstError.length > 0) {
+            apiError.message = firstError[0];
+          }
+        }
+      }
     } else if (error.request) {
-      apiError.message = 'Network error - please check your connection';
+      // This block is executed when the request was made but no response was received.
+      // This often indicates a network issue or a server that closed the connection prematurely.
+      if (error.code === 'ECONNABORTED') { // Timeout error
+        apiError.message = 'Request timed out. Please try again.';
+        apiError.code = 'TIMEOUT_ERROR';
+      } else {
+        apiError.message = 'Failed to connect to the server. Please ensure the backend is running and accessible.';
+        apiError.code = 'CONNECTION_ERROR';
+      }
     }
 
     // Show user-friendly error messages (will be suppressed for public endpoints)
-    console.log('API Error URL:', error.config?.url);
     this.showErrorToast(apiError, suppressToasts);
 
     // Log error in development
-    // if (import.meta.env.DEV) {
-    //   console.error('❌ API Error:', {
-    //     url: error.config?.url,
-    //     method: error.config?.method,
-    //     status: error.response?.status,
-    //     message: apiError.message,
-    //     details: apiError.details,
-    //   });
-    // }
+    if (import.meta.env.DEV) {
+      console.error('❌ API Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        status: error.response?.status,
+        message: apiError.message,
+        details: apiError.details,
+      });
+    }
 
     return Promise.reject(apiError);
   }
 
-  private showErrorToast(error: APIError, suppressToasts: boolean = false): void {
+  private showErrorToast(error: ApiError, suppressToasts = false): void {
     // Don't show toast if suppressed or if it's a 401 error on homepage/public endpoints
     if (suppressToasts || this.shouldSuppressErrorToast(error)) {
       return;
@@ -252,15 +266,14 @@ class APIClient {
       isToastVisible = false;
     }, 30000); // Reset after 30 seconds
 
-    const status = error.status;
+    const statusCode = error.code ? parseInt(error.code) : null;
     let message = error.message;
 
     // Customize messages based on status codes
-    switch (status) {
+    switch (statusCode) {
       case 400:
         message = 'Invalid request. Please check your input.';
         break;
-      
       case 403:
         message = 'You don\'t have permission to perform this action.';
         break;
@@ -268,7 +281,7 @@ class APIClient {
         message = 'The requested resource was not found.';
         break;
       case 422:
-        message = 'Please check your input and try again.';
+        // For validation errors, use the specific message from backend
         break;
       case 429:
         message = 'Too many requests. Please wait a moment and try again.';
@@ -277,7 +290,7 @@ class APIClient {
         message = 'Server error. Please try again later.';
         break;
       default:
-        if (status && status >= 500) {
+        if (statusCode && statusCode >= 500) {
           message = 'Server error. Please try again later.';
         }
     }
@@ -286,7 +299,7 @@ class APIClient {
   }
 
   private generateRequestId(): string {
-    return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `req_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
   }
 
   private isPublicEndpoint(url: string): boolean {
@@ -303,46 +316,43 @@ class APIClient {
     return publicEndpoints.some(endpoint => url.includes(endpoint));
   }
 
-  private shouldSuppressErrorToast(error: APIError): boolean {
+  private shouldSuppressErrorToast(error: ApiError): boolean {
     // Suppress 401 errors for public endpoints that don't require authentication
-    if (error.status === 401) {
-      // Check if the error path matches any public endpoint
-      if (error.path && this.isPublicEndpoint(error.path)) {
-        return true;
-      }
+    if (error.code === '401') {
+      return true; // Let the auth interceptor handle 401s
     }
-    
+
     return false;
   }
 
   // HTTP Methods
-  async get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<APIResponse<T>> {
-    const response = await this.client.get<APIResponse<T>>(url, config);
+  async get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    const response = await this.client.get<ApiResponse<T>>(url, config);
     return response.data;
   }
 
-  async post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<APIResponse<T>> {
-    const response = await this.client.post<APIResponse<T>>(url, data, config);
+  async post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    const response = await this.client.post<ApiResponse<T>>(url, data, config);
     return response.data;
   }
 
-  async put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<APIResponse<T>> {
-    const response = await this.client.put<APIResponse<T>>(url, data, config);
+  async put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    const response = await this.client.put<ApiResponse<T>>(url, data, config);
     return response.data;
   }
 
-  async patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<APIResponse<T>> {
-    const response = await this.client.patch<APIResponse<T>>(url, data, config);
+  async patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    const response = await this.client.patch<ApiResponse<T>>(url, data, config);
     return response.data;
   }
 
-  async delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<APIResponse<T>> {
-    const response = await this.client.delete<APIResponse<T>>(url, config);
+  async delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    const response = await this.client.delete<ApiResponse<T>>(url, config);
     return response.data;
   }
 
   // File upload
-  async upload<T = unknown>(url: string, file: File, onProgress?: (progress: number) => void): Promise<APIResponse<T>> {
+  async upload<T = unknown>(url: string, file: File, onProgress?: (progress: number) => void): Promise<ApiResponse<T>> {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -358,7 +368,7 @@ class APIClient {
       },
     };
 
-    const response = await this.client.post(url, formData, config);
+    const response = await this.client.post<ApiResponse<T>>(url, formData, config);
     return response.data;
   }
 
@@ -382,6 +392,245 @@ class APIClient {
   // Get raw axios instance for advanced usage
   getClient(): AxiosInstance {
     return this.client;
+  }
+
+  // ==================== CONSOLIDATED API METHODS ====================
+
+  // Auth methods
+  async login(credentials: { email: string; password: string }) {
+    return this.post('/auth/login', credentials);
+  }
+
+  async register(userData: { email: string; password: string; firstname: string; lastname: string; phone?: string }) {
+    return this.post('/auth/register', userData);
+  }
+
+  async logout() {
+    return this.post('/auth/logout', {});
+  }
+
+  async refreshToken() {
+    return this.post('/auth/refresh', {});
+  }
+
+  // User methods
+  async getCurrentUser() {
+    return this.get('/users/me');
+  }
+
+  async updateProfile(updates: Partial<User>) {
+    return this.put('/users/me', updates);
+  }
+
+  async changePassword(data: { current_password: string; new_password: string }) {
+    return this.put('/users/me/password', data);
+  }
+
+  // Address methods
+  async getUserAddresses() {
+    return this.get('/users/me/addresses');
+  }
+
+  async createAddress(address: Record<string, unknown>) {
+    return this.post('/users/me/addresses', address);
+  }
+
+  async updateAddress(id: number, updates: Record<string, unknown>) {
+    return this.put(`/users/me/addresses/${id}`, updates);
+  }
+
+  async deleteAddress(id: number) {
+    return this.delete(`/users/me/addresses/${id}`);
+  }
+
+  async setDefaultAddress(id: number) {
+    return this.put(`/users/me/addresses/${id}/default`, {});
+  }
+
+  // Product methods
+  async getProducts(params?: Record<string, unknown>) {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          if (Array.isArray(value)) {
+            queryParams.append(key, value.join(','));
+          } else {
+            queryParams.append(key, value.toString());
+          }
+        }
+      });
+    }
+    const url = `/products${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+    return this.get(url);
+  }
+
+  async getProduct(id: number | string) {
+    return this.get(`/products/${id}`);
+  }
+
+  async getProductWithDetails(id: number | string) {
+    return this.get(`/products/${id}?include_variants=true&include_reviews=true`);
+  }
+
+  async getFeaturedProducts(limit = 10) {
+    return this.get(`/products/featured?limit=${limit}`);
+  }
+
+  async searchProducts(query: string) {
+    return this.get(`/products/search?q=${encodeURIComponent(query)}`);
+  }
+
+  // Category methods
+  async getCategories() {
+    return this.get('/categories');
+  }
+
+  async getCategory(id: number) {
+    return this.get(`/categories/${id}`);
+  }
+
+  async getCategoryProducts(id: number, page = 1, limit = 20) {
+    return this.get(`/categories/${id}/products?page=${page}&limit=${limit}`);
+  }
+
+  // Cart methods
+  async getCart() {
+    return this.get('/cart');
+  }
+
+  async addToCart(variantId: number, quantity: number) {
+    return this.post('/cart/items', { variant_id: variantId, quantity });
+  }
+
+  async updateCartItem(itemId: number, quantity: number) {
+    return this.put(`/cart/items/${itemId}`, { quantity });
+  }
+
+  async removeFromCart(itemId: number) {
+    return this.delete(`/cart/items/${itemId}`);
+  }
+
+  async clearCart() {
+    return this.delete('/cart');
+  }
+
+  // Order methods
+  async getOrders(params?: Record<string, unknown>) {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          queryParams.append(key, value.toString());
+        }
+      });
+    }
+    const url = `/orders${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+    return this.get(url);
+  }
+
+  async getOrder(id: string) {
+    return this.get(`/orders/${id}`);
+  }
+
+  async createOrder(orderData: {
+    shipping_address_id: number;
+    shipping_method_id: number;
+    payment_method_id: number;
+    promocode?: string;
+    notes?: string;
+  }) {
+    return this.post('/orders', orderData);
+  }
+
+  async cancelOrder(id: string) {
+    return this.put(`/orders/${id}/cancel`, {});
+  }
+
+  async trackOrder(id: string) {
+    return this.get(`/orders/${id}/tracking`);
+  }
+
+  // Review methods
+  async getProductReviews(productId: number, page = 1, limit = 10) {
+    return this.get(`/products/${productId}/reviews?page=${page}&limit=${limit}`);
+  }
+
+  async createReview(review: { product_id: number; rating: number; comment?: string }) {
+    return this.post('/reviews', review);
+  }
+
+  async updateReview(id: string, updates: Record<string, unknown>) {
+    return this.put(`/reviews/${id}`, updates);
+  }
+
+  async deleteReview(id: string) {
+    return this.delete(`/reviews/${id}`);
+  }
+
+  // Wishlist methods
+  async getWishlists() {
+    return this.get('/wishlists');
+  }
+
+  async getWishlist(id: number) {
+    return this.get(`/wishlists/${id}`);
+  }
+
+  async createWishlist(data: { name: string; is_public?: boolean }) {
+    return this.post('/wishlists', data);
+  }
+
+  async addToWishlist(wishlistId: number, productId: number, quantity = 1) {
+    return this.post(`/wishlists/${wishlistId}/items`, { product_id: productId, quantity });
+  }
+
+  async removeFromWishlist(wishlistId: number, itemId: number) {
+    return this.delete(`/wishlists/${wishlistId}/items/${itemId}`);
+  }
+
+  // Payment methods
+  async getPaymentMethods() {
+    return this.get('/payment-methods');
+  }
+
+  async createPaymentMethod(method: { type: string; provider: string; token: string }) {
+    return this.post('/payment-methods', method);
+  }
+
+  async deletePaymentMethod(id: number) {
+    return this.delete(`/payment-methods/${id}`);
+  }
+
+  async setDefaultPaymentMethod(id: number) {
+    return this.put(`/payment-methods/${id}/default`, {});
+  }
+
+  // Shipping methods
+  async getShippingMethods() {
+    return this.get('/shipping-methods');
+  }
+
+  async calculateShipping(addressId: number, items: Array<{ variant_id: number; quantity: number }>) {
+    return this.post('/shipping/calculate', { address_id: addressId, items });
+  }
+
+  // Promocode methods
+  async validatePromocode(code: string, orderTotal: number) {
+    return this.post('/promocodes/validate', { code, order_total: orderTotal });
+  }
+
+  // Blog methods
+  async getBlogPosts(page = 1, limit = 10) {
+    return this.get(`/blog/posts?page=${page}&limit=${limit}`);
+  }
+
+  async getBlogPost(id: string) {
+    return this.get(`/blog/posts/${id}`);
+  }
+
+  async getFeaturedBlogPosts(limit = 5) {
+    return this.get(`/blog/posts/featured?limit=${limit}`);
   }
 }
 

@@ -141,22 +141,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         } else {
 
-                    const success = await addToCart({
-
-                      product_id: product.id,
-
-                      variant_id: variantToAdd.id,
-
-                      quantity: 1,
-
-                    });
-
-                    if (!success) {
-
-                      setRedirectPath(location.pathname);
-
-                      navigate('/login');
-
+                    try {
+                      await addToCart({
+                        variant_id: String(variantToAdd.id),
+                        quantity: 1,
+                      });
+                      toast.success('Item added to cart!');
+                    } catch (error) {
+                      console.error('Failed to add to cart:', error);
+                      // If user is not authenticated, redirect to login
+                      if (error instanceof Error && error.message.includes('authenticated')) {
+                        setRedirectPath(location.pathname);
+                        navigate('/login');
+                      } else {
+                        toast.error('Failed to add item to cart');
+                      }
                     }
 
                   }

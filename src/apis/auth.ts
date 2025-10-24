@@ -209,8 +209,8 @@ export class AuthAPI {
   /**
    * Get user's addresses
    */
-  static async getAddresses(userId: string,): Promise<APIResponse<Address[]>> {
-    return await apiClient.get<Address[]>(`/users/${userId}/addresses`);
+  static async getAddresses(): Promise<APIResponse<Address[]>> {
+    return await apiClient.get<Address[]>(`/users/me/addresses`);
   }
 
   /**

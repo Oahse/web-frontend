@@ -1,12 +1,15 @@
 /**
- * API Client Index - Export all API modules
+ * API Client Index - Main export point for all API functionality
  */
 
 // Export the main client and utilities
 export { apiClient, TokenManager } from './client';
 export type { APIError, APIResponse } from './client';
 
-// Export all API classes
+// Export all types
+export * from '../types';
+
+// Export legacy API classes for backwards compatibility
 export { default as AuthAPI } from './auth';
 export { default as ProductsAPI } from './products';
 export { default as OrdersAPI } from './orders';
@@ -17,9 +20,6 @@ export { default as ReviewsAPI } from './reviews';
 export { default as BlogAPI } from './blog';
 export { default as SubscriptionAPI } from './subscription';
 export { default as CategoriesAPI } from './categories';
-
-// Export all types
-export * from './types';
 
 // Create a centralized API object for easy access
 import AuthAPI from './auth';
@@ -32,8 +32,14 @@ import ReviewsAPI from './reviews';
 import BlogAPI from './blog';
 import SubscriptionAPI from './subscription';
 import CategoriesAPI from './categories';
+import { apiClient } from './client';
 
+// Main API object - use apiClient directly for new code
 export const API = {
+  // Direct client access (recommended)
+  client: apiClient,
+  
+  // Legacy APIs (for backwards compatibility)
   auth: AuthAPI,
   products: ProductsAPI,
   orders: OrdersAPI,
@@ -46,5 +52,5 @@ export const API = {
   categories: CategoriesAPI,
 };
 
-// Export default as the centralized API object
-export default API;
+// Export the client as default for easy importing
+export default apiClient;

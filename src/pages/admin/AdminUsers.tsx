@@ -1,126 +1,83 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { SearchIcon, FilterIcon, MoreHorizontalIcon, TrashIcon, EditIcon, CheckCircleIcon, XCircleIcon, UserPlusIcon, ChevronDownIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useApi } from '../../hooks/useApi';
+import { usePaginatedApi } from '../../hooks/useApi';
 import { AdminAPI } from '../../apis';
 import ErrorMessage from '../../components/common/ErrorMessage';
+import { User, PaginatedResponse } from '../../types';
 
 export const AdminUsers: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterRole, setFilterRole] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [submittedSearchTerm, setSubmittedSearchTerm] = useState('');
+  const [filterRole, setFilterRole] = useState<'all' | 'customer' | 'supplier' | 'admin'>('all');
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
+  const [status, setStatus] = useState<'all' | 'active' | 'inactive'>('all');
+  const [verified, setVerified] = useState<'all' | 'true' | 'false'>('all');
+
+  const apiCall = useCallback((page: number, limit: number) => {
+    return AdminAPI.getUsers({
+      role: filterRole !== 'all' ? filterRole : undefined,
+      search: submittedSearchTerm || undefined,
+      status: status !== 'all' ? status : undefined,
+      verified: verified !== 'all' ? (verified === 'true') : undefined,
+      page,
+      limit,
+    });
+  }, [filterRole, submittedSearchTerm, status, verified]);
 
   // API call for users
   const {
-    data: usersData,
+    data: users,
     loading: usersLoading,
     error: usersError,
     execute: fetchUsers,
-  } = useApi<any>({ showErrorToast: false });
+    page: currentPage,
+    limit: itemsPerPage,
+    totalPages,
+    goToPage,
+    changeLimit,
+  } = usePaginatedApi<User>(
+    apiCall,
+    1,
+    10,
+    { showErrorToast: false, autoFetch: true }
+  );
 
-  useEffect(() => {
-    fetchUsers(() => AdminAPI.getUsers({
-      role: filterRole !== 'all' ? filterRole as any : undefined,
-      search: searchTerm || undefined,
-      page: currentPage,
-      limit: 10
-    }));
-  }, [searchTerm, filterRole, currentPage, fetchUsers]);
-
-  // Fallback data
-  const fallbackUsers = [{
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    role: 'Admin',
-    status: 'Active',
-    lastLogin: '2023-05-15 10:30 AM',
-    avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-    orders: 12
-  }, {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    role: 'Customer',
-    status: 'Active',
-    lastLogin: '2023-05-14 02:45 PM',
-    avatar: 'https://randomuser.me/api/portraits/women/2.jpg',
-    orders: 8
-  }, {
-    id: '3',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    role: 'Manager',
-    status: 'Active',
-    lastLogin: '2023-05-13 09:15 AM',
-    avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
-    orders: 0
-  }, {
-    id: '4',
-    name: 'Emily Davis',
-    email: 'emily@example.com',
-    role: 'Customer',
-    status: 'Inactive',
-    lastLogin: '2023-04-28 11:20 AM',
-    avatar: 'https://randomuser.me/api/portraits/women/4.jpg',
-    orders: 5
-  }, {
-    id: '5',
-    name: 'Michael Brown',
-    email: 'michael@example.com',
-    role: 'Customer',
-    status: 'Active',
-    lastLogin: '2023-05-10 04:30 PM',
-    avatar: 'https://randomuser.me/api/portraits/men/5.jpg',
-    orders: 3
-  }, {
-    id: '6',
-    name: 'Sarah Wilson',
-    email: 'sarah@example.com',
-    role: 'Customer',
-    status: 'Active',
-    lastLogin: '2023-05-12 01:15 PM',
-    avatar: 'https://randomuser.me/api/portraits/women/6.jpg',
-    orders: 7
-  }];
-
-  // Use API data or fallback
-  const users = usersData?.data || fallbackUsers;
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittedSearchTerm(searchTerm);
+    goToPage(1);
+  };
 
   // Roles for filter
   const roles = [{
     id: 'all',
     name: 'All Roles'
   }, {
-    id: 'Admin',
+    id: 'admin',
     name: 'Admin'
   }, {
-    id: 'Manager',
-    name: 'Manager'
+    id: 'supplier',
+    name: 'Supplier'
   }, {
-    id: 'Customer',
+    id: 'customer',
     name: 'Customer'
   }];
 
   if (usersError) {
+    console.log("Users API Error:", usersError);
     return (
       <div className="p-6">
         <ErrorMessage
           error={usersError}
-          onRetry={() => fetchUsers(() => AdminAPI.getUsers({
-            role: filterRole !== 'all' ? filterRole as any : undefined,
-            search: searchTerm || undefined,
-            page: currentPage,
-            limit: 10
-          }))}
+          onRetry={() => fetchUsers()}
         />
       </div>
     );
   }
 
-  const totalPages = usersData?.pagination?.totalPages || 1;
-  const startIndex = (currentPage - 1) * 10;
-  const endIndex = Math.min(startIndex + 10, usersData?.pagination?.total || users.length);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, users.length);
 
   return <div>
       <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
@@ -131,36 +88,64 @@ export const AdminUsers: React.FC = () => {
         </Link>
       </div>
       {/* Filters and search */}
-      <div className="bg-white rounded-lg shadow-sm p-4 mb-6 border border-gray-100">
-        <div className="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-4">
-          <div className="flex-grow">
-            <div className="relative">
-              <input type="text" placeholder="Search users by name or email..." className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
-              <SearchIcon size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+      <div className="bg-surface rounded-lg shadow-sm p-4 mb-6 border border-border-light">
+        <form onSubmit={handleSearch}>
+          <div className="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-4">
+            <div className="flex-grow">
+              <div className="relative">
+                <input type="text" placeholder="Search users by name or email..." className="w-full pl-10 pr-4 py-2 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary bg-background text-copy" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                <SearchIcon size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-copy-lighter" />
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <select value={filterRole} onChange={e => setFilterRole(e.target.value as 'all' | 'customer' | 'supplier' | 'admin')} className="appearance-none pl-3 pr-10 py-2 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary bg-background text-copy">
+                  {roles.map(role => <option key={role.id} value={role.id}>
+                      {role.name}
+                    </option>)}
+                </select>
+                <ChevronDownIcon size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-copy-light pointer-events-none" />
+              </div>
+              <button type="button" onClick={() => setShowMoreFilters(!showMoreFilters)} className="flex items-center px-3 py-2 border border-border rounded-md hover:bg-surface-hover text-copy">
+                <FilterIcon size={18} className="mr-2" />
+                More Filters
+              </button>
+              <button type="submit" className="flex items-center px-3 py-2 bg-primary text-white rounded-md hover:bg-primary-dark">
+                <SearchIcon size={18} className="mr-2" />
+                Search
+              </button>
             </div>
           </div>
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <select value={filterRole} onChange={e => setFilterRole(e.target.value)} className="appearance-none pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary">
-                {roles.map(role => <option key={role.id} value={role.id}>
-                    {role.name}
-                  </option>)}
-              </select>
-              <ChevronDownIcon size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
+        </form>
+        {showMoreFilters && (
+          <div className="mt-4 pt-4 border-t border-border-light">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm text-copy-light mb-1 block">Status</label>
+                <select value={status} onChange={e => setStatus(e.target.value as 'all' | 'active' | 'inactive')} className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary bg-background text-copy">
+                  <option value="all">All Statuses</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm text-copy-light mb-1 block">Verified</label>
+                <select value={verified} onChange={e => setVerified(e.target.value as 'all' | 'true' | 'false')} className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary bg-background text-copy">
+                  <option value="all">All</option>
+                  <option value="true">Verified</option>
+                  <option value="false">Not Verified</option>
+                </select>
+              </div>
             </div>
-            <button className="flex items-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-              <FilterIcon size={18} className="mr-2" />
-              More Filters
-            </button>
           </div>
-        </div>
+        )}
       </div>
       {/* Users table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-surface rounded-lg shadow-sm border border-border-light overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-50 text-left text-gray-600 text-sm">
+              <tr className="bg-background text-left text-copy-light text-sm">
                 <th className="py-3 px-4 font-medium">User</th>
                 <th className="py-3 px-4 font-medium">Email</th>
                 <th className="py-3 px-4 font-medium">Role</th>
@@ -174,87 +159,87 @@ export const AdminUsers: React.FC = () => {
               {usersLoading ? (
                 // Loading skeleton
                 [...Array(5)].map((_, index) => (
-                  <tr key={index} className="border-t border-gray-100 animate-pulse">
+                  <tr key={index} className="border-t border-border-light animate-pulse">
                     <td className="py-3 px-4">
                       <div className="flex items-center">
-                        <div className="w-8 h-8 bg-gray-200 rounded-full mr-3"></div>
+                        <div className="w-8 h-8 bg-surface-hover rounded-full mr-3"></div>
                         <div>
-                          <div className="w-24 h-4 bg-gray-200 rounded mb-1"></div>
-                          <div className="w-16 h-3 bg-gray-200 rounded"></div>
+                          <div className="w-24 h-4 bg-surface-hover rounded mb-1"></div>
+                          <div className="w-16 h-3 bg-surface-hover rounded"></div>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-4"><div className="w-32 h-4 bg-gray-200 rounded"></div></td>
-                    <td className="py-3 px-4"><div className="w-16 h-6 bg-gray-200 rounded-full"></div></td>
-                    <td className="py-3 px-4"><div className="w-16 h-4 bg-gray-200 rounded"></div></td>
-                    <td className="py-3 px-4"><div className="w-8 h-4 bg-gray-200 rounded"></div></td>
-                    <td className="py-3 px-4"><div className="w-20 h-4 bg-gray-200 rounded"></div></td>
-                    <td className="py-3 px-4"><div className="w-20 h-8 bg-gray-200 rounded"></div></td>
+                    <td className="py-3 px-4"><div className="w-32 h-4 bg-surface-hover rounded"></div></td>
+                    <td className="py-3 px-4"><div className="w-16 h-6 bg-surface-hover rounded-full"></div></td>
+                    <td className="py-3 px-4"><div className="w-16 h-4 bg-surface-hover rounded"></div></td>
+                    <td className="py-3 px-4"><div className="w-8 h-4 bg-surface-hover rounded"></div></td>
+                    <td className="py-3 px-4"><div className="w-20 h-4 bg-surface-hover rounded"></div></td>
+                    <td className="py-3 px-4"><div className="w-20 h-8 bg-surface-hover rounded"></div></td>
                   </tr>
                 ))
               ) : (
-                users.map((user: any) => (
-                  <tr key={user.id} className="border-t border-gray-100 hover:bg-gray-50">
+                users.map((user: User) => (
+                  <tr key={user.id} className="border-t border-border-light hover:bg-surface-hover">
                     <td className="py-3 px-4">
                       <div className="flex items-center">
-                        <div className="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center text-xs font-medium">
-                          {user.firstname?.[0] || user.name?.[0] || 'U'}
+                        <div className="w-8 h-8 bg-primary/20 rounded-full mr-3 flex items-center justify-center text-xs font-medium text-primary">
+                          {user.firstname?.[0] || user.full_name?.[0] || 'U'}
                         </div>
                         <div>
                           <p className="font-medium text-main">
-                            {user.name || `${user.firstname} ${user.lastname}`}
+                            {user.full_name || `${user.firstname} ${user.lastname}`}
                           </p>
-                          <p className="text-xs text-gray-500">ID: {user.id}</p>
+                          <p className="text-xs text-copy-light">ID: {user.id}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-gray-600">{user.email}</td>
+                    <td className="py-3 px-4 text-copy-light">{user.email}</td>
                     <td className="py-3 px-4">
                       <span className={`px-2 py-1 rounded-full text-xs ${
-                        user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 
-                        user.role === 'supplier' ? 'bg-blue-100 text-blue-800' : 
-                        'bg-gray-100 text-gray-800'
+                        user.role === 'admin' ? 'bg-secondary/10 text-secondary' :
+                        user.role === 'supplier' ? 'bg-info/10 text-info' :
+                        'bg-primary/10 text-primary'
                       }`}>
                         {user.role?.charAt(0).toUpperCase() + user.role?.slice(1) || 'Customer'}
                       </span>
                     </td>
                     <td className="py-3 px-4">
-                      {user.active || user.status === 'Active' ? (
-                        <div className="flex items-center text-green-600">
+                      {user.active ? (
+                        <div className="flex items-center text-success">
                           <CheckCircleIcon size={16} className="mr-1" />
                           <span>Active</span>
                         </div>
                       ) : (
-                        <div className="flex items-center text-red-600">
+                        <div className="flex items-center text-error">
                           <XCircleIcon size={16} className="mr-1" />
                           <span>Inactive</span>
                         </div>
                       )}
                     </td>
-                  <td className="py-3 px-4 text-center">{user.orders}</td>
-                  <td className="py-3 px-4 text-gray-600">{user.lastLogin}</td>
+                  <td className="py-3 px-4 text-center text-copy-light">{user.orders}</td>
+                  <td className="py-3 px-4 text-copy-light">{user.lastLogin}</td>
                   <td className="py-3 px-4 text-right">
                     <div className="flex items-center justify-end space-x-2">
-                      <Link to={`/admin/users/${user.id}/edit`} className="p-1 text-gray-500 hover:text-primary" title="Edit">
+                      <Link to={`/admin/users/${user.id}/edit`} className="p-1 text-copy-light hover:text-primary" title="Edit">
                         <EditIcon size={18} />
                       </Link>
-                      <button className="p-1 text-gray-500 hover:text-red-500" title="Delete">
+                      <button className="p-1 text-copy-light hover:text-error" title="Delete">
                         <TrashIcon size={18} />
                       </button>
                       <div className="relative group">
-                        <button className="p-1 text-gray-500 hover:text-main">
+                        <button className="p-1 text-copy-light hover:text-main">
                           <MoreHorizontalIcon size={18} />
                         </button>
-                        <div className="absolute right-0 mt-1 hidden group-hover:block bg-white rounded-md shadow-lg border border-gray-200 z-10 w-36">
+                        <div className="absolute right-0 mt-1 hidden group-hover:block bg-surface rounded-md shadow-lg border border-border-light z-10 w-36">
                           <div className="py-1">
-                            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <button className="w-full text-left px-4 py-2 text-sm text-copy hover:bg-surface-hover">
                               View Profile
                             </button>
-                            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <button className="w-full text-left px-4 py-2 text-sm text-copy hover:bg-surface-hover">
                               Reset Password
                             </button>
-                            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                              {user.status === 'Active' ? 'Deactivate' : 'Activate'}
+                            <button className="w-full text-left px-4 py-2 text-sm text-copy hover:bg-surface-hover">
+                              {user.active ? 'Deactivate' : 'Activate'}
                             </button>
                           </div>
                         </div>
@@ -267,24 +252,24 @@ export const AdminUsers: React.FC = () => {
           </table>
         </div>
         {users.length === 0 && !usersLoading && (
-          <div className="py-12 text-center">
-            <p className="text-gray-500">No users found</p>
+          <div className="py-12 text-center text-copy-light">
+            <p>No users found</p>
           </div>
         )}
       </div>
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-copy-light">
             Showing <span className="font-medium">{startIndex + 1}</span> to{' '}
             <span className="font-medium">{endIndex}</span> of{' '}
-            <span className="font-medium">{usersData?.pagination?.total || users.length}</span> users
+            <span className="font-medium">{users.length}</span> users
           </p>
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => setCurrentPage(currentPage - 1)}
+              onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-400 bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 border border-border rounded-md text-sm text-copy-light bg-background disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
@@ -293,11 +278,11 @@ export const AdminUsers: React.FC = () => {
               {[...Array(totalPages)].map((_, pageNum) => (
                 <button
                   key={pageNum + 1}
-                  onClick={() => setCurrentPage(pageNum + 1)}
+                  onClick={() => goToPage(pageNum + 1)}
                   className={`px-3 py-1 text-sm rounded-md ${
                     currentPage === pageNum + 1
                       ? 'bg-primary text-white'
-                      : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                      : 'border border-border text-copy hover:bg-surface-hover'
                   }`}
                 >
                   {pageNum + 1}
@@ -306,9 +291,9 @@ export const AdminUsers: React.FC = () => {
             </div>
             
             <button
-              onClick={() => setCurrentPage(currentPage + 1)}
+              onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-400 bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 border border-border rounded-md text-sm text-copy-light bg-background disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>

@@ -3,7 +3,7 @@ import { PaymentMethod } from './types';
 
 export class PaymentsAPI {
   static async getPaymentMethods(): Promise<APIResponse<PaymentMethod[]>> {
-    return await apiClient.get<PaymentMethod[]>('/users/payment-methods');
+    return await apiClient.get<PaymentMethod[]>('/users/me/payment-methods');
   }
 
   static async addPaymentMethod(data: Omit<PaymentMethod, 'id' | 'user_id' | 'created_at' | 'updated_at'>): Promise<APIResponse<PaymentMethod>> {

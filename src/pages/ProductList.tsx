@@ -1,16 +1,13 @@
 import React, { useEffect, useState, Suspense, lazy, useCallback } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import {
-  ChevronRightIcon,
   SearchIcon,
-  FilterIcon, // Import FilterIcon
-  XIcon, // Import XIcon for close button
+  FilterIcon,
+  XIcon,
 } from 'lucide-react';
-import { useCart } from '../contexts/CartContext';
-import { useWishlist } from '../contexts/WishlistContext';
-import { usePaginatedApi } from '../hooks/useApi';
+import { useApi } from '../hooks/useApi';
 import { ProductsAPI } from '../apis';
-import { Product, SearchParams } from '../apis/types';
+import { Product, ProductFilters, PaginatedResponse } from '../types';
 import ErrorMessage from '../components/common/ErrorMessage';
 import { Select } from '../components/forms/Select';
 import { RatingFilter } from '../components/forms/RatingFilter';
@@ -34,18 +31,27 @@ const ProductCardSkeleton = () => (
 );
 
 // Transform API product data to component format
-const transformProduct = (product: Product) => ({
-  id: product.id,
+const transformProduct = (product: Product): unknown => ({
+  id: String(product.id),
   name: product.name,
   price: product.variants?.[0]?.base_price || 0,
   discountPrice: product.variants?.[0]?.sale_price || null,
-  rating: product.rating || 0, 
-  reviewCount: product.review_count || 0, 
+  rating: product.rating || 0,
+  reviewCount: product.review_count || 0,
   image: product.variants?.[0]?.images?.[0]?.url || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
   category: product.category?.name || 'General',
-  brand: product.supplier ? `${product.supplier.firstname} ${product.supplier.lastname}` : 'Banwee',
   isNew: false,
-  isFeatured: false,
+  isFeatured: product.featured,
+  variants: product.variants?.map(v => ({
+    ...v,
+    id: String(v.id),
+    product_id: String(v.product_id),
+    images: v.images?.map(img => ({
+      ...img,
+      id: String(img.id),
+      variant_id: String(img.variant_id),
+    })) || [],
+  })),
 });
 
 
@@ -62,9 +68,7 @@ export const ProductList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false); // New state for mobile filter sidebar
 
-  // Cart and Wishlist
-  const { addItem: addToCart, removeItem: removeFromCart, items: cartItems } = useCart();
-  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
+  // Cart and Wishlist contexts are used directly in ProductCard component
 
   // API calls
   const {
@@ -72,22 +76,21 @@ export const ProductList: React.FC = () => {
     loading: productsLoading,
     error: productsError,
     execute: fetchProducts,
-  } = usePaginatedApi<Product>();
+  } = useApi<PaginatedResponse<Product>>();
 
   const { categories: categoriesData, loading: categoriesLoading, error: categoriesError } = useCategories();
 
   // Build search parameters for API call
-  const buildSearchParams = useCallback((): SearchParams => {
+  const buildSearchParams = useCallback((): ProductFilters => {
     const [sortBy, sortOrder] = sortOption.split(':') as [string, 'asc' | 'desc'];
-    
+
     return {
       q: searchQuery || undefined,
       category: selectedCategories.length > 0 ? selectedCategories.join(',') : undefined,
       min_price: priceRange[0] > 0 ? priceRange[0] : undefined,
       max_price: priceRange[1] < 1000 ? priceRange[1] : undefined,
-      min_rating: ratingRange[0] > 0 ? ratingRange[0] : undefined,
-      max_rating: ratingRange[1] < 5 ? ratingRange[1] : undefined,
-      sort_by: sortBy as any,
+      rating: ratingRange[0] > 0 ? ratingRange[0] : undefined,
+      sort_by: sortBy as ProductFilters['sort_by'],
       sort_order: sortOrder,
       page: currentPage,
       limit: 12,
@@ -165,9 +168,8 @@ export const ProductList: React.FC = () => {
     { label: 'Products', link: '/products' },
   ];
 
-
   if (searchQuery) {
-    breadcrumbs.push({ label: `Search: "${searchQuery}"` });
+    breadcrumbs.push({ label: `Search: "${searchQuery}"`, link: '' });
   }
 
   return (
@@ -180,8 +182,8 @@ export const ProductList: React.FC = () => {
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-main mb-2">{getCategoryDisplayName()}</h1>
           <p className="text-copy-light">
-            {productsData?.pagination ? 
-              `${productsData.pagination.total} products found` : 
+            {productsData ?
+              `${productsData.total} products found` :
               'Loading products...'
             }
           </p>
@@ -252,7 +254,7 @@ export const ProductList: React.FC = () => {
           </div>
           <div className="p-6 lg:sticky lg:top-4">
             <h2 className="font-semibold text-lg text-copy mb-4 hidden lg:block">Filters</h2>
-            
+
             {/* Categories Filter */}
             <div className="mb-6">
               <h3 className="font-medium text-copy mb-3">Categories</h3>
@@ -263,8 +265,8 @@ export const ProductList: React.FC = () => {
                   ))}
                 </div>
               ) : categoriesError ? (
-                <ErrorMessage 
-                  error={categoriesError} 
+                <ErrorMessage
+                  error={categoriesError}
                   onRetry={() => { /* Categories are now fetched globally, no retry here */ }}
                 />
               ) : categoriesData ? (
@@ -336,14 +338,15 @@ export const ProductList: React.FC = () => {
         <div className="flex-1">
           {/* Error Message */}
           {productsError && (
-            <ErrorMessage 
-              error={productsError} 
+            <ErrorMessage
+              error={productsError}
               onRetry={() => fetchProducts(() => ProductsAPI.getProducts(buildSearchParams()))}
               className="mb-6"
             />
           )}
 
           {/* Products Grid */}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {productsLoading ? (
               Array(12).fill(0).map((_, index) => <ProductCardSkeleton key={index} />)
@@ -352,12 +355,6 @@ export const ProductList: React.FC = () => {
                 <Suspense key={product.id} fallback={<ProductCardSkeleton />}>
                   <ProductCard
                     product={product}
-                    addToCart={addToCart}
-                    removeFromCart={removeFromCart}
-                    isInCart={cartItems.some(item => item.id === product.id)}
-                    addToWishlist={addToWishlist}
-                    removeFromWishlist={removeFromWishlist}
-                    isInWishlist={isInWishlist(product.id)}
                   />
                 </Suspense>
               ))
@@ -387,7 +384,7 @@ export const ProductList: React.FC = () => {
           </div>
 
           {/* Pagination */}
-          {productsData?.pagination && productsData.pagination.pages > 1 && (
+          {productsData && productsData.total_pages > 1 && (
             <div className="flex items-center justify-center space-x-2 mt-8">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
@@ -396,27 +393,26 @@ export const ProductList: React.FC = () => {
               >
                 Previous
               </button>
-              
-              {Array.from({ length: Math.min(5, productsData.pagination.pages) }, (_, i) => {
+
+              {Array.from({ length: Math.min(5, productsData.total_pages) }, (_, i) => {
                 const page = i + 1;
                 return (
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`px-3 py-2 rounded-md ${
-                      page === currentPage
-                        ? 'bg-primary text-white'
-                        : 'bg-surface border border-border text-copy hover:bg-surface-hover'
-                    }`}
+                    className={`px-3 py-2 rounded-md ${page === currentPage
+                      ? 'bg-primary text-white'
+                      : 'bg-surface border border-border text-copy hover:bg-surface-hover'
+                      }`}
                   >
                     {page}
                   </button>
                 );
               })}
-              
+
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === productsData.pagination.pages}
+                disabled={currentPage === productsData.total_pages}
                 className="px-3 py-2 rounded-md bg-surface border border-border text-copy hover:bg-surface-hover disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Next

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNotifications } from '../../contexts/NotificationContext';
 import {
   LayoutDashboardIcon,
   UsersIcon,
@@ -25,8 +26,8 @@ interface AdminLayoutProps {
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const { notifications, markAsRead } = useNotification();
-  
+  const { notifications, markAllAsRead, unreadCount } = useNotifications();
+
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -61,16 +62,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     logout();
     navigate('/');
   };
-  
-  const markAllAsRead = () => {
-    notifications.forEach((notification) => {
-      if (!notification.read) {
-        markAsRead(notification.id);
-      }
-    });
-  };
 
-  const unreadCount = notifications.filter((notification) => !notification.read).length;
+  const handleMarkAllAsRead = () => {
+    markAllAsRead();
+  };
 
   return (
     <div className="min-h-screen bg-background flex text-copy">
@@ -83,9 +78,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-30 h-full w-64 bg-surface border-r border-border-light transition-transform duration-300 transform ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        }`}>
+        className={`fixed top-0 left-0 z-30 h-full w-64 bg-surface border-r border-border-light transition-transform duration-300 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+          }`}>
         <div className="p-4 border-b border-border-light">
           <Link to="/admin" className="flex items-center">
             <img src="/banwe_logo_green.png" alt="Banwee Logo" className="h-8 mr-2" />
@@ -99,11 +93,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={`flex items-center px-4 py-2.5 text-sm ${
-                      isActive(item.path)
+                    className={`flex items-center px-4 py-2.5 text-sm ${isActive(item.path)
                         ? 'bg-primary text-white font-medium'
                         : 'text-copy-light hover:bg-background'
-                    }`}
+                      }`}
                     onClick={() => setSidebarOpen(false)}>
                     <span className="mr-3">{item.icon}</span>
                     <span>{item.title}</span>
@@ -170,7 +163,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 <div className="absolute right-0 top-full mt-1 w-80 bg-surface rounded-md shadow-lg border-border-light hidden group-hover:block z-20">
                   <div className="p-2 border-b border-border-light flex justify-between items-center">
                     <h3 className="font-medium">Notifications</h3>
-                    <button onClick={markAllAsRead} className="text-xs text-primary hover:underline">
+                    <button onClick={handleMarkAllAsRead} className="text-xs text-primary hover:underline">
                       Mark all as read
                     </button>
                   </div>
@@ -178,11 +171,15 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     {notifications.map((notification) => (
                       <div
                         key={notification.id}
-                        className={`p-3 border-b border-border-light last:border-0 ${
-                          !notification.read ? 'bg-primary/10' : ''
-                        }`}>
-                        <p className="text-sm">{notification.message}</p>
-                        <p className="text-xs text-copy-lighter mt-1">{notification.createdAt}</p>
+                        className={`p-3 border-b border-border-light last:border-0 ${!notification.read ? 'bg-primary/10' : ''
+                          }`}>
+                        <p className="text-sm font-medium">{notification.title}</p>
+                        {notification.message && (
+                          <p className="text-sm text-copy-light">{notification.message}</p>
+                        )}
+                        <p className="text-xs text-copy-lighter mt-1">
+                          {notification.timestamp.toLocaleString()}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -196,10 +193,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               {/* User */}
               <div className="flex items-center">
                 <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                  {user?.name?.charAt(0) || 'A'}
+                  {user?.full_name?.charAt(0) || user?.firstname?.charAt(0) || 'A'}
                 </div>
                 <span className="ml-2 text-sm font-medium hidden md:block">
-                  {user?.name || 'Admin'}
+                  {user?.full_name || `${user?.firstname} ${user?.lastname}` || 'Admin'}
                 </span>
               </div>
             </div>

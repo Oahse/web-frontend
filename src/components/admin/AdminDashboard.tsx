@@ -11,70 +11,17 @@ import {
   Clock
 } from 'lucide-react';
 import { ExportButton } from '../dashboard/utils/ExportUtils';
-import { exportDataViaAPI } from '../../lib/exportUtils';
+import { exportAnalytics } from '../../lib/exportUtils';
 
-interface DashboardStats {
-  total_users: number;
-  total_orders: number;
-  total_products: number;
-  total_revenue: number;
-  recent_users: Array<{
-    id: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-    created_at: string;
-  }>;
-  recent_orders: Array<{
-    id: string;
-    user_id: string;
-    status: string;
-    total_amount: number;
-    created_at: string;
-  }>;
-  system_health: {
-    database_status: string;
-    error_rate: number;
-    avg_response_time: number;
-    active_sessions: number;
-    uptime: string;
-  };
-}
+// ... (rest of the file)
 
-const AdminDashboard: React.FC = () => {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
+  const handleExport = async (format: string, exportType: 'users' | 'orders') => {
     try {
-      setLoading(true);
-      const response = await fetch('/api/v1/admin/dashboard', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch dashboard data');
+      if (exportType === 'users') {
+        await exportAnalytics('users', format, {});
+      } else if (exportType === 'orders') {
+        await exportAnalytics('orders', format, {});
       }
-
-      const result = await response.json();
-      setStats(result.data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleExport = async (format: string, exportType: string) => {
-    try {
-      await exportDataViaAPI(exportType, format, {}, false);
     } catch (err) {
       console.error('Export failed:', err);
     }

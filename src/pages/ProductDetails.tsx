@@ -23,8 +23,8 @@ import { ProductCard } from '../components/product/ProductCard';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useApi, usePaginatedApi } from '../hooks/useApi';
-import { ProductsAPI, ReviewsAPI } from '../apis';
-import { Product, Review as APIReview } from '../apis/types';
+import { apiClient, ProductsAPI } from '../apis';
+import { Product, Review as APIReview } from '../types';
 import ErrorMessage from '../components/common/ErrorMessage';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
@@ -436,7 +436,7 @@ export const ProductDetails: React.FC = () => {
                   <button
                     onClick={async () => {
                       if (!selectedVariant) return;
-                      const success = await addToCart({ product_id: product.id, variant_id: selectedVariant.id, quantity: quantity });
+                      const success = await addToCart({ variant_id: String(selectedVariant.id), quantity: quantity });
                       if (!success) {
                         setRedirectPath(location.pathname);
                         navigate('/login');

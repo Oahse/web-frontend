@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useApi } from '../../hooks/useApi';
-import { ProductsAPI } from '../../apis';
-import { Product } from '../../apis/types';
+import { apiClient, ProductsAPI } from '../../apis';
+import { Product } from '../../types';
 
 interface OrderItemDetailsProps {
   productId: string;

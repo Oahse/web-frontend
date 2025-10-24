@@ -53,7 +53,6 @@ export const Account: React.FC = () => {
     { path: '/account/payment-methods', label: 'Payment Methods', icon: <CreditCardIcon size={20} /> },
     { path: '/account/notifications', label: 'Notifications', icon: <BellIcon size={20} /> },
     { path: '/account/theme', label: 'Theme Settings', icon: <PaletteIcon size={20} /> },
-    { path: '/account/settings', label: 'Settings', icon: <SettingsIcon size={20} /> },
   ];
 
   // Add supplier/admin specific items if applicable
@@ -97,10 +96,10 @@ export const Account: React.FC = () => {
           <div className="bg-surface rounded-lg shadow-sm p-6 mb-4">
             <div className="flex items-center mb-6">
               <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xl font-bold">
-                {user.name.charAt(0)}
+                {user.firstname?.charAt(0) || user.full_name?.charAt(0) || 'U'}
               </div>
               <div className="ml-3">
-                <h3 className="font-medium text-main">{user.name}</h3>
+                <h3 className="font-medium text-main">{user.full_name || `${user.firstname} ${user.lastname}`}</h3>
                 <p className="text-copy-light text-sm">{user.email}</p>
               </div>
             </div>
